@@ -1,4 +1,5 @@
 using System;
+using AYellowpaper.SerializedCollections;
 using PropertySetUtil;
 using Unity.Entities;
 using UnityEngine;
@@ -16,7 +17,8 @@ public class Bob {
 }
 
 public class AliceAuthoring : MonoBehaviour {
-    public PropertySet<ChampionId, Bob> set;
+    public SerializedDictionary<ChampionId, Bob> dict;
+    public PropertySet<ChampionId, Bob>          set;
     
     private class Baker : Baker<AliceAuthoring> {
         public override void Bake(AliceAuthoring authoring) {

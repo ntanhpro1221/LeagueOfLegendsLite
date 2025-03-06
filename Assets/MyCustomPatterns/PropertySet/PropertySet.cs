@@ -117,9 +117,14 @@ namespace PropertySetUtil {
     public class PropertySetDrawer : PropertyDrawer {
         #region CONFIG UI VAR
 
-        private static float LineHeight => EditorGUIUtility.singleLineHeight;
-        private static float LineSpace  => 2;
-
+        private static readonly Color OutlineColor        = new Color(0.15f, 0.15f, 0.15f);
+        private static readonly Color OutlineColorLighter = new Color(0.18f, 0.18f, 0.18f);
+        private static          float LineHeight   => EditorGUIUtility.singleLineHeight + 1;
+        private static          float LineSpace    => 2;
+        private static          float RightPadding => 5;
+        private static          float LeftPadding  => 15;
+        private static          float BotPadding   => 1;
+            
         #endregion
 
         #region PROPERTY
@@ -221,32 +226,53 @@ namespace PropertySetUtil {
 
             // Calculate height
             return LineHeight + (property.isExpanded
-                ? LineSpace * Mathf.Max(0, _AlwaysTrueKeyCount - 1) + _ValuesHeight.Sum()
+                ? LineSpace * _AlwaysTrueKeyCount + _ValuesHeight.Sum() + BotPadding
                 : 0);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+            GUI.Box(position, GUIContent.none, EditorStyles.helpBox);
+            Rect headerLine = new Rect(
+                position.x
+              , position.y + LineHeight - 1
+              , position.width, 1);
+            
+            position = new(
+                position.x + LeftPadding
+              , position.y
+              , position.width - LeftPadding - RightPadding
+              , position.height - BotPadding);
             EditorGUI.BeginProperty(position, label, property);
-            Rect labelPosition = new(position.x, position.y, position.width, LineHeight);
+            Rect labelPosition = new(
+                position.x
+              , position.y
+              , position.width
+              , LineHeight);
             property.isExpanded = EditorGUI.Foldout(labelPosition, property.isExpanded, label, true);
             if (property.isExpanded) {
-                ++EditorGUI.indentLevel;
-                ++EditorGUI.indentLevel;
+                EditorGUI.DrawRect(headerLine, OutlineColor);
                 var addY = LineHeight;
-                for (int i = 0; i < _AlwaysTrueKeyCount; ++i)
+                for (int i = 0; i < _AlwaysTrueKeyCount; ++i) {
                     EditorGUI.PropertyField(
                         new Rect(
                             position.x,
                             position.y + addY,
                             position.width,
-                            addY +=
-                                _ValuesHeight[i]
-                              + (i + 1 != _AlwaysTrueKeyCount ? LineSpace : 0)),
-                        _ValuesChild[i],
-                        new GUIContent(_AlwaysTrueKeyNames[i]),
-                        true);
-                --EditorGUI.indentLevel;
-                --EditorGUI.indentLevel;
+                            addY += _ValuesHeight[i] + LineSpace)
+                      , _ValuesChild[i]
+                      , new GUIContent(_AlwaysTrueKeyNames[i])
+                      , true);
+                    if (i + 1 != _AlwaysTrueKeyCount) {
+                        int verticalPadding = 10;
+                        EditorGUI.DrawRect(
+                            new Rect(
+                                position.x + verticalPadding
+                              , position.y + addY
+                              , position.width - 2 * verticalPadding
+                              , 1)
+                          , OutlineColorLighter);
+                    }
+                }
             }
 
             EditorGUI.EndProperty();

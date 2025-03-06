@@ -163,6 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24dd643ee73475e448b44d9681109669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dict:
+    m_Keys: 
+    m_Values: []
   set:
     _KeyType: 0
     _TrueKeys: 000000000100000002000000
@@ -171,23 +174,11 @@ MonoBehaviour:
       num: 0
       champ: 0
       sprite: {fileID: 0}
-    - str: Ashe
-      num: 0
-      champ: 0
-      sprite: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
-    - str: Garen
-      num: 0
-      champ: 0
-      sprite: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
-    - str: Garen
+    - str: 
       num: 0
       champ: 0
       sprite: {fileID: 0}
-    - str: Garen
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    - str: Garen
+    - str: 
       num: 0
       champ: 0
       sprite: {fileID: 0}
@@ -195,10 +186,7 @@ MonoBehaviour:
     - Yasuo
     - Ashe
     - Garen
-    - BB
-    - Garen
-    - CC
-    _PrevKeyValues: 000000000000000001000000000000000200000000000000030000000000000004000000000000000500000000000000
+    _PrevKeyValues: 000000000000000001000000000000000200000000000000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
