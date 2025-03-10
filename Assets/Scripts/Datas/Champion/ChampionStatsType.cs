@@ -8,6 +8,7 @@
   , HealthRegen
   , ManaRegen
   , Crit
-  , Damage
+  , PhysicDamage
+  , MagicDamage
   , AttackSpeed
 }

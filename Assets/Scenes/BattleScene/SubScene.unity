@@ -160,33 +160,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233090075}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24dd643ee73475e448b44d9681109669, type: 3}
+  m_Script: {fileID: 11500000, guid: c6f4566eaca84ff09bf9d7cf47da6cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dict:
-    m_Keys: 
-    m_Values: []
-  set:
-    _KeyType: 0
-    _TrueKeys: 000000000100000002000000
-    _Values:
-    - str: 
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    - str: 
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    - str: 
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    _PrevKeyNames:
-    - Yasuo
-    - Ashe
-    - Garen
-    _PrevKeyValues: 000000000000000001000000000000000200000000000000
+  allItemSO: {fileID: 11400000, guid: 0b5c7a27dbfe2994ca666e7f7bd92331, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

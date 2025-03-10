@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-namespace PropertySetUtil {
+namespace NGDtuanh.PropertySet {
     /// <summary>
     /// Set of value with the same type. Each element can be access easier through enum key
     /// </summary>
@@ -13,320 +12,92 @@ namespace PropertySetUtil {
     /// <typeparam name="TValue">Data type of each element</typeparam>
     [Serializable]
     public class PropertySet<TKey, TValue> :
-        Dictionary<string, TValue>
-      , ISerializationCallbackReceiver
-      , IEnumerable<KeyValuePair<TKey, TValue>>
+        ISerializationCallbackReceiver
+      , IReadOnlyCollection<KeyValuePair<TKey, TValue>>
         where TKey : Enum {
-        [SerializeField]
-        private TKey _KeyType;
+        private TKey[]                _Keys;
+        private Dictionary<TKey, int> _HashedKeys;
 
-        [SerializeField]
-        private TKey[] _TrueKeys;
+        public int      Count  => _Keys.Length;
+        public TKey[]   Keys   => _Keys.ToArray();
+        public TValue[] Values => _Values.ToArray();
 
-        [SerializeField]
-        private TValue[] _Values;
+        #region SERIALIZED FIELD
 
-        private Dictionary<TKey, long>   _Key2Long;
-        private Dictionary<TKey, string> _Key2String;
-
-        public new int      Count  => _TrueKeys.Length;
-        public new TKey[]   Keys   => _TrueKeys.ToArray();
-        public new TValue[] Values => _Values.ToArray();
+        [SerializeField] private TValue[] _Values;
 
         #if UNITY_EDITOR
-        [SerializeField] [HideInInspector] private string[] _PrevKeyNames;
-        [SerializeField] [HideInInspector] private long[]   _PrevKeyValues;
+        #pragma warning disable CS0414
+        [SerializeField] private bool     _Dirty;
+        [SerializeField] private string[] _PrevKeyNames;
+        [SerializeField] private int[]    _PrevKeyValues;
+        [SerializeField] private bool[]   _IsVisible;
+        [SerializeField] private int      _VisibleCount;
+        [SerializeField] private string   _SearchText;
+        #pragma warning restore CS0414
         #endif
 
-        private void InitEnumField() {
-            _TrueKeys = (TKey[])Enum.GetValues(typeof(TKey));
-            _Values   = new TValue[_TrueKeys.Length];
+        #endregion
+
+        #if UNITY_EDITOR
+        private Utils.Editor.ScriptReloadDetector _ScriptReloadDetector;
+        #endif
+
+        public PropertySet() {
+            CorrectKeys();
+            _Values = new TValue[_Keys.Length];
+
             #if UNITY_EDITOR
-            _PrevKeyNames  = Enum.GetNames(typeof(TKey));
-            _PrevKeyValues = _TrueKeys.Select(key => Convert.ToInt64(key)).ToArray();
+            _PrevKeyNames  = new string[_Keys.Length];
+            _PrevKeyValues = new int[_Keys.Length];
+            _IsVisible     = new bool[_Keys.Length];
             #endif
         }
 
-        private void MergeToBaseAndKeyTable() {
-            base.Clear();
-            _Key2Long   = new();
-            _Key2String = new();
-            for (int i = 0; i < _TrueKeys.Length; ++i) {
-                base.Add(_TrueKeys[i].ToString(), _Values[i]);
-                _Key2Long.Add(_TrueKeys[i], i);
-                _Key2String.Add(_TrueKeys[i], _TrueKeys[i].ToString());
-            }
+        public PropertySet(ICollection<KeyValuePair<TKey, TValue>> source) {
+            CorrectKeys();
+            _Values = new TValue[_Keys.Length];
+
+            Dictionary<TKey, TValue> dictSource  = new(source);
+            foreach (var key in _Keys) this[key] = dictSource[key];
         }
 
-        public PropertySet() {
-            InitEnumField();
-            MergeToBaseAndKeyTable();
+        private void CorrectKeys() {
+            _Keys = (TKey[])Enum.GetValues(typeof(TKey));
+            _HashedKeys = Enumerable
+                .Range(0, _Keys.Length)
+                .ToDictionary(id => _Keys[id], id => id);
         }
 
         public TValue this[TKey key] {
-            get => _Values[_Key2Long[key]];
-            set => _Values[_Key2Long[key]] = base[_Key2String[key]] = value;
+            get => _Values[_HashedKeys[key]];
+            set => _Values[_HashedKeys[key]] = value;
         }
 
         public void OnBeforeSerialize() {
-            if (_TrueKeys.Length == 0) InitEnumField();
-            else _TrueKeys = (TKey[])Enum.GetValues(typeof(TKey));
-            foreach (TKey key in _TrueKeys)
-                if (base.Keys.Contains(key.ToString()))
-                    this[key] = base[key.ToString()];
-        }
-
-        public void OnAfterDeserialize() {
-            MergeToBaseAndKeyTable();
-        }
-
-        public new IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
-            for (int i = 0; i < Count; ++i)
-                yield return new(_TrueKeys[i], _Values[i]);
-        }
-
-        #region Hide Base's Method
-
-        public new TValue this[string key] {
-            get => throw new Exception("Dont use this function!!!");
-            set => throw new Exception("Dont use this function!!!");
-        }
-
-        public new void Add(string key, TValue value)
-            => throw new Exception("Dont use this function!!!");
-
-        public new bool TryAdd(string key, TValue value)
-            => throw new Exception("Dont use this function!!!");
-
-        public new void Clear()
-            => throw new Exception("Dont use this function!!!");
-
-        public new bool Remove(string key)
-            => throw new Exception("Dont use this function!!!");
-
-        public new bool Remove(string key, out TValue value)
-            => throw new Exception("Dont use this function!!!");
-
-        #endregion
-    }
-    #if UNITY_EDITOR
-    /// <summary>
-    /// Enable edit PropertySet in Inspector
-    /// </summary>
-    [CustomPropertyDrawer(typeof(PropertySet<,>), true)]
-    public class PropertySetDrawer : PropertyDrawer {
-        #region CONFIG UI VAR
-
-        private static readonly Color OutlineColor        = new Color(0.15f, 0.15f, 0.15f);
-        private static readonly Color OutlineColorLighter = new Color(0.18f, 0.18f, 0.18f);
-        private static          float LineHeight   => EditorGUIUtility.singleLineHeight + 1;
-        private static          float LineSpace    => 2;
-        private static          float RightPadding => 5;
-        private static          float LeftPadding  => 15;
-        private static          float BotPadding   => 1;
-            
-        #endregion
-
-        #region PROPERTY
-
-        private SerializedProperty _KeyType;
-        private SerializedProperty _TrueKeys;
-        private SerializedProperty _Values;
-        private SerializedProperty _PrevKeyNames;
-        private SerializedProperty _PrevKeyValues;
-
-        #endregion
-
-        #region UTILS
-
-        // KEY NAME
-        private List<string> _PrevKeyNamesUtil;
-        private List<string> _AlwaysTrueKeyNames;
-
-        // KEY VALUE (long)
-        private List<long?> _PrevKeyValuesUtil;
-        private List<long>  _AlwaysTrueKeyValues;
-
-        // VALUE
-        private List<float>              _ValuesHeight;
-        private List<SerializedProperty> _ValuesChild;
-
-        // KEY COUNT
-        private int _AlwaysTrueKeyCount;
-
-        void Swap<T>(ref T left, ref T right)
-            => (left, right) = (right, left);
-
-        void SwapList<T>(List<T> list, int leftId, int rightId)
-            => (list[leftId], list[rightId]) = (list[rightId], list[leftId]);
-
-        void SwapFullValue(int leftId, int rightId) {
-            if (leftId > rightId) Swap(ref leftId, ref rightId);
-            _Values.MoveArrayElement(leftId,      rightId);
-            _Values.MoveArrayElement(rightId - 1, leftId);
-            SwapList(_PrevKeyNamesUtil,  leftId, rightId);
-            SwapList(_PrevKeyValuesUtil, leftId, rightId);
-        }
-
-        #endregion
-
-        private bool _Dirty;
-
-        public override VisualElement CreatePropertyGUI(SerializedProperty property) {
+            #if UNITY_EDITOR
+            if (!_ScriptReloadDetector.IsReloaded_Update()) return;
             _Dirty = true;
-            return base.CreatePropertyGUI(property);
+            #endif
+
+            CorrectKeys();
         }
 
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-            // Assign property value
-            _KeyType       = property.FindPropertyRelative(nameof(_KeyType));
-            _TrueKeys      = property.FindPropertyRelative(nameof(_TrueKeys));
-            _Values        = property.FindPropertyRelative(nameof(_Values));
-            _PrevKeyNames  = property.FindPropertyRelative(nameof(_PrevKeyNames));
-            _PrevKeyValues = property.FindPropertyRelative(nameof(_PrevKeyValues));
+        public void OnAfterDeserialize() { }
 
-            // Assign utilities variable
-            _PrevKeyNamesUtil = Enumerable
-                .Range(0, _PrevKeyNames.arraySize)
-                .Select(id => _PrevKeyNames.GetArrayElementAtIndex(id).stringValue)
-                .ToList();
-            _PrevKeyValuesUtil = Enumerable
-                .Range(0, _PrevKeyValues.arraySize)
-                .Select(id => (long?)_PrevKeyValues.GetArrayElementAtIndex(id).longValue)
-                .ToList();
-            _AlwaysTrueKeyNames = _KeyType.enumNames
-                .ToList();
-            _AlwaysTrueKeyCount = _AlwaysTrueKeyNames
-                .Count;
-            _AlwaysTrueKeyValues = Enumerable
-                .Range(0, _AlwaysTrueKeyCount)
-                .Select(id => _TrueKeys.GetArrayElementAtIndex(id).longValue)
-                .ToList();
-
-            while (_PrevKeyNames.arraySize < _AlwaysTrueKeyCount) {
-                _PrevKeyNames.InsertArrayElementAtIndex(0);
-                _PrevKeyValues.InsertArrayElementAtIndex(0);
-            }
-
-            for (int i = 0; i < _AlwaysTrueKeyCount; ++i) {
-                _PrevKeyNames.GetArrayElementAtIndex(i).stringValue = _AlwaysTrueKeyNames[i];
-                _PrevKeyValues.GetArrayElementAtIndex(i).longValue  = _AlwaysTrueKeyValues[i];
-            }
-
-            // Reassign values if there is some enum's script change
-            if (_Dirty) Clean();
-
-            _ValuesChild = Enumerable
-                .Range(0, _AlwaysTrueKeyCount)
-                .Select(_Values.GetArrayElementAtIndex)
-                .ToList();
-            _ValuesHeight = _ValuesChild
-                .Select(EditorGUI.GetPropertyHeight)
-                .ToList();
-
-            // Calculate height
-            return LineHeight + (property.isExpanded
-                ? LineSpace * _AlwaysTrueKeyCount + _ValuesHeight.Sum() + BotPadding
-                : 0);
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+            for (int i = 0; i < Count; ++i)
+                yield return new(_Keys[i], _Values[i]);
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-            GUI.Box(position, GUIContent.none, EditorStyles.helpBox);
-            Rect headerLine = new Rect(
-                position.x
-              , position.y + LineHeight - 1
-              , position.width, 1);
-            
-            position = new(
-                position.x + LeftPadding
-              , position.y
-              , position.width - LeftPadding - RightPadding
-              , position.height - BotPadding);
-            EditorGUI.BeginProperty(position, label, property);
-            Rect labelPosition = new(
-                position.x
-              , position.y
-              , position.width
-              , LineHeight);
-            property.isExpanded = EditorGUI.Foldout(labelPosition, property.isExpanded, label, true);
-            if (property.isExpanded) {
-                EditorGUI.DrawRect(headerLine, OutlineColor);
-                var addY = LineHeight;
-                for (int i = 0; i < _AlwaysTrueKeyCount; ++i) {
-                    EditorGUI.PropertyField(
-                        new Rect(
-                            position.x,
-                            position.y + addY,
-                            position.width,
-                            addY += _ValuesHeight[i] + LineSpace)
-                      , _ValuesChild[i]
-                      , new GUIContent(_AlwaysTrueKeyNames[i])
-                      , true);
-                    if (i + 1 != _AlwaysTrueKeyCount) {
-                        int verticalPadding = 10;
-                        EditorGUI.DrawRect(
-                            new Rect(
-                                position.x + verticalPadding
-                              , position.y + addY
-                              , position.width - 2 * verticalPadding
-                              , 1)
-                          , OutlineColorLighter);
-                    }
-                }
-            }
-
-            EditorGUI.EndProperty();
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
-        private bool CheckEnumKeyIntact() =>
-            _PrevKeyNamesUtil.SequenceEqual(_AlwaysTrueKeyNames);
+        public static explicit operator Dictionary<TKey, TValue>(PropertySet<TKey, TValue> value)
+            => new(value);
 
-        private void UpdateEnumKey() {
-            // add element (if new size > old size)
-            while (_Values.arraySize < _AlwaysTrueKeyCount) {
-                int lastId = _Values.arraySize - 1;
-                _Values.InsertArrayElementAtIndex(lastId);
-                _PrevKeyNamesUtil.Add(null);
-                _PrevKeyValuesUtil.Add(null);
-            }
-
-            // restore value of old enum key (if possible)
-            for (int i = 0; i < _AlwaysTrueKeyCount; ++i) {
-                int matchID = _PrevKeyNamesUtil.IndexOf(_AlwaysTrueKeyNames[i]);
-                
-                if (matchID == -1 || matchID == i) continue;
-                
-                SwapFullValue(i, matchID);
-            }
-
-            // restore value of old enum value (if possible and not be restored by name yet)
-            for (int i = 0; i < _AlwaysTrueKeyCount; ++i) {
-                if (_PrevKeyNamesUtil[i] == _AlwaysTrueKeyNames[i]) continue;
-
-                int matchID = _PrevKeyValuesUtil.IndexOf(_AlwaysTrueKeyValues[i]);
-
-                if (matchID == -1 || matchID == i) continue;
-
-                if (matchID                    < _AlwaysTrueKeyCount
-                 && _PrevKeyNamesUtil[matchID] == _AlwaysTrueKeyNames[matchID])
-                    continue;
-
-                SwapFullValue(i, matchID);
-            }
-
-            // remove element (if new size < old size)
-            while (_Values.arraySize < _AlwaysTrueKeyCount) {
-                int lastId = _Values.arraySize - 1;
-                _Values.DeleteArrayElementAtIndex(lastId);
-                _PrevKeyNamesUtil.RemoveAt(lastId);
-                _PrevKeyValuesUtil.RemoveAt(lastId);
-            }
-        }
-
-        private void Clean() {
-            _Dirty = false;
-            if (CheckEnumKeyIntact() == false) UpdateEnumKey();
-        }
+        public static explicit operator PropertySet<TKey, TValue>(Dictionary<TKey, TValue> value)
+            => new(value);
     }
-    #endif
 }

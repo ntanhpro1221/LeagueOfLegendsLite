@@ -1,0 +1,14 @@
+{
+    "name": "NGDtuanh.Singleton",
+    "rootNamespace": "NGDtuanh.Singleton",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

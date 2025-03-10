@@ -4,5 +4,5 @@
 public enum ChampionId {
     Yasuo
   , Ashe
-  , Garen
+    , Garen
 }

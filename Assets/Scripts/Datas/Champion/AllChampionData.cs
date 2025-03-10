@@ -1,11 +1,8 @@
 ﻿using System;
 using BlobAssetExtend;
-using PropertySetUtil;
 using Unity.Entities;
 
+[Serializable]
 public struct AllChampionData : IComponentData {
-    public BlobHashMap<EquatableEnum<ChampionId>, ChampionData> champions;
-
-    [Serializable]
-    public class Managed : PropertySet<ChampionId, ChampionData.Managed> { }
+    public BlobAssetReference<BlobHashMap<EquatableEnum<ChampionId>, ChampionData>> champions;
 }

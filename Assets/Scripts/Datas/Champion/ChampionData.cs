@@ -1,26 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using BlobAssetExtend;
-using PropertySetUtil;
 using Unity.Entities;
-using UnityEngine;
 
-public struct ChampionData {
-    // just store necessary info to run, some data such as name and description just to show to user.
+[Serializable]
+public struct ChampionData : IConstructableFromOtherVersion<ChampionDataManaged> {
     public ChampionId                                           id;
     public BlobHashMap<EquatableEnum<ChampionStatsType>, float> stats;
+    public BlobHashMap<EquatableEnum<ChampionStatsType>, float> statsPerLevel;
     public Entity                                               prefab;
 
+    public void Construct(BlobBuilder builder, IBaker baker, in ChampionDataManaged dataManaged) {
+        id = dataManaged.id;
 
-    [Serializable]
-    public class Managed : IComponentData {
-        public ChampionId                            id;
-        public int                                   num;
-        public PropertySet<ChampionStatsType, float> stats;
-        public GameObject                            prefab;
-        public string                                name;
-        public string                                description;
-        public Sprite                                avatar;
-        public Sprite                                passiveAvatar;
-        public Sprite[]                              skillAvatars;
+        Dictionary<EquatableEnum<ChampionStatsType>, float> statsConvert = new();
+        foreach (var (key, value) in dataManaged.stats) statsConvert.Add(key, value);
+        builder.SetHashMap(ref stats, statsConvert);
+        
+        Dictionary<EquatableEnum<ChampionStatsType>, float> statsPerLevelConvert = new();
+        foreach (var (key, value) in dataManaged.statsPerLevel) statsPerLevelConvert.Add(key, value);
+        builder.SetHashMap(ref statsPerLevel, statsPerLevelConvert);
+        
+        prefab = baker.GetEntity(dataManaged.prefab, TransformUsageFlags.Dynamic);
     }
 }

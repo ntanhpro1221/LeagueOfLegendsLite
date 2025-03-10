@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444a6e259ebc4858831e20c2880f1258, type: 3}
+  m_Name: All Champion Data
+  m_EditorClassIdentifier: 
+  champions:
+    _Values:
+    - id: 0
+      stats:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      statsPerLevel:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      prefab: {fileID: 0}
+      name: 
+      description: 
+      avatar: {fileID: 0}
+      passiveAvatar: {fileID: 0}
+      skillAvatars: []
+    - id: 0
+      stats:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      statsPerLevel:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      prefab: {fileID: 0}
+      name: 
+      description: 
+      avatar: {fileID: 0}
+      passiveAvatar: {fileID: 0}
+      skillAvatars: []
+    - id: 0
+      stats:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      statsPerLevel:
+        _Values:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        _Dirty: 1
+        _PrevKeyNames:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        _PrevKeyValues: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        _IsVisible: 000000000000000000000000
+        _VisibleCount: 0
+        _SearchText: 
+      prefab: {fileID: 0}
+      name: 
+      description: 
+      avatar: {fileID: 0}
+      passiveAvatar: {fileID: 0}
+      skillAvatars: []
+    _Dirty: 0
+    _PrevKeyNames:
+    - Yasuo
+    - Ashe
+    - Garen
+    _PrevKeyValues: 000000000100000002000000
+    _IsVisible: 010101
+    _VisibleCount: 3
+    _SearchText: 

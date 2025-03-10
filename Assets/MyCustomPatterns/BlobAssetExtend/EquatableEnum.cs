@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace BlobAssetExtend {

@@ -2,29 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
+using UnityEngine;
 
 namespace BlobAssetExtend {
-    public struct BlobHashMap<TKey, TValue> : IEnumerable<KeyValueUnmanaged<TKey, TValue>>
+    public struct BlobHashMap<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
         where TKey : unmanaged, IEquatable<TKey>
         where TValue : unmanaged {
-        internal BlobArray<BlobArray<KeyValueUnmanaged<TKey, TValue>>> _Buckets;
-        public   int                                                   Count { get; internal set; }
+        private  BlobArray<KeyIndex> _KeyIndexes;
+        private  BlobArray<TKey>     _Keys;
+        internal BlobArray<TValue>   _Values;
+        public   int                 Count { get; private set; }
 
-        public TValue this[TKey key] {
+        internal void BuildKeyTable(BlobBuilder              builder
+                                  , in ICollection<KeyIndex> keyIndexes
+                                  , in ICollection<TKey>     keys
+                                  , in int                   count) {
+            builder.SetArray(ref _KeyIndexes, keyIndexes);
+            builder.SetArray(ref _Keys,       keys);
+            Count = count;
+        }
+
+        public ref TValue this[in TKey key] {
             get {
-                ref var bucketElement     = ref _Buckets[GetHashedKey(key)];
-                var     bucketElementSize = bucketElement.Length;
-                for (int i = 0; i < bucketElementSize; ++i)
-                    if (bucketElement[i].Key.Equals(key))
-                        return bucketElement[i].Value;
+                ref var keyIndex = ref _KeyIndexes[GetHashedKey(key)];
+                for (int i = keyIndex.first, end = keyIndex.GetLast(); i <= end; ++i)
+                    if (_Keys[i].Equals(key))
+                        return ref _Values[i];
                 throw new KeyNotFoundException();
             }
         }
 
-        public IEnumerator<KeyValueUnmanaged<TKey, TValue>> GetEnumerator() {
-            for (int i = 0, bucketSize = Count; i < bucketSize; ++i)
-            for (int j = 0, bucketElementSize = _Buckets[i].Length; j < bucketElementSize; ++j)
-                yield return _Buckets[i][j];
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+            for (int i = 0; i < Count; ++i)
+                yield return new(_Keys[i], _Values[i]);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -34,7 +44,7 @@ namespace BlobAssetExtend {
         private readonly int GetHashedKey(in TKey key) => GetHashedKey(key, Count);
 
         internal static int GetHashedKey(in TKey key, in int count) {
-            return (int)((ulong)key.GetHashCode() * 11400714819323198485ul) % count;
+            return (int)(((ulong)key.GetHashCode() * 11400714819323198485ul) >> 33) % count;
         }
     }
 }

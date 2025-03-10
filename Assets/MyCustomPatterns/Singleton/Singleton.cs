@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-namespace SingletonUtil {
+namespace NGDtuanh.Singleton {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
         private static T _Instance;
 

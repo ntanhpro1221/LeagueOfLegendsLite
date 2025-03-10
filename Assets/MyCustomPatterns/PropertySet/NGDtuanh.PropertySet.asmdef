@@ -1,0 +1,17 @@
+{
+    "name": "NGDtuanh.PropertySet",
+    "rootNamespace": "NGDtuanh.PropertySet",
+    "references": [
+        "NGDtuanh.Utils",
+        "NGDtuanh.Utils.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

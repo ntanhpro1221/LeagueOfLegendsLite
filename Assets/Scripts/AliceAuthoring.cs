@@ -1,6 +1,6 @@
 using System;
 using AYellowpaper.SerializedCollections;
-using PropertySetUtil;
+using NGDtuanh.PropertySet;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,6 +17,7 @@ public class Bob {
 }
 
 public class AliceAuthoring : MonoBehaviour {
+    public AllChampionDataManaged                data;
     public SerializedDictionary<ChampionId, Bob> dict;
     public PropertySet<ChampionId, Bob>          set;
     
