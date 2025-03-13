@@ -1,6 +1,6 @@
 ﻿using System;
-using NGDtuanh.PropertySet;
+using NGDtuanh.Collections.EnumMap;
 using Unity.Entities;
 
 [Serializable]
-public class AllItemDataManaged : PropertySet<ItemId, ItemDataManaged>, IComponentData { }
+public class AllItemDataManaged : EnumMap<ItemId, ItemDataManaged>, IComponentData { }

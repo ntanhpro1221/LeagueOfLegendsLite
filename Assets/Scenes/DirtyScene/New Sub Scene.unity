@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f4566eaca84ff09bf9d7cf47da6cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsSO: {fileID: 11400000, guid: 0b5c7a27dbfe2994ca666e7f7bd92331, type: 2}
+  itemsSO: {fileID: 0}
 --- !u!4 &766370590
 Transform:
   m_ObjectHideFlags: 0
@@ -177,28 +177,110 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24dd643ee73475e448b44d9681109669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dict:
-    _serializedList: []
-  set:
-    _TrueKeys: 000000000100000002000000
+  map:
+    _Keys: 00000000010000000200000003000000
     _Values:
-    - str: 
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    - str: 
-      num: 0
-      champ: 0
-      sprite: {fileID: 0}
-    _Dirty: 0
-    _PrevKeyNames:
-    - AA
-    - Yasuo
-    - Garen
-    - CC
-    - Ashe
-    - BB
-    _PrevKeyValues: 000000000000000001000000000000000200000000000000030000000000000004000000000000000500000000000000
+    - _Value:
+        bobChild:
+          grandChild:
+            map:
+              _Keys: 000000000100000002000000
+              _Values:
+              - _Value: 
+              - _Value: 
+              - _Value: 
+              _KeyNames:
+              - Yasuo
+              - Ashe
+              - Garen
+              _EditorSessionCode:
+                serializedVersion: 2
+                Hash: 00000000000000000000000000000000
+              _KeySynced: 1
+            str: 
+            strs: []
+    - _Value:
+        bobChild:
+          grandChild:
+            map:
+              _Keys: 000000000100000002000000
+              _Values:
+              - _Value: 
+              - _Value: 
+              - _Value: 
+              _KeyNames:
+              - Yasuo
+              - Ashe
+              - Garen
+              _EditorSessionCode:
+                serializedVersion: 2
+                Hash: 00000000000000000000000000000000
+              _KeySynced: 1
+            str: 
+            strs: []
+    - _Value:
+        bobChild:
+          grandChild:
+            map:
+              _Keys: 000000000100000002000000
+              _Values:
+              - _Value: 
+              - _Value: 
+              - _Value: 
+              _KeyNames:
+              - Yasuo
+              - Ashe
+              - Garen
+              _EditorSessionCode:
+                serializedVersion: 2
+                Hash: 00000000000000000000000000000000
+              _KeySynced: 1
+            str: 
+            strs: []
+    - _Value:
+        bobChild:
+          grandChild:
+            map:
+              _Keys: 000000000100000002000000
+              _Values:
+              - _Value: 
+              - _Value: 
+              - _Value: 
+              _KeyNames:
+              - Yasuo
+              - Ashe
+              - Garen
+              _EditorSessionCode:
+                serializedVersion: 2
+                Hash: 00000000000000000000000000000000
+              _KeySynced: 1
+            str: 
+            strs: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 00000000000000000000000000000000
+    _KeySynced: 1
+  bob:
+    _Value:
+      bobChild:
+        grandChild:
+          map:
+            _Keys: 000000000100000002000000
+            _Values:
+            - _Value: 
+            - _Value: 
+            - _Value: 
+            _KeyNames:
+            - Yasuo
+            - Ashe
+            - Garen
+            _EditorSessionCode:
+              serializedVersion: 2
+              Hash: 00000000000000000000000000000000
+            _KeySynced: 0
+          str: 
+          strs: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

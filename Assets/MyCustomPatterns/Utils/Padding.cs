@@ -8,6 +8,12 @@
         public float horizontal => left + right;
         public float vertical   => top  + bot;
 
+        public static Padding operator +(in Padding alice, in Padding bob) => new(
+            left: alice.left   + bob.left
+          , right: alice.right + bob.right
+          , top: alice.top     + bob.top
+          , bot: alice.bot     + bob.bot);
+        
         public Padding(float left, float right, float top, float bot) {
             this.left  = left;
             this.right = right;

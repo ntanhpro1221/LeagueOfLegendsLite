@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee35aa856d964d47a9c6d233cc73dfa9, type: 3}
+  m_Name: All Item Data
+  m_EditorClassIdentifier: 
+  items:
+    _Keys: 000000000100000002000000
+    _Values:
+    - _Value:
+        id: 0
+        name: "Gi\xE0y th\u01B0\u1EDDng"
+        description: "T\u0103ng m\u1ED9t \xEDt t\u1ED1c \u0111\u1ED9 chi chuy\u1EC3n"
+        avatar: {fileID: 21300000, guid: d6152a0baf99b6840a43113cabb0f113, type: 3}
+        buffs:
+        - durationType: 1
+          duration: 0
+          targetStat: 2
+          updateType: 0
+          value: 25
+    - _Value:
+        id: 0
+        name: "Gay B\xF9ng N\u1ED5"
+        description: "T\u0103ng kh\xE1 nhi\u1EC1u s\u1EE9c m\u1EA1nh ph\xE9p thu\u1EADt"
+        avatar: {fileID: 21300000, guid: 4151b0a331fac754bb6b01d98085197d, type: 3}
+        buffs:
+        - durationType: 1
+          duration: 0
+          targetStat: 10
+          updateType: 0
+          value: 45
+    - _Value:
+        id: 0
+        name: "Ki\u1EBFm D\xE0i"
+        description: "T\u0103ng m\u1ED9t \xEDt s\u1EE9c m\u1EA1nh c\xF4ng k\xEDch"
+        avatar: {fileID: 21300000, guid: 8172044d6a371b64ab20e268462cd539, type: 3}
+        buffs:
+        - durationType: 1
+          duration: 0
+          targetStat: 9
+          updateType: 0
+          value: 10
+    _KeyNames:
+    - Giay
+    - GayBungNo
+    - KiemDai
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 96e8e8e957983b86d565778dd6ffa573
+    _KeySynced: 1

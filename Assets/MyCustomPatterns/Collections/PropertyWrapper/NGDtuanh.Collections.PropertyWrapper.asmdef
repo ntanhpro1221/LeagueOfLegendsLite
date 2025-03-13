@@ -1,0 +1,14 @@
+{
+    "name": "NGDtuanh.Collections.PropertyWrapper",
+    "rootNamespace": "NGDtuanh.Collections.PropertyWrapper",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

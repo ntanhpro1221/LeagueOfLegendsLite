@@ -1,5 +1,5 @@
 ﻿public enum ItemId {
-    Giay
-  , GayBungNo
-  , KiemDai
+    Giay      = 0
+  , GayBungNo = 1
+  , KiemDai   = 2
 }

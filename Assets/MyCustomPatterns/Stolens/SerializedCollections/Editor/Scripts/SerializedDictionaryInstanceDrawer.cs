@@ -266,7 +266,7 @@ namespace AYellowpaper.SerializedCollections.Editor
 
         private ReorderableList MakeList()
         {
-            var list = new ReorderableList(_pagedIndices, typeof(int), true, true, true, true);
+            var list = new ReorderableList(_pagedIndices, typeof(int), false, true, true, true);
             list.onAddCallback += OnAdd;
             list.onRemoveCallback += OnRemove;
             list.onReorderCallbackWithDetails += OnReorder;

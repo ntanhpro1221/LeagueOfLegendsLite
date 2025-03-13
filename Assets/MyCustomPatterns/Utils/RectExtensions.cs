@@ -1,9 +1,34 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace NGDtuanh.Utils {
     public static class RectExtensions {
         #region CHANGE TRANSFORM
+
+        public static Rect MoveEdge(this Rect rect, Direction direction, float delta) {
+            var result = rect;
+            switch (direction) {
+                case Direction.Left:   result.xMin += delta; break;
+                case Direction.Right:  result.xMax += delta; break;
+                case Direction.Top:    result.yMin += delta; break;
+                case Direction.Bottom: result.yMax += delta; break;
+            }
+
+            return result;
+        }
+        
+        public static Rect With_Edge(this Rect rect, Direction direction, float value) {
+            var result = rect;
+            switch (direction) {
+                case Direction.Left:   result.xMin = value; break;
+                case Direction.Right:  result.xMax = value; break;
+                case Direction.Top:    result.yMin = value; break;
+                case Direction.Bottom: result.yMax = value; break;
+            }
+
+            return result;
+        }
 
         public static Rect With_Padding(this Rect rect, Padding padding) {
             var result = rect;
