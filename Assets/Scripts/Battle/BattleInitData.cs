@@ -1,5 +1,6 @@
 ﻿using Unity.Entities;
 
 public struct BattleInitData : IComponentData {
-    public TeamType teamType;
+    public TeamType   teamType;
+    public ChampionId champion;
 }

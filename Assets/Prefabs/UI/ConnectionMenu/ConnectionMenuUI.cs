@@ -11,58 +11,73 @@ public class ConnectionMenuUI : MonoBehaviour {
     [SerializeField] private LabeledInput    _IpAddress;
     [SerializeField] private LabeledInput    _Port;
     [SerializeField] private LabeledDropdown _TeamType;
+    [SerializeField] private LabeledDropdown _Champion;
     [SerializeField] private Button          _ConnectBtn;
 
-    private Dictionary<int, NetworkRole> Id2NetworkRole = new();
-    private Dictionary<int, TeamType>    Id2TeamType = new();
-    
+    private readonly Dictionary<int, NetworkRole> Id2NetworkRole = new();
+    private readonly Dictionary<int, TeamType>    Id2TeamType    = new();
+    private readonly Dictionary<int, ChampionId>  Id2ChampionId  = new();
+
     private void Start() {
-        InitMenu(); 
+        InitMenu();
     }
 
     private void InitMenu() {
         // Network role dropdown
-        var networkRoleValues = (NetworkRole[])Enum.GetValues(typeof(NetworkRole));
-        for (int i = 0; i < networkRoleValues.Length; i++)
-            Id2NetworkRole.Add(i, networkRoleValues[i]);
-        _NetworkRole.WithDropdown(new() {
-            itemList = networkRoleValues
-                .Select(NetworkRole2Label)
-                .ToList()
-        });
+        InitDropdownItem(
+            Id2NetworkRole
+          , _NetworkRole
+          , key => key switch {
+                NetworkRole.Client => "Client"
+              , NetworkRole.Server => "Server"
+              , NetworkRole.Host   => "Host"
+              , _                  => key.ToString()
+            });
 
         // Team type dropdown
-        var teamTypeValues = (TeamType[])Enum.GetValues(typeof(TeamType));
-        for (int i = 0; i < teamTypeValues.Length; i++)
-            Id2TeamType.Add(i, teamTypeValues[i]);
-        _TeamType.WithDropdown(new() {
-            itemList = teamTypeValues
-                .Select(TeamType2Label)
-                .ToList()
-        });
+        InitDropdownItem(
+            Id2TeamType
+          , _TeamType
+          , key => key switch {
+                TeamType.Blue      => "Blue"
+              , TeamType.Red       => "Red"
+              , TeamType.Spectator => "Spectator"
+              , TeamType.DontCare  => "Dont care"
+              , _                  => key.ToString()
+            });
+
+        // champion dropdown
+        InitDropdownItem(
+            Id2ChampionId
+          , _Champion
+          , key => key switch {
+                ChampionId.Ashe  => "Ashe"
+              , ChampionId.Garen => "Garen"
+              , ChampionId.Yasuo => "Yasuo"
+              , _                => key.ToString()
+            });
 
         // Connect button
         _ConnectBtn.onClick.AddListener(() => BattleConnectHelper.Connect(GetBattleConnectData()));
     }
 
-    private static string NetworkRole2Label(NetworkRole role) => role switch {
-        NetworkRole.Client => "Client"
-      , NetworkRole.Server => "Server"
-      , NetworkRole.Host   => "Host"
-      , _                  => role.ToString()
-    };
-
-    private static string TeamType2Label(TeamType type) => type switch {
-        TeamType.Blue      => "Blue"
-      , TeamType.Red       => "Red"
-      , TeamType.Spectator => "Spectator"
-      , TeamType.DontCare  => "Dont care"
-      , _                  => type.ToString()
-    };
-
     public BattleConnectData GetBattleConnectData() => new() {
         networkRole = Id2NetworkRole[_NetworkRole.Dropdown.value]
       , endpoint    = NetworkEndpoint.Parse(_IpAddress.Input.text, ushort.Parse(_Port.Input.text))
       , teamType    = Id2TeamType[_TeamType.Dropdown.value]
+      , champion    = Id2ChampionId[_Champion.Dropdown.value]
     };
+    
+    private void InitDropdownItem<TEnum>(Dictionary<int, TEnum> id2Enum
+                                       , LabeledDropdown        dropdown
+                                       , Func<TEnum, string>    enum2Label) where TEnum : Enum {
+        var values = (TEnum[])Enum.GetValues(typeof(TEnum));
+        for (int i = 0; i < values.Length; i++)
+            id2Enum.Add(i, values[i]);
+        dropdown.WithDropdown(new() {
+            itemList = values
+                .Select(enum2Label)
+                .ToList()
+        });
+    }
 }
