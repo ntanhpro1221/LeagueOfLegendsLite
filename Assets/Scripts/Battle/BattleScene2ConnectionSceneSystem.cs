@@ -4,9 +4,8 @@ using UnityEngine.SceneManagement;
 public partial class BattleScene2ConnectionSceneSystem : SystemBase {
     protected override void OnCreate() {
         var curScene = SceneManager.GetActiveScene();
-        if (curScene.name == SceneNameHelper.BattleScene) {
+        if (curScene.name is SceneNameHelper.BattleScene or SceneNameHelper.DirtyScene)
             SceneManager.LoadScene(SceneNameHelper.ConnectionScene);
-        }
 
         Enabled = false;
     }

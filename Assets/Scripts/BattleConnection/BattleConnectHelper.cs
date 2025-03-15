@@ -22,6 +22,7 @@ public static class BattleConnectHelper {
             .CreateSingleton(connectData.ToBattleInitData());
         
         SceneManager.LoadScene(SceneNameHelper.BattleScene);
+        // SceneManager.LoadScene(SceneNameHelper.DirtyScene);
     }
 
     private static void DestroyLocalSimulationWorld() {

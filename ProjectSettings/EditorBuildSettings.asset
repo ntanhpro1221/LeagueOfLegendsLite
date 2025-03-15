@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConnectionScene.unity
     guid: 7c500f67ff729eb4ab433768ba418da8
+  - enabled: 1
+    path: Assets/Scenes/DirtyScene.unity
+    guid: 5bd1e756a6cb6134487961561b7b5f66
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
