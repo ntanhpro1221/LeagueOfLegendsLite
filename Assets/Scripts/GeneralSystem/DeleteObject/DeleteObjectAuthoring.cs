@@ -2,20 +2,20 @@
 using UnityEngine;
 
 /// <summary>
-/// <see cref="target"/> will be deleted automatically by <see cref="AutoDeleteObjectSystem"/>
+/// target in <see cref="DeleteObjectData"/> will be deleted if this tag exist
 /// </summary>
-public struct DeleteObjectData : ICleanupComponentData {
-    public UnityObjectRef<GameObject> target;
+public struct DeleteObjectRequest : IComponentData {
+    public bool deleteRequestEntity;
 }
 
 public class DeleteObjectAuthoring : MonoBehaviour {
-    public GameObject target;
+    public bool deleteRequestEntity;
 
     private class Baker : Baker<DeleteObjectAuthoring> {
         public override void Bake(DeleteObjectAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new DeleteObjectData {
-                target = authoring.target
+            AddComponent(entity, new DeleteObjectRequest {
+                deleteRequestEntity = authoring.deleteRequestEntity
             });
         }
     }
