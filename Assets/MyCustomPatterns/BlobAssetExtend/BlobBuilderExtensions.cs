@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace BlobAssetExtend {
     public static class BlobBuilderExtensions {
@@ -82,6 +82,17 @@ namespace BlobAssetExtend {
               , flatKeyTable
               , builder.Allocate(ref hashMap._Values, bucketSize)
               , bucketSize);
+        }
+
+        public static void CreateReferenceInBaker<T, TManaged>(this BlobBuilder          builder
+                                                             , IBaker                    baker
+                                                             , TManaged                  managedValue
+                                                             , ref BlobAssetReference<T> result)
+            where T : unmanaged, IConstructableFromOtherVersion<TManaged> {
+            ref var root = ref builder.ConstructRoot<T>();
+            root.Construct(builder, baker, managedValue);
+            result = builder.CreateBlobAssetReference<T>(Allocator.Persistent);
+            baker.AddBlobAsset(ref result, out var hash);
         }
     }
 }

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using NGDtuanh.Collections.PropertyWrapper;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NGDtuanh.Collections.EnumMap {
     [Serializable]
@@ -23,6 +23,8 @@ namespace NGDtuanh.Collections.EnumMap {
         private Dictionary<TKey, int> _HashedKeys = new();
 
         public int Count => _Keys.Length;
+        public TKey[] Keys => _Keys.ToArray();
+        public TValue[] Values => _Values.Select(x => x.Value).ToArray();
 
         public EnumMap() {
             _Keys   = (TKey[])Enum.GetValues(typeof(TKey));
@@ -35,6 +37,12 @@ namespace NGDtuanh.Collections.EnumMap {
             #endif
             
             ReHashKeys();
+        }
+
+        public Dictionary<TKey, TValue> ToDictionary() {
+            var dict = new Dictionary<TKey, TValue>();
+            for (int i = 0; i < Count; ++i) dict.Add(_Keys[i], _Values[i]);
+            return dict;
         }
 
         public EnumMap(IReadOnlyCollection<KeyValuePair<TKey, TValue>> source) : this() {
