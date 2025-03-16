@@ -279,6 +279,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1077561749}
   m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
+--- !u!1 &72547068 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 672662259701216524, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+  m_PrefabInstance: {fileID: 1003716175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &72547073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72547068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Ground
 --- !u!1 &87954811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1274,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1066210282}
   m_LocalEulerAnglesHint: {x: 0, y: 165.4, z: 0}
+--- !u!1 &629033663 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1810141876602110858, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+  m_PrefabInstance: {fileID: 1003716175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &629033668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629033663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Wall
 --- !u!1 &632249692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1893,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6041300756387796064, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1363340683}
+    - targetCorrespondingSourceObject: {fileID: 672662259701216524, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 72547073}
+    - targetCorrespondingSourceObject: {fileID: 1810141876602110858, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629033668}
   m_SourcePrefab: {fileID: 100100000, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
 --- !u!1 &1012845022
 GameObject:
@@ -2329,6 +2374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1306003051}
   - component: {fileID: 1306003050}
+  - component: {fileID: 1306003052}
   m_Layer: 0
   m_Name: InitTransformData
   m_TagString: Untagged
@@ -2358,7 +2404,7 @@ MonoBehaviour:
     - Dragon
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   champion_Blue:
   - {fileID: 177431842}
@@ -2402,7 +2448,7 @@ MonoBehaviour:
     - Bot
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   minionPath_Red:
     _Keys: 000000000100000002000000
@@ -2434,7 +2480,7 @@ MonoBehaviour:
     - Bot
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   monster_Blue:
     _Keys: 000000000100000002000000030000000400000005000000
@@ -2454,7 +2500,7 @@ MonoBehaviour:
     - Krugs
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   monster_Red:
     _Keys: 000000000100000002000000030000000400000005000000
@@ -2474,7 +2520,7 @@ MonoBehaviour:
     - Krugs
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   scuttlePath:
     _Keys: 0000000001000000
@@ -2492,7 +2538,7 @@ MonoBehaviour:
     - Bot
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   tower_Blue:
     _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
@@ -2530,7 +2576,7 @@ MonoBehaviour:
     - Turret_Inhibitor_Bot
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
   tower_Red:
     _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
@@ -2568,7 +2614,7 @@ MonoBehaviour:
     - Turret_Inhibitor_Bot
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d9da57ee4f75ff56c25af9e14526a083
+      Hash: f36444285f602df5a4df16c05f5efeda
     _KeySynced: 1
 --- !u!4 &1306003051
 Transform:
@@ -2585,6 +2631,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1306003052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306003049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Init Transform
 --- !u!1 &1310108568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,6 +2708,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 879755046}
   m_LocalEulerAnglesHint: {x: 0, y: -106.09, z: 0}
+--- !u!1 &1363340678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6041300756387796064, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
+  m_PrefabInstance: {fileID: 1003716175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1363340683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363340678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Environment
 --- !u!1 &1366522671
 GameObject:
   m_ObjectHideFlags: 0

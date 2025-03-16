@@ -1,5 +1,6 @@
 ﻿using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// entity with this component will be deleted automatically by <see cref="AutoDeleteEntitySystem"/>
