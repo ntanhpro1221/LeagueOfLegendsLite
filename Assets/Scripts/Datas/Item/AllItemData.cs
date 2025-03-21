@@ -1,8 +1,10 @@
 ﻿using System;
-using BlobAssetExtend;
+using NGDtuanh.BlobAssetExtend;
 using Unity.Entities;
 
 [Serializable]
 public struct AllItemData : IComponentData {
-    public BlobAssetReference<BlobHashMap<EquatableEnum<ItemId>, ItemData>> items;
+    public BlobAssetReference<BubleEnMap<ItemId, ItemData, ItemDataManaged>> _Ref; 
+    
+    public ref BubleEnMap<ItemId, ItemData, ItemDataManaged> Items => ref _Ref.Value;
 }

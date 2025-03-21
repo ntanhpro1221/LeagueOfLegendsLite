@@ -1,14 +1,14 @@
 ﻿using System;
-using BlobAssetExtend;
+using NGDtuanh.BlobAssetExtend;
 using Unity.Entities;
 
 [Serializable]
-public struct ItemData : IConstructableFromOtherVersion<ItemDataManaged> {
-    public ItemId                  id;
-    public BlobArray<StatBuffData> buffs;
+public struct ItemData : IBlobBuildable<ItemDataManaged> {
+    public ItemId        id;
+    public BubleArray<StatBuffData> buffs;
 
-    public void Construct(BlobBuilder builder, IBaker baker, in ItemDataManaged dataManaged) {
-        id = dataManaged.id;
-        builder.SetArray(ref buffs, dataManaged.buffs);
+    public void BuildBlob(ref BlobBuilder builder, ItemDataManaged source, IBaker baker) {
+        id = source.id;
+        buffs.BuildBlob(ref builder, source.buffs, baker);
     }
 }

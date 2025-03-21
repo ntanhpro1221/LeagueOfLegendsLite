@@ -1,6 +1,6 @@
 ﻿using System;
-using NGDtuanh.Collections.EnumMap;
+using NGDtuanh.Collections;
 using Unity.Entities;
 
 [Serializable]
-public class AllChampionDataManaged : EnumMap<ChampionId, ChampionDataManaged>, IComponentData { }
+public class AllChampionDataManaged : CovEnumMap<ChampionId, ChampionDataManaged>, IComponentData { }

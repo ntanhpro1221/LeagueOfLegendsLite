@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+// using BlobAssetExtend;
+// using NGDtuanh.Collections.EnumMap;
+using NGDtuanh.Utils;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
@@ -57,18 +62,24 @@ public partial class AliceSystem : SystemBase {
     }
 }
 
-public partial class MakeInGameSystem : SystemBase {
-    protected override void OnUpdate() {
-        using var ecb = new EntityCommandBuffer(Allocator.Temp);
-        foreach (var (
-            networkId
-          , entity) in SystemAPI
-            .Query<RefRO<NetworkId>>()
-            .WithNone<NetworkStreamInGame>()
-            .WithEntityAccess()) {
-            ecb.AddComponent<NetworkStreamInGame>(entity);
-        }
 
-        ecb.Playback(EntityManager);
+public partial class MakeInGameSystem : SystemBase {
+    protected override void OnUpdate() { }
+
+    void Lmao(ref BlobBuilder builder) {
+        // BubleMap<
+        //     int
+        //   , BubleArray<BubleInt, int>
+        //   , IReadOnlyCollection<int>> burh;
+        // BlobAssetReference<
+        //     BubleMap<int, BubleMap<int, BubleArray<BubleInt, int>
+        //           , IReadOnlyCollection<int>
+        //         >
+        //       , ICovKVPCollection<int, IReadOnlyCollection<int>>
+        //     >
+        // > map;
+        //
+        // CovDictionary<int, CovDictionary<int, List<int>>> source = default;
+        // source.CreateBlobAssetReference(ref builder, out map, null); 
     }
 }

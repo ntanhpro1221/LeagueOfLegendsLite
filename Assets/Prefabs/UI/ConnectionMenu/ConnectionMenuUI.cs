@@ -39,10 +39,10 @@ public class ConnectionMenuUI : MonoBehaviour {
             Id2TeamType
           , _TeamType
           , key => key switch {
-                TeamType.Blue      => "Blue"
+                TeamType.None      => "None"
+              , TeamType.Blue      => "Blue"
               , TeamType.Red       => "Red"
               , TeamType.Spectator => "Spectator"
-              , TeamType.DontCare  => "Dont care"
               , _                  => key.ToString()
             });
 
@@ -67,10 +67,11 @@ public class ConnectionMenuUI : MonoBehaviour {
       , teamType    = Id2TeamType[_TeamType.Dropdown.value]
       , champion    = Id2ChampionId[_Champion.Dropdown.value]
     };
-    
-    private void InitDropdownItem<TEnum>(Dictionary<int, TEnum> id2Enum
-                                       , LabeledDropdown        dropdown
-                                       , Func<TEnum, string>    enum2Label) where TEnum : Enum {
+
+    private void InitDropdownItem<TEnum>(
+        Dictionary<int, TEnum> id2Enum
+      , LabeledDropdown        dropdown
+      , Func<TEnum, string>    enum2Label) where TEnum : Enum {
         var values = (TEnum[])Enum.GetValues(typeof(TEnum));
         for (int i = 0; i < values.Length; i++)
             id2Enum.Add(i, values[i]);

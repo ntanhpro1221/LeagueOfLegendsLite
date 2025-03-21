@@ -1,26 +1,23 @@
-﻿using System.Linq;
-using BlobAssetExtend;
-using Unity.Collections;
+﻿using NGDtuanh.BlobAssetExtend;
 using Unity.Entities;
 using UnityEngine;
 
 public class AllChampionAuthoring : MonoBehaviour {
-   public AllChampionDataSO championsSO;
-    
+    public AllChampionDataSO championsSO;
+
     public class AllChampionDataBaker : Baker<AllChampionAuthoring> {
         public override void Bake(AllChampionAuthoring authoring) {
-            using var builder = new BlobBuilder(Allocator.Temp);
-
-            ref var hashMap        = ref builder.ConstructRoot<BlobHashMap<EquatableEnum<ChampionId>, ChampionData>>();
-            builder.SetHashMap(this, ref hashMap, authoring.championsSO.champions.ToList().ToEquatableEnumCollectionKey());
-
-            var blobRef = builder.CreateBlobAssetReference<BlobHashMap<EquatableEnum<ChampionId>, ChampionData>>(Allocator.Persistent);
-            AddBlobAsset(ref blobRef, out var hash);
-            
+            if (authoring.championsSO == null) return;
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new AllChampionData {
-                champions = blobRef
-            });
+
+            // MANAGED VERSION
+            AddComponentObject(entity, authoring.championsSO);
+
+            // UNMANAGED VERSION
+            AllChampionData data = new();
+            authoring.championsSO.value.CreateBlobAssetReferenceInBaker(
+                out data._Ref, this, out _);
+            AddComponent(entity, data);
         }
     }
 }

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee35aa856d964d47a9c6d233cc73dfa9, type: 3}
   m_Name: All Item Data
   m_EditorClassIdentifier: 
-  items:
+  value:
     _Keys: 000000000100000002000000
     _Values:
     - _Value:
         id: 0
-        name: "Gi\xE0y th\u01B0\u1EDDng"
-        description: "T\u0103ng m\u1ED9t \xEDt t\u1ED1c \u0111\u1ED9 chi chuy\u1EC3n"
+        name: "Gi\xE0y Th\u01B0\u1EDDng"
+        description: "T\u0103ng m\u1ED9t \xEDt t\u1ED1c \u0111\u1ED9 di chuy\u1EC3n"
         avatar: {fileID: 21300000, guid: d6152a0baf99b6840a43113cabb0f113, type: 3}
         buffs:
         - durationType: 1
@@ -54,5 +54,5 @@ MonoBehaviour:
     - KiemDai
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 96e8e8e957983b86d565778dd6ffa573
+      Hash: d7871ff9675f7a171d3652975ff621d5
     _KeySynced: 1
