@@ -52,7 +52,7 @@ namespace NGDtuanh.BlobAssetExtend {
             return new(
                 keyIndexes
               , flatKeyTable
-              , builder.Allocate(ref ptr._Values, bucketSize)
+              , builder.Allocate(ref ptr.Values, bucketSize)
               , bucketSize);
         }
 

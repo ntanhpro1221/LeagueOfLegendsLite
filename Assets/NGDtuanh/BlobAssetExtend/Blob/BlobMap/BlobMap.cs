@@ -8,10 +8,10 @@ namespace NGDtuanh.BlobAssetExtend {
     public struct BlobMap<TKey, TValue> : IBlobMapWrapper<TKey, TValue>
         where TKey : struct, IEquatable<TKey>
         where TValue : struct {
-        private  BlobArray<KeyIndex> _KeyIndexes;
-        private  BlobArray<TKey>     _Keys;
-        internal BlobArray<TValue>   _Values;
-        public   int                 Count { get; private set; }
+        private BlobArray<KeyIndex> _KeyIndexes;
+        public  BlobArray<TKey>     Keys;
+        public  BlobArray<TValue>   Values;
+        public  int                 Count { get; private set; }
 
         internal void BuildKeyTable(
             ref BlobBuilder                   builder
@@ -19,7 +19,7 @@ namespace NGDtuanh.BlobAssetExtend {
           , in  IReadOnlyCollection<TKey>     keys
           , in  int                           count) {
             builder.SetArray(ref _KeyIndexes, keyIndexes);
-            builder.SetArray(ref _Keys,       keys);
+            builder.SetArray(ref Keys,       keys);
             Count = count;
         }
 
@@ -27,8 +27,8 @@ namespace NGDtuanh.BlobAssetExtend {
             get {
                 ref var keyIndex = ref _KeyIndexes[GetHashedKey(key)];
                 for (int i = keyIndex.first, end = keyIndex.GetLast(); i <= end; ++i)
-                    if (_Keys[i].Equals(key))
-                        return ref _Values[i];
+                    if (Keys[i].Equals(key))
+                        return ref Values[i];
                 throw new KeyNotFoundException();
             }
         }
@@ -49,13 +49,13 @@ namespace NGDtuanh.BlobAssetExtend {
         public Dictionary<TKey, TValue> ToDictionary() {
             Dictionary<TKey, TValue> result = new();
             for (int i = 0; i < Count; ++i)
-                result.Add(_Keys[i], _Values[i]);
+                result.Add(Keys[i], Values[i]);
             return result;
         }
 
         public IEnumerator<KVPairUnmanaged<TKey, TValue>> GetEnumerator() {
             for (int i = 0; i < Count; ++i)
-                yield return new KVPairUnmanaged<TKey, TValue>(_Keys[i], _Values[i]);
+                yield return new KVPairUnmanaged<TKey, TValue>(Keys[i], Values[i]);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

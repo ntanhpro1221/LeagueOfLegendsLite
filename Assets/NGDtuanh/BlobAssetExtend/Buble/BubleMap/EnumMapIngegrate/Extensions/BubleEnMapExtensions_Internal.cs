@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace NGDtuanh.BlobAssetExtend {
     public static class BubleEnMapExtensions_Internal {
-        public static BlobBuilderMap<EquatableEnum<TKey>, TValueResult> Allocate<TKey, TValueResult, TValueSource>(
+        public static BlobBuilderMap<EqualEnum<TKey>, TValueResult> Allocate<TKey, TValueResult, TValueSource>(
             this ref BlobBuilder                                  builder
           , ref      BubleEnMap<TKey, TValueResult, TValueSource> ptr
           , IReadOnlyCollection<TKey>                             rawKeys)

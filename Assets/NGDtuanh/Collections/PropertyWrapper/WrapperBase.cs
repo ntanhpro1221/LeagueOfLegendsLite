@@ -16,6 +16,7 @@ namespace NGDtuanh.Collections {
             set => _Value = value;
         }
 
+        public WrapperBase() { }
         public WrapperBase(in TValue value) => _Value = value;
         
         public          bool   Equals(TValue other) => Value.Equals(other);

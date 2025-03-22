@@ -10,7 +10,7 @@ namespace NGDtuanh.BlobAssetExtend {
       , IBlobBuildable<ICovKVPCollection<TKey, TValue>>
         where TKey : struct, Enum
         where TValue : struct {
-        public BlobMap<EquatableEnum<TKey>, TValue> Value;
+        public BlobMap<EqualEnum<TKey>, TValue> Value;
 
         public void BuildBlob(ref BlobBuilder builder, ICovKVPCollection<TKey, TValue> source)
             => builder.SetMap(ref Value, source.CastKey_EqualEnum());

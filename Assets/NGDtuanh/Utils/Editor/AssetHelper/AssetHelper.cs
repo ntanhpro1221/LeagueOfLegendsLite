@@ -16,12 +16,24 @@ namespace NGDtuanh.Utils.Editors {
             throw new FileNotFoundException();
         }
 
+        public static bool IsExistSameFile(string path, string content) {
+            if (!File.Exists(path)) return false;
+            if (!File.ReadAllText(path).Equals(content)) return false;
+            
+            return true;
+        }
+        
         public static string GetScriptPathWithoutFileName(string fileName)
             => Path.GetDirectoryName(GetScriptPath(fileName));
 
         public static void WriteToFile(string path, string content, bool importNow = true) {
             File.WriteAllText(path, content, System.Text.Encoding.Unicode);
             AssetDatabase.ImportAsset(path);
+        }
+
+        public static void SafeWriteToFile(string path, string content) {
+            if (!IsExistSameFile(path, content))
+                WriteToFile(path, content);
         }
     }
 }

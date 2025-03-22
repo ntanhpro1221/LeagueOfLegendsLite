@@ -8,13 +8,13 @@ namespace NGDtuanh.Collections {
             this Dictionary<TKey, TValue> dict) => new(dict);
 
         public static CovDictionary<TEnumKey, TValue> CastKey_Enum<TEnumKey, TValue>(
-            this IEnumerable<ICovKVP<EquatableEnum<TEnumKey>, TValue>> source)
+            this IEnumerable<ICovKVP<EqualEnum<TEnumKey>, TValue>> source)
             where TEnumKey : struct, Enum
             => source.ToDictionary(item => (TEnumKey)item.Key, item => item.Value).ToCovariance();
 
-        public static CovDictionary<EquatableEnum<TEnumKey>, TValue> CastKey_EqualEnum<TEnumKey, TValue>(
+        public static CovDictionary<EqualEnum<TEnumKey>, TValue> CastKey_EqualEnum<TEnumKey, TValue>(
             this IEnumerable<ICovKVP<TEnumKey, TValue>> source)
             where TEnumKey : struct, Enum
-            => source.ToDictionary(item => (EquatableEnum<TEnumKey>)item.Key, item => item.Value).ToCovariance();
+            => source.ToDictionary(item => (EqualEnum<TEnumKey>)item.Key, item => item.Value).ToCovariance();
     }
 }

@@ -34,7 +34,7 @@ public class PrefabHubAuthoring : MonoBehaviour {
         }
 
         private void CreatePrefabData<TKey, TPrefabBuffer>(
-            out BlobAssetReference<BlobMap<EquatableEnum<TKey>, int>> idRef
+            out BlobAssetReference<BlobMap<EqualEnum<TKey>, int>> idRef
           , ICovKVPCollection<TKey, GameObject>                       source
           , Entity                                                    thisEntity)
             where TKey : struct, Enum
@@ -45,24 +45,24 @@ public class PrefabHubAuthoring : MonoBehaviour {
 
             // INIT BUILDER
             var     builder = new BlobBuilder(Allocator.Temp);
-            ref var root    = ref builder.ConstructRoot<BlobMap<EquatableEnum<TKey>, int>>();
+            ref var root    = ref builder.ConstructRoot<BlobMap<EqualEnum<TKey>, int>>();
             int     curId   = -1;
 
             // BUILD VALUE
-            var idBuilder = builder.Allocate(ref root, source.Select(kvp => (EquatableEnum<TKey>)kvp.Key).ToList());
+            var idBuilder = builder.Allocate(ref root, source.Select(kvp => (EqualEnum<TKey>)kvp.Key).ToList());
             foreach (var (key, value) in source)
                 buffer[idBuilder[key] = ++curId] = new TPrefabBuffer {
                     Entity = GetEntity(value, TransformUsageFlags.Dynamic)
                 };
 
             // GEN REFERENCE AND ADD TO BAKER
-            idRef = builder.CreateBlobAssetReference<BlobMap<EquatableEnum<TKey>, int>>(Allocator.Persistent);
+            idRef = builder.CreateBlobAssetReference<BlobMap<EqualEnum<TKey>, int>>(Allocator.Persistent);
             AddBlobAsset(ref idRef, out _);
             builder.Dispose();
         }
 
         private void CreatePrefabData<TKey1, TKey2, TPrefabBuffer>(
-            out BlobAssetReference<BlobMap<EquatableEnum<TKey1>, BlobMap<EquatableEnum<TKey2>, int>>> idRef
+            out BlobAssetReference<BlobMap<EqualEnum<TKey1>, BlobMap<EqualEnum<TKey2>, int>>> idRef
           , ICovKVPCollection<TKey1, ICovKVPCollection<TKey2, GameObject>>                            source
           , Entity                                                                                    thisEntity)
             where TKey1 : struct, Enum
@@ -74,16 +74,16 @@ public class PrefabHubAuthoring : MonoBehaviour {
 
             // INIT BUILDER
             var     builder = new BlobBuilder(Allocator.Temp);
-            ref var root    = ref builder.ConstructRoot<BlobMap<EquatableEnum<TKey1>, BlobMap<EquatableEnum<TKey2>, int>>>();
+            ref var root    = ref builder.ConstructRoot<BlobMap<EqualEnum<TKey1>, BlobMap<EqualEnum<TKey2>, int>>>();
             int     curId   = -1;
 
             // BUILD OUTER VALUE
             var outerIdBuilder = builder.Allocate(ref root
-              , source.Select(kvp => (EquatableEnum<TKey1>)kvp.Key).ToList());
+              , source.Select(kvp => (EqualEnum<TKey1>)kvp.Key).ToList());
             foreach (var (outerKey, outerValue) in source) {
                 // BUILD INNER VALUE
                 var innerIdBuilder = builder.Allocate(ref outerIdBuilder[outerKey]
-                  , outerValue.Select(kvp => (EquatableEnum<TKey2>)kvp.Key).ToList());
+                  , outerValue.Select(kvp => (EqualEnum<TKey2>)kvp.Key).ToList());
                 foreach (var (innerKey, innerValue) in outerValue)
                     buffer[innerIdBuilder[innerKey] = ++curId] = new TPrefabBuffer {
                         Entity = GetEntity(innerValue, TransformUsageFlags.Dynamic)
@@ -91,7 +91,7 @@ public class PrefabHubAuthoring : MonoBehaviour {
             }
 
             // GEN REFERENCE AND ADD TO BAKER
-            idRef = builder.CreateBlobAssetReference<BlobMap<EquatableEnum<TKey1>, BlobMap<EquatableEnum<TKey2>, int>>>(Allocator.Persistent);
+            idRef = builder.CreateBlobAssetReference<BlobMap<EqualEnum<TKey1>, BlobMap<EqualEnum<TKey2>, int>>>(Allocator.Persistent);
             AddBlobAsset(ref idRef, out _);
             builder.Dispose();
         }
