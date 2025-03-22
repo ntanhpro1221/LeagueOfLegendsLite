@@ -10,8 +10,7 @@ namespace MyCustomPatterns.Collections.Editor {
         private readonly Dictionary<string, EnumMapInstanceDrawer> _InstanceDrawers = new();
 
         private EnumMapInstanceDrawer EnsureGetInstanceDrawer(SerializedProperty property) {
-            if (!_InstanceDrawers.ContainsKey(property.propertyPath))
-                _InstanceDrawers.Add(property.propertyPath, new(property, fieldInfo));
+            _InstanceDrawers.TryAdd(property.propertyPath, new(property, fieldInfo));
 
             return _InstanceDrawers[property.propertyPath];
         }

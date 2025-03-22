@@ -26,7 +26,7 @@ namespace MyCustomPatterns.Collections.Editor {
             var  allElementDatas  = Drawer.AllElementDatas;
             bool myEnumChanged    = EnumDataHub.IsMyEnumChanged(KeyType, EditorSessionCode, elementDirtyData.PrevKeyNames);
             ScriptReloadDetector.SyncMySessionCode(EditorSessionCode);
-
+            
             if (!myEnumChanged) return;
             KeySynced.boolValue = false;
             

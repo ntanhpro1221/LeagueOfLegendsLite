@@ -7,15 +7,12 @@ public struct ChampionData : IBlobBuildable<ChampionDataManaged> {
     public ChampionId                           id;
     public BubleEnMap<ChampionStatsType, float> stats;
     public BubleEnMap<ChampionStatsType, float> statsPerLevel;
-    public Entity                               prefab;
 
-    public void BuildBlob(ref BlobBuilder builder, ChampionDataManaged source, IBaker baker) {
+    public void BuildBlob(ref BlobBuilder builder, ChampionDataManaged source) {
         id = source.id;
 
-        stats.BuildBlob(ref builder, source.stats, baker);
+        stats.BuildBlob(ref builder, source.stats);
 
-        statsPerLevel.BuildBlob(ref builder, source.statsPerLevel, baker);
-
-        prefab = baker.GetEntity(source.prefab, TransformUsageFlags.Dynamic);
+        statsPerLevel.BuildBlob(ref builder, source.statsPerLevel);
     }
 }

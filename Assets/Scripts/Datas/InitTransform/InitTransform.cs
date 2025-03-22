@@ -13,6 +13,11 @@ public struct InitTransform : IBlobBuildable<Transform> {
         rotation = transform.rotation;
     }
 
+    public LocalTransform ToLocalTransform_Directly()
+        => LocalTransform.FromPositionRotation(
+            position
+          , rotation);
+    
     /// <summary>
     /// Because it uses <see cref="LocalToWorld"/> matrix (and it may be not up-to-date value) so it may be incorrect.<br/>
     /// If you need precise value use <see cref="ToLocalTransform_Precise"/>
@@ -45,6 +50,6 @@ public struct InitTransform : IBlobBuildable<Transform> {
 
     public static implicit operator InitTransform(Transform transform) => new(transform);
 
-    public void BuildBlob(ref BlobBuilder builder, Transform source, IBaker baker)
+    public void BuildBlob(ref BlobBuilder builder, Transform source)
         => this = source;
 }

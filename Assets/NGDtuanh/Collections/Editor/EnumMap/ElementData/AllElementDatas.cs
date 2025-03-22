@@ -34,6 +34,14 @@ namespace MyCustomPatterns.Collections.Editor {
             VisibleCount = Keys.arraySize;
         }
 
+        public void CollectionDuplicateFix() {
+            if (Keys.arraySize  >= ElementDatas.Count) return;           // not my task
+            if (ElementDatas[0] == ElementDatas[Keys.arraySize]) return; // not duplicate
+
+            while (ElementDatas.Count > Keys.arraySize)
+                ElementDatas.PopBack();
+        }
+
         public void PushBackToSize(int size) {
             while (Keys.arraySize < size) {
                 Keys.PushBack();

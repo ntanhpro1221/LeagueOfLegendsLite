@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4549801463351850223}
   - component: {fileID: 3909052697964651725}
   - component: {fileID: 2373267175499843026}
+  - component: {fileID: -6885465965426350282}
+  - component: {fileID: -3916493006081611069}
   m_Layer: 0
   m_Name: YasuoBase
   m_TagString: Untagged
@@ -71,7 +73,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaTensor: {x: 2e+9, y: 2e+9, z: 2e+9}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
@@ -80,11 +82,11 @@ Rigidbody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitTensor: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4549801463351850223
 MonoBehaviour:
@@ -128,7 +130,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1000
   MaxSendRate: 0
-  prefabId: 
+  prefabId: 72c05e73cb645854c950aac6da9e1772
   HasOwner: 1
   SupportAutoCommandTarget: 1
   TrackInterpolationDelay: 0
@@ -136,3 +138,29 @@ MonoBehaviour:
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
+--- !u!114 &-6885465965426350282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66644042d2a143c4865973c33ea40261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamType: 0
+--- !u!114 &-3916493006081611069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Champion

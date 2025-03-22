@@ -12,8 +12,8 @@ namespace NGDtuanh.BlobAssetExtend {
         where TValueResult : struct, IBlobBuildable<TValueSource> {
         public BlobMap<EquatableEnum<TKey>, TValueResult> Value;
 
-        public void BuildBlob(ref BlobBuilder builder, ICovKVPCollection<TKey, TValueSource> source, IBaker baker)
-            => builder.SetMap(ref Value, source.CastKey_EqualEnum(), baker);
+        public void BuildBlob(ref BlobBuilder builder, ICovKVPCollection<TKey, TValueSource> source)
+            => builder.SetMap(ref Value, source.CastKey_EqualEnum());
 
         #region BLOB MAP FUCNTIONS
 

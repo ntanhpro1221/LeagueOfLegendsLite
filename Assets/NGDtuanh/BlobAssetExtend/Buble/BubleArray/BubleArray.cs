@@ -9,8 +9,8 @@ namespace NGDtuanh.BlobAssetExtend {
         where TResult : struct, IBlobBuildable<TSource> {
         public BlobArray<TResult> Value;
 
-        public void BuildBlob(ref BlobBuilder builder, IReadOnlyCollection<TSource> source, IBaker baker)
-            => builder.SetArray(ref Value, source, baker);
+        public void BuildBlob(ref BlobBuilder builder, IReadOnlyCollection<TSource> source)
+            => builder.SetArray(ref Value, source);
 
         #region BLOB ARRAY FUNCTIONS
 

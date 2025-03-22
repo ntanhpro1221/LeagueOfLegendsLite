@@ -7,8 +7,8 @@ public struct ItemData : IBlobBuildable<ItemDataManaged> {
     public ItemId        id;
     public BubleArray<StatBuffData> buffs;
 
-    public void BuildBlob(ref BlobBuilder builder, ItemDataManaged source, IBaker baker) {
+    public void BuildBlob(ref BlobBuilder builder, ItemDataManaged source) {
         id = source.id;
-        buffs.BuildBlob(ref builder, source.buffs, baker);
+        buffs.BuildBlob(ref builder, source.buffs);
     }
 }

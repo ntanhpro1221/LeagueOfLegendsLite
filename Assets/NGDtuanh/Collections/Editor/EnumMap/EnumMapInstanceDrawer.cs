@@ -87,6 +87,7 @@ namespace MyCustomPatterns.Collections.Editor {
 
         public float GetPropertyHeight() {
             ElementDatasManager.EnsureEnumKeySynced(); // must sync first
+            AllElementDatas.CollectionDuplicateFix();  // when remove all elements from a collection and then add again
             
             float height;
             
@@ -123,7 +124,7 @@ namespace MyCustomPatterns.Collections.Editor {
 
             EditorGUI.EndProperty();
         }
-
+        
         private ReorderableList MakeList(AllElementDatas allElementDatas) {
             var list = new ReorderableList(allElementDatas.ElementDatas, typeof(ElementData)
               , draggable: false

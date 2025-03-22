@@ -1,6 +1,5 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
-using Hash128 = Unity.Entities.Hash128;
 
 namespace NGDtuanh.BlobAssetExtend {
     public static class BlobAssetHelper {
@@ -28,13 +27,12 @@ namespace NGDtuanh.BlobAssetExtend {
 
         public static void CreateBlobAssetReference<TResult, TSource>(
             this TSource                     source
-          , out  BlobAssetReference<TResult> result
-          , IBaker                           baker)
+          , out  BlobAssetReference<TResult> result)
             where TResult : unmanaged, IBlobBuildable<TSource> {
 
             var     builder = new BlobBuilder(Allocator.Temp);
             ref var root    = ref builder.ConstructRoot<TResult>();
-            root.BuildBlob(ref builder, source, baker);
+            root.BuildBlob(ref builder, source);
             result = builder.CreateBlobAssetReference<TResult>(Allocator.Persistent);
             builder.Dispose();
         }
@@ -46,7 +44,7 @@ namespace NGDtuanh.BlobAssetExtend {
           , out Hash128                      hash)
             where TResult : unmanaged, IBlobBuildable<TSource> {
 
-            source.CreateBlobAssetReference(out result, baker);
+            source.CreateBlobAssetReference(out result);
             baker.AddBlobAsset(ref result, out hash);
         }
     }

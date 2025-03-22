@@ -13,8 +13,8 @@ namespace NGDtuanh.BlobAssetExtend {
         where TValue : struct {
         public BlobMap<TKey, TValue> Value;
 
-        public void BuildBlob(ref BlobBuilder builder, ICovKVPCollection<TKey, TValue> source, IBaker baker)
-            => builder.SetMap(ref Value, source, baker);
+        public void BuildBlob(ref BlobBuilder builder, ICovKVPCollection<TKey, TValue> source)
+            => builder.SetMap(ref Value, source);
 
         #region BLOB MAP FUCNTIONS
 

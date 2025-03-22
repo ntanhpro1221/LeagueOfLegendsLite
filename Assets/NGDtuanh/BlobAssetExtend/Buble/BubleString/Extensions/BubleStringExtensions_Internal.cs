@@ -7,7 +7,7 @@ namespace NGDtuanh.BlobAssetExtend {
             ref BlobBuilder builder
           , ref BubleString bubleStr
           , string          value)
-            => bubleStr.BuildBlob(ref builder, value, null);
+            => bubleStr.BuildBlob(ref builder, value);
 
         public static void AllocateString<T>(
             ref BlobBuilder builder

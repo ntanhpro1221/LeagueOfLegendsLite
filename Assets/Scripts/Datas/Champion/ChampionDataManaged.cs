@@ -12,7 +12,6 @@ public class ChampionDataManaged {
     public string                               description;
     public CovEnumMap<ChampionStatsType, float> stats;
     public CovEnumMap<ChampionStatsType, float> statsPerLevel;
-    public GameObject                           prefab;
     public Sprite                               avatar;
     public Sprite                               passiveAvatar;
     public List<Sprite>                         skillAvatars;

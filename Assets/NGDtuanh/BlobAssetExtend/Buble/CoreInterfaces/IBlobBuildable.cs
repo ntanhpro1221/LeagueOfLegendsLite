@@ -4,7 +4,6 @@ namespace NGDtuanh.BlobAssetExtend {
     public interface IBlobBuildable<in TSource> {
         void BuildBlob(
             ref BlobBuilder builder
-          , TSource         source
-          , IBaker          baker);
+          , TSource         source);
     }
 }

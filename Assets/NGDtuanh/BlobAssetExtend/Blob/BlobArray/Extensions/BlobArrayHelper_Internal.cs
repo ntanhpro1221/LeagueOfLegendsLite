@@ -12,8 +12,7 @@ namespace NGDtuanh.BlobAssetExtend {
         public static void SetArray<T>(
             this ref BlobBuilder   builder
           , ref      BlobArray<T>  array
-          , IReadOnlyCollection<T> source
-          , IBaker                 _ = null)
+          , IReadOnlyCollection<T> source)
             where T : struct {
 
             var size         = source.Count;
@@ -26,15 +25,14 @@ namespace NGDtuanh.BlobAssetExtend {
         public static void SetArray<TResult, TSource>(
             this ref BlobBuilder         builder
           , ref      BlobArray<TResult>  array
-          , IReadOnlyCollection<TSource> source
-          , IBaker                       baker)
+          , IReadOnlyCollection<TSource> source)
             where TResult : struct, IBlobBuildable<TSource> {
 
             var size         = source.Count;
             var arrayBuilder = builder.Allocate(ref array, size);
             int curId        = -1;
             foreach (var sourceValue in source)
-                arrayBuilder[++curId].BuildBlob(ref builder, sourceValue, baker);
+                arrayBuilder[++curId].BuildBlob(ref builder, sourceValue);
         }
 
         #endregion

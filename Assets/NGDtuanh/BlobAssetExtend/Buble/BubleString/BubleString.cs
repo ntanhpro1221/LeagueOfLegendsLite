@@ -5,7 +5,7 @@ namespace NGDtuanh.BlobAssetExtend {
     public struct BubleString : IBlobStringWrapper, IBlobBuildableString {
         public BlobString Value;
 
-        public void BuildBlob(ref BlobBuilder builder, string source, IBaker baker) {
+        public void BuildBlob(ref BlobBuilder builder, string source) {
             builder.AllocateString(ref Value, source);
         }
 

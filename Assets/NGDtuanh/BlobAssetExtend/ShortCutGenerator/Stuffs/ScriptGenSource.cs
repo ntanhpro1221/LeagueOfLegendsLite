@@ -179,10 +179,9 @@ namespace NGDtuanh.BlobAssetExtend.Generator {
             
             result += $"{tab}{KeyWord.Public} {KeyWord.Void} {nameof(IBlobBuildable<int>.BuildBlob)}(" +
                 $"\n{tab}    {KeyWord.Ref} {nameof(BlobBuilder)} builder"                                         +
-                $"\n{tab}  , {sourceType} source"                                                        +
-                $"\n{tab}  , {nameof(IBaker)} baker) {{\n";
+                $"\n{tab}  , {sourceType} source) {{\n";
             
-            result += $"{tab}\t {KeyWord.Value}.{nameof(IBlobBuildable<int>.BuildBlob)}({KeyWord.Ref} builder, source, baker);\n";
+            result += $"{tab}\t {KeyWord.Value}.{nameof(IBlobBuildable<int>.BuildBlob)}({KeyWord.Ref} builder, source);\n";
             
             result += tab + '}';
             

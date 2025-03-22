@@ -14,8 +14,7 @@ namespace NGDtuanh.BlobAssetExtend {
         public static void SetMap<TKey, TValue>(
             this ref BlobBuilder            builder
           , ref      BlobMap<TKey, TValue>  map
-          , ICovKVPCollection<TKey, TValue> source
-          , IBaker                          _ = null)
+          , ICovKVPCollection<TKey, TValue> source)
             where TKey : struct, IEquatable<TKey>
             where TValue : struct {
 
@@ -27,14 +26,13 @@ namespace NGDtuanh.BlobAssetExtend {
         public static void SetMap<TKey, TValueResult, TValueSource>(
             this ref BlobBuilder                  builder
           , ref      BlobMap<TKey, TValueResult>  map
-          , ICovKVPCollection<TKey, TValueSource> source
-          , IBaker                                baker)
+          , ICovKVPCollection<TKey, TValueSource> source)
             where TKey : struct, IEquatable<TKey>
             where TValueResult : struct, IBlobBuildable<TValueSource> {
 
             var hashMapBuilder = builder.Allocate(ref map, source.Select(item => item.Key).ToList());
             foreach (var (sourceKey, sourceValue) in source)
-                hashMapBuilder[sourceKey].BuildBlob(ref builder, sourceValue, baker);
+                hashMapBuilder[sourceKey].BuildBlob(ref builder, sourceValue);
         }
 
         #endregion

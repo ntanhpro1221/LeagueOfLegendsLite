@@ -2479,7 +2479,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: f57e23996d6ce50ad5e90a0d46de4f03
+      Hash: 003d1d60a157c6512a3e4c53c67e9f0f
     _KeySynced: 1
   champion:
     _serializedList:
@@ -2613,7 +2613,7 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: d7871ff9675f7a171d3652975ff621d5
+          Hash: 003d1d60a157c6512a3e4c53c67e9f0f
         _KeySynced: 1
     - Key: 2
       Value:
@@ -2670,7 +2670,7 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: d7871ff9675f7a171d3652975ff621d5
+          Hash: 003d1d60a157c6512a3e4c53c67e9f0f
         _KeySynced: 1
 --- !u!4 &1306003051
 Transform:
@@ -4066,6 +4066,184 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1077561749}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &2061999297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061999300}
+  - component: {fileID: 2061999299}
+  - component: {fileID: 2061999298}
+  m_Layer: 0
+  m_Name: PrefabHub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2061999298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8500c3ad24f49198df5b6428ef022ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  championPrefabs:
+    _Keys: 000000000100000002000000
+    _Values:
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    _KeyNames:
+    - Yasuo
+    - Ashe
+    - Garen
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: d9199b59ab6ec9de2879af15d4d9321e
+    _KeySynced: 1
+  monsterPrefabs:
+    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000
+    _Values:
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+    _KeyNames:
+    - RedBuff
+    - BlueBuff
+    - Gromp
+    - Wolves
+    - Raptors
+    - Krugs
+    - Baron
+    - Dragon
+    - Scuttle
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: d9199b59ab6ec9de2879af15d4d9321e
+    _KeySynced: 1
+  towerPrefabs:
+    _serializedList:
+    - Key: 1
+      Value:
+        _Keys: 000000000100000002000000030000000400000005000000
+        _Values:
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        _KeyNames:
+        - Nexus
+        - Inhibitor
+        - Turret_Nexus
+        - Turret_Inhibitor
+        - Turret_Inner
+        - Turret_Outer
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: d9199b59ab6ec9de2879af15d4d9321e
+        _KeySynced: 1
+    - Key: 2
+      Value:
+        _Keys: 000000000100000002000000030000000400000005000000
+        _Values:
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        _KeyNames:
+        - Nexus
+        - Inhibitor
+        - Turret_Nexus
+        - Turret_Inhibitor
+        - Turret_Inner
+        - Turret_Outer
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: d9199b59ab6ec9de2879af15d4d9321e
+        _KeySynced: 1
+  minionPrefabs:
+    _serializedList:
+    - Key: 1
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        _KeyNames:
+        - Melee
+        - Caster
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: d9199b59ab6ec9de2879af15d4d9321e
+        _KeySynced: 1
+    - Key: 2
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
+        _KeyNames:
+        - Melee
+        - Caster
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: d9199b59ab6ec9de2879af15d4d9321e
+        _KeySynced: 1
+--- !u!114 &2061999299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Prefab Hub
+--- !u!4 &2061999300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2070728575
 GameObject:
   m_ObjectHideFlags: 0
@@ -4223,184 +4401,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 843654891}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
---- !u!1 &2140035403
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2140035404}
-  - component: {fileID: 2140035405}
-  - component: {fileID: 2140035406}
-  m_Layer: 0
-  m_Name: PrefabHub
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2140035404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140035403}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2140035405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140035403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8500c3ad24f49198df5b6428ef022ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  champions:
-    _Keys: 000000000100000002000000
-    _Values:
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    _KeyNames:
-    - Yasuo
-    - Ashe
-    - Garen
-    _EditorSessionCode:
-      serializedVersion: 2
-      Hash: f57e23996d6ce50ad5e90a0d46de4f03
-    _KeySynced: 1
-  monsters:
-    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000
-    _Values:
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-    _KeyNames:
-    - RedBuff
-    - BlueBuff
-    - Gromp
-    - Wolves
-    - Raptors
-    - Krugs
-    - Baron
-    - Dragon
-    - Scuttle
-    _EditorSessionCode:
-      serializedVersion: 2
-      Hash: f57e23996d6ce50ad5e90a0d46de4f03
-    _KeySynced: 1
-  towers:
-    _serializedList:
-    - Key: 1
-      Value:
-        _Keys: 000000000100000002000000030000000400000005000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        _KeyNames:
-        - Nexus
-        - Inhibitor
-        - Turret_Nexus
-        - Turret_Inhibitor
-        - Turret_Inner
-        - Turret_Outer
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: f57e23996d6ce50ad5e90a0d46de4f03
-        _KeySynced: 1
-    - Key: 2
-      Value:
-        _Keys: 000000000100000002000000030000000400000005000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        _KeyNames:
-        - Nexus
-        - Inhibitor
-        - Turret_Nexus
-        - Turret_Inhibitor
-        - Turret_Inner
-        - Turret_Outer
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: f57e23996d6ce50ad5e90a0d46de4f03
-        _KeySynced: 1
-  minions:
-    _serializedList:
-    - Key: 1
-      Value:
-        _Keys: 00000000010000000200000003000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        _KeyNames:
-        - Melee
-        - Caster
-        - Siege
-        - Super
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: f57e23996d6ce50ad5e90a0d46de4f03
-        _KeySynced: 1
-    - Key: 2
-      Value:
-        _Keys: 00000000010000000200000003000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 72c05e73cb645854c950aac6da9e1772, type: 3}
-        _KeyNames:
-        - Melee
-        - Caster
-        - Siege
-        - Super
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: f57e23996d6ce50ad5e90a0d46de4f03
-        _KeySynced: 1
---- !u!114 &2140035406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140035403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Prefab Hub
 --- !u!1 &2144588607
 GameObject:
   m_ObjectHideFlags: 0
@@ -4439,4 +4439,4 @@ SceneRoots:
   - {fileID: 1003716175}
   - {fileID: 1306003051}
   - {fileID: 1469674877}
-  - {fileID: 2140035404}
+  - {fileID: 2061999300}
