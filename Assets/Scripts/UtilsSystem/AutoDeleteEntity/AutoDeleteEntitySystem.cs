@@ -1,6 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 
 /// <summary>
 /// Just auto delete all entity with tag <see cref="AutoDeleteTag"/>
@@ -18,7 +19,10 @@ public partial struct AutoDeleteEntitySystem : ISystem {
         foreach (var (deleteTag, entity) in SystemAPI
             .Query<RefRO<AutoDeleteTag>>()
             .WithEntityAccess()) {
-            ecb.DestroyEntity(entity);
+            if (deleteTag.ValueRO.WorldToDelete == WorldToDelete.Both ||
+                state.WorldUnmanaged.IsClient() == (deleteTag.ValueRO.WorldToDelete == WorldToDelete.Client))
+                ecb.DestroyEntity(entity);
+            else ecb.RemoveComponent<AutoDeleteTag>(entity);
         }
 
         ecb.Playback(state.EntityManager);
