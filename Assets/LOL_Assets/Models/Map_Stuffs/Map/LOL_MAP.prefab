@@ -48,9 +48,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1807970279642858887, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -674449036139524865, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
       propertyPath: m_Name
       value: LOL_MAP
+      objectReference: {fileID: 0}
+    - target: {fileID: 3179864497565920659, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -59,12 +71,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3179864497565920659, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7126853042860349563}
+    - targetCorrespondingSourceObject: {fileID: 3179864497565920659, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 880565850427920348}
     - targetCorrespondingSourceObject: {fileID: -674449036139524865, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7445740844824232035}
+    - targetCorrespondingSourceObject: {fileID: -674449036139524865, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8514021689211550301}
     - targetCorrespondingSourceObject: {fileID: -1807970279642858887, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4484793985793293922}
+    - targetCorrespondingSourceObject: {fileID: -1807970279642858887, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3761736475287896145}
   m_SourcePrefab: {fileID: 100100000, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
 --- !u!1 &672662259701216524 stripped
 GameObject:
@@ -93,6 +114,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1453043773871479701, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+--- !u!114 &8514021689211550301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672662259701216524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Ground
 --- !u!1 &1810141876602110858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1807970279642858887, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
@@ -120,6 +154,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8733429697405204941, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+--- !u!114 &3761736475287896145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810141876602110858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Wall
 --- !u!1 &6041300756387796064 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3179864497565920659, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
@@ -147,3 +194,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6616077000883464218, guid: 76a00e7d59040274388c6fbe0ac5f70c, type: 3}
+--- !u!114 &880565850427920348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6041300756387796064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Map Environment

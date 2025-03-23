@@ -279,24 +279,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1077561749}
   m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
---- !u!1 &72547068 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 672662259701216524, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-  m_PrefabInstance: {fileID: 1003716175}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &72547073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72547068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Map Ground
 --- !u!1 &87954811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,24 +1256,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1066210282}
   m_LocalEulerAnglesHint: {x: 0, y: 165.4, z: 0}
---- !u!1 &629033663 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1810141876602110858, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-  m_PrefabInstance: {fileID: 1003716175}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &629033668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629033663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Map Wall
 --- !u!1 &632249692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,16 +1915,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6041300756387796064, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1363340683}
-    - targetCorrespondingSourceObject: {fileID: 672662259701216524, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 72547073}
-    - targetCorrespondingSourceObject: {fileID: 1810141876602110858, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 629033668}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
 --- !u!1 &1012845022
 GameObject:
@@ -2822,24 +2777,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 879755046}
   m_LocalEulerAnglesHint: {x: 0, y: -106.09, z: 0}
---- !u!1 &1363340678 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6041300756387796064, guid: 8a044e0f25d65cc42a7449a9f4cddbd7, type: 3}
-  m_PrefabInstance: {fileID: 1003716175}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1363340683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363340678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Map Environment
 --- !u!1 &1366522671
 GameObject:
   m_ObjectHideFlags: 0
@@ -4434,8 +4371,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2115561204}
+  - component: {fileID: 2115561206}
   - component: {fileID: 2115561203}
   - component: {fileID: 2115561202}
+  - component: {fileID: 2115561205}
   m_Layer: 0
   m_Name: Datas
   m_TagString: Untagged
@@ -4484,6 +4423,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115561205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115561201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbd167f1d134c38a3148f50191dd6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 13
+  scaleMoveSpeed: 0.002
+--- !u!114 &2115561206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115561201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Datas
 --- !u!1 &2121935530
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5298653007881902802}
   - component: {fileID: 2361130300847117537}
   - component: {fileID: 2813017577809178991}
+  - component: {fileID: -5795621777290632104}
   - component: {fileID: 4549801463351850223}
   - component: {fileID: 3909052697964651725}
   - component: {fileID: 2373267175499843026}
@@ -19,7 +20,8 @@ GameObject:
   - component: {fileID: -7257242132283956110}
   - component: {fileID: -7532512427967123564}
   - component: {fileID: -1056930275798156245}
-  m_Layer: 0
+  - component: {fileID: -192849990085493063}
+  m_Layer: 8
   m_Name: YasuoBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,6 +93,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &-5795621777290632104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a46a3f5a539483a8a9177907e455210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4549801463351850223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,3 +219,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initLevel: 1
+--- !u!114 &-192849990085493063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca4709e1173eafb449acd2e739d72832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

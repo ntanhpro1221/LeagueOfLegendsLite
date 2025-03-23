@@ -10,13 +10,9 @@ public partial struct UpdateStatsSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         statsLookup = state.GetBufferLookup<StatsData>();
-        
+
         state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<AllChampionData>();
-
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
-            .WithAll<ChampionTag>()
-            .Build(ref state));
     }
 
     [BurstCompile]
@@ -29,13 +25,14 @@ public partial struct UpdateStatsSystem : ISystem {
         ref var champData   = ref SystemAPI.GetSingleton<AllChampionData>().Champions;
 
         foreach (var (
-            champTag
-          , level
-          , stats) in SystemAPI
-            .Query<
-                RefRO<ChampionTag>
-              , RefRO<LevelData>
-              , DynamicBuffer<StatsData>>()) {
+                champTag
+              , level
+              , stats)
+            in SystemAPI.Query<
+                    RefRO<ChampionTag>
+                  , RefRO<LevelData>
+                  , DynamicBuffer<StatsData>>()
+                .WithAll<Simulate>()) {
             ref var rawStats      = ref champData[champTag.ValueRO.id].stats;
             ref var statsPerLevel = ref champData[champTag.ValueRO.id].statsPerLevel;
 
@@ -52,6 +49,7 @@ public partial struct UpdateStatsSystem : ISystem {
         foreach (var (_, entity) in SystemAPI
             .Query<RefRO<ChampionTag>>()
             .WithDisabled<StatsData>()
+            .WithAll<Simulate>()
             .WithEntityAccess())
             SystemAPI.SetBufferEnabled<StatsData>(entity, true);
     }

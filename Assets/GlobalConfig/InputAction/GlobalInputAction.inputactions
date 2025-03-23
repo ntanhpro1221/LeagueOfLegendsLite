@@ -990,6 +990,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InGame",
+            "id": "ad835f2c-6ce1-4e88-97ea-4bbf72f672ec",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "ef16ddb9-3efd-4f2b-a83e-d48d89964d4a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe4fa5a8-ed86-4eb1-9901-4d32a7ee02b3",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
