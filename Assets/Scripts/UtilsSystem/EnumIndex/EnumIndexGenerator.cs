@@ -58,7 +58,7 @@ public class EnumIndexAuthoring : MonoBehaviour {{
     private static List<string> GetAllEnumNames() => Assembly
         .GetExecutingAssembly()
         .GetTypes()
-        .Where(item => item.IsEnum)
+        .Where(item => item.IsEnum && !item.IsNested)
         .Select(item => item.Name)
         .ToList();
 }

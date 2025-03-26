@@ -27,7 +27,7 @@ public partial class MoveInputSystem : SystemBase {
               , Filter = Filter
             }
           , out Unity.Physics.RaycastHit hit))
-            OwnChampQuery.GetSingletonRW<MoveInputData>().ValueRW.targetPos = hit.Position;
+            OwnChampQuery.GetSingletonRW<MoveInputData>().ValueRW.targetLocalPos = hit.Position;
     }
 
     protected override void OnUpdate() { }
@@ -37,7 +37,7 @@ public partial class MoveInputSystem : SystemBase {
         OwnChampQuery = new EntityQueryBuilder(Allocator.Temp)
             .WithAll<ChampionTag, GhostOwnerIsLocal>()
             .WithAllRW<MoveInputData>()
-            .WithNone<ClientNeedInitTag>()
+            .WithNone<NeedInitTag>()
             .Build(EntityManager);
         
         Input = new();

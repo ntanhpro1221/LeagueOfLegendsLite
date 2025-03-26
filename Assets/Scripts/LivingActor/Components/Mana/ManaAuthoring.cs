@@ -1,0 +1,18 @@
+﻿using Unity.Entities;
+using Unity.NetCode;
+using UnityEngine;
+
+[GhostEnabledBit]
+public struct ManaData : IComponentData, IEnableableComponent {
+    [GhostField(Quantization = 0)] public float value; 
+}
+
+[RequireComponent(typeof(StatsAuthoring))]
+public class ManaAuthoring : MonoBehaviour {
+    private class Baker : Baker<ManaAuthoring> {
+        public override void Bake(ManaAuthoring authoring) {
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            this.AddComponentDisabled<ManaData>(entity);
+        }
+    }
+}

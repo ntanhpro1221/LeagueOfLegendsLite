@@ -1,8 +1,9 @@
 ﻿using Unity.Entities;
+using Unity.NetCode;
 using UnityEngine;
 
 public struct TeamTypeData : IComponentData {
-    public TeamType teamType;
+    [GhostField] public TeamType teamType;
 }
 
 public class TeamTypeAuthoring : MonoBehaviour {

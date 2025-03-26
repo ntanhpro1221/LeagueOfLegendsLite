@@ -6,6 +6,7 @@ public static class PhysicsLayerHelper {
     public const uint UI            = 1u << 5;
     public const uint Ground        = 1u << 6;
     public const uint GroundRay     = 1u << 7;
-    public const uint Player        = 1u << 8;
+    public const uint Actor         = 1u << 8;
     public const uint Wall          = 1u << 9;
+    public const uint ActorRay      = 1u << 10;
 }

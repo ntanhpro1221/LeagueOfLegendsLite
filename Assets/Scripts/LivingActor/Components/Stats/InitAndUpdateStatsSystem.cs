@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.NetCode;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderFirst = true)]
-public partial struct UpdateStatsSystem : ISystem {
+public partial struct InitAndUpdateStatsSystem : ISystem {
     private BufferLookup<StatsData> statsLookup;
 
     [BurstCompile]
@@ -39,7 +39,7 @@ public partial struct UpdateStatsSystem : ISystem {
             // just basic calculates base on level now
             for (int i = 0; i < stats.Length; ++i)
                 stats.ElementAt(statsEnumId[rawStats.Value.Keys[i]]) = new StatsData {
-                    Value = rawStats.Value.Values[i] + statsPerLevel.Value.Values[i] * (level.ValueRO.curLevel - 1)
+                    FullValue = rawStats.Value.Values[i] + statsPerLevel.Value.Values[i] * (level.ValueRO.curLevel - 1)
                 };
         }
     }
