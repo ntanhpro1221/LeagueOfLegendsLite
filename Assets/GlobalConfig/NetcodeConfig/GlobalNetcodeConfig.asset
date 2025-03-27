@@ -18,10 +18,10 @@ MonoBehaviour:
     SimulationTickRate: 60
     PredictedFixedStepSimulationTickRatio: 1
     NetworkTickRate: 0
-    MaxSimulationStepsPerFrame: 1
-    MaxSimulationStepBatchSize: 4
+    MaxSimulationStepsPerFrame: 4
+    MaxSimulationStepBatchSize: 1
     TargetFrameRateMode: 0
-    m_SendSnapshotsForCatchUpTicks: 0
+    m_SendSnapshotsForCatchUpTicks: 1
     SnapshotAckMaskCapacity: 4096
     HandshakeApprovalTimeoutMS: 5000
   ClientTickRate:
