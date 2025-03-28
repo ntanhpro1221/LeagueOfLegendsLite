@@ -95,7 +95,6 @@ public partial struct ApplyMoveSystem : ISystem {
     private void ApplyMove(ref SystemState state) {
         var   gameRules      = SystemAPI.GetSingleton<CommonGameRulesData>();
         float rotateSpeed    = gameRules.rotateSpeed;
-        float scaleMoveSpeed = gameRules.scaleMoveSpeed;
 
         float deltaTime = SystemAPI.Time.DeltaTime;
 
@@ -115,7 +114,7 @@ public partial struct ApplyMoveSystem : ISystem {
             velocity.ValueRW = PhysicsVelocity.Zero;
 
             // CACHE SOME VALUE
-            float trueMoveSpeed = scaleMoveSpeed * moveData.ValueRO.moveSpeed;
+            float moveSpeed = moveData.ValueRO.moveSpeed;
             var   targetPos     = moveData.ValueRO.targetLocalPos;
 
             // MOVE CALCULATE
@@ -123,10 +122,12 @@ public partial struct ApplyMoveSystem : ISystem {
             moveVector.y = 0;
             float moveDistance = math.length(moveVector);
 
-            if (moveDistance <= trueMoveSpeed * deltaTime)
+            if (moveDistance <= moveSpeed * deltaTime)
                 localTrans.ValueRW.Position = targetPos;
             else {
-                velocity.ValueRW.Linear = math.normalize(moveVector) * trueMoveSpeed;
+                var newVelocity = math.normalize(moveVector) * moveSpeed;
+                newVelocity.y           = velocity.ValueRO.Linear.y;
+                velocity.ValueRW.Linear = newVelocity;
 
                 quaternion targetRotate = quaternion.LookRotation(moveVector, math.up());
                 if (moveData.ValueRO.notUseSmoothRotate)

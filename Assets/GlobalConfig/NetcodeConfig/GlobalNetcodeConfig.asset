@@ -18,7 +18,7 @@ MonoBehaviour:
     SimulationTickRate: 60
     PredictedFixedStepSimulationTickRatio: 1
     NetworkTickRate: 0
-    MaxSimulationStepsPerFrame: 4
+    MaxSimulationStepsPerFrame: 2
     MaxSimulationStepBatchSize: 1
     TargetFrameRateMode: 0
     m_SendSnapshotsForCatchUpTicks: 1

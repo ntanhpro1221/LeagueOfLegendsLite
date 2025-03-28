@@ -20,7 +20,9 @@ public partial struct CameraFollowClientSystem : ISystem {
           foreach (var localToWorld in SystemAPI
                .Query<RefRO<LocalToWorld>>()
                .WithAll<CameraFollowTag>()) {
-               camTrans.position = localToWorld.ValueRO.Position + camTransDel.delta;
+               var newPos = localToWorld.ValueRO.Position + camTransDel.delta;
+               newPos.y          = camTransDel.delta.y;
+               camTrans.position = newPos;
                break; // we just have one camera so ...
           }
      }

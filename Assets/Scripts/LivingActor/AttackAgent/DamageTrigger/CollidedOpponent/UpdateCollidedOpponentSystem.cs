@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Physics;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct UpdateCollidedOpponentSystem : ISystem {
@@ -57,7 +58,7 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
             Entity bob   = triggerEvent.EntityB;
 
             if (!IsOpponent(alice, bob)) return;
-
+            
             TryAppendToCollidedBuffer(alice, bob);
             TryAppendToCollidedBuffer(bob,   alice);
         }

@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
 public partial struct HandleDamageFromOTSourceSystem : ISystem {
