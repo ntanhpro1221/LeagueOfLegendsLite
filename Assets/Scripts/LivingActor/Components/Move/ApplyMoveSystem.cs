@@ -5,7 +5,9 @@ using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderFirst = true)]
+[UpdateBefore(typeof(PredictedFixedStepSimulationSystemGroup))]
+[UpdateAfter(typeof(CopyCommandBufferToInputSystemGroup))]
 public partial struct ApplyMoveSystem : ISystem {
     private ComponentLookup<LocalTransform>      localTransformLookup;
     private ComponentLookup<Parent>              parentLookup;
@@ -42,7 +44,8 @@ public partial struct ApplyMoveSystem : ISystem {
             in SystemAPI.Query<
                     RefRW<MoveInputData>
                   , DynamicBuffer<StatsData>>()
-                .WithAll<Simulate>())
+                .WithAll<Simulate>()
+                .WithNone<NetworkDestroyedTag>())
             moveData.ValueRW.moveSpeed = statsData[moveSpeedId].FullValue;
     }
 
@@ -110,38 +113,31 @@ public partial struct ApplyMoveSystem : ISystem {
             if (moveData.ValueRO.targetLocalPos.Equals(float3_Q3.zero)) continue;
 
             // RESET VELOCITY FIRST
+            float prevVelocityY = velocity.ValueRW.Linear.y;
             velocity.ValueRW = PhysicsVelocity.Zero;
 
-            // CACHE SOME VALUE
-            int moveSpeed = moveData.ValueRO.moveSpeed;
-            var   targetPos = moveData.ValueRO.targetLocalPos;
-
             // MOVE CALCULATE
-            float3 moveVector = targetPos - localTrans.ValueRO.Position;
-            moveVector.y = 0;
-            float moveDistance = math.length(moveVector);
-
-            if (moveDistance <= moveSpeed * deltaTime)
-                localTrans.ValueRW.Position = targetPos;
+            int    moveSpeed  = moveData.ValueRO.moveSpeed;
+            float3 moveTarget = moveData.ValueRO.targetLocalPos;
+            float3 moveVector = (moveTarget - localTrans.ValueRO.Position).WithoutY();
+            float  moveDis    = math.length(moveVector);
+            if (moveDis <= moveSpeed * deltaTime)
+                localTrans.ValueRW.Position = moveTarget;
             else {
-                var newVelocity = math.normalize(moveVector) * moveSpeed;
-                newVelocity.y           = velocity.ValueRO.Linear.y;
-                velocity.ValueRW.Linear = newVelocity;
+                velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
 
-                quaternion targetRotate = quaternion.LookRotation(moveVector, math.up());
-                if (moveData.ValueRO.notUseSmoothRotate)
-                    localTrans.ValueRW.Rotation = targetRotate;
-                else {
-                    float3 rotateVector = math.Euler(math.mul(
-                        targetRotate
-                      , math.inverse(localTrans.ValueRO.Rotation)));
-                    float rotateDistance = math.length(rotateVector);
-                    if (rotateDistance <= rotateSpeed * deltaTime)
-                        localTrans.ValueRW.Rotation = targetRotate;
-                    else
-                        velocity.ValueRW.Angular = math.normalize(rotateVector) * rotateSpeed;
-                }
+                // ROTATE CALCULATING ONLY IF MOVING
+                quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
+                float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
+                float      rotateDis    = math.length(rotateVector);
+                if (rotateDis <= rotateSpeed * deltaTime)
+                    localTrans.ValueRW.Rotation = rotateTarget;
+                else
+                    velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
             }
+
+            // RESTORE Y VELOCITY (controlled by something such as gravity, etc.)
+            velocity.ValueRW.Linear.y = prevVelocityY;
         }
     }
 }

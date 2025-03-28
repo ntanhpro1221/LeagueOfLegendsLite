@@ -13,19 +13,16 @@ using UnityEngine;
 public struct MoveInputData : IInputComponentData {
     [GhostField] public float3_Q3 targetLocalPos;
     [GhostField] public int       moveSpeed;
-    [GhostField] public bool      notUseSmoothRotate;
 }
 
 public class MoveInputAuthoring : MonoBehaviour {
     public int  moveSpeed;
-    public bool notUseSmoothRotate;
 
     private class Baker : Baker<MoveInputAuthoring> {
         public override void Bake(MoveInputAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new MoveInputData {
                 moveSpeed          = authoring.moveSpeed
-              , notUseSmoothRotate = authoring.notUseSmoothRotate
             });
         }
     }
