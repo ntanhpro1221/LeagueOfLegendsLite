@@ -7,11 +7,10 @@ using Unity.Transforms;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 [UpdateAfter(typeof(UpdateCollidedOpponentSystem))]
-[UpdateBefore(typeof(DestroyNetworkEntitySystem))]
+[UpdateBefore(typeof(DestroyNetworkEntityServerSystem))]
 public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
     [BurstCompile]
     private void ApplyTargetedDamage(ref SystemState state, ref EntityCommandBuffer ecb) {
-        const float TOUCH_DISTANCE = 0.0001f;
         foreach (var (
                 damageData
               , targetData
@@ -25,19 +24,19 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
                 .WithAll<
                     Simulate
                   , DamageTriggerSource.TargetedTag>()
-                .WithNone<AutoDestroyNetworkEntityTag>()
+                .WithNone<NetworkDestroyedTag>()
                 .WithEntityAccess()) {
 
             var distance = math.distance(
                 localToWorld.ValueRO.Position
               , SystemAPI.GetComponent<LocalToWorld>(targetData.ValueRO.target).Position);
-            if (distance > TOUCH_DISTANCE) continue;
+            if (distance > float_Q3.Epsilon) continue;
 
             SystemAPI.GetBuffer<IncomingDamageBuffer>(targetData.ValueRO.target).Add(new() {
                 damage = damageData.ValueRO.damage
             });
 
-            ecb.AddComponent<AutoDestroyNetworkEntityTag>(entity);
+            ecb.AddComponent<NetworkDestroyedTag>(entity);
         }
     }
 
@@ -54,7 +53,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
                 .WithAll<
                     Simulate
                   , DamageTriggerSource.ShotBlockableTag>()
-                .WithNone<AutoDestroyNetworkEntityTag>()
+                .WithNone<NetworkDestroyedTag>()
                 .WithEntityAccess()) {
             if (collidedOpponent.Length == 0) continue; // there is no opponent to damage
 
@@ -63,7 +62,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
                 damage = damageData.ValueRO.damage
             });
 
-            ecb.AddComponent<AutoDestroyNetworkEntityTag>(entity);
+            ecb.AddComponent<NetworkDestroyedTag>(entity);
         }
     }
 
@@ -81,7 +80,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
                 .WithAll<
                     Simulate
                   , DamageTriggerSource.ShotNonBlockableTag>()
-                .WithNone<AutoDestroyNetworkEntityTag>()) {
+                .WithNone<NetworkDestroyedTag>()) {
 
             if (collidedOpponent.Length == damagedCount.ValueRO.count) continue; // already damaged all collided opponent
             damagedCount.ValueRW.count = collidedOpponent.Length;

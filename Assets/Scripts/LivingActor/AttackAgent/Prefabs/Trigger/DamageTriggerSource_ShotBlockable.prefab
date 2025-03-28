@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7096781660497928987}
   - component: {fileID: 6887660993119048168}
   - component: {fileID: 5259733092127180254}
-  - component: {fileID: 4136436754904163845}
   - component: {fileID: 2968323238680154063}
   - component: {fileID: 4173049110394433976}
+  - component: {fileID: 4136436754904163845}
+  - component: {fileID: 28671883659641278}
   m_Layer: 10
   m_Name: DamageTriggerSource_ShotBlockable
   m_TagString: Untagged
@@ -100,18 +101,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4136436754904163845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7776250829596025453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 401e73c7b40845b6ab43b54cc2f82a23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2968323238680154063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,3 +138,28 @@ MonoBehaviour:
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
+--- !u!114 &4136436754904163845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776250829596025453}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401e73c7b40845b6ab43b54cc2f82a23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destination: {x: 0, y: 0, z: 0}
+--- !u!114 &28671883659641278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776250829596025453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd0c4b2bed043428fb8c0a1f5ab18c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

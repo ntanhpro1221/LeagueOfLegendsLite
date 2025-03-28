@@ -3,8 +3,8 @@
 [Serializable]
 public struct StatBuffData {
     public StatBuffDurationType durationType;
-    public float                duration;
+    public float_Q3             duration;
     public ChampionStatsType    targetStat;
     public StatBuffUpdateType   updateType;
-    public float                value;
+    public int                  value;
 }

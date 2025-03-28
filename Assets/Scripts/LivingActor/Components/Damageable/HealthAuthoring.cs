@@ -4,7 +4,7 @@ using UnityEngine;
 
 [GhostEnabledBit]
 public struct HealthData : IComponentData, IEnableableComponent {
-    [GhostField(Quantization = 0)] public float value;
+    [GhostField] public int value;
 }
 
 [RequireComponent(typeof(StatsAuthoring))]

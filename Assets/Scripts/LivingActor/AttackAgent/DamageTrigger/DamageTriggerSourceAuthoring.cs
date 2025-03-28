@@ -4,7 +4,7 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct DamageTriggerSource : IComponentData {
-    [GhostField(Quantization = 0)] public float damage;
+    [GhostField] public int damage;
 
     public struct TargetedTag : IComponentData { }
     public struct ShotBlockableTag : IComponentData { }
@@ -13,7 +13,7 @@ public struct DamageTriggerSource : IComponentData {
 
 [RequireComponent(typeof(TeamTypeAuthoring))]
 public class DamageTriggerSourceAuthoring : MonoBehaviour {
-    public float             damage;
+    public int               damage;
     public TriggerDamageType damageType;
 
     private class Baker : Baker<DamageTriggerSourceAuthoring> {
@@ -26,17 +26,17 @@ public class DamageTriggerSourceAuthoring : MonoBehaviour {
             switch (authoring.damageType) {
                 case TriggerDamageType.Targeted:
                     AddComponent<DamageTriggerSource.TargetedTag>(entity);
-                    
+
                     AddComponent<DamageTargetData>(entity);
                     break;
                 case TriggerDamageType.ShotBlockable:
                     AddComponent<DamageTriggerSource.ShotBlockableTag>(entity);
-                    
+
                     AddBuffer<CollidedOpponentBuffer>(entity);
                     break;
                 case TriggerDamageType.ShotNonBlockable:
                     AddComponent<DamageTriggerSource.ShotNonBlockableTag>(entity);
-                    
+
                     AddBuffer<CollidedOpponentBuffer>(entity);
                     AddComponent<DamagedOpponentCount>(entity);
                     break;

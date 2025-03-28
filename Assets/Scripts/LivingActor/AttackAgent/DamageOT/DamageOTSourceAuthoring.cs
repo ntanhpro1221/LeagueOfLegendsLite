@@ -4,20 +4,20 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct DamageOTSource : IComponentData {
-    [GhostField(Quantization = 0)] public float damageOT;
-    [GhostField(Quantization = 0)] public float interval;
-    [GhostField(Quantization = 0)] public float timeResidual;
+    [GhostField] public int      damageOT;
+    [GhostField] public float_Q3 interval;
+    [GhostField] public float_Q3 timeResidual;
 
     /// <summary>
     ///Just to use for temporary calculation in <see cref="HandleDamageFromOTSourceSystem"/> (don't synchronize this)
     /// </summary>
-    public float tmpTotalDamage;
+    public int tmpTotalDamage;
 }
 
 [RequireComponent(typeof(TeamTypeAuthoring))]
 public class DamageOTSourceAuthoring : MonoBehaviour {
-    public float    damageOT;
-    public float    interval;
+    public int      damageOT;
+    public int      interval;
     public AreaType areaType;
 
     private class Baker : Baker<DamageOTSourceAuthoring> {

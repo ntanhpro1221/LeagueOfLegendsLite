@@ -26,7 +26,7 @@ public partial struct HandleIncomingDamageSystem : ISystem {
                     DynamicBuffer<IncomingDamageBuffer>
                   , RefRW<HealthData>>()
                 .WithAll<Simulate>()) {
-            float totalDamage = 0f;
+            int totalDamage = 0;
             foreach (var damage in incomingDamage)
                 totalDamage += damage.damage;
             incomingDamage.Clear();

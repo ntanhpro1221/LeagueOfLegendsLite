@@ -27,7 +27,7 @@ public partial class MoveInputSystem : SystemBase {
               , Filter = Filter
             }
           , out Unity.Physics.RaycastHit hit))
-            OwnChampQuery.GetSingletonRW<MoveInputData>().ValueRW.targetLocalPos = hit.Position;
+            OwnChampQuery.GetSingletonRW<MoveInputData>().ValueRW.targetLocalPos = (float3_Q3)hit.Position;
     }
 
     protected override void OnUpdate() { }

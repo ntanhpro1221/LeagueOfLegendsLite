@@ -10,8 +10,8 @@ public class ChampionDataManaged {
 
     public string                               name;
     public string                               description;
-    public CovEnumMap<ChampionStatsType, float> stats;
-    public CovEnumMap<ChampionStatsType, float> statsPerLevel;
+    public CovEnumMap<ChampionStatsType, int> stats;
+    public CovEnumMap<ChampionStatsType, int> statsPerLevel;
     public Sprite                               avatar;
     public Sprite                               passiveAvatar;
     public List<Sprite>                         skillAvatars;

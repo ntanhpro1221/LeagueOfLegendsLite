@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using NGDtuanh.BlobAssetExtend;
-using Unity.Collections;
+﻿using NGDtuanh.BlobAssetExtend;
 using Unity.Entities;
 using UnityEngine;
 

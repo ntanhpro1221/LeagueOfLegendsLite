@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6422793011872143296}
   - component: {fileID: 553580558969522458}
   - component: {fileID: 1177921871742823023}
+  - component: {fileID: 5510948134592291115}
   m_Layer: 10
   m_Name: DamageTriggerSource_Targeted
   m_TagString: Untagged
@@ -106,7 +107,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
-  prefabId: 
+  prefabId: 160f19a658ac591498345ff3cd77e817
   HasOwner: 1
   SupportAutoCommandTarget: 1
   TrackInterpolationDelay: 0
@@ -114,3 +115,15 @@ MonoBehaviour:
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
+--- !u!114 &5510948134592291115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd0c4b2bed043428fb8c0a1f5ab18c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

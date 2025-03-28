@@ -11,14 +11,14 @@ using UnityEngine;
 /// </summary>
 [GhostComponent(OwnerSendType = SendToOwnerType.SendToNonOwner)]
 public struct MoveInputData : IInputComponentData {
-    [GhostField(Quantization = 0)] public float3 targetLocalPos;
-    [GhostField(Quantization = 0)] public float  moveSpeed;
-    [GhostField]                   public bool   notUseSmoothRotate;
+    [GhostField] public float3_Q3 targetLocalPos;
+    [GhostField] public int       moveSpeed;
+    [GhostField] public bool      notUseSmoothRotate;
 }
 
 public class MoveInputAuthoring : MonoBehaviour {
-    public float moveSpeed;
-    public bool  notUseSmoothRotate;
+    public int  moveSpeed;
+    public bool notUseSmoothRotate;
 
     private class Baker : Baker<MoveInputAuthoring> {
         public override void Bake(MoveInputAuthoring authoring) {

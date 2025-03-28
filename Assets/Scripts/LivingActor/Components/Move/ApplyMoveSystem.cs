@@ -10,13 +10,13 @@ public partial struct ApplyMoveSystem : ISystem {
     private ComponentLookup<LocalTransform>      localTransformLookup;
     private ComponentLookup<Parent>              parentLookup;
     private ComponentLookup<PostTransformMatrix> scaleLookup;
-    
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         localTransformLookup = SystemAPI.GetComponentLookup<LocalTransform>();
         parentLookup         = SystemAPI.GetComponentLookup<Parent>();
         scaleLookup          = SystemAPI.GetComponentLookup<PostTransformMatrix>();
-        
+
         state.RequireForUpdate<CommonGameRulesData>();
         state.RequireForUpdate<EnumIndexData>();
     }
@@ -26,7 +26,7 @@ public partial struct ApplyMoveSystem : ISystem {
         localTransformLookup.Update(ref state);
         parentLookup.Update(ref state);
         scaleLookup.Update(ref state);
-        
+
         TryGetMoveSpeedFromStats(ref state);
         TryGetTargetPos(ref state);
         ApplyMove(ref state);
@@ -34,7 +34,7 @@ public partial struct ApplyMoveSystem : ISystem {
 
     [BurstCompile]
     private void TryGetMoveSpeedFromStats(ref SystemState state) {
-        ref var statsEnumId = ref SystemAPI.GetSingleton<EnumIndexData>().ChampionStatsType;
+        var moveSpeedId = SystemAPI.GetSingleton<EnumIndexData>().ChampionStatsType[ChampionStatsType.MoveSpeed];
 
         foreach (var (
                 moveData
@@ -43,7 +43,7 @@ public partial struct ApplyMoveSystem : ISystem {
                     RefRW<MoveInputData>
                   , DynamicBuffer<StatsData>>()
                 .WithAll<Simulate>())
-            moveData.ValueRW.moveSpeed = statsData[statsEnumId[ChampionStatsType.MoveSpeed]].FullValue;
+            moveData.ValueRW.moveSpeed = statsData[moveSpeedId].FullValue;
     }
 
     private void GetWorldTransformMatrix(in Entity entity, out float4x4 result)
@@ -65,13 +65,12 @@ public partial struct ApplyMoveSystem : ISystem {
                   , RefRO<DamageTargetData>
                   , RefRO<Parent>>()
                 .WithAll<Simulate>()
-                .WithNone<AutoDestroyNetworkEntityTag>()) {
+                .WithNone<NetworkDestroyedTag>()) {
             GetWorldTransformMatrix(targetData.ValueRO.target, out var targetWorldMatrix);
             var targetWorldPos = targetWorldMatrix.TransformPoint(float3.zero);
-
             GetWorldTransformMatrix(parent.ValueRO.Value, out var thisWorldMatrix);
 
-            moveData.ValueRW.targetLocalPos = thisWorldMatrix.InverseTransformPoint(targetWorldPos);
+            moveData.ValueRW.targetLocalPos = (float3_Q3)thisWorldMatrix.InverseTransformPoint(targetWorldPos);
         }
 
         foreach (var (
@@ -82,19 +81,19 @@ public partial struct ApplyMoveSystem : ISystem {
                   , RefRO<DamageTargetData>>()
                 .WithAll<Simulate>()
                 .WithNone<
-                    AutoDestroyNetworkEntityTag
+                    NetworkDestroyedTag
                   , Parent>()) {
             GetWorldTransformMatrix(targetData.ValueRO.target, out var targetWorldMatrix);
             var targetWorldPos = targetWorldMatrix.TransformPoint(float3.zero);
 
-            moveData.ValueRW.targetLocalPos = targetWorldPos;
+            moveData.ValueRW.targetLocalPos = (float3_Q3)targetWorldPos;
         }
     }
 
     [BurstCompile]
     private void ApplyMove(ref SystemState state) {
-        var   gameRules      = SystemAPI.GetSingleton<CommonGameRulesData>();
-        float rotateSpeed    = gameRules.rotateSpeed;
+        var   gameRules   = SystemAPI.GetSingleton<CommonGameRulesData>();
+        float rotateSpeed = gameRules.rotateSpeed;
 
         float deltaTime = SystemAPI.Time.DeltaTime;
 
@@ -107,15 +106,15 @@ public partial struct ApplyMoveSystem : ISystem {
                   , RefRW<LocalTransform>
                   , RefRW<PhysicsVelocity>>()
                 .WithAll<Simulate>()
-                .WithNone<AutoDestroyNetworkEntityTag>()) {
-            if (moveData.ValueRO.targetLocalPos.Equals(float3.zero)) continue;
+                .WithNone<NetworkDestroyedTag>()) {
+            if (moveData.ValueRO.targetLocalPos.Equals(float3_Q3.zero)) continue;
 
             // RESET VELOCITY FIRST
             velocity.ValueRW = PhysicsVelocity.Zero;
 
             // CACHE SOME VALUE
-            float moveSpeed = moveData.ValueRO.moveSpeed;
-            var   targetPos     = moveData.ValueRO.targetLocalPos;
+            int moveSpeed = moveData.ValueRO.moveSpeed;
+            var   targetPos = moveData.ValueRO.targetLocalPos;
 
             // MOVE CALCULATE
             float3 moveVector = targetPos - localTrans.ValueRO.Position;

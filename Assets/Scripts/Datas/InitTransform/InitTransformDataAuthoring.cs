@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using NGDtuanh.BlobAssetExtend;
-using NGDtuanh.BlobAssetExtend.ShortCut;
 using NGDtuanh.Collections;
 using Unity.Entities;
 using UnityEngine;

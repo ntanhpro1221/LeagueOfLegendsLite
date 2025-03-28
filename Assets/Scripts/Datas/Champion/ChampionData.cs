@@ -5,8 +5,8 @@ using Unity.Entities;
 [Serializable]
 public struct ChampionData : IBlobBuildable<ChampionDataManaged> {
     public ChampionId                           id;
-    public BubleEnMap<ChampionStatsType, float> stats;
-    public BubleEnMap<ChampionStatsType, float> statsPerLevel;
+    public BubleEnMap<ChampionStatsType, int> stats;
+    public BubleEnMap<ChampionStatsType, int> statsPerLevel;
 
     public void BuildBlob(ref BlobBuilder builder, ChampionDataManaged source) {
         id = source.id;

@@ -37,7 +37,7 @@ public partial struct InitOwnChampionClientSystem : ISystem {
                   , GhostOwnerIsLocal>()
                 .WithEntityAccess()) {
             ecb.SetComponent(entity, new MoveInputData {
-                targetLocalPos = localTrans.ValueRO.Position
+                targetLocalPos = (float3_Q3)localTrans.ValueRO.Position
             });
 
             ecb.RemoveComponent<NeedInitTag>(entity);

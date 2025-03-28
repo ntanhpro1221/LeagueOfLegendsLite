@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 3325543830976929458}
   - component: {fileID: 2144597682910256160}
   - component: {fileID: 8710807638274419269}
-  - component: {fileID: 3349897231731584251}
   - component: {fileID: 4892098704508349153}
   - component: {fileID: 8622887349336250209}
   - component: {fileID: 5885433124554744712}
+  - component: {fileID: 3349897231731584251}
+  - component: {fileID: 2625051648136048790}
   m_Layer: 10
   m_Name: DamageOTSource_Area
   m_TagString: Untagged
@@ -65,19 +66,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamType: 0
---- !u!114 &3349897231731584251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8811781162165396233}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f43a232895404366ae661ffe663b94d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delayBeforeDestroy: 10
 --- !u!136 &4892098704508349153
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -138,3 +126,28 @@ MonoBehaviour:
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
+--- !u!114 &3349897231731584251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811781162165396233}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43a232895404366ae661ffe663b94d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 0
+--- !u!114 &2625051648136048790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811781162165396233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd0c4b2bed043428fb8c0a1f5ab18c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

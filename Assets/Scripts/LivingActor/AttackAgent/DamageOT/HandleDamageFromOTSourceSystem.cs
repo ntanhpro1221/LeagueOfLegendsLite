@@ -5,7 +5,6 @@ using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
 public partial struct HandleDamageFromOTSourceSystem : ISystem {
@@ -20,7 +19,7 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
             int applyTimes = (int)math.floor(
                 totalDeltaTime / damageOTSource.ValueRO.interval);
 
-            damageOTSource.ValueRW.timeResidual   = totalDeltaTime - applyTimes * damageOTSource.ValueRO.interval;
+            damageOTSource.ValueRW.timeResidual   = new(totalDeltaTime - applyTimes * damageOTSource.ValueRO.interval);
             damageOTSource.ValueRW.tmpTotalDamage = damageOTSource.ValueRO.damageOT * applyTimes;
         }
     }
