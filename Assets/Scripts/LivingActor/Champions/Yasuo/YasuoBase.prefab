@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5298653007881902802}
+  - component: {fileID: -3916493006081611069}
   - component: {fileID: 2361130300847117537}
   - component: {fileID: 2813017577809178991}
   - component: {fileID: -5795621777290632104}
@@ -16,7 +17,6 @@ GameObject:
   - component: {fileID: 6811086194763175088}
   - component: {fileID: 3909052697964651725}
   - component: {fileID: 2373267175499843026}
-  - component: {fileID: -3916493006081611069}
   - component: {fileID: -6885465965426350282}
   - component: {fileID: -7257242132283956110}
   - component: {fileID: -7532512427967123564}
@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: -5603839034160965786}
   - component: {fileID: 8426883013572211933}
   - component: {fileID: -8913240332974870309}
+  - component: {fileID: 8230867433105210368}
   m_Layer: 8
   m_Name: YasuoBase
   m_TagString: Untagged
@@ -47,6 +48,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3916493006081611069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
 --- !u!136 &2361130300847117537
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -121,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9336715c30c044cf96294ee7f72ed2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelPrefab: {fileID: 5481738986343552173, guid: e0dcea2be8f39154396e431f2586a0d0, type: 3}
+  modelPrefab: {fileID: 5235218178402951962, guid: 12214c81e7a574a448edf7546bfa5a12, type: 3}
 --- !u!114 &6811086194763175088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,19 +187,6 @@ MonoBehaviour:
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
---- !u!114 &-3916493006081611069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2511344896651389580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Champion
 --- !u!114 &-6885465965426350282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,9 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca4709e1173eafb449acd2e739d72832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed:
-    value: 0
-  notUseSmoothRotate: 0
+  moveSpeed: 0
 --- !u!114 &-5603839034160965786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,3 +287,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218330e825554e27be5013890592fffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8230867433105210368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7afd875b7fb4f9e965e5421730cc026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entryAnim: 2

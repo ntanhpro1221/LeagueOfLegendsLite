@@ -28,7 +28,7 @@ public partial struct SpawnAndLinkHybridModelClientSystem : ISystem {
             // Link model with HybridModelData
             var hybridData = new HybridModelData {
                 transformRef = model.transform
-              , animatorRef  = model.GetComponent<Animator>()
+              , animCtrlRef  = model.GetComponent<SharedAnimController>()
             };
             if (SystemAPI.HasComponent<HybridModelData>(entity))
                 ecb.SetComponent(entity, hybridData);

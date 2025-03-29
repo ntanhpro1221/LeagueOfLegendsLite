@@ -2708,7 +2708,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 2c48a0b379101ee196dffa71e1edcca8
+      Hash: a00c4191d37664640c83ef0b446b8478
     _KeySynced: 1
   champion:
     _serializedList:
@@ -4417,7 +4417,7 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: f404c52d8b0e560ac5a80cace8edc973
+      Hash: a00c4191d37664640c83ef0b446b8478
     _KeySynced: 1
   monsterPrefabs:
     _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000
@@ -4443,7 +4443,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: f404c52d8b0e560ac5a80cace8edc973
+      Hash: a00c4191d37664640c83ef0b446b8478
     _KeySynced: 1
   towerPrefabs:
     _serializedList:

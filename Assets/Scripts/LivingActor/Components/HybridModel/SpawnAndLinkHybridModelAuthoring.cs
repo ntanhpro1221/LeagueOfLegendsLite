@@ -7,6 +7,7 @@ public struct SpawnAndLinkHybridModelRequest : IComponentData {
     public UnityObjectRef<GameObject> prefabRef;
 }
 
+[RequireComponent(typeof(AnimAuthoring))]
 public class SpawnAndLinkHybridModelAuthoring : MonoBehaviour {
     public GameObject modelPrefab;
 
