@@ -45,7 +45,8 @@ public partial struct ApplyMoveSystem : ISystem {
                     RefRW<MoveInputData>
                   , DynamicBuffer<StatsData>>()
                 .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag>())
+                .WithNone<NetworkDestroyedTag>()
+                .WithDisabled<MoveDisabled>())
             moveData.ValueRW.moveSpeed = statsData[moveSpeedId].FullValue;
     }
 
@@ -68,7 +69,8 @@ public partial struct ApplyMoveSystem : ISystem {
                   , RefRO<DamageTargetData>
                   , RefRO<Parent>>()
                 .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag>()) {
+                .WithNone<NetworkDestroyedTag>()
+                .WithDisabled<MoveDisabled>()) {
             GetWorldTransformMatrix(targetData.ValueRO.target, out var targetWorldMatrix);
             var targetWorldPos = targetWorldMatrix.TransformPoint(float3.zero);
             GetWorldTransformMatrix(parent.ValueRO.Value, out var thisWorldMatrix);
@@ -83,9 +85,8 @@ public partial struct ApplyMoveSystem : ISystem {
                     RefRW<MoveInputData>
                   , RefRO<DamageTargetData>>()
                 .WithAll<Simulate>()
-                .WithNone<
-                    NetworkDestroyedTag
-                  , Parent>()) {
+                .WithNone<NetworkDestroyedTag, Parent>()
+                .WithDisabled<MoveDisabled>()) {
             GetWorldTransformMatrix(targetData.ValueRO.target, out var targetWorldMatrix);
             var targetWorldPos = targetWorldMatrix.TransformPoint(float3.zero);
 
@@ -102,38 +103,42 @@ public partial struct ApplyMoveSystem : ISystem {
 
         foreach (var (
                 moveData
+              , moveDisable
               , localTrans
               , velocity)
             in SystemAPI.Query<
                     RefRO<MoveInputData>
+                  , EnabledRefRO<MoveDisabled>
                   , RefRW<LocalTransform>
                   , RefRW<PhysicsVelocity>>()
                 .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag>()) {
-            if (moveData.ValueRO.targetLocalPos.Equals(float3_Q3.zero)) continue;
-
+                .WithNone<NetworkDestroyedTag>()
+                .WithPresent<MoveDisabled>()) {
             // RESET VELOCITY FIRST
             float prevVelocityY = velocity.ValueRW.Linear.y;
             velocity.ValueRW = PhysicsVelocity.Zero;
 
-            // MOVE CALCULATE
-            int    moveSpeed  = moveData.ValueRO.moveSpeed;
-            float3 moveTarget = moveData.ValueRO.targetLocalPos;
-            float3 moveVector = (moveTarget - localTrans.ValueRO.Position).WithoutY();
-            float  moveDis    = math.length(moveVector);
-            if (moveDis <= moveSpeed * deltaTime)
-                localTrans.ValueRW.Position = moveTarget;
-            else {
-                velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
+            if (!moveDisable.ValueRO
+             && !moveData.ValueRO.targetLocalPos.Equals(float3_Q3.zero)) {
+                // MOVE CALCULATE
+                float moveSpeed  = moveData.ValueRO.moveSpeed;
+                float3   moveTarget = moveData.ValueRO.targetLocalPos;
+                float3   moveVector = (moveTarget - localTrans.ValueRO.Position).WithoutY();
+                float    moveDis    = math.length(moveVector);
+                if (moveDis <= moveSpeed * deltaTime)
+                    localTrans.ValueRW.Position = moveTarget;
+                else {
+                    velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
 
-                // ROTATE CALCULATING ONLY IF MOVING
-                quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
-                float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
-                float      rotateDis    = math.length(rotateVector);
-                if (rotateDis <= rotateSpeed * deltaTime)
-                    localTrans.ValueRW.Rotation = rotateTarget;
-                else
-                    velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
+                    // ROTATE CALCULATING ONLY IF MOVING
+                    quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
+                    float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
+                    float      rotateDis    = math.length(rotateVector);
+                    if (rotateDis <= rotateSpeed * deltaTime)
+                        localTrans.ValueRW.Rotation = rotateTarget;
+                    else
+                        velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
+                }
             }
 
             // RESTORE Y VELOCITY (controlled by something such as gravity, etc.)

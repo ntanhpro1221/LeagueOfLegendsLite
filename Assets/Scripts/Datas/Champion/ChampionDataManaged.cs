@@ -8,10 +8,10 @@ public class ChampionDataManaged {
     [HideInInspector]
     public ChampionId id;
 
-    public string                               name;
-    public string                               description;
-    public CovEnumMap<ChampionStatsType, int> stats;
-    public CovEnumMap<ChampionStatsType, int> statsPerLevel;
+    public string                                  name;
+    public string                                  description;
+    public CovEnumMap<ChampionStatsType, float_Q3> stats;
+    public CovEnumMap<ChampionStatsType, float_Q3> statsPerLevel;
     public Sprite                               avatar;
     public Sprite                               passiveAvatar;
     public List<Sprite>                         skillAvatars;

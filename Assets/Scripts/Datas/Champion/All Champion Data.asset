@@ -22,18 +22,30 @@ MonoBehaviour:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 590
-          - _Value: 100
-          - _Value: 345
-          - _Value: 32
-          - _Value: 32
-          - _Value: 175
-          - _Value: 6.5
-          - _Value: 0
-          - _Value: 0
-          - _Value: 60
-          - _Value: 0
-          - _Value: 0.697
+          - _Value:
+              value: 590000
+          - _Value:
+              value: 100000
+          - _Value:
+              value: 345000
+          - _Value:
+              value: 32000
+          - _Value:
+              value: 32000
+          - _Value:
+              value: 175000
+          - _Value:
+              value: 6500
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 60000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 697
           _KeyNames:
           - Health
           - Mana
@@ -49,23 +61,35 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 7b91e3d02b75aca89cca7989b3cfa895
+            Hash: 521f7245f5c6bf06b8c959bdb37a36fe
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 110
-          - _Value: 0
-          - _Value: 0
-          - _Value: 4.6
-          - _Value: 2.05
-          - _Value: 0
-          - _Value: 0.9
-          - _Value: 0
-          - _Value: 0
-          - _Value: 3
-          - _Value: 0
-          - _Value: 3.5
+          - _Value:
+              value: 110000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4600
+          - _Value:
+              value: 2050
+          - _Value:
+              value: 0
+          - _Value:
+              value: 900
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 3000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 3500
           _KeyNames:
           - Health
           - Mana
@@ -81,7 +105,7 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 7b91e3d02b75aca89cca7989b3cfa895
+            Hash: 521f7245f5c6bf06b8c959bdb37a36fe
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
         passiveAvatar: {fileID: 21300000, guid: 942cb98c73a2c48438e32a67af4433ec, type: 3}
@@ -97,18 +121,30 @@ MonoBehaviour:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 610
-          - _Value: 280
-          - _Value: 325
-          - _Value: 26
-          - _Value: 30
-          - _Value: 600
-          - _Value: 3.5
-          - _Value: 7
-          - _Value: 0
-          - _Value: 59
-          - _Value: 0
-          - _Value: 0.658
+          - _Value:
+              value: 610000
+          - _Value:
+              value: 280000
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 26000
+          - _Value:
+              value: 30000
+          - _Value:
+              value: 600000
+          - _Value:
+              value: 3500
+          - _Value:
+              value: 7000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 59000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 658
           _KeyNames:
           - Health
           - Mana
@@ -124,23 +160,35 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: d7871ff9675f7a171d3652975ff621d5
+            Hash: 0eeeb6a28d40c9d89831c382343b1dce
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 101
-          - _Value: 35
-          - _Value: 0
-          - _Value: 4.6
-          - _Value: 1.3
-          - _Value: 0
-          - _Value: 0.55
-          - _Value: 0.65
-          - _Value: 0
-          - _Value: 2.95
-          - _Value: 0
-          - _Value: 3.33
+          - _Value:
+              value: 101000
+          - _Value:
+              value: 35000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4600
+          - _Value:
+              value: 1300
+          - _Value:
+              value: 0
+          - _Value:
+              value: 550
+          - _Value:
+              value: 650
+          - _Value:
+              value: 0
+          - _Value:
+              value: 2950
+          - _Value:
+              value: 0
+          - _Value:
+              value: 3330
           _KeyNames:
           - Health
           - Mana
@@ -156,7 +204,7 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: d7871ff9675f7a171d3652975ff621d5
+            Hash: 0eeeb6a28d40c9d89831c382343b1dce
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passiveAvatar: {fileID: 21300000, guid: 50470aaecefdd06429fa03276e067f48, type: 3}
@@ -172,18 +220,30 @@ MonoBehaviour:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 690
-          - _Value: 0
-          - _Value: 340
-          - _Value: 38
-          - _Value: 32
-          - _Value: 175
-          - _Value: 8
-          - _Value: 0
-          - _Value: 0
-          - _Value: 69
-          - _Value: 0
-          - _Value: 0.625
+          - _Value:
+              value: 690000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 340000
+          - _Value:
+              value: 38000
+          - _Value:
+              value: 32000
+          - _Value:
+              value: 175000
+          - _Value:
+              value: 8000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 69000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 625
           _KeyNames:
           - Health
           - Mana
@@ -199,23 +259,35 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: d7871ff9675f7a171d3652975ff621d5
+            Hash: 0eeeb6a28d40c9d89831c382343b1dce
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
           _Values:
-          - _Value: 98
-          - _Value: 0
-          - _Value: 0
-          - _Value: 4.2
-          - _Value: 1.55
-          - _Value: 0
-          - _Value: 0.5
-          - _Value: 0
-          - _Value: 0
-          - _Value: 4.5
-          - _Value: 0
-          - _Value: 3.65
+          - _Value:
+              value: 98000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4200
+          - _Value:
+              value: 1550
+          - _Value:
+              value: 0
+          - _Value:
+              value: 500
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4500
+          - _Value:
+              value: 0
+          - _Value:
+              value: 3650
           _KeyNames:
           - Health
           - Mana
@@ -231,7 +303,7 @@ MonoBehaviour:
           - AttackSpeed
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: d7871ff9675f7a171d3652975ff621d5
+            Hash: 0eeeb6a28d40c9d89831c382343b1dce
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
         passiveAvatar: {fileID: 21300000, guid: a4fe04ec817723847a4063154c313d95, type: 3}
@@ -246,5 +318,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 7b91e3d02b75aca89cca7989b3cfa895
+      Hash: 0eeeb6a28d40c9d89831c382343b1dce
     _KeySynced: 1

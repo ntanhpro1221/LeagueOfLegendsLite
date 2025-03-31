@@ -1,6 +1,7 @@
 ﻿using Unity.Mathematics;
+using UnityEngine;
 
-public static class float3Extensions {
+public static class floatExtensions {
     /// <returns>A new vector with the modified X component.</returns>
     public static float3 WithX(this float3 source, float x) {
         source.x = x;
@@ -54,4 +55,13 @@ public static class float3Extensions {
         source.z = 0;
         return source;
     }
+
+    public static float3_Q3 Quantizate3(this float3 source)
+        => (float3_Q3)source;
+    
+    public static float3_Q3 Quantizate3(this Vector3 source)
+        => (float3_Q3)source;
+    
+    public static float_Q3 Quantizate3(this float source)
+        => (float_Q3)source;
 }

@@ -10,9 +10,16 @@ namespace MyCustomPatterns.Collections.Editor {
         private readonly Dictionary<string, EnumMapInstanceDrawer> _InstanceDrawers = new();
 
         private EnumMapInstanceDrawer EnsureGetInstanceDrawer(SerializedProperty property) {
-            _InstanceDrawers.TryAdd(property.propertyPath, new(property, fieldInfo));
-
-            return _InstanceDrawers[property.propertyPath];
+            // REMEMBER DONT FALL TO THIS **** "TRYADD()" AGAIN 🥲🥲
+            // (MEMORY LEAK!!!)
+            // _InstanceDrawers.TryAdd(property.propertyPath, new(property, fieldInfo));
+            // return _InstanceDrawers[property.propertyPath];
+            
+            var path = property.propertyPath;
+            if (!_InstanceDrawers.ContainsKey(path))
+                _InstanceDrawers.Add(path, new(property, fieldInfo));
+            
+            return _InstanceDrawers[path];
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {

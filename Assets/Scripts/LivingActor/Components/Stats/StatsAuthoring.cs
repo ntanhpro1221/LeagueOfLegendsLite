@@ -5,7 +5,7 @@ using UnityEngine;
 
 [GhostEnabledBit]
 public struct StatsData : IBufferElementData, IEnableableComponent {
-    [GhostField] public int FullValue;
+    [GhostField] public float_Q3 FullValue;
 }
 
 public class StatsAuthoring : MonoBehaviour {

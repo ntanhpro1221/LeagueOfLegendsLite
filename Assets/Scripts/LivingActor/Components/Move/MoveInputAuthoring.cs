@@ -12,18 +12,22 @@ using UnityEngine;
 [GhostComponent(OwnerSendType = SendToOwnerType.SendToNonOwner)]
 public struct MoveInputData : IInputComponentData {
     [GhostField] public float3_Q3 targetLocalPos;
-    [GhostField] public int       moveSpeed;
+    [GhostField] public float_Q3  moveSpeed;
 }
 
+[GhostEnabledBit]
+public struct MoveDisabled : IComponentData, IEnableableComponent { }
+
 public class MoveInputAuthoring : MonoBehaviour {
-    public int  moveSpeed;
+    public float_Q3 moveSpeed;
 
     private class Baker : Baker<MoveInputAuthoring> {
         public override void Bake(MoveInputAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new MoveInputData {
-                moveSpeed          = authoring.moveSpeed
+                moveSpeed = authoring.moveSpeed
             });
+            this.AddComponentDisabled<MoveDisabled>(entity);
         }
     }
 }

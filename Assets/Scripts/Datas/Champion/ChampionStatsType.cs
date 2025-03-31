@@ -10,5 +10,5 @@
   , Crit         = 8
   , PhysicDamage = 9
   , MagicDamage  = 10
-  , AttackSpeedx100  = 11
+  , AttackSpeed  = 11
 }

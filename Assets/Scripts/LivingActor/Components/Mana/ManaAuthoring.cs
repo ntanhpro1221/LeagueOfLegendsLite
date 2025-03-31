@@ -4,7 +4,7 @@ using UnityEngine;
 
 [GhostEnabledBit]
 public struct ManaData : IComponentData, IEnableableComponent {
-    [GhostField] public int value; 
+    [GhostField] public float_Q3 value; 
 }
 
 [RequireComponent(typeof(StatsAuthoring))]

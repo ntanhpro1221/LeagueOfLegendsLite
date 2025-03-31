@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [Serializable]
 public struct float3_Q3 : IEquatable<float3_Q3> {
@@ -18,13 +23,13 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     public int z;
 
     public float3_Q3(float x, float y, float z) {
-        this.x = (int)(x * MULTIPLIER);
-        this.y = (int)(y * MULTIPLIER);
-        this.z = (int)(z * MULTIPLIER);
+        this.x = Mathf.RoundToInt(x * MULTIPLIER);
+        this.y = Mathf.RoundToInt(y * MULTIPLIER);
+        this.z = Mathf.RoundToInt(z * MULTIPLIER);
     }
 
     public float3_Q3(float xyz) : this(xyz, xyz, xyz) { }
-    
+
     public float3_Q3(int x, int y, int z) {
         this.x = (x * MULTIPLIER);
         this.y = (y * MULTIPLIER);
@@ -83,9 +88,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     };
 
     public static float3_Q3 operator *(float3_Q3 a, float mul) => new() {
-        x = (int)(a.x * mul)
-      , y = (int)(a.y * mul)
-      , z = (int)(a.z * mul)
+        x = Mathf.RoundToInt(a.x * mul)
+      , y = Mathf.RoundToInt(a.y * mul)
+      , z = Mathf.RoundToInt(a.z * mul)
     };
 
     public static float3_Q3 operator /(float3_Q3 a, int div) => new() {
@@ -95,10 +100,62 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     };
 
     public static float3_Q3 operator /(float3_Q3 a, float div) => new() {
-        x = (int)(a.x / div)
-      , y = (int)(a.y / div)
-      , z = (int)(a.z / div)
+        x = Mathf.RoundToInt(a.x / div)
+      , y = Mathf.RoundToInt(a.y / div)
+      , z = Mathf.RoundToInt(a.z / div)
     };
 
     #endregion
+
+    #if UNITY_EDITOR
+
+    [CustomPropertyDrawer(typeof(float3_Q3))]
+    private class float3_Q3Drawer : PropertyDrawer {
+        private Dictionary<string, InstanceDrawer> Properties { get; } = new();
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+            return EditorGUIUtility.singleLineHeight;
+        }
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+            string path = property.propertyPath;
+            if (!Properties.ContainsKey(path)) Properties.Add(path, new(property));
+            var drawer = Properties[path];
+
+            position.height = EditorGUIUtility.singleLineHeight;
+            drawer.Value = EditorGUI.Vector3Field(
+                position
+              , label
+              , drawer.Value);
+        }
+
+        private class InstanceDrawer {
+            private readonly SerializedProperty x, y, z;
+            private          Vector3            _Value;
+
+            public Vector3 Value {
+                get => _Value;
+                set {
+                    var newValue = (float3_Q3)(_Value = value);
+                    x.intValue = newValue.x;
+                    y.intValue = newValue.y;
+                    z.intValue = newValue.z;
+                }
+            }
+
+            public InstanceDrawer(SerializedProperty property) {
+                x = property.FindPropertyRelative(nameof(float3_Q3.x));
+                y = property.FindPropertyRelative(nameof(float3_Q3.y));
+                z = property.FindPropertyRelative(nameof(float3_Q3.z));
+
+                _Value = new float3_Q3() {
+                    x = x.intValue
+                  , y = y.intValue
+                  , z = z.intValue
+                };
+            }
+        }
+    }
+
+    #endif
 }

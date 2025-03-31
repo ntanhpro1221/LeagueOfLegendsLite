@@ -21,25 +21,22 @@ public static class BakeHelper {
         baker.SetComponentEnabled<TBuffer>(entity, false);
     }
 
-    public static void AddDefaultSharedState(
-        this IBaker baker
-      , in   Entity entity) {
-        baker.AddComponentDisabled<StateNeedEnterTag>(entity);
-        baker.AddComponent<EntryState>(entity);
-    }
-
-    /// <summary>
-    /// Inherit from <see cref="AddDefaultSharedState"/>
-    /// </summary>
     public static void AddActorSharedState(
         this IBaker baker
       , in   Entity entity) {
-        baker.AddDefaultSharedState(entity);
+        baker.AddComponent<StateRequireEnter>(entity);
+        baker.AddComponent<StateNotExitedYet>(entity);
+        baker.AddComponent<IdleState>(entity);
 
         baker.AddComponentDisabled<AttackState>(entity);
+        baker.AddComponent<AttackStateData>(entity);
+
         baker.AddComponentDisabled<DeadState>(entity);
+        baker.AddComponent<DeadStateData>(entity);
+
         baker.AddComponentDisabled<FreezeState>(entity);
-        baker.AddComponentDisabled<IdleState>(entity);
+
+
         baker.AddComponentDisabled<MoveState>(entity);
     }
 
