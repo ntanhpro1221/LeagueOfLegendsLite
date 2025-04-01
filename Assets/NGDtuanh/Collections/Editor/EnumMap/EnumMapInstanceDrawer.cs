@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using NGDtuanh.Collections;
 using NGDtuanh.Utils;
 using NGDtuanh.Utils.Editor;
 using UnityEditor;
@@ -56,7 +54,6 @@ namespace MyCustomPatterns.Collections.Editor {
         internal readonly ReorderableList     ReorderableListNotExpand;
         internal readonly ReorderableList     ReorderableListNotifyOnly;
         internal readonly Type                KeyType;
-        internal readonly UnityEditor.Editor  Editor;
         internal readonly GenericMenu         GenericMenu;
         
         internal       GUIContent Label;
@@ -80,8 +77,6 @@ namespace MyCustomPatterns.Collections.Editor {
             ReorderableListNotExpand  = MakeListNotExpanded();
             ReorderableListNotifyOnly = MakeListNotifyOnly();
             KeyType                   = enumMapTypeFinder.KeyType;
-            Editor = ActiveEditorTracker.sharedTracker.activeEditors
-                .First(editor => editor.target == property.serializedObject.targetObject);
             GenericMenu = MakeGenericMenu();
         }
 
@@ -272,7 +267,7 @@ namespace MyCustomPatterns.Collections.Editor {
             }
 
             ReorderableList = MakeList(AllElementDatas); // this helps reset list's height but leaves a pointer trash :((
-            Editor.Repaint();
+            EditorUtility.SetDirty(ThisProperty.serializedObject.targetObject);
         }
 
         private float GetElementHeightCallback(int index) {

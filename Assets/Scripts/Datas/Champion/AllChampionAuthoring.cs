@@ -9,14 +9,9 @@ public class AllChampionAuthoring : MonoBehaviour {
         public override void Bake(AllChampionAuthoring authoring) {
             if (authoring.championsSO == null) return;
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-
-            // MANAGED VERSION
-            AddComponentObject(entity, authoring.championsSO);
-
-            // UNMANAGED VERSION
+            
             AllChampionData data = new();
-            authoring.championsSO.value.CreateBlobAssetReferenceInBaker(
-                out data._Ref, this, out _);
+            authoring.championsSO.value.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
             AddComponent(entity, data);
         }
     }

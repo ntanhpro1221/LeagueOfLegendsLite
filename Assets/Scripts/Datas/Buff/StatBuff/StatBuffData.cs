@@ -6,5 +6,5 @@ public struct StatBuffData {
     public float_Q3             duration;
     public ChampionStatsType    targetStat;
     public StatBuffUpdateType   updateType;
-    public int                  value;
+    public float_Q3             value;
 }
