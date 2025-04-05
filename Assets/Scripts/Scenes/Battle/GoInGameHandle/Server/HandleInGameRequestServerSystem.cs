@@ -4,12 +4,12 @@ using Unity.Entities;
 using Unity.NetCode;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+[UpdateInGroup(typeof(InitBattleSystemGroup))]
 public partial struct HandleInGameRequestServerSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<PrefabIdData>();
         state.RequireForUpdate<ChampionPrefabBuffer>();
-        state.RequireForUpdate<InitTransformData>();
         state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
             .WithAll<
                 InGameClientRpc
@@ -23,7 +23,6 @@ public partial struct HandleInGameRequestServerSystem : ISystem {
         
         var prefabId    = SystemAPI.GetSingleton<PrefabIdData>();
         var champPrefab = SystemAPI.GetSingletonBuffer<ChampionPrefabBuffer>(true);
-        ref var champInitTransform = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value; // ref just for faster access
 
         foreach (var (
             inGameClientRpc
@@ -41,13 +40,11 @@ public partial struct HandleInGameRequestServerSystem : ISystem {
             // spawn player's champ
             var inGameData  = inGameClientRpc.ValueRO.initData;
             var champEntity = ecb.Instantiate(champPrefab[prefabId.ChampionId[inGameData.champion]].Entity);
+            
             // set champ's team
             ecb.SetComponent(champEntity, new TeamTypeData {
                 teamType = inGameData.teamType
             });
-            // set champ's position
-            ecb.SetComponent(champEntity
-              , champInitTransform[inGameData.teamType][0].ToLocalTransform_Directly());
 
             // assign champ's owner to this client
             ecb.SetComponent(champEntity, new GhostOwner {

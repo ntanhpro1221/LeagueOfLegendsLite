@@ -1,8 +1,10 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(MoveSystemGroup))]
 public partial struct ApplyMoveSystem : ISystem {
@@ -18,7 +20,7 @@ public partial struct ApplyMoveSystem : ISystem {
     }
 
     [BurstCompile]
-    public void ApplyMove(ref SystemState state) {
+    private void ApplyMove(ref SystemState state) {
         var   gameRules   = SystemAPI.GetSingleton<CommonGameRulesData>();
         float rotateSpeed = gameRules.rotateSpeed;
 
@@ -64,17 +66,17 @@ public partial struct ApplyMoveSystem : ISystem {
     }
 
     [BurstCompile]
-    public void StopDisabledMove(ref SystemState state) {
+    private void StopDisabledMove(ref SystemState state) {
         foreach (var velocity in SystemAPI
             .Query<RefRW<PhysicsVelocity>>()
             .WithAll<Simulate>()
             .WithNone<NetworkDestroyedTag>()
             .WithDisabled<MoveData>()) {
-            
+
             float prevVelocityY = velocity.ValueRW.Linear.y;
-            
-            velocity.ValueRW          = PhysicsVelocity.Zero;
-            
+
+            velocity.ValueRW = PhysicsVelocity.Zero;
+
             velocity.ValueRW.Linear.y = prevVelocityY;
         }
     }

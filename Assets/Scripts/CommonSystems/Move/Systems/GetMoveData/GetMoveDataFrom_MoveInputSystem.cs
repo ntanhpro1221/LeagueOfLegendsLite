@@ -1,23 +1,25 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
-using Unity.Transforms;
+using Unity.NetCode;
+using UnityEngine;
 
 [UpdateInGroup(typeof(BeforeMoveSystemGroup))]
 public partial struct GetMoveDataFrom_MoveInputSystem : ISystem {
+    public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<NetworkTime>();
+    }
+
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         foreach (var (
                 moveData
-              , moveInput
-              , localTrans)
+              , playerInput)
             in SystemAPI.Query<
                     RefRW<MoveData>
-                  , RefRO<MoveInputData>
-                  , RefRO<LocalTransform>>()
+                  , RefRO<PlayerInputData>>()
                 .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag, MoveControlDisabled>())
-            moveData.ValueRW.targetLocalPos = moveInput.ValueRO.initialized
-                ? moveInput.ValueRO.targetLocalPos
-                : localTrans.ValueRO.Position.Quantizate3();
+                .WithNone<NetworkDestroyedTag>())
+            if (playerInput.ValueRO.moveEvent.IsSet)
+                moveData.ValueRW.targetLocalPos = playerInput.ValueRO.targetLocalPos;
     }
 }

@@ -1,12 +1,15 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Transforms;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+[UpdateInGroup(typeof(InitBattleSystemGroup))]
 [UpdateAfter(typeof(HandleInGameRequestServerSystem))]
 public partial struct InitChampionServerSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<InitTransformData>();
         state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
             .WithAll<
@@ -20,18 +23,25 @@ public partial struct InitChampionServerSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        ref var statsEnumIndex     = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        ref var champInitTransform = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
 
         foreach (var (
-                stats
+                teamType
+              , stats
               , health
               , mana
+              , localTrans
+              , moveData
               , entity)
             in SystemAPI
                 .Query<
-                    DynamicBuffer<StatsBuffer>
+                    RefRO<TeamTypeData>
+                  , DynamicBuffer<StatsBuffer>
                   , RefRW<HealthData>
-                  , RefRW<ManaData>>()
+                  , RefRW<ManaData>
+                  , RefRW<LocalTransform>
+                  , RefRW<MoveData>>()
                 .WithAll<
                     ChampionTag
                   , Simulate
@@ -50,6 +60,10 @@ public partial struct InitChampionServerSystem : ISystem {
             // init mana, enable it
             mana.ValueRW.value = stats[statsEnumIndex[StatsType.Mana]].value;
             ecb.SetComponentEnabled<ManaData>(entity, true);
+
+            // init position, move target
+            localTrans.ValueRW              = champInitTransform[teamType.ValueRO.teamType][0].ToLocalTransform_Directly();
+            moveData.ValueRW.targetLocalPos = localTrans.ValueRO.Position.Quantizate3();
         }
 
         ecb.Playback(state.EntityManager);

@@ -15,13 +15,13 @@ MonoBehaviour:
   IsGlobalConfig: 1
   EnableClientServerBootstrap: 1
   ClientServerTickRate:
-    SimulationTickRate: 60
+    SimulationTickRate: 30
     PredictedFixedStepSimulationTickRatio: 1
     NetworkTickRate: 0
     MaxSimulationStepsPerFrame: 2
     MaxSimulationStepBatchSize: 1
     TargetFrameRateMode: 0
-    m_SendSnapshotsForCatchUpTicks: 1
+    m_SendSnapshotsForCatchUpTicks: 0
     SnapshotAckMaskCapacity: 4096
     HandshakeApprovalTimeoutMS: 5000
   ClientTickRate:

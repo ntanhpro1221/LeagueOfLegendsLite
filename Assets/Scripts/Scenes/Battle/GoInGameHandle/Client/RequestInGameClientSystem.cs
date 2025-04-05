@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.NetCode;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
+[UpdateInGroup(typeof(InitBattleSystemGroup))]
 public partial struct RequestInGameClientSystem : ISystem {
     private EntityQuery _PendingNetworkIdQuery;
     

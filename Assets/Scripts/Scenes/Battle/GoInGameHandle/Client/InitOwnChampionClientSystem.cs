@@ -17,14 +17,13 @@ public partial struct InitOwnChampionClientSystem : ISystem {
             in SystemAPI
                 .Query<
                     RefRO<LocalTransform>
-                  , RefRW<MoveInputData>>()
+                  , RefRW<PlayerInputData>>()
                 .WithAll<
                     ChampionTag
                   , NeedInitTag
                   , GhostOwnerIsLocal>()
                 .WithEntityAccess()) {
-            controlInputData.ValueRW.targetLocalPos = (float3_Q3)localTrans.ValueRO.Position;
-            controlInputData.ValueRW.initialized    = true;
+            // do something there in the future
 
             ecb.RemoveComponent<NeedInitTag>(entity);
         }
