@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class DisabledTagBaker<TAuthoringType, TTag1> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -15,8 +15,8 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1> :
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -28,9 +28,9 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2> :
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -43,10 +43,10 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3> :
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag4> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
-    where TTag4 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
+    where TTag4 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -60,11 +60,11 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag4, TTag5> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
-    where TTag4 : struct, IEnableableComponent
-    where TTag5 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
+    where TTag4 : unmanaged, IEnableableComponent
+    where TTag5 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -79,12 +79,12 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag4, TTag5, TTag6> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
-    where TTag4 : struct, IEnableableComponent
-    where TTag5 : struct, IEnableableComponent
-    where TTag6 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
+    where TTag4 : unmanaged, IEnableableComponent
+    where TTag5 : unmanaged, IEnableableComponent
+    where TTag6 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -100,13 +100,13 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag4, TTag5, TTag6, TTag7> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
-    where TTag4 : struct, IEnableableComponent
-    where TTag5 : struct, IEnableableComponent
-    where TTag6 : struct, IEnableableComponent
-    where TTag7 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
+    where TTag4 : unmanaged, IEnableableComponent
+    where TTag5 : unmanaged, IEnableableComponent
+    where TTag6 : unmanaged, IEnableableComponent
+    where TTag7 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {
@@ -123,14 +123,14 @@ public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag
 public abstract class DisabledTagBaker<TAuthoringType, TTag1, TTag2, TTag3, TTag4, TTag5, TTag6, TTag7, TTag8> :
     Baker<TAuthoringType>
     where TAuthoringType : Component
-    where TTag1 : struct, IEnableableComponent
-    where TTag2 : struct, IEnableableComponent
-    where TTag3 : struct, IEnableableComponent
-    where TTag4 : struct, IEnableableComponent
-    where TTag5 : struct, IEnableableComponent
-    where TTag6 : struct, IEnableableComponent
-    where TTag7 : struct, IEnableableComponent
-    where TTag8 : struct, IEnableableComponent
+    where TTag1 : unmanaged, IEnableableComponent
+    where TTag2 : unmanaged, IEnableableComponent
+    where TTag3 : unmanaged, IEnableableComponent
+    where TTag4 : unmanaged, IEnableableComponent
+    where TTag5 : unmanaged, IEnableableComponent
+    where TTag6 : unmanaged, IEnableableComponent
+    where TTag7 : unmanaged, IEnableableComponent
+    where TTag8 : unmanaged, IEnableableComponent
 {
     public override void Bake(TAuthoringType authoring)
     {

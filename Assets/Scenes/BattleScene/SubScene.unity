@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 129896056}
   - component: {fileID: 129896055}
   m_Layer: 0
-  m_Name: ItemDict
+  m_Name: Dict_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1018,6 +1018,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 737612024}
   m_LocalEulerAnglesHint: {x: 0, y: 267.1, z: 0}
+--- !u!1 &424461000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 424461001}
+  - component: {fileID: 424461003}
+  - component: {fileID: 424461002}
+  m_Layer: 0
+  m_Name: RequireExp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &424461001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424461000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781118180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &424461002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424461000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9c628435e04bf3910f07ededd6a540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireExp: 180100007c010000e001000044020000a80200000c03000070030000d4030000380400009c0400000005000064050000c80500002c06000090060000f40600005807000000000000
+--- !u!114 &424461003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424461000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
 --- !u!1 &444807642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1307,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1955867851}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+--- !u!1 &591493901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 591493902}
+  - component: {fileID: 591493904}
+  - component: {fileID: 591493903}
+  m_Layer: 0
+  m_Name: Dict_Tower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &591493902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591493901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781118180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &591493903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591493901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d565e341bd409098f172d1faa8c3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TowersSO: {fileID: 11400000, guid: ee67fbe9c941c864b841b3155aa20c4a, type: 2}
+--- !u!114 &591493904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591493901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
 --- !u!1 &593098576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,7 +1566,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7473b1059350424fbebd46c60bbcec2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseRespawnWaitTimesx100: e8030000e8030000b0040000b00400007805000040060000d0070000c4090000f00a0000b20c0000ac0d0000a60e0000a00f00009a100000941100008e1200008813000082140000
+  BaseRespawnWaitTimes:
+  - value: 10000
+  - value: 10000
+  - value: 12000
+  - value: 12000
+  - value: 14000
+  - value: 16000
+  - value: 20000
+  - value: 25000
+  - value: 28000
+  - value: 32500
+  - value: 35000
+  - value: 37500
+  - value: 40000
+  - value: 42500
+  - value: 45000
+  - value: 47500
+  - value: 50000
+  - value: 52500
 --- !u!114 &651556184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1672,8 +1808,12 @@ Transform:
   - {fileID: 912253968}
   - {fileID: 2061999300}
   - {fileID: 2115561204}
+  - {fileID: 1361920516}
+  - {fileID: 1328377571}
+  - {fileID: 591493902}
   - {fileID: 129896054}
   - {fileID: 651556182}
+  - {fileID: 424461001}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &842249251
@@ -3032,6 +3172,65 @@ Transform:
   - {fileID: 662377007}
   m_Father: {fileID: 1306003051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1328377570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1328377571}
+  - component: {fileID: 1328377573}
+  - component: {fileID: 1328377572}
+  m_Layer: 0
+  m_Name: Dict_Monster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1328377571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328377570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781118180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1328377572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328377570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55021660e0c74a2885d72625bd2b3bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MonstersSO: {fileID: 11400000, guid: 30601666e2bf9bb43b83e1bbb35dc33b, type: 2}
+--- !u!114 &1328377573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328377570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
 --- !u!1 &1349222813
 GameObject:
   m_ObjectHideFlags: 0
@@ -3133,6 +3332,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 921866593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1361920515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1361920516}
+  - component: {fileID: 1361920518}
+  - component: {fileID: 1361920517}
+  m_Layer: 0
+  m_Name: Dict_Minion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1361920516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361920515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781118180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1361920517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361920515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2bcb156038490286afb0165b94a0fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinionsSO: {fileID: 11400000, guid: b7ba8a6005bf1d44780eaf922a37fe16, type: 2}
+--- !u!114 &1361920518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361920515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
 --- !u!1 &1366522671
 GameObject:
   m_ObjectHideFlags: 0
@@ -4689,7 +4947,7 @@ GameObject:
   - component: {fileID: 2115561206}
   - component: {fileID: 2115561203}
   m_Layer: 0
-  m_Name: ChampionDict
+  m_Name: Dict_Champion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

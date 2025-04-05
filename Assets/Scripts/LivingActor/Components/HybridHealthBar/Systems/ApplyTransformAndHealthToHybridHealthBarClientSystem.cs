@@ -13,7 +13,7 @@ public partial struct ApplyTransformAndHealthToHybridHealthBarClientSystem : ISy
         state.RequireForUpdate(queryBuilder
             .WithAll<
                 HybridHealthBarData
-              , StatsData
+              , StatsBuffer
               , HealthData
               , ManaData
               , LevelData
@@ -25,7 +25,7 @@ public partial struct ApplyTransformAndHealthToHybridHealthBarClientSystem : ISy
         using EntityCommandBuffer ecb = new(Allocator.Temp);
 
         var     cam            = Camera.main;
-        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().ChampionStatsType;
+        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         foreach (var (
                 hybridData
@@ -36,7 +36,7 @@ public partial struct ApplyTransformAndHealthToHybridHealthBarClientSystem : ISy
               , localToWorld)
             in SystemAPI.Query<
                 RefRO<HybridHealthBarData>
-              , DynamicBuffer<StatsData>
+              , DynamicBuffer<StatsBuffer>
               , RefRO<HealthData>
               , RefRO<ManaData>
               , RefRO<LevelData>
@@ -46,10 +46,10 @@ public partial struct ApplyTransformAndHealthToHybridHealthBarClientSystem : ISy
             hybridData.ValueRO.transRef.Value.position =  cam!.WorldToScreenPoint(worldPos);
 
             hybridData.ValueRO.UIRef.Value.UpdateUI(
-                maxHealth: statsData[statsEnumIndex[ChampionStatsType.Health]].FullValue
+                maxHealth: statsData[statsEnumIndex[StatsType.Health]].value
               , curHealth: healthData.ValueRO.value
               , curArmor: 0
-              , maxMana: statsData[statsEnumIndex[ChampionStatsType.Mana]].FullValue
+              , maxMana: statsData[statsEnumIndex[StatsType.Mana]].value
               , curMana: manaData.ValueRO.value
               , curLevel: levelData.ValueRO.curLevel);
         }

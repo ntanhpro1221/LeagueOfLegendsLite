@@ -4,41 +4,27 @@ using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
 
-[WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(GhostInputSystemGroup))]
 public partial struct InitOwnChampionClientSystem : ISystem {
     [BurstCompile]
-    public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<NetworkTime>();
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
-            .WithAll<
-                ChampionTag
-              , Simulate
-              , NeedInitTag
-              , GhostOwnerIsLocal>()
-            .Build(ref state));
-    }
-
-    [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
-
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
         foreach (var (
                 localTrans
+              , controlInputData
               , entity)
             in SystemAPI
                 .Query<
-                    RefRO<LocalTransform>>()
+                    RefRO<LocalTransform>
+                  , RefRW<MoveInputData>>()
                 .WithAll<
-                    Simulate
+                    ChampionTag
                   , NeedInitTag
                   , GhostOwnerIsLocal>()
                 .WithEntityAccess()) {
-            ecb.SetComponent(entity, new MoveInputData {
-                targetLocalPos = (float3_Q3)localTrans.ValueRO.Position
-            });
+            controlInputData.ValueRW.targetLocalPos = (float3_Q3)localTrans.ValueRO.Position;
+            controlInputData.ValueRW.initialized    = true;
 
             ecb.RemoveComponent<NeedInitTag>(entity);
         }

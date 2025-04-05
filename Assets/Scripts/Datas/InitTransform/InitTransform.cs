@@ -1,9 +1,9 @@
-﻿using NGDtuanh.BlobAssetExtend;
+﻿using NGDtuanh.BubleAsset;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
-public struct InitTransform : IBlobBuildable<Transform> {
+public struct InitTransform : IBlobBuildable<Transform>, IBlobBuildableSelf<InitTransform> {
     public float3_Q3 position;
     public float4_Q3 rotation;
 
@@ -50,5 +50,8 @@ public struct InitTransform : IBlobBuildable<Transform> {
     public static implicit operator InitTransform(Transform transform) => new(transform);
 
     public void BuildBlob(ref BlobBuilder builder, Transform source)
+        => this = source;
+
+    public void BuildBlob(ref BlobBuilder builder, ref InitTransform source)
         => this = source;
 }

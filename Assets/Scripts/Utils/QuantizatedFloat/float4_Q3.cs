@@ -42,6 +42,8 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
      && z == other.z
      && w == other.w;
 
+    public override string ToString() => ((float4)this).ToString();
+
     #region CAST
 
     public static explicit operator float4_Q3(float4 source) => new(
@@ -108,6 +110,13 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , y = a.y - b.y
       , z = a.z - b.z
       , w = a.w - b.w
+    };
+
+    public static float4_Q3 operator -(float4_Q3 source) => new() {
+        x = -source.x
+      , y = -source.y
+      , z = -source.z
+      , w = -source.w
     };
 
     public static float4_Q3 operator *(float4_Q3 a, int mul) => new() {

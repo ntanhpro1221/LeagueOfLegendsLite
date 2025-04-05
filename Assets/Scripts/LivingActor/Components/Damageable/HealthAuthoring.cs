@@ -9,10 +9,16 @@ public struct HealthData : IComponentData, IEnableableComponent {
 
 [RequireComponent(typeof(StatsAuthoring))]
 public class HealthAuthoring : MonoBehaviour {
+    public float_Q3 value;
+    public bool     useThisDefaultValue;
+
     private class Baker : Baker<HealthAuthoring> {
         public override void Bake(HealthAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            this.AddComponentDisabled<HealthData>(entity);
+            if (authoring.useThisDefaultValue)
+                AddComponent(entity, new HealthData { value = authoring.value });
+            else
+                this.AddComponentDisabled<HealthData>(entity);
         }
     }
 }

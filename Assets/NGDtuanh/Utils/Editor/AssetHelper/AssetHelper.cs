@@ -28,12 +28,15 @@ namespace NGDtuanh.Utils.Editors {
 
         public static void WriteToFile(string path, string content, bool importNow = true) {
             File.WriteAllText(path, content, System.Text.Encoding.Unicode);
-            AssetDatabase.ImportAsset(path);
+            if (importNow) AssetDatabase.ImportAsset(path);
         }
 
         public static void SafeWriteToFile(string path, string content) {
             if (!IsExistSameFile(path, content))
                 WriteToFile(path, content);
         }
+
+        public static void ImportFolder(string path)
+            => AssetDatabase.ImportAsset(path, ImportAssetOptions.ImportRecursive);
     }
 }

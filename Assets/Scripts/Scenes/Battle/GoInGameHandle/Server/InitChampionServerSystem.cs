@@ -20,7 +20,7 @@ public partial struct InitChampionServerSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().ChampionStatsType;
+        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         foreach (var (
                 stats
@@ -29,7 +29,7 @@ public partial struct InitChampionServerSystem : ISystem {
               , entity)
             in SystemAPI
                 .Query<
-                    DynamicBuffer<StatsData>
+                    DynamicBuffer<StatsBuffer>
                   , RefRW<HealthData>
                   , RefRW<ManaData>>()
                 .WithAll<
@@ -44,11 +44,11 @@ public partial struct InitChampionServerSystem : ISystem {
             ecb.RemoveComponent<NeedInitTag>(entity);
 
             // init health, enable it
-            health.ValueRW.value = stats[statsEnumIndex[ChampionStatsType.Health]].FullValue;
+            health.ValueRW.value = stats[statsEnumIndex[StatsType.Health]].value;
             ecb.SetComponentEnabled<HealthData>(entity, true);
 
             // init mana, enable it
-            mana.ValueRW.value = stats[statsEnumIndex[ChampionStatsType.Mana]].FullValue;
+            mana.ValueRW.value = stats[statsEnumIndex[StatsType.Mana]].value;
             ecb.SetComponentEnabled<ManaData>(entity, true);
         }
 

@@ -6,8 +6,17 @@ public static class BakeHelper {
     public static void AddComponentDisabled<TComponent>(
         this IBaker baker
       , in   Entity entity)
-        where TComponent : struct, IEnableableComponent {
+        where TComponent : unmanaged, IEnableableComponent {
         baker.AddComponent<TComponent>(entity);
+        baker.SetComponentEnabled<TComponent>(entity, false);
+    }
+
+    public static void AddComponentDisabled<TComponent>(
+        this IBaker baker
+      , in   Entity entity
+      , TComponent  component)
+        where TComponent : unmanaged, IComponentData, IEnableableComponent {
+        baker.AddComponent(entity, component);
         baker.SetComponentEnabled<TComponent>(entity, false);
     }
 
@@ -16,9 +25,17 @@ public static class BakeHelper {
       , in   Entity entity
       , int         size)
         where TBuffer : unmanaged, IBufferElementData, IEnableableComponent {
+        baker.AddBuffer<TBuffer>(entity, size);
+        baker.SetComponentEnabled<TBuffer>(entity, false);
+    }
+
+    public static void AddBuffer<TBuffer>(
+        this IBaker baker
+      , in   Entity entity
+      , int         size)
+        where TBuffer : unmanaged, IBufferElementData {
         var buffer = baker.AddBuffer<TBuffer>(entity);
         buffer.Resize(size, NativeArrayOptions.ClearMemory);
-        baker.SetComponentEnabled<TBuffer>(entity, false);
     }
 
     public static void AddActorSharedState(

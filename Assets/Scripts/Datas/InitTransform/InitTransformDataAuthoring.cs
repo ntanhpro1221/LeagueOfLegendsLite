@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
-using NGDtuanh.BlobAssetExtend;
+using NGDtuanh.BubleAsset;
 using NGDtuanh.Collections;
 using Unity.Entities;
 using UnityEngine;

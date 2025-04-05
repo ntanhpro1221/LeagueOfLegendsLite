@@ -1,5 +1,5 @@
 ﻿using System;
-using NGDtuanh.BlobAssetExtend;
+using NGDtuanh.BubleAsset;
 using Unity.Entities;
 
 [Serializable]

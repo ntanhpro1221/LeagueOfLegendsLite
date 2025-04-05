@@ -1,0 +1,282 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1759d7a905ad4d74b52e68851f6e9105, type: 3}
+  m_Name: All Minion Data
+  m_EditorClassIdentifier: 
+  value:
+    _Keys: 00000000010000000200000003000000
+    _Values:
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Values:
+          - _Value:
+              value: 477000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 1000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 110000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 12000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 1250
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value: 21
+          - _Value: 0
+          - _Value: 65
+          - _Value: 0
+          - _Value: 1
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        aggroRange: 500
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Values:
+          - _Value:
+              value: 296000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 550000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 24000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 667
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value: 14
+          - _Value: 0
+          - _Value: 32
+          - _Value: 0
+          - _Value: 1
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        aggroRange: 1000
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Values:
+          - _Value:
+              value: 912000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 300000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 41000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 1000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value: 60
+          - _Value: 0
+          - _Value: 100
+          - _Value: 0
+          - _Value: 1
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        aggroRange: 1000
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Values:
+          - _Value:
+              value: 1600000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 100000
+          - _Value:
+              value: -30000
+          - _Value:
+              value: 170000
+          - _Value:
+              value: 67500
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 230000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 850
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value: 60
+          - _Value: 0
+          - _Value: 100
+          - _Value: 0
+          - _Value: 1
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+          _KeySynced: 1
+        aggroRange: 1000
+    _KeyNames:
+    - Melee
+    - Caster
+    - Siege
+    - Super
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: f92de9cf7886b6eef9e8259d1d02fe61
+    _KeySynced: 1

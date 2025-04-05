@@ -1,12 +1,12 @@
 ﻿using Unity.Entities;
 
-using TMonster = NGDtuanh.BlobAssetExtend.ShortCut.Buble_EnMap_EnMap_Array
+using TMonster = NGDtuanh.BubleAsset.ShortCut.Buble_EnMap_EnMap_Array
     <MonsterId, TeamType, InitTransform, UnityEngine.Transform>;
-using TChampion = NGDtuanh.BlobAssetExtend.ShortCut.Buble_EnMap_Array
+using TChampion = NGDtuanh.BubleAsset.ShortCut.Buble_EnMap_Array
     <TeamType, InitTransform, UnityEngine.Transform>;
-using TMinion = NGDtuanh.BlobAssetExtend.ShortCut.Buble_EnMap_EnMap_Array
+using TMinion = NGDtuanh.BubleAsset.ShortCut.Buble_EnMap_EnMap_Array
     <LaneType, TeamType, InitTransform, UnityEngine.Transform>;
-using TTower = NGDtuanh.BlobAssetExtend.ShortCut.Buble_EnMap_EnMap_EnMap
+using TTower = NGDtuanh.BubleAsset.ShortCut.Buble_EnMap_EnMap_EnMap
     <TeamType, TowerId, LaneType, InitTransform, UnityEngine.Transform>;
 
 public struct InitTransformData : IComponentData {

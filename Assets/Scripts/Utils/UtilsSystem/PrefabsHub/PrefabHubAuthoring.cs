@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
-using NGDtuanh.BlobAssetExtend;
+using NGDtuanh.BubleAsset;
 using NGDtuanh.Collections;
 using Unity.Collections;
 using Unity.Entities;
@@ -37,7 +37,7 @@ public class PrefabHubAuthoring : MonoBehaviour {
             out BlobAssetReference<BlobMap<EqualEnum<TKey>, int>> idRef
           , ICovKVPCollection<TKey, GameObject>                       source
           , Entity                                                    thisEntity)
-            where TKey : struct, Enum
+            where TKey : unmanaged, Enum
             where TPrefabBuffer : unmanaged, IPrefabBuffer {
             // INIT PREFAB BUFFER
             var buffer = AddBuffer<TPrefabBuffer>(thisEntity);
@@ -65,8 +65,8 @@ public class PrefabHubAuthoring : MonoBehaviour {
             out BlobAssetReference<BlobMap<EqualEnum<TKey1>, BlobMap<EqualEnum<TKey2>, int>>> idRef
           , ICovKVPCollection<TKey1, ICovKVPCollection<TKey2, GameObject>>                            source
           , Entity                                                                                    thisEntity)
-            where TKey1 : struct, Enum
-            where TKey2 : struct, Enum
+            where TKey1 : unmanaged, Enum
+            where TKey2 : unmanaged, Enum
             where TPrefabBuffer : unmanaged, IPrefabBuffer {
             // INIT PREFAB BUFFER
             var buffer = AddBuffer<TPrefabBuffer>(thisEntity);

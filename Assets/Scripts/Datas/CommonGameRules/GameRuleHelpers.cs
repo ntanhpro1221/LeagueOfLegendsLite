@@ -12,7 +12,7 @@ public static class GameRuleHelpers {
       , int                                         curLevel) {
 
         NetworkTick respawnTick = networkTime.ServerTick;
-        respawnTick.Add((uint)(BRW[curLevel - 1].valuex100 * simulationTickRate / 100));
+        respawnTick.Add((uint)(BRW[curLevel - 1].value * simulationTickRate));
         return respawnTick;
     }
 }

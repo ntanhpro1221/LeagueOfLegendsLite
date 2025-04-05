@@ -15,6 +15,8 @@ public class AliceAuthoring : MonoBehaviour {
     
     private class Baker : Baker<AliceAuthoring> {
         public override void Bake(AliceAuthoring authoring) {
+            // BlobArray<int> array;
+            // arr
         }
     }
 }

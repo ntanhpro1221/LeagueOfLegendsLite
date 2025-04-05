@@ -13,7 +13,7 @@ public static class EnumIndexGenerator {
 
         string content =
             $@"using System;
-using NGDtuanh.BlobAssetExtend;
+using NGDtuanh.BubleAsset;
 using NGDtuanh.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -40,7 +40,7 @@ public class EnumIndexAuthoring : MonoBehaviour {{
 
         private void CreateEnumIndex<TKey>(
             out BlobAssetReference<BubleEnMap<TKey, int>> result)
-            where TKey : struct, Enum {{
+            where TKey : unmanaged, Enum {{
             var enumMap = new CovEnumMap<TKey, int>();
             int                   curId   = -1;
             foreach (var key in enumMap.Keys)

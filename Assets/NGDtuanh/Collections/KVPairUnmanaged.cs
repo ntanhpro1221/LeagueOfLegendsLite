@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 
 namespace NGDtuanh.Collections {
-    public struct KVPairUnmanaged<TKey, TValue>
+    public struct KVPairUnmanaged<TKey, TValue> :
+        ICovKVP<TKey, TValue>
         where TKey : struct
         where TValue : struct {
         public TKey   Key   { get; set; }

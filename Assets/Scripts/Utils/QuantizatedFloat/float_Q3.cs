@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ public struct float_Q3 : IEquatable<float_Q3> {
 
     public bool Equals(float_Q3 other) =>
         value == other.value;
+
+    public override string ToString() => ((float)this).ToString(CultureInfo.CurrentCulture);
 
     #region CAST
     
@@ -49,6 +52,10 @@ public struct float_Q3 : IEquatable<float_Q3> {
 
     public static float_Q3 operator *(float_Q3 a, int mul) => new() {
         value = a.value * mul
+    };
+
+    public static float_Q3 operator -(float_Q3 source) => new() {
+        value = -source.value
     };
 
     public static float_Q3 operator *(float_Q3 a, float mul) => new() {
