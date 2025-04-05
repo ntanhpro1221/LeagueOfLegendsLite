@@ -2,6 +2,13 @@
 using Unity.NetCode;
 using UnityEngine;
 
+public enum TeamType {
+    None      = 0
+  , Blue      = 1
+  , Red       = 2
+  , Spectator = 3
+}
+
 public struct TeamTypeData : IComponentData {
     [GhostField] public TeamType teamType;
 }

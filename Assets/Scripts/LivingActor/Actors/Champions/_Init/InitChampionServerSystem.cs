@@ -1,22 +1,22 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 using Unity.Transforms;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-[UpdateInGroup(typeof(InitBattleSystemGroup))]
-[UpdateAfter(typeof(HandleInGameRequestServerSystem))]
+[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct InitChampionServerSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InitTransformData>();
         state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAll<
                 ChampionTag
               , Simulate
               , NeedInitTag>()
-            .Build(ref state));
+            .Build());
     }
 
     [BurstCompile]
@@ -24,7 +24,7 @@ public partial struct InitChampionServerSystem : ISystem {
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
         ref var statsEnumIndex     = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-        ref var champInitTransform = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
+        ref var champInitTrans = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
 
         foreach (var (
                 teamType
@@ -62,7 +62,7 @@ public partial struct InitChampionServerSystem : ISystem {
             ecb.SetComponentEnabled<ManaData>(entity, true);
 
             // init position, move target
-            localTrans.ValueRW              = champInitTransform[teamType.ValueRO.teamType][0].ToLocalTransform_Directly();
+            localTrans.ValueRW              = champInitTrans[teamType.ValueRO.teamType][0].ToLocalTransform_Directly();
             moveData.ValueRW.targetLocalPos = localTrans.ValueRO.Position.Quantizate3();
         }
 

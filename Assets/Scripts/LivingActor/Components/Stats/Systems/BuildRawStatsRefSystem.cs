@@ -8,6 +8,7 @@ using UnityEngine;
 public partial struct BuildRawStatsRefSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllTowerData>();
         state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<NetworkTime>();
     }
@@ -17,10 +18,11 @@ public partial struct BuildRawStatsRefSystem : ISystem {
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
         BuildChampion(ref state);
+        BuildTower(ref state);
     }
 
     [BurstCompile]
-    public void BuildChampion(ref SystemState state) {
+    private void BuildChampion(ref SystemState state) {
         ref var champSource = ref SystemAPI.GetSingleton<AllChampionData>().Champions;
 
         foreach (var (
@@ -47,6 +49,29 @@ public partial struct BuildRawStatsRefSystem : ISystem {
 
             rawStatsEnable.ValueRW         = true;
             rawStatsPerLevelEnable.ValueRW = true;
+        }
+    }
+
+    [BurstCompile]
+    private void BuildTower(ref SystemState state) {
+        ref var towerSource = ref SystemAPI.GetSingleton<AllTowerData>().Towers;
+
+        foreach (var (
+                towerTag
+              , rawStats
+              , rawStatsEnable)
+            in SystemAPI
+                .Query<
+                    RefRO<TowerTag>
+                  , RefRW<RawStatsData>
+                  , EnabledRefRW<RawStatsData>>()
+                .WithAll<Simulate>()
+                .WithDisabled<
+                    RawStatsData>()) {
+            towerSource[towerTag.ValueRO.id].stats
+                .CreateBlobAssetReference(out rawStats.ValueRW._Ref);
+
+            rawStatsEnable.ValueRW = true;
         }
     }
 }
