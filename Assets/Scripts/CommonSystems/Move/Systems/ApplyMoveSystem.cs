@@ -46,7 +46,7 @@ public partial struct ApplyMoveSystem : ISystem {
             float3 moveVector = (moveTarget - localTrans.ValueRO.Position).WithoutY();
             float  moveDis    = math.length(moveVector);
             if (moveDis <= moveSpeed * deltaTime)
-                localTrans.ValueRW.Position = moveTarget;
+                localTrans.ValueRW.Position.AssignKeepY(moveTarget);
             else {
                 velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
 

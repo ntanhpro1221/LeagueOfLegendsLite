@@ -43,10 +43,8 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
                 .WithAll<
                     DamageAreaTag
                   , Simulate>()) {
-            castResult.Clear();
-
             float3 pos = localToWorld.ValueRO.Position;
-
+            castResult.Clear();
             if (!collisionWorld.CastCollider(
                 new ColliderCastInput(collider.ValueRO.Value, pos, pos)
               , ref castResult)) continue;

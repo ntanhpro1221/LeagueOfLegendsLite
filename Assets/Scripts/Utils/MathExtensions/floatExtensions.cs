@@ -19,7 +19,22 @@ public static class floatExtensions {
         source.z = z;
         return source;
     }
-
+    
+    public static float3 WithAddX(this float3 source, float x) {
+        source.x += x;
+        return source;
+    }
+    
+    public static float3 WithAddY(this float3 source, float y) {
+        source.y += y;
+        return source;
+    }
+    
+    public static float3 WithAddZ(this float3 source, float z) {
+        source.z += z;
+        return source;
+    }
+    
     /// <returns>A new vector with only the X component preserved (Y and Z set to 0).</returns>
     public static float3 JustX(this float3 source) {
         source.y = source.z = 0;
@@ -55,6 +70,15 @@ public static class floatExtensions {
         source.z = 0;
         return source;
     }
+
+    public static void AssignKeepX(this ref float3 source, float3 value) 
+        => (source.y, source.z) = (value.y, value.z);
+    
+    public static void AssignKeepY(this ref float3 source, float3 value)
+        => (source.x, source.z) = (value.x, value.z);
+    
+    public static void AssignKeepZ(this ref float3 source, float3 value)
+        => (source.x, source.y) = (value.x, value.y);
 
     public static float3_Q3 Quantizate3(this float3 source)
         => (float3_Q3)source;

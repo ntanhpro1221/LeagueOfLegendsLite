@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: -5603839034160965786}
   - component: {fileID: 8426883013572211933}
   - component: {fileID: 8683395864984180792}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: LivingActorBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
