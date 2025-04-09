@@ -29,7 +29,7 @@ public class DamageOTSourceAuthoring : MonoBehaviour {
             });
 
             switch (authoring.areaType) {
-                case AreaType.Targeted: AddComponent<DamageTargetData>(entity); break;
+                case AreaType.Targeted: AddComponent<AimedTargetData>(entity); break;
                 case AreaType.Area:     AddComponent<DamageAreaTag>(entity); break;
                 default:                throw new ArgumentOutOfRangeException();
             }

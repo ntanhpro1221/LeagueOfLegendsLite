@@ -1,7 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
 public partial struct HandleIncomingDamageSystem : ISystem {
@@ -26,11 +25,11 @@ public partial struct HandleIncomingDamageSystem : ISystem {
                     DynamicBuffer<IncomingDamageBuffer>
                   , RefRW<HealthData>>()
                 .WithAll<Simulate>()) {
-            int totalDamage = 0;
+            float_Q3 totalDamage = 0;
             foreach (var damage in incomingDamage)
                 totalDamage += damage.damage;
             incomingDamage.Clear();
-
+        
             healthData.ValueRW.value -= totalDamage;
         }
     }

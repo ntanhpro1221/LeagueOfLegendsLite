@@ -12,13 +12,14 @@ public class HealthAuthoring : MonoBehaviour {
     public float_Q3 value;
     public bool     useThisDefaultValue;
 
-    private class Baker : Baker<HealthAuthoring> {
+    private class Baker : ExtendBaker<HealthAuthoring> {
         public override void Bake(HealthAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            GetDynamicEntity(out var entity);
+            
             if (authoring.useThisDefaultValue)
                 AddComponent(entity, new HealthData { value = authoring.value });
             else
-                this.AddComponentDisabled<HealthData>(entity);
+                AddComponentDisabled<HealthData>(entity);
         }
     }
 }

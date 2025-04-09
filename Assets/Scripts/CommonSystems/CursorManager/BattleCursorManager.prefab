@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7873889897685237967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2913703523971162732}
+  - component: {fileID: 2843564835052381631}
+  m_Layer: 0
+  m_Name: BattleCursorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2913703523971162732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873889897685237967}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2843564835052381631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873889897685237967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b675c3bfee4a87aab3df11305f2305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textures:
+    _Keys: 000000000100000002000000
+    _Values:
+    - _Value: {fileID: 2800000, guid: e328c5cf13d906b49a4cc88a64a425d6, type: 3}
+    - _Value: {fileID: 2800000, guid: 679318bbf89c186499d7bae8c3685a0a, type: 3}
+    - _Value: {fileID: 2800000, guid: 762d47726ac01664e800cb8f9b6718a9, type: 3}
+    _KeyNames:
+    - Aiming
+    - Attack
+    - Normal
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: fe65a759f9eca52db0e331965382da11
+    _KeySynced: 1

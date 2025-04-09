@@ -1,6 +1,8 @@
 ﻿using Unity.Entities;
 
 namespace NGDtuanh.Entities.StateMachine {
+    /// <typeparam name="TIdentity">Target identity</typeparam>
+    /// <typeparam name="TState">Target state</typeparam>
     public interface IStateExitAspect<TIdentity, TState> : IStateAspect<TIdentity, TState>
         where TIdentity : unmanaged, IComponentData
         where TState : unmanaged, IComponentData, IEnableableComponent {

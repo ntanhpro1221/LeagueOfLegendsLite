@@ -15,6 +15,7 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
         UpdateRay(ref state, ref inputData);
         UpdateMouseButtons(ref state, ref inputData);
+        UpdateKeyboardButtons(ref state, ref inputData);
     }
 
     private void UpdateRay(ref SystemState state, ref InputDirtyData inputData) {
@@ -26,7 +27,22 @@ public partial struct InputDirtyUpdateSystem : ISystem {
     }
 
     private void UpdateMouseButtons(ref SystemState state, ref InputDirtyData inputData) {
-        inputData.leftMouse  = Mouse.current.leftButton.GetButtonState();
-        inputData.rightMouse = Mouse.current.rightButton.GetButtonState();
+        var mouse = Mouse.current;
+
+        inputData.leftMouse  = mouse.leftButton.GetButtonState();
+        inputData.rightMouse = mouse.rightButton.GetButtonState();
+    }
+
+    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData) {
+        var keyboard = Keyboard.current;
+
+        inputData.a_key = keyboard.aKey.GetButtonState();
+        inputData.s_key = keyboard.sKey.GetButtonState();
+        inputData.d_key = keyboard.dKey.GetButtonState();
+        inputData.f_key = keyboard.fKey.GetButtonState();
+        inputData.q_key = keyboard.qKey.GetButtonState();
+        inputData.w_key = keyboard.wKey.GetButtonState();
+        inputData.e_key = keyboard.eKey.GetButtonState();
+        inputData.r_key = keyboard.rKey.GetButtonState();
     }
 }

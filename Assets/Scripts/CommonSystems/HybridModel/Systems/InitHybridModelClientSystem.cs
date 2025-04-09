@@ -1,13 +1,14 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 public partial struct InitHybridModelClientSystem : ISystem {
-    private static readonly Color AllyHighlightColor = Color.blue;
+    private static readonly Color AllyHighlightColor  = Color.blue;
     private static readonly Color EnemyHighlightColor = Color.red;
-    
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<BattleInitData>();
@@ -23,11 +24,11 @@ public partial struct InitHybridModelClientSystem : ISystem {
 
         foreach (var (
             spawnRequest
-            , teamType
+          , teamType
           , entity) in SystemAPI
             .Query<
                 RefRO<HybridModelInitRequest>
-            , RefRO<TeamTypeData>>()
+              , RefRO<TeamTypeData>>()
             .WithEntityAccess()) {
 
             // spawn
@@ -35,14 +36,23 @@ public partial struct InitHybridModelClientSystem : ISystem {
 
             // Link model with HybridModelData
             var hybridData = new HybridModelData {
-                transformRef = model.transform
-              , animCtrlRef  = model.GetComponent<SharedAnimController>()
-              , outlineRef   = model.GetComponent<Outline>()
+                transformRef         = model.transform
+              , animCtrlRef          = model.GetComponentInChildren<SharedAnimController>()
+              , outlineRef           = model.GetComponentInChildren<Outline>()
+              , attackRangeShowerRef = model.GetComponentInChildren<SkillPreviewShower>()
             };
             hybridData.outlineRef.Value.OutlineColor = teamType.ValueRO.teamType == myTeam
                 ? AllyHighlightColor
                 : EnemyHighlightColor;
             
+            // Set render queue of my champion
+            if (SystemAPI.HasComponent<GhostOwnerIsLocal>(entity)
+             && SystemAPI.IsComponentEnabled<GhostOwnerIsLocal>(entity))
+                foreach (var renderer in hybridData.outlineRef.Value.GetComponentsInChildren<Renderer>())
+                foreach (var material in renderer.materials)
+                    material.renderQueue = RenderQueueHelper.OwnChamp;
+            
+            // Add/Set data
             if (SystemAPI.HasComponent<HybridModelData>(entity))
                 ecb.SetComponent(entity, hybridData);
             else ecb.AddComponent(entity, hybridData);

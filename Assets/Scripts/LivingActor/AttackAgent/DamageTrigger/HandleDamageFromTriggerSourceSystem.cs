@@ -19,7 +19,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
             in SystemAPI
                 .Query<
                     RefRO<DamageTriggerSource>
-                  , RefRO<DamageTargetData>
+                  , RefRO<AimedTargetData>
                   , RefRO<LocalToWorld>>()
                 .WithAll<
                     Simulate

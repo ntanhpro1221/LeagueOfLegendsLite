@@ -1,24 +1,22 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 using Unity.Transforms;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct SyncHybridModelClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        using EntityQueryBuilder queryBuilder = new(Allocator.Temp);
-        state.RequireForUpdate(queryBuilder
-            .WithAll<
-                HybridModelData
-              , AnimData
-              , LocalToWorld>()
-            .Build(ref state));
+        state.RequireForUpdate<EnumIndexData>();
+        state.RequireForUpdate<InputDirtyData>();
     }
 
     public void OnUpdate(ref SystemState state) {
-        using EntityCommandBuffer ecb = new(Allocator.Temp);
+        Sync_Anim_Pos_Highlight(ref state);
+        Sync_AttackRangeShower(ref state);
+    }
 
+    private void Sync_Anim_Pos_Highlight(ref SystemState state) {
         foreach (var (
                 hybridData
               , animData
@@ -26,7 +24,7 @@ public partial struct SyncHybridModelClientSystem : ISystem {
               , highlightData)
             in SystemAPI.Query<
                 RefRO<HybridModelData>
-              , RefRO<AnimData>
+              , RefRW<SharedAnimData>
               , RefRO<LocalToWorld>
               , RefRO<HighlightData>>()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
@@ -36,12 +34,31 @@ public partial struct SyncHybridModelClientSystem : ISystem {
             trans.position = localToWorld.ValueRO.Position;
             trans.rotation = localToWorld.ValueRO.Rotation;
 
-            animCtrl.SyncAnim(animData.ValueRO.curAnim);
+            animCtrl.SyncAnim(animData.ValueRO.curAnim, ref animData.ValueRW.isNeedRestart);
 
             if (highlightData.ValueRO.isHighlighted != outline.enabled)
                 outline.enabled = highlightData.ValueRO.isHighlighted;
         }
+    }
 
-        ecb.Playback(state.EntityManager);
+    private void Sync_AttackRangeShower(ref SystemState state) {
+        var attackRangeId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
+
+        foreach (var (
+                shower
+              , stats)
+            in SystemAPI
+                .Query<
+                    RefRO<HybridModelData>
+                  , DynamicBuffer<StatsBuffer>>()
+                .WithAll<
+                    ChampionTag
+                  , GhostOwnerIsLocal>())
+            shower.ValueRO.attackRangeShowerRef.Value.SyncType(
+                SystemAPI.GetSingleton<InputDirtyData>().a_key.IsHolding()
+                    ? SkillPreviewType.NormalAttack
+                    : SkillPreviewType.None
+              , SkillPreviewColor.Blue
+              , new(stats[attackRangeId].value, stats[attackRangeId].value));
     }
 }

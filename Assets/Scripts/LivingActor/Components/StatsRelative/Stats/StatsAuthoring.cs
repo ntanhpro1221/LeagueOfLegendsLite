@@ -24,14 +24,14 @@ public struct RawStatsPerLevelData : IComponentData, IEnableableComponent {
 public class StatsAuthoring : MonoBehaviour {
     public bool haveLevel = true;
 
-    private class Baker : Baker<StatsAuthoring> {
+    private class Baker : ExtendBaker<StatsAuthoring> {
         public override void Bake(StatsAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            GetDynamicEntity(out var entity);
 
-            this.AddBufferDisabled<StatsBuffer>(entity, Enum.GetValues(typeof(StatsType)).Length);
-            this.AddComponentDisabled<RawStatsData>(entity);
+            AddCleanBufferDisabled<StatsBuffer>(entity, Enum.GetValues(typeof(StatsType)).Length);
+            AddComponentDisabled<RawStatsData>(entity);
             if (authoring.haveLevel)
-                this.AddComponentDisabled<RawStatsPerLevelData>(entity);
+                AddComponentDisabled<RawStatsPerLevelData>(entity);
         }
     }
 }

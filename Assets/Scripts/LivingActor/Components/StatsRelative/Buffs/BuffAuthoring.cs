@@ -87,11 +87,11 @@ public struct UpcomingExpiringBuffBuffer : IBufferElementData, IComparable<Upcom
 }
 
 public class BuffAuthoring : MonoBehaviour {
-    private class Baker : Baker<BuffAuthoring> {
+    private class Baker : ExtendBaker<BuffAuthoring> {
         public override void Bake(BuffAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            GetDynamicEntity(out var entity);
 
-            this.AddBuffer<BuffBuffer>(entity, Enum.GetValues(typeof(StatsType)).Length);
+            AddCleanBuffer<BuffBuffer>(entity, Enum.GetValues(typeof(StatsType)).Length);
             AddBuffer<IncomingBuffBuffer>(entity);
             AddBuffer<UpcomingExpiringBuffBuffer>(entity);
         }

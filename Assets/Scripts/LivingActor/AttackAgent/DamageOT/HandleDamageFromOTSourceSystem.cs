@@ -69,7 +69,7 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
               , targetTag)
             in SystemAPI.Query<
                     RefRO<DamageOTSource>
-                  , RefRO<DamageTargetData>>()
+                  , RefRO<AimedTargetData>>()
                 .WithAll<Simulate>())
             SystemAPI.GetBuffer<IncomingDamageBuffer>(targetTag.ValueRO.target).Add(new() {
                 damage = damageOTSource.ValueRO.tmpTotalDamage

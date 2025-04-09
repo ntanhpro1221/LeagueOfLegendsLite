@@ -27,7 +27,7 @@ public class DamageTriggerSourceAuthoring : MonoBehaviour {
                 case TriggerDamageType.Targeted:
                     AddComponent<DamageTriggerSource.TargetedTag>(entity);
 
-                    AddComponent<DamageTargetData>(entity);
+                    AddComponent<AimedTargetData>(entity);
                     break;
                 case TriggerDamageType.ShotBlockable:
                     AddComponent<DamageTriggerSource.ShotBlockableTag>(entity);

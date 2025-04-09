@@ -30,13 +30,13 @@ public partial struct MouseCastUpdateSystem : ISystem {
               , TeamTypeData>()
             .Build());
 
-        state.EntityManager.CreateSingleton<MouseCastData>();
+        state.EntityManager.CreateSingleton<InputCastData>();
         castResult = new NativeList<RaycastHit>(Allocator.Persistent);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ref var castData = ref SystemAPI.GetSingletonRW<MouseCastData>().ValueRW;
+        ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
         castData.Reset();
 
         var rayData        = SystemAPI.GetSingleton<InputDirtyData>();

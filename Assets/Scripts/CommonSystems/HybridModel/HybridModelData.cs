@@ -7,4 +7,5 @@ public struct HybridModelData : ICleanupComponentData {
     public UnityObjectRef<Transform>            transformRef;
     public UnityObjectRef<SharedAnimController> animCtrlRef;
     public UnityObjectRef<Outline>              outlineRef;
+    public UnityObjectRef<SkillPreviewShower>    attackRangeShowerRef;
 }

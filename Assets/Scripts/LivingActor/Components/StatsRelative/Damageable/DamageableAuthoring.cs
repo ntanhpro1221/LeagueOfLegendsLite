@@ -3,7 +3,11 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct IncomingDamageBuffer : IBufferElementData {
-    [GhostField] public int damage;
+    [GhostField] public float_Q3 damage;
+    
+    public IncomingDamageBuffer(float_Q3 damage) {
+        this.damage = damage;
+    }
 }
 
 [RequireComponent(typeof(HealthAuthoring))]
