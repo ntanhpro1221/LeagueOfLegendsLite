@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 public static partial class ChampionStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -45,7 +46,7 @@ public static partial class ChampionStateAttack {
                 // MOVE STATE
                 else if (aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, l2wLookup))
                     sharedState.SetMove();
-
+  
                 // IDLE STATE
                 else if (!aimedTarget.IsTargetExists(entityLookup)) // Lost target
                     sharedState.SetIdle();
@@ -83,6 +84,8 @@ public static partial class ChampionStateAttack {
                     StateFilterAspect
                   , SharedAnimAspect
                   , AttackStateAspectRW>()) {
+                Debug.Log("Attack");
+                
                 anim.SetAnim(SharedAnimKey.Attack);
 
                 attack.RestartAttack(curTick, attackSpeedId, tickRate);

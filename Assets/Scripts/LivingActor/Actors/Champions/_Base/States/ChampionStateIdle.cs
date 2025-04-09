@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 public static partial class ChampionStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -74,8 +75,10 @@ public static partial class ChampionStateIdle {
         public void OnUpdate(ref SystemState state) {
             foreach (var (_, anim) in SystemAPI.Query<
                 StateFilterAspect
-              , SharedAnimAspect>())
+              , SharedAnimAspect>()) {
+                Debug.Log("Idle");
                 anim.SetAnim(SharedAnimKey.Idle);
+            }
         }
     }
 }

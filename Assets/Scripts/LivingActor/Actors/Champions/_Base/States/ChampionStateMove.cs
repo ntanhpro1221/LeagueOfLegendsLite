@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -41,21 +42,24 @@ public static partial class ChampionStateMove {
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
                   , RefRO<AttackStateData>>()) {
+                bool haveTargetInRange  = aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, l2wLookup);
+                bool attackCooldownDone = attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
                 if (health.IsDead) // RUN OUT OF HEALTH
                     sharedState.SetDead();
 
                 // ATTACK STATE
-                else if (
-                    // have target within range
-                    aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, l2wLookup)
-                    // attack cooldown done
-                 && attackData.ValueRO.IsCooldownDone(curTick))
+                else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
                     sharedState.SetAttack();
 
                 // IDLE STATE
-                else if (!velocity.IsMoving) // NOT HAVE VELOCITY
+                else if (
+                    // NOT HAVE VELOCITY
+                    !velocity.IsMoving
+                    // have target within range but cooldown not done
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                 || (haveTargetInRange && !attackCooldownDone))
                     sharedState.SetIdle();
                 else continue;
 
@@ -70,8 +74,10 @@ public static partial class ChampionStateMove {
         public void OnUpdate(ref SystemState state) {
             foreach (var (_, anim) in SystemAPI.Query<
                 StateFilterAspect
-              , SharedAnimAspect>())
+              , SharedAnimAspect>()) {
+                Debug.Log("MOVE");
                 anim.SetAnim(SharedAnimKey.Move);
+            }
         }
     }
 
