@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 
 public readonly partial struct VelocityAspectRO : IAspect {
-    private const float MOVE_TOLERANCE = 0.01f;
+    private const float MOVE_TOLERANCE = 1;
 
     private readonly RefRO<PhysicsVelocity> _PhysicsVelocity;
 

@@ -28,42 +28,50 @@ public static partial class ChampionStateMove {
             var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
             var attackRangeId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
 
-            foreach (var (
-                    filter
-                  , health
-                  , velocity
-                  , aimedTarget
-                  , sharedState
-                  , attackData)
+            foreach (var (filter, data)
                 in SystemAPI.Query<
                     StateFilterAspect
-                  , HealthAspectRO
-                  , VelocityAspectRO
-                  , AimedTargetAspectRO
-                  , ActorSharedStateAspect
-                  , RefRO<AttackStateData>>()) {
-                bool haveTargetInRange  = aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, l2wLookup);
-                bool attackCooldownDone = attackData.ValueRO.IsCooldownDone(curTick);
+                  , UpdateAspect>()) {
+                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, l2wLookup);
+                bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
-                if (health.IsDead) // RUN OUT OF HEALTH
-                    sharedState.SetDead();
+                if (data.health.IsDead) // RUN OUT OF HEALTH
+                    data.sharedState.SetDead();
 
                 // ATTACK STATE
-                else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
-                    sharedState.SetAttack();
+                else if (haveTargetInRange && attackCooldownDone) { // have target within range and cooldown done
+                    data.sharedState.SetAttack();
+
+                    data.ForceStopMove();
+                }
 
                 // IDLE STATE
                 else if (
                     // NOT HAVE VELOCITY
-                    !velocity.IsMoving
+                    !data.velocity.IsMoving
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
-                    sharedState.SetIdle();
+                    data.sharedState.SetIdle();
                 else continue;
 
                 filter.MarkExitExecuted();
+            }
+        }
+
+        private readonly partial struct UpdateAspect : IAspect {
+            public readonly HealthAspectRO         health;
+            public readonly VelocityAspectRO       velocity;
+            public readonly AimedTargetAspectRO    aimedTarget;
+            public readonly ActorSharedStateAspect sharedState;
+            public readonly RefRO<AttackStateData> attackData;
+
+            private readonly RefRW<MoveData>       moveData;
+            private readonly RefRO<LocalTransform> localTrans;
+
+            public void ForceStopMove() {
+                moveData.ValueRW.TeleTo(localTrans.ValueRO.Position.Quantizate3());
             }
         }
     }
@@ -106,7 +114,7 @@ public static partial class ChampionStateMove {
               , AimedTargetAspectRO>()) {
                 // MOVE TO AIMED TARGET
                 if (aimedTarget.IsTargetExists(entityLookup))
-                    moveData.ValueRW.targetLocalPos = l2wLookup[aimedTarget.Target].Position.Quantizate3();
+                    moveData.ValueRW.MoveTo(l2wLookup[aimedTarget.Target].Position.Quantizate3());
             }
         }
     }

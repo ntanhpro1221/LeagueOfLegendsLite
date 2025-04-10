@@ -23,7 +23,7 @@ public partial struct InitChampionServerSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-        ref var statsEnumIndex     = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
         ref var champInitTrans = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
 
         foreach (var (
@@ -63,7 +63,7 @@ public partial struct InitChampionServerSystem : ISystem {
 
             // init position, move target
             localTrans.ValueRW              = champInitTrans[teamType.ValueRO.teamType][0].ToLocalTransform_Directly();
-            moveData.ValueRW.targetLocalPos = localTrans.ValueRO.Position.Quantizate3();
+            moveData.ValueRW.MoveTo(localTrans.ValueRO.Position.Quantizate3());
         }
 
         ecb.Playback(state.EntityManager);

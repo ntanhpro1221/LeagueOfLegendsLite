@@ -19,11 +19,11 @@ public partial struct GetMoveDataFrom_PlayerInputSystem : ISystem {
                 .WithNone<NetworkDestroyedTag>()) {
             // apply move event
             if (playerInput.ValueRO.moveEvent.IsSet)
-                moveData.ValueRW.targetLocalPos = playerInput.ValueRO.moveLocalTarget;
+                moveData.ValueRW.MoveTo(playerInput.ValueRO.moveLocalTarget);
             
             // cancel move event
             if (playerInput.ValueRO.cancelMoveEvent.IsSet)
-                moveData.ValueRW.targetLocalPos = localTrans.ValueRO.Position.Quantizate3();
+                moveData.ValueRW.MoveTo(localTrans.ValueRO.Position.Quantizate3());
         }
     }
 }

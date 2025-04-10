@@ -22,6 +22,11 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     public int y;
     public int z;
 
+    public floatXZ_Q3 xz => new() {
+        x = x
+      , z = z
+    };
+    
     public float3_Q3(float x, float y, float z) {
         this.x = Mathf.RoundToInt(x * MULTIPLIER);
         this.y = Mathf.RoundToInt(y * MULTIPLIER);

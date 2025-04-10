@@ -1,10 +1,8 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(MoveSystemGroup))]
 public partial struct ApplyMoveSystem : ISystem {
@@ -31,7 +29,7 @@ public partial struct ApplyMoveSystem : ISystem {
               , localTrans
               , velocity)
             in SystemAPI.Query<
-                    RefRO<MoveData>
+                    RefRW<MoveData>
                   , RefRW<LocalTransform>
                   , RefRW<PhysicsVelocity>>()
                 .WithAll<Simulate>()
@@ -40,24 +38,24 @@ public partial struct ApplyMoveSystem : ISystem {
             float prevVelocityY = velocity.ValueRW.Linear.y;
             velocity.ValueRW = PhysicsVelocity.Zero;
 
-            // MOVE CALCULATE
-            float  moveSpeed  = moveData.ValueRO.moveSpeed;
-            float3 moveTarget = moveData.ValueRO.targetLocalPos;
-            float3 moveVector = (moveTarget - localTrans.ValueRO.Position).WithoutY();
-            float  moveDis    = math.length(moveVector);
-            if (moveDis <= moveSpeed * deltaTime)
-                localTrans.ValueRW.Position.AssignKeepY(moveTarget);
-            else {
-                velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
+            if (!moveData.ValueRO.isDone) {
+                // MOVE CALCULATE
+                float  moveSpeed  = moveData.ValueRO.moveSpeed;
+                float3 moveVector = (moveData.ValueRO.targetLocalPos.Full - localTrans.ValueRO.Position).WithoutY();
+                float  moveDis    = math.length(moveVector);
+                if (moveDis <= moveSpeed * deltaTime) moveData.ValueRW.MarkDone();
+                else {
+                    velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
 
-                // ROTATE CALCULATING ONLY IF MOVING
-                quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
-                float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
-                float      rotateDis    = math.length(rotateVector);
-                if (rotateDis <= rotateSpeed * deltaTime)
-                    localTrans.ValueRW.Rotation = rotateTarget;
-                else
-                    velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
+                    // ROTATE CALCULATING ONLY IF MOVING
+                    quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
+                    float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
+                    float      rotateDis    = math.length(rotateVector);
+                    if (rotateDis <= rotateSpeed * deltaTime)
+                        localTrans.ValueRW.Rotation = rotateTarget;
+                    else
+                        velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
+                }
             }
 
             // RESTORE Y VELOCITY (controlled by something such as gravity, etc.)
