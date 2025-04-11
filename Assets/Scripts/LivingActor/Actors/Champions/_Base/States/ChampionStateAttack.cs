@@ -31,20 +31,26 @@ public static partial class ChampionStateAttack {
                   , sharedState
                   , health
                   , aimedTarget
-                    , attackData)
+                    , attackData
+                    ,velocity)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
-                , RefRW<AttackStateData>>()) {
+                , RefRW<AttackStateData>
+                , VelocityAspectRO>()) {
 
                 // DEAD STATE
                 if (health.IsDead) // Run out of health
                     sharedState.SetDead();
 
                 // MOVE STATE
-                else if (aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, l2wLookup))
+                else if (
+                    // Need move to target
+                    aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, l2wLookup)
+                    // Have velocity
+                 || velocity.IsMoving)
                     sharedState.SetMove();
   
                 // IDLE STATE
@@ -84,8 +90,6 @@ public static partial class ChampionStateAttack {
                     StateFilterAspect
                   , SharedAnimAspect
                   , AttackStateAspectRW>()) {
-                Debug.Log("Attack");
-                
                 anim.SetAnim(SharedAnimKey.Attack);
 
                 attack.RestartAttack(curTick, attackSpeedId, tickRate);

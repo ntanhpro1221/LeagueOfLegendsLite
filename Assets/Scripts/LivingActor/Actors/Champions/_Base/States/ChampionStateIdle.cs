@@ -76,7 +76,7 @@ public static partial class ChampionStateIdle {
             foreach (var (_, anim) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect>()) {
-                Debug.Log("Idle");
+                Debug.Log($"IDLE {state.WorldUnmanaged.Name} {SystemAPI.GetSingleton<NetworkTime>().ServerTick.TickValue}");
                 anim.SetAnim(SharedAnimKey.Idle);
             }
         }

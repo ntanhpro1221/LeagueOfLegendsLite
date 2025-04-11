@@ -3,7 +3,6 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -40,11 +39,8 @@ public static partial class ChampionStateMove {
                     data.sharedState.SetDead();
 
                 // ATTACK STATE
-                else if (haveTargetInRange && attackCooldownDone) { // have target within range and cooldown done
+                else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
                     data.sharedState.SetAttack();
-
-                    data.ForceStopMove();
-                }
 
                 // IDLE STATE
                 else if (
@@ -57,6 +53,7 @@ public static partial class ChampionStateMove {
                 else continue;
 
                 filter.MarkExitExecuted();
+                data.ForceStopMove();
             }
         }
 
@@ -83,7 +80,6 @@ public static partial class ChampionStateMove {
             foreach (var (_, anim) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect>()) {
-                Debug.Log("MOVE");
                 anim.SetAnim(SharedAnimKey.Move);
             }
         }
