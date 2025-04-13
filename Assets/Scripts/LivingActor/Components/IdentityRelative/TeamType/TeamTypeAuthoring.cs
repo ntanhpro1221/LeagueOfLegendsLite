@@ -11,6 +11,10 @@ public enum TeamType {
 
 public struct TeamTypeData : IComponentData {
     [GhostField] public TeamType teamType;
+    
+    public TeamTypeData(TeamType teamType) {
+        this.teamType = teamType;
+    }
 }
 
 public class TeamTypeAuthoring : MonoBehaviour {

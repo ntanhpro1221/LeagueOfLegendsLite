@@ -17,6 +17,8 @@ public static partial class ChampionStateDead {
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
+            state.CompleteDependency();
+
             var     curTick   = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
             var     healthId  = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health];
             ref var initTrans = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
@@ -37,32 +39,35 @@ public static partial class ChampionStateDead {
 
                 filter.MarkExitExecuted();
 
-                data.LocalTrans = initTrans[data.TeamType][0].ToLocalTransform_Directly(); // Respawn at init pos
-                data.MoveTarget = data.LocalTrans.Position.Quantizate3();                  // Reset target pos at init pos
-                data.CurHealth  = data.MaxHealth(healthId);                                // Respawn with full health
-                data.SetMoveEnable(true);                                                  // enable move
+                data.LocalTrans = initTrans[data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
+                data.MoveData.SyncFromLocTrans(data.LocalTrans);                     // Reset target pos at init pos
+                data.CurHealth = data.MaxHealth(healthId);                           // Respawn with full health
+                data.EnableMove();                                                   // enable move
+                data.RequireInputReset();                                            // require input reset
             }
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<PlayerInputData> _MoveInput;
-            private readonly RefRW<HealthData>      _HealthData;
-            private readonly RefRW<LocalTransform>  _LocalTrans;
-            private readonly RefRO<TeamTypeData>    _TeamType;
-            private readonly RefRO<DeadStateData>   _DeadStateData;
+            private readonly RefRW<MoveData>       _MoveData;
+            private readonly RefRW<HealthData>     _HealthData;
+            private readonly RefRW<LocalTransform> _LocalTrans;
+            private readonly RefRO<TeamTypeData>   _TeamType;
+            private readonly RefRO<DeadStateData>  _DeadStateData;
 
             [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
-            [Optional] private readonly EnabledRefRW<MoveData> _MoveEnabled;
+            [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
+            [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
 
             public ref LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
-            public ref float3_Q3      MoveTarget  => ref _MoveInput.ValueRW.moveLocalTarget;
+            public ref MoveData       MoveData  => ref _MoveData.ValueRW;
             public     TeamType       TeamType    => _TeamType.ValueRO.teamType;
             public     NetworkTick    RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth(int      healthId) => _Stats[healthId].value;
-            public void     SetMoveEnable(bool enable)   => _MoveEnabled.ValueRW = enable;
+            public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
+            public void     EnableMove()            => _Moveable.ValueRW = true;
+            public void     RequireInputReset()     => _InputReset.ValueRW = true;
         }
     }
 
@@ -81,12 +86,12 @@ public static partial class ChampionStateDead {
               , UpdateAspect>()) {
                 data.CurAnim = SharedAnimKey.Dead;
 
-                data.RespawnAtTick = GameRuleHelpers.CalcRespawnTick(
+                data.RespawnAtTick = GameHelpers.CalcRespawnTick(
                     SystemAPI.GetSingletonBuffer<BaseRespawnWaitTimeBuffer>()
                   , SystemAPI.GetSingleton<NetworkTime>()
                   , SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate
                   , data.CurLevel);
-                data.MoveEnabled.ValueRW = false;
+                data.DisableMove();
             }
         }
 
@@ -96,12 +101,14 @@ public static partial class ChampionStateDead {
 
             private readonly RefRO<LevelData> _LevelData;
 
-            [Optional] public readonly EnabledRefRW<MoveData> MoveEnabled;
+            [Optional] private readonly EnabledRefRW<MoveableTag> _Moveable;
 
             public ref NetworkTick   RespawnAtTick => ref _DeadStateData.ValueRW.respawnAtTick;
             public ref SharedAnimKey CurAnim       => ref _AnimData.ValueRW.curAnim;
 
             public int CurLevel => _LevelData.ValueRO.curLevel;
+
+            public void DisableMove() => _Moveable.ValueRW = false;
         }
     }
 }

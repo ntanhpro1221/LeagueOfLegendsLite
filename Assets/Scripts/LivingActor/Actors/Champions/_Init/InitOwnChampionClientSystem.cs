@@ -12,12 +12,10 @@ public partial struct InitOwnChampionClientSystem : ISystem {
 
         foreach (var (
                 localTrans
-              , controlInputData
               , entity)
             in SystemAPI
                 .Query<
-                    RefRO<LocalTransform>
-                  , RefRW<PlayerInputData>>()
+                    RefRO<LocalTransform>>()
                 .WithAll<
                     ChampionTag
                   , NeedInitTag

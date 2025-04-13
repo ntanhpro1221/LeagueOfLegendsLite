@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &459412821639722022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7154368570491532335}
+  m_Layer: 7
+  m_Name: TakeDamageSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7154368570491532335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459412821639722022}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5298653007881902802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1996663105030997779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4227237770822166293}
+  m_Layer: 7
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4227237770822166293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996663105030997779}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5298653007881902802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2511344896651389580
 GameObject:
   m_ObjectHideFlags: 0
@@ -23,6 +85,7 @@ GameObject:
   - component: {fileID: 8426883013572211933}
   - component: {fileID: 8683395864984180792}
   - component: {fileID: 8701208352754206243}
+  - component: {fileID: 2907014209381040497}
   - component: {fileID: -9146969485346626563}
   - component: {fileID: 1533971657701454682}
   m_Layer: 7
@@ -44,7 +107,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7154368570491532335}
+  - {fileID: 4227237770822166293}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-3916493006081611069
@@ -107,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db826e2f48b84abab6e0ced0aff6ea68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deltaY: 166
+  deltaY: 260
   healthBarPrefab: {fileID: 2330090153649800463, guid: 75bfed92e6d863148831324a1f634398, type: 3}
 --- !u!114 &4549801463351850223
 MonoBehaviour:
@@ -197,7 +262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316927658dfc4da0ae250ab6acf35b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  haveLevel: 1
 --- !u!114 &-5603839034160965786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc0ecc76ede4df69f28dce632025081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TakeDamageSpot: {fileID: 7154368570491532335}
 --- !u!114 &8426883013572211933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,6 +316,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   projectile: {fileID: 0}
+  speed:
+    value: 0
+--- !u!114 &2907014209381040497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb64c93ebe65488c96e49fd4c59db624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  point: {fileID: 4227237770822166293}
 --- !u!114 &-9146969485346626563
 MonoBehaviour:
   m_ObjectHideFlags: 0

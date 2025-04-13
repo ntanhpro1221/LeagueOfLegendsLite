@@ -1,5 +1,6 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -8,8 +9,9 @@ using UnityEngine;
 public static partial class ChampionStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
-        private EntityStorageInfoLookup       entityLookup;
-        private ComponentLookup<LocalToWorld> l2wLookup;
+        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
+        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -17,28 +19,35 @@ public static partial class ChampionStateIdle {
             state.RequireForUpdate<EnumIndexData>();
 
             entityLookup = SystemAPI.GetEntityStorageInfoLookup();
-            l2wLookup    = SystemAPI.GetComponentLookup<LocalToWorld>();
+            locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
+                isReadOnly: true);
+            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+                isReadOnly: true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
-            l2wLookup.Update(ref state);
+            locTransLookup.Update(ref state);
+            statsLookup.Update(ref state);
 
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackRangeId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
+            var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+
+            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+            var     attackRangeId = statsId[StatsType.AttackRange];
+            var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
             foreach (var (
                     filter
                   , health
-                  , velocity
+                  , input
                   , aimedTarget
                   , sharedState
                   , attackData)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
-                  , VelocityAspectRO
+                  , RefRO<PlayerInputData>
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
                   , RefRO<AttackStateData>>()) {
@@ -49,10 +58,10 @@ public static partial class ChampionStateIdle {
 
                 // MOVE STATE
                 else if (
-                    // Have velocity
-                    velocity.IsMoving
+                    // Have move request
+                    input.ValueRO.moveEvent.IsSet
                     // Need move to target
-                 || aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, l2wLookup)) // HAVE VELOCITY
+                 || aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
                     sharedState.SetMove();
 
                 // ATTACK STATE
@@ -76,9 +85,37 @@ public static partial class ChampionStateIdle {
             foreach (var (_, anim) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect>()) {
-                Debug.Log($"IDLE {state.WorldUnmanaged.Name} {SystemAPI.GetSingleton<NetworkTime>().ServerTick.TickValue}");
                 anim.SetAnim(SharedAnimKey.Idle);
             }
+        }
+    }
+
+    [UpdateInGroup(typeof(StateUpdateSystemGroup))]
+    public partial struct Update : ISystem {
+        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
+
+        [BurstCompile]
+        public void OnCreate(ref SystemState state) {
+            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
+            locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
+                isReadOnly: true);
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state) {
+            entityLookup.Update(ref state);
+            locTransLookup.Update(ref state);
+
+            // ROTATE TO TARGET
+            foreach (var (_, moveData, target, locTrans) in SystemAPI
+                .Query<
+                    StateFilterAspect
+                  , RefRW<MoveData>
+                  , AimedTargetAspectRO
+                  , RefRO<LocalTransform>>())
+                if (target.IsTargetExists(entityLookup))
+                    moveData.ValueRW.RotateTo(locTrans.ValueRO.Position, target.Target, locTransLookup);
         }
     }
 }
@@ -115,6 +152,18 @@ public static partial class ChampionStateIdle {
             RefRO<Simulate> IStateAspect<ChampionTag, IdleState>.   Simulate => _simulate;
 
             EnabledRefRO<StateRequireEnter> IStateEnterAspect<ChampionTag, IdleState>.StateRequireEnter => _stateRequireEnter;
+        }
+    }
+
+    public partial struct Update {
+        private readonly partial struct StateFilterAspect : IAspect, IStateAspect<ChampionTag, IdleState> {
+            private readonly RefRO<ChampionTag> _identity;
+            private readonly RefRO<IdleState>   _curState;
+            private readonly RefRO<Simulate>    _simulate;
+
+            RefRO<ChampionTag> IStateAspect<ChampionTag, IdleState>.Identity => _identity;
+            RefRO<IdleState> IStateAspect<ChampionTag, IdleState>.  CurState => _curState;
+            RefRO<Simulate> IStateAspect<ChampionTag, IdleState>.   Simulate => _simulate;
         }
     }
 }

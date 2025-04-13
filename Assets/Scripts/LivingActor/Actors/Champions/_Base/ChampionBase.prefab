@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Height
-      value: 160
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Radius
-      value: 35
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Center.y
-      value: 80
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 2373267175499843026, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: HasOwner
@@ -31,6 +31,14 @@ PrefabInstance:
     - target: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Name
       value: ChampionBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227237770822166293, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 170
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227237770822166293, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 5298653007881902802, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72,6 +80,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7154368570491532335, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -94,6 +106,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1460236672414726341}
+    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7050052997975086797}
   m_SourcePrefab: {fileID: 100100000, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
 --- !u!1 &6210338472452448258 stripped
 GameObject:
@@ -193,3 +208,15 @@ MonoBehaviour:
   value:
     value: 0
   useThisDefaultValue: 0
+--- !u!114 &-7050052997975086797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210338472452448258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280f5b0523544b44ac781289aa6fb631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

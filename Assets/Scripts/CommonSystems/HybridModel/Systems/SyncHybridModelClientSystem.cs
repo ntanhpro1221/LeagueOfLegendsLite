@@ -2,6 +2,7 @@
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct SyncHybridModelClientSystem : ISystem {
@@ -20,19 +21,19 @@ public partial struct SyncHybridModelClientSystem : ISystem {
         foreach (var (
                 hybridData
               , animData
-              , localToWorld
+              , locTrans
               , highlightData)
             in SystemAPI.Query<
                 RefRO<HybridModelData>
               , RefRW<SharedAnimData>
-              , RefRO<LocalToWorld>
+              , RefRO<LocalTransform>
               , RefRO<HighlightData>>()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;
 
-            trans.position = localToWorld.ValueRO.Position;
-            trans.rotation = localToWorld.ValueRO.Rotation;
+            trans.position = locTrans.ValueRO.Position;
+            trans.rotation = locTrans.ValueRO.Rotation;
 
             animCtrl.SyncAnim(animData.ValueRO.curAnim, ref animData.ValueRW.isNeedRestart);
 
@@ -59,6 +60,6 @@ public partial struct SyncHybridModelClientSystem : ISystem {
                     ? SkillPreviewType.NormalAttack
                     : SkillPreviewType.None
               , SkillPreviewColor.Blue
-              , new(stats[attackRangeId].value, stats[attackRangeId].value));
+              , 2 * new Vector2(stats[attackRangeId].value, stats[attackRangeId].value));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -7,8 +8,9 @@ using Unity.Transforms;
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
-        private EntityStorageInfoLookup       entityLookup;
-        private ComponentLookup<LocalToWorld> l2wLookup;
+        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
+        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -16,22 +18,29 @@ public static partial class ChampionStateMove {
             state.RequireForUpdate<EnumIndexData>();
 
             entityLookup = SystemAPI.GetEntityStorageInfoLookup();
-            l2wLookup    = SystemAPI.GetComponentLookup<LocalToWorld>();
+            locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
+                isReadOnly: true);
+            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+                isReadOnly: true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
-            l2wLookup.Update(ref state);
+            locTransLookup.Update(ref state);
+            statsLookup.Update(ref state);
 
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackRangeId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
+            var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+
+            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+            var     attackRangeId = statsId[StatsType.AttackRange];
+            var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
             foreach (var (filter, data)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , UpdateAspect>()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, l2wLookup);
+                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(entityLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
@@ -53,7 +62,7 @@ public static partial class ChampionStateMove {
                 else continue;
 
                 filter.MarkExitExecuted();
-                data.ForceStopMove();
+                data.StopMove();
             }
         }
 
@@ -67,8 +76,12 @@ public static partial class ChampionStateMove {
             private readonly RefRW<MoveData>       moveData;
             private readonly RefRO<LocalTransform> localTrans;
 
-            public void ForceStopMove() {
-                moveData.ValueRW.TeleTo(localTrans.ValueRO.Position.Quantizate3());
+            [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
+
+            public void StopMove() {
+                moveData.ValueRW.SyncFromLocTrans(localTrans.ValueRO);
+
+                autoFollowTarget.ValueRW = false;
             }
         }
     }
@@ -87,30 +100,40 @@ public static partial class ChampionStateMove {
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
     public partial struct Update : ISystem {
-        private EntityStorageInfoLookup       entityLookup;
-        private ComponentLookup<LocalToWorld> l2wLookup;
-        
+        private EntityStorageInfoLookup         entityLookup;
+        private ComponentLookup<LocalTransform> locTransLookup;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
-            l2wLookup    = SystemAPI.GetComponentLookup<LocalToWorld>();
+            state.RequireForUpdate<NetworkTime>();
+            entityLookup   = SystemAPI.GetEntityStorageInfoLookup();
+            locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
-            l2wLookup.Update(ref state);
+            locTransLookup.Update(ref state);
 
             foreach (var (
-                _
-              , moveData
-              , aimedTarget) in SystemAPI.Query<
-                StateFilterAspect
-              , RefRW<MoveData>
-              , AimedTargetAspectRO>()) {
-                // MOVE TO AIMED TARGET
-                if (aimedTarget.IsTargetExists(entityLookup))
-                    moveData.ValueRW.MoveTo(l2wLookup[aimedTarget.Target].Position.Quantizate3());
+                    _
+                  , moveData
+                  , aimedTarget
+                  , input
+                  , autoFollowTarget)
+                in SystemAPI
+                    .Query<
+                        StateFilterAspect
+                      , RefRW<MoveData>
+                      , AimedTargetAspectRO
+                      , RefRO<PlayerInputData>
+                      , EnabledRefRW<AutoFollowTarget>>()
+                    .WithPresent<AutoFollowTarget>()) {
+
+                autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(entityLookup);
+
+                if (!autoFollowTarget.ValueRO)
+                    moveData.ValueRW.MoveTo(input.ValueRO.moveLocalTarget);
             }
         }
     }

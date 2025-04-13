@@ -1,7 +1,6 @@
 ﻿using Unity.Entities;
 using Unity.NetCode;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderFirst = true)]
-[UpdateBefore(typeof(PredictedFixedStepSimulationSystemGroup))]
-[UpdateAfter(typeof(CopyCommandBufferToInputSystemGroup))]
+[UpdateInGroup(typeof(Between_CopyCommand_PredictedFixed_SystemGroup))]
+[UpdateAfter(typeof(InputPredictedUpdateSystemGroup))]
 public partial class MoveSystemGroup : ComponentSystemGroup { }

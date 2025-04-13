@@ -17,7 +17,7 @@ MonoBehaviour:
     _Values:
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 2300000
@@ -43,6 +43,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 493
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -56,9 +58,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -76,12 +79,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 650
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 2300000
@@ -107,6 +110,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 493
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -120,9 +125,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -140,12 +146,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 650
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 2050000
@@ -171,6 +177,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 425
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -184,9 +192,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -204,12 +213,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 450
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 1600000
@@ -235,6 +244,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 625
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -248,9 +259,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -268,12 +280,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 650
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 1100000
@@ -299,6 +311,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 667
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -312,9 +326,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -332,12 +347,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 650
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 1350000
@@ -363,6 +378,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 613
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -376,9 +393,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -396,12 +414,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 650
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 11400000
@@ -427,6 +445,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 625
+          - _Value:
+              value: 100000
           _KeyNames:
           - Health
           - Mana
@@ -440,9 +460,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -460,12 +481,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 0
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 5730000
@@ -491,6 +512,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 500
+          - _Value:
+              value: 80000
           _KeyNames:
           - Health
           - Mana
@@ -504,9 +527,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -524,12 +548,12 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 0
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 1550000
@@ -555,6 +579,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 0
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -568,9 +594,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -588,7 +615,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f92de9cf7886b6eef9e8259d1d02fe61
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         leashRange: 0
     _KeyNames:
@@ -603,5 +630,5 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: f92de9cf7886b6eef9e8259d1d02fe61
+      Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
     _KeySynced: 1

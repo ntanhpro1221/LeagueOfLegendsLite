@@ -13,69 +13,62 @@ public partial struct ApplyMoveSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ApplyMove(ref state);
-        StopDisabledMove(ref state);
+        state.Dependency = new ApplyMoveJob {
+            rotateSpeed = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
+          , deltaTime   = SystemAPI.Time.DeltaTime
+        }.ScheduleParallel(state.Dependency);
+
+        state.Dependency = new StopDisabledMoveJob()
+            .ScheduleParallel(state.Dependency);
     }
 
+    [WithAll(
+        typeof(Simulate)
+      , typeof(MoveableTag))]
+    [WithNone(typeof(NetworkDestroyedTag))]
     [BurstCompile]
-    private void ApplyMove(ref SystemState state) {
-        var   gameRules   = SystemAPI.GetSingleton<CommonGameRulesData>();
-        float rotateSpeed = gameRules.rotateSpeed;
+    public partial struct ApplyMoveJob : IJobEntity {
+        public float rotateSpeed;
+        public float deltaTime;
 
-        float deltaTime = SystemAPI.Time.DeltaTime;
-
-        foreach (var (
-                moveData
-              , localTrans
-              , velocity)
-            in SystemAPI.Query<
-                    RefRW<MoveData>
-                  , RefRW<LocalTransform>
-                  , RefRW<PhysicsVelocity>>()
-                .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag>()) {
+        [BurstCompile]
+        public void Execute(ref MoveData moveData, ref LocalTransform localTrans, ref PhysicsVelocity velocity) {
             // RESET VELOCITY FIRST
-            float prevVelocityY = velocity.ValueRW.Linear.y;
-            velocity.ValueRW = PhysicsVelocity.Zero;
+            velocity.Linear.AssignKeepY(float3.zero);
+            velocity.Angular = float3.zero;
 
-            if (!moveData.ValueRO.isDone) {
-                // MOVE CALCULATE
-                float  moveSpeed  = moveData.ValueRO.moveSpeed;
-                float3 moveVector = (moveData.ValueRO.targetLocalPos.Full - localTrans.ValueRO.Position).WithoutY();
+            // DO MOVE
+            if (!moveData.isMoveDone) {
+                float  moveSpeed  = moveData.moveSpeed;
+                float3 moveVector = (moveData.targetLocPos.Full - localTrans.Position).WithoutY();
                 float  moveDis    = math.length(moveVector);
-                if (moveDis <= moveSpeed * deltaTime) moveData.ValueRW.MarkDone();
+                if (moveDis <= moveSpeed * deltaTime) moveData.MarkMoveDone();
                 else {
-                    velocity.ValueRW.Linear = moveSpeed / moveDis * moveVector;
+                    velocity.Linear.AssignKeepY(moveSpeed / moveDis * moveVector);
 
-                    // ROTATE CALCULATING ONLY IF MOVING
-                    quaternion rotateTarget = quaternion.LookRotation(moveVector, math.up());
-                    float3     rotateVector = mathHelpers.EulerDiff(localTrans.ValueRO.Rotation, rotateTarget).JustY();
-                    float      rotateDis    = math.length(rotateVector);
-                    if (rotateDis <= rotateSpeed * deltaTime)
-                        localTrans.ValueRW.Rotation = rotateTarget;
-                    else
-                        velocity.ValueRW.Angular = rotateSpeed / rotateDis * rotateVector;
+                    // ROTATE RECALCULATING ONLY IF MOVING
+                    moveData.RotateTo(moveVector.Quantizate3().xz);
                 }
             }
 
-            // RESTORE Y VELOCITY (controlled by something such as gravity, etc.)
-            velocity.ValueRW.Linear.y = prevVelocityY;
+            // DO ROTATE
+            quaternion rotateTarget = quaternion.LookRotation(moveData.targetLocDir.Full, math.up());
+            float      rotateVecY   = mathHelpers.EulerDiff(localTrans.Rotation, rotateTarget).y;
+            float      rotateDis    = math.abs(rotateVecY);
+            if (rotateDis <= rotateSpeed * deltaTime)
+                localTrans.Rotation = rotateTarget;
+            else velocity.Angular.y = rotateSpeed / rotateDis * rotateVecY;
         }
     }
 
+    [WithAll(typeof(Simulate))]
+    [WithNone(typeof(NetworkDestroyedTag))]
+    [WithDisabled(typeof(MoveableTag))]
     [BurstCompile]
-    private void StopDisabledMove(ref SystemState state) {
-        foreach (var velocity in SystemAPI
-            .Query<RefRW<PhysicsVelocity>>()
-            .WithAll<Simulate>()
-            .WithNone<NetworkDestroyedTag>()
-            .WithDisabled<MoveData>()) {
-
-            float prevVelocityY = velocity.ValueRW.Linear.y;
-
-            velocity.ValueRW = PhysicsVelocity.Zero;
-
-            velocity.ValueRW.Linear.y = prevVelocityY;
+    public partial struct StopDisabledMoveJob : IJobEntity {
+        public void Execute(ref PhysicsVelocity velocity) {
+            velocity.Angular = float3.zero;
+            velocity.Linear.AssignKeepY(float3.zero);
         }
     }
 }

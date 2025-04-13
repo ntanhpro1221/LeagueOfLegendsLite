@@ -5,9 +5,7 @@ using Unity.NetCode;
 using Unity.Transforms;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
-[UpdateAfter(typeof(PredictedSimulationSystemGroup))]
-[UpdateAfter(typeof(FixedStepSimulationSystemGroup))]
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateInGroup(typeof(DestroyNetworkEntitySystemGroup))]
 public partial struct HideNetworkDestroyedEntityInClientSystem : ISystem {
     private const float  BLACK_HOLE_DEEP = -1e9f;
     private       float3 _BlackHole;

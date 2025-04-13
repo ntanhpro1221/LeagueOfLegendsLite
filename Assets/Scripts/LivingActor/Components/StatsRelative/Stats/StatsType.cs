@@ -11,4 +11,5 @@
   , PhysicDamage = 9
   , MagicDamage  = 10
   , AttackSpeed  = 11
+  , UnitRadius   = 12
 }

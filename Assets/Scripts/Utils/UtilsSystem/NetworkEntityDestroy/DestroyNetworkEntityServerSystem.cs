@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.NetCode;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
+[UpdateInGroup(typeof(DestroyNetworkEntitySystemGroup))]
 public partial struct DestroyNetworkEntityServerSystem : ISystem {
     private EntityQuery _NetworkDestroyedQuery;
 

@@ -1,7 +1,9 @@
-﻿using Unity.Entities;
+﻿using Unity.Burst;
+using Unity.Entities;
 
-[UpdateInGroup(typeof(PlayerInputUpdateSystemGroup))]
+[UpdateInGroup(typeof(InputLocalUpdateSystemGroup))]
 public partial struct ShowMovementIndicatorSystem : ISystem {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InputCastData>();
         state.RequireForUpdate<InputDirtyData>();

@@ -6,17 +6,17 @@ using UnityEngine;
 
 [Serializable]
 public struct float_Q3 : IEquatable<float_Q3> {
-    public const int MULTIPLITER = 1000;
-    public const float Epsilon = 0.001f;
+    public const int   MULTIPLIER = 1000;
+    public const float EPSILON    = 10f / MULTIPLIER;
 
     public int value;
 
     public float_Q3(float value) {
-        this.value = Mathf.RoundToInt(value * MULTIPLITER);
+        this.value = Mathf.RoundToInt(value * MULTIPLIER);
     }
     
     public float_Q3(int value) {
-        this.value = value * MULTIPLITER;
+        this.value = value * MULTIPLIER;
     }
 
     public bool Equals(float_Q3 other) =>
@@ -30,13 +30,13 @@ public struct float_Q3 : IEquatable<float_Q3> {
         new(source);
 
     public static implicit operator float(float_Q3 source) =>
-        (float)source.value / MULTIPLITER;
+        (float)source.value / MULTIPLIER;
     
     public static implicit operator float_Q3(int source) =>
         new(source);
 
     public static explicit operator int(float_Q3 source) =>
-        source.value / MULTIPLITER;
+        source.value / MULTIPLIER;
     
     #endregion
     
@@ -89,11 +89,11 @@ public struct float_Q3 : IEquatable<float_Q3> {
 
             position.height = EditorGUIUtility.singleLineHeight;
             drawer.intValue = Mathf.RoundToInt(
-                MULTIPLITER
+                MULTIPLIER
               * EditorGUI.FloatField(
                     position
                   , label
-                  , (float)drawer.intValue / MULTIPLITER));
+                  , (float)drawer.intValue / MULTIPLIER));
         }
     }
 

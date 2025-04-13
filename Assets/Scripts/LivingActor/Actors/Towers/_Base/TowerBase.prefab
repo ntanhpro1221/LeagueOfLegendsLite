@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Height
-      value: 500
+      value: 888
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Radius
-      value: 65
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Center.y
-      value: 150
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2373267175499843026, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: prefabId

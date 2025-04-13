@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7750462715289416490, guid: ffd8254d8b6b9ec4e818f556d910c8f2, type: 3}
       propertyPath: outlineWidth
-      value: 10
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5674640556820361799, guid: ffd8254d8b6b9ec4e818f556d910c8f2, type: 3}
@@ -108,5 +108,5 @@ MonoBehaviour:
     - Spell_F
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 54c83a4dc9fc06fd267d7dfa15ab2ca3
+      Hash: 0fb000c8f4a1d40e88c6751c61ef9923
     _KeySynced: 1

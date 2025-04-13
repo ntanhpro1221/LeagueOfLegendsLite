@@ -9,17 +9,18 @@ using Unity.Transforms;
 public partial struct CorrectMoveSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        foreach (var (
-                moveData
-              , localTrans
-              , velocity)
-            in SystemAPI.Query<
-                RefRO<MoveData>
-              , RefRW<LocalTransform>
-              , RefRW<PhysicsVelocity>>()) {
-            if (!moveData.ValueRO.isDone) return;
-            localTrans.ValueRW.Position.AssignKeepY(moveData.ValueRO.targetLocalPos.Full);
-            velocity.ValueRW.Linear.AssignKeepY(float3.zero);
+        state.Dependency = new Job()
+            .ScheduleParallel(state.Dependency);
+    }
+
+    [BurstCompile]
+    public partial struct Job : IJobEntity {
+        [BurstCompile]
+        public void Execute(in MoveData moveData, ref LocalTransform localTrans, ref PhysicsVelocity velocity) {
+            if (!moveData.isMoveDone) return;
+
+            localTrans.Position.AssignKeepY(moveData.targetLocPos.Full);
+            velocity.Linear.AssignKeepY(float3.zero);
         }
     }
 }

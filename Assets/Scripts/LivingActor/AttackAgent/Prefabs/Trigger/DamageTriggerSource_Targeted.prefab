@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6059844326883121590}
   - component: {fileID: 4747435172005334382}
-  - component: {fileID: 6790146272120198423}
-  - component: {fileID: 6422793011872143296}
   - component: {fileID: 553580558969522458}
   - component: {fileID: 1177921871742823023}
   - component: {fileID: 5510948134592291115}
+  - component: {fileID: 5746079826975427702}
+  - component: {fileID: 128708586823103259}
+  - component: {fileID: 8325075222158815334}
+  - component: {fileID: 2920119740064157288}
   m_Layer: 10
   m_Name: DamageTriggerSource_Targeted
   m_TagString: Untagged
@@ -49,35 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87b4a36954a34a0f8792df9799904a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage:
+    value: 0
   damageType: 0
---- !u!114 &6790146272120198423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392278292554583566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66644042d2a143c4865973c33ea40261, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teamType: 0
---- !u!114 &6422793011872143296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392278292554583566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca4709e1173eafb449acd2e739d72832, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
-  notUseSmoothRotate: 1
 --- !u!114 &553580558969522458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,10 +81,10 @@ MonoBehaviour:
   DefaultGhostMode: 1
   SupportedGhostModes: 3
   OptimizationMode: 0
-  Importance: 1
+  Importance: 100
   MaxSendRate: 0
   prefabId: 160f19a658ac591498345ff3cd77e817
-  HasOwner: 1
+  HasOwner: 0
   SupportAutoCommandTarget: 1
   TrackInterpolationDelay: 0
   GhostGroup: 0
@@ -127,3 +103,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0c4b2bed043428fb8c0a1f5ab18c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5746079826975427702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280f5b0523544b44ac781289aa6fb631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &128708586823103259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8762592601e341d9bac71d6d50ecc82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8325075222158815334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4f84ae8c7a49bf81c2c9ca83710b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+--- !u!54 &2920119740064157288
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 2e+9, y: 2e+9, z: 2e+9}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

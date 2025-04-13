@@ -31,19 +31,19 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
         var collisionWorld = physicsWorld.CollisionWorld;
         foreach (var (
                 damageOTSource
-              , localToWorld
+              , locTrans
               , collider
               , teamType)
             in SystemAPI
                 .Query<
                     RefRW<DamageOTSource>
-                  , RefRO<LocalToWorld>
+                  , RefRO<LocalTransform>
                   , RefRO<PhysicsCollider>
                   , RefRO<TeamTypeData>>()
                 .WithAll<
                     DamageAreaTag
                   , Simulate>()) {
-            float3 pos = localToWorld.ValueRO.Position;
+            float3 pos = locTrans.ValueRO.Position;
             castResult.Clear();
             if (!collisionWorld.CastCollider(
                 new ColliderCastInput(collider.ValueRO.Value, pos, pos)

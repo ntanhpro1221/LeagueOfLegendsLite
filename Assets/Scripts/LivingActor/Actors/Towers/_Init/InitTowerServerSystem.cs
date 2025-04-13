@@ -59,7 +59,7 @@ public partial struct InitTowerServerSystem : ISystem {
             localTrans.ValueRW = towerInitTrans[teamType.ValueRO.teamType]
                 [towerTag.ValueRO.id]
                 [laneType.ValueRO.laneType]
-                .ToLocalTransform_Directly();
+                .ToLocTrans_Directly();
         }
 
         ecb.Playback(state.EntityManager);

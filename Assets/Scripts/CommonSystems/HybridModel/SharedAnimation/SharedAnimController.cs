@@ -1,9 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SharedAnimController : MonoBehaviour {
     private Animator _Animator;
-
+    
     public SharedAnimKey CurAnim { get; private set; } = SharedAnimKey.Idle;
 
     private void Awake() {

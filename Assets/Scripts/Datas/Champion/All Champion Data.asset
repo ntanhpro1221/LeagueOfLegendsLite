@@ -19,7 +19,7 @@ MonoBehaviour:
         name: Yasuo
         description: "K\u1EBB b\u1EA5t dung th\u1EE9"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 590000
@@ -45,6 +45,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 697
+          - _Value:
+              value: 65000
           _KeyNames:
           - Health
           - Mana
@@ -58,12 +60,13 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 5ae6e3aec4ed03caae29607bb99e8d58
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 110000
@@ -89,6 +92,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 3500
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -102,9 +107,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 5ae6e3aec4ed03caae29607bb99e8d58
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
         passiveAvatar: {fileID: 21300000, guid: 942cb98c73a2c48438e32a67af4433ec, type: 3}
@@ -117,7 +123,7 @@ MonoBehaviour:
         name: Ashe
         description: "Cung b\u0103ng"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 610000
@@ -138,11 +144,13 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 59000
+              value: 500000
           - _Value:
               value: 0
           - _Value:
               value: 658
+          - _Value:
+              value: 65000
           _KeyNames:
           - Health
           - Mana
@@ -156,12 +164,13 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 007e66c7301ef0651e5a097f5f38a473
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 101000
@@ -187,6 +196,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 3330
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -200,9 +211,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 007e66c7301ef0651e5a097f5f38a473
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passiveAvatar: {fileID: 21300000, guid: 50470aaecefdd06429fa03276e067f48, type: 3}
@@ -215,7 +227,7 @@ MonoBehaviour:
         name: Garen
         description: "S\u1EE9c m\u1EA1nh c\u1EE7a Demacia"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 690000
@@ -241,6 +253,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 625
+          - _Value:
+              value: 65000
           _KeyNames:
           - Health
           - Mana
@@ -254,12 +268,13 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 5ae6e3aec4ed03caae29607bb99e8d58
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 98000
@@ -285,6 +300,8 @@ MonoBehaviour:
               value: 0
           - _Value:
               value: 3650
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -298,9 +315,10 @@ MonoBehaviour:
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
+          - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 5ae6e3aec4ed03caae29607bb99e8d58
+            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
         passiveAvatar: {fileID: 21300000, guid: a4fe04ec817723847a4063154c313d95, type: 3}
@@ -315,5 +333,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 5ae6e3aec4ed03caae29607bb99e8d58
+      Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
     _KeySynced: 1

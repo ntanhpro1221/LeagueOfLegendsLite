@@ -62,8 +62,8 @@ public partial struct InitChampionServerSystem : ISystem {
             ecb.SetComponentEnabled<ManaData>(entity, true);
 
             // init position, move target
-            localTrans.ValueRW              = champInitTrans[teamType.ValueRO.teamType][0].ToLocalTransform_Directly();
-            moveData.ValueRW.MoveTo(localTrans.ValueRO.Position.Quantizate3());
+            localTrans.ValueRW = champInitTrans[teamType.ValueRO.teamType][0].ToLocTrans_Directly();
+            moveData.ValueRW.SyncFromLocTrans(localTrans.ValueRO);
         }
 
         ecb.Playback(state.EntityManager);

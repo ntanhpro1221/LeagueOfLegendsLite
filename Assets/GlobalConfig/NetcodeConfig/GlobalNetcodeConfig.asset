@@ -21,7 +21,7 @@ MonoBehaviour:
     MaxSimulationStepsPerFrame: 2
     MaxSimulationStepBatchSize: 1
     TargetFrameRateMode: 0
-    m_SendSnapshotsForCatchUpTicks: 0
+    m_SendSnapshotsForCatchUpTicks: 1
     SnapshotAckMaskCapacity: 4096
     HandshakeApprovalTimeoutMS: 5000
   ClientTickRate:

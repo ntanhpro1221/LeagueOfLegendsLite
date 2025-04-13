@@ -22,8 +22,9 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
         var     manaId         = statsEnumIndex[StatsType.Mana];
 
         foreach (var data in SystemAPI.Query<UpdateAspect>()) {
-            data.HybridPos = cam!.WorldToScreenPoint(
-                data.WorldPos.WithAddY(data.DeltaY));
+            data.HybridPos = cam!
+                .WorldToScreenPoint(data.LocPos.WithAddY(data.DeltaY))
+                .WithoutZ();
 
             data.UI.UpdateUI(
                 maxHealth: data.MaxHealth(healthId)
@@ -43,7 +44,7 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
 
         private readonly RefRO<HybridHealthBarData> _HybridData;
         private readonly RefRO<HealthData>          _HealthData;
-        private readonly RefRO<LocalToWorld>        _LocalToWorld;
+        private readonly RefRO<LocalTransform>      _LocTrans;
 
         [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
@@ -54,9 +55,9 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
             set => _HybridData.ValueRO.transRef.Value.position = value;
         }
 
-        public float       DeltaY   => _HybridData.ValueRO.deltaY;
-        public float3      WorldPos => _LocalToWorld.ValueRO.Position;
-        public HealthBarUI UI       => _HybridData.ValueRO.UIRef.Value;
+        public float       DeltaY => _HybridData.ValueRO.deltaY;
+        public float3      LocPos => _LocTrans.ValueRO.Position;
+        public HealthBarUI UI     => _HybridData.ValueRO.UIRef.Value;
 
         public float MaxHealth(int healthId) => _Stats[healthId].value;
         public float MaxMana(int   manaId)   => _ManaData.IsValid ? _Stats[manaId].value : DEFAULT_OPTIONAL_FLOAT;

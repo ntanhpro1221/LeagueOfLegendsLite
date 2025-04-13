@@ -4,16 +4,19 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct DamageTriggerSource : IComponentData {
-    [GhostField] public int damage;
+    [GhostField] public float_Q3 damage;
+
+    public DamageTriggerSource(float_Q3 damage) {
+        this.damage = damage;
+    }
 
     public struct TargetedTag : IComponentData { }
     public struct ShotBlockableTag : IComponentData { }
     public struct ShotNonBlockableTag : IComponentData { }
 }
 
-[RequireComponent(typeof(TeamTypeAuthoring))]
 public class DamageTriggerSourceAuthoring : MonoBehaviour {
-    public int               damage;
+    public float_Q3          damage;
     public TriggerDamageType damageType;
 
     private class Baker : Baker<DamageTriggerSourceAuthoring> {
@@ -26,19 +29,19 @@ public class DamageTriggerSourceAuthoring : MonoBehaviour {
             switch (authoring.damageType) {
                 case TriggerDamageType.Targeted:
                     AddComponent<DamageTriggerSource.TargetedTag>(entity);
-
-                    AddComponent<AimedTargetData>(entity);
                     break;
                 case TriggerDamageType.ShotBlockable:
                     AddComponent<DamageTriggerSource.ShotBlockableTag>(entity);
 
                     AddBuffer<CollidedOpponentBuffer>(entity);
+                    AddComponent<TeamTypeData>(entity);
                     break;
                 case TriggerDamageType.ShotNonBlockable:
                     AddComponent<DamageTriggerSource.ShotNonBlockableTag>(entity);
 
                     AddBuffer<CollidedOpponentBuffer>(entity);
                     AddComponent<DamagedOpponentCount>(entity);
+                    AddComponent<TeamTypeData>(entity);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

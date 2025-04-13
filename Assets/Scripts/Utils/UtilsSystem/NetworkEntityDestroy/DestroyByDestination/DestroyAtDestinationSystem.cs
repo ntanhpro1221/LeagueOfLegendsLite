@@ -5,9 +5,7 @@ using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
-[UpdateBefore(typeof(DestroyNetworkEntityServerSystem))]
-[UpdateBefore(typeof(HideNetworkDestroyedEntityInClientSystem))]
+[UpdateInGroup(typeof(BeforeDestroyNetworkEntitySystemGroup))]
 public partial struct DestroyAtDestinationSystem : ISystem {
     private const float DESTINATION_TOLERANCE = 0.001f;
 

@@ -3,22 +3,27 @@ using Unity.Entities;
 
 [UpdateInGroup(typeof(BeforeMoveSystemGroup))]
 public partial struct GetMoveDataFrom_StatsMoveSpeedSystem : ISystem {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EnumIndexData>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        var moveSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.MoveSpeed];
+        state.Dependency = new Job {
+            moveSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.MoveSpeed]
+        }.ScheduleParallel(state.Dependency);
+    }
 
-        foreach (var (
-                moveData
-              , statsData)
-            in SystemAPI.Query<
-                    RefRW<MoveData>
-                  , DynamicBuffer<StatsBuffer>>()
-                .WithAll<Simulate>()
-                .WithNone<NetworkDestroyedTag>())
-            moveData.ValueRW.moveSpeed = statsData[moveSpeedId].value;
+    [WithAll(typeof(Simulate))]
+    [WithNone(typeof(NetworkDestroyedTag))]
+    [BurstCompile]
+    public partial struct Job : IJobEntity {
+        public int moveSpeedId;
+
+        [BurstCompile]
+        public void Execute(ref MoveData moveData, in DynamicBuffer<StatsBuffer> stats) {
+            moveData.moveSpeed = stats[moveSpeedId].value;
+        }
     }
 }

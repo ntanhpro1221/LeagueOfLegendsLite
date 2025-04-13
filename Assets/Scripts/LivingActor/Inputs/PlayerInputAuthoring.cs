@@ -1,18 +1,16 @@
 ﻿using Unity.Entities;
 using Unity.NetCode;
+using Unity.Transforms;
 using UnityEngine;
 
-[GhostComponent(OwnerSendType = SendToOwnerType.SendToNonOwner)]
 public struct PlayerInputData : IInputComponentData {
     #region GENERAL
 
-    private static readonly InputEvent TriggeredEvent = new() { Count = 1 };
+    public InputEvent doneResetEvent;
 
-    public void Reset() => this = new PlayerInputData();
-
-    public void CancelMoveAndAttack() {
-        cancelMoveEvent = TriggeredEvent;
-        SetAttack(Entity.Null);
+    public void ResetAllEvents() {
+        doneResetEvent = new InputEvent();
+        moveEvent      = new InputEvent();
     }
 
     #endregion
@@ -21,23 +19,32 @@ public struct PlayerInputData : IInputComponentData {
 
     [GhostField] public float3_Q3  moveLocalTarget;
     [GhostField] public InputEvent moveEvent;
-    [GhostField] public InputEvent cancelMoveEvent;
 
-    public void SetMove(float3_Q3 _targetLocalPos)
-        => (moveLocalTarget, moveEvent) = (_targetLocalPos, TriggeredEvent);
+    public void SetMove(float3_Q3 _targetLocalPos) {
+        moveLocalTarget = _targetLocalPos;
+        moveEvent.Set();
+    }
+
+    public void CancelMove(in LocalTransform locTrans) {
+        moveLocalTarget = locTrans.Position.Quantizate3();
+        moveEvent       = new InputEvent();
+    }
 
     #endregion
 
     #region ATTACK
 
-    [GhostField] public Entity     attackTarget;
-    [GhostField] public InputEvent attackEvent;
+    [GhostField] public Entity attackTarget;
 
-    public void SetAttack(Entity target)
-        => (attackTarget, attackEvent) = (target, TriggeredEvent);
+    public void SetAttack(Entity target) => attackTarget = target;
+
+    public void CancelAttack() => attackTarget = Entity.Null;
 
     #endregion
 }
+
+[GhostEnabledBit]
+public struct PlayerInputResetting : IComponentData, IEnableableComponent { }
 
 [RequireComponent(typeof(MoveableAuthoring))]
 [RequireComponent(typeof(NormalAttackableAuthoring))]
@@ -46,6 +53,7 @@ public class PlayerInputAuthoring : MonoBehaviour {
         public override void Bake(PlayerInputAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent<PlayerInputData>(entity);
+            AddComponent<PlayerInputResetting>(entity);
         }
     }
 }
