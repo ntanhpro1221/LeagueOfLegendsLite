@@ -11,36 +11,42 @@ public readonly partial struct AimedTargetAspectRO : IAspect {
 
     public ref readonly Entity Target => ref _AimedTargetData.ValueRO.target;
 
-    // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-    public bool IsTargetExists(in EntityStorageInfoLookup lookup) =>
-        lookup.Exists(_AimedTargetData.ValueRO.target);
+    public bool IsTargetExists(
+        in EntityStorageInfoLookup     entityLookup
+      , in ComponentLookup<Selectable> selectLookup) =>
+        GameHelpers.IsTargetExists(
+            _AimedTargetData.ValueRO.target
+          , entityLookup
+          , selectLookup);
 
     public bool IsTargetOutOfRange(
         int                                attackRangeId
       , int                                unitRadiusId
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
-        _Stats[attackRangeId].value + statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value
-      < math.length((
-                _LocTrans.ValueRO.Position
-              - locTransLookup[_AimedTargetData.ValueRO.target].Position)
-            .WithoutY());
+        GameHelpers.IsTargetOutOfRange(
+            _LocTrans.ValueRO
+          , locTransLookup[_AimedTargetData.ValueRO.target]
+          , _Stats[attackRangeId].value
+          , statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value);
 
     public bool NeedMoveToTarget(
         in EntityStorageInfoLookup         entityLookup
+      , in ComponentLookup<Selectable>     selectLookup
       , int                                attackRangeId
       , int                                unitRadiusId
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(entityLookup)
+        IsTargetExists(entityLookup, selectLookup)
      && IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // Out range
 
     public bool HaveTargetInRange(
         in EntityStorageInfoLookup         entityLookup
+      , in ComponentLookup<Selectable>     selectLookup
       , int                                attackRangeId
       , int                                unitRadiusId
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(entityLookup)
+        IsTargetExists(entityLookup, selectLookup)
      && !IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // In range
 }

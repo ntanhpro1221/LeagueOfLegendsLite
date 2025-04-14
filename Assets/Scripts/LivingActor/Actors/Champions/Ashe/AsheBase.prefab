@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 489891104385939086, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: animClipPrefix
+      value: Ashe_
+      objectReference: {fileID: 0}
+    - target: {fileID: 489891104385939086, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: animController
+      value: 
+      objectReference: {fileID: 22100000, guid: a97c6310204f0134b8246cc2ebeffc85, type: 2}
     - target: {fileID: 879747747111931053, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: attackType
       value: 1
@@ -15,10 +23,18 @@ PrefabInstance:
     - target: {fileID: 879747747111931053, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: projectile
       value: 
-      objectReference: {fileID: 1716139915936838169, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      objectReference: {fileID: 5267929586778141670, guid: be58a3d89102f1c4488d52074278441d, type: 3}
     - target: {fileID: 879747747111931053, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: speed.value
-      value: 1000000
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 897348304078590646, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 3c146b404f0242d3118f1c941d5b4763
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710513814157459105, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 107.3
       objectReference: {fileID: 0}
     - target: {fileID: 4430701839797063772, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: m_LocalPosition.x
@@ -64,9 +80,21 @@ PrefabInstance:
       propertyPath: modelPrefab
       value: 
       objectReference: {fileID: 1474086563288869287, guid: 4e74f13bbe847844b90d019bd1f0d224, type: 3}
+    - target: {fileID: 5647427433941773723, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 150.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6060177016506699612, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: prefabId
       value: 337d8b81bc4a4a84a95d70e5967a0020
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066894540403007087, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: m_Height
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066894540403007087, guid: 840d22698500d004e98d6a3b13745806, type: 3}
+      propertyPath: m_Center.y
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6113551509306600314, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: id

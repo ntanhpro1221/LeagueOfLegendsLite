@@ -15,11 +15,9 @@ public struct RangedAttackTrigger : IComponentData, IEnableableComponent { }
 
 public struct RangedAttackTriggerData : IComponentData {
     public Entity   projectile;
-    public float_Q3 speed;
 
-    public RangedAttackTriggerData(Entity projectile, float_Q3 speed) {
+    public RangedAttackTriggerData(Entity projectile) {
         this.projectile = projectile;
-        this.speed      = speed;
     }
 }
 
@@ -30,8 +28,6 @@ public class NormalAttackableAuthoring : MonoBehaviour {
 
     [Tooltip("Leave empty if this is a melee attack")]
     public GameObject projectile;
-
-    public float_Q3 speed;
 
     private class Baker : ExtendBaker<NormalAttackableAuthoring> {
         public override void Bake(NormalAttackableAuthoring authoring) {
@@ -44,8 +40,7 @@ public class NormalAttackableAuthoring : MonoBehaviour {
                 case AttackType.Ranged:
                     AddComponentDisabled<RangedAttackTrigger>(entity);
                     AddComponent(entity, new RangedAttackTriggerData(
-                        GetDynamicEntity(authoring.projectile)
-                      , authoring.speed));
+                        GetDynamicEntity(authoring.projectile)));
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
@@ -62,12 +57,10 @@ public class NormalAttackableAuthoring : MonoBehaviour {
     private class AuthoringEditor : Editor {
         private SerializedProperty _AttackType;
         private SerializedProperty _Projectile;
-        private SerializedProperty _Speed;
 
         private void OnEnable() {
             _AttackType = serializedObject.FindProperty(nameof(attackType));
             _Projectile = serializedObject.FindProperty(nameof(projectile));
-            _Speed      = serializedObject.FindProperty(nameof(speed));
         }
 
         public override void OnInspectorGUI() {
@@ -77,7 +70,6 @@ public class NormalAttackableAuthoring : MonoBehaviour {
             EditorGUILayout.PropertyField(_AttackType);
             if (authoring.attackType == AttackType.Ranged) {
                 EditorGUILayout.PropertyField(_Projectile);
-                EditorGUILayout.PropertyField(_Speed);
             }
 
             serializedObject.ApplyModifiedProperties();

@@ -268,7 +268,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Run
+      name: Ashe_Move
       takeName: Run
       internalID: 5522812681064789136
       firstFrame: 0
@@ -471,7 +471,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idle1
+      name: Ashe_Idle
       takeName: Idle1
       internalID: -6775884027671718737
       firstFrame: 0
@@ -500,7 +500,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Death
+      name: Ashe_Dead
       takeName: Death
       internalID: 4348485665485846014
       firstFrame: 0
@@ -674,7 +674,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack1
+      name: Ashe_Attack
       takeName: Attack1
       internalID: 7572344613039948371
       firstFrame: 0
@@ -789,7 +789,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

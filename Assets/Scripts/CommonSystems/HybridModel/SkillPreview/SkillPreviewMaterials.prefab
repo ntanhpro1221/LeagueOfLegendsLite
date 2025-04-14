@@ -67,7 +67,7 @@ MonoBehaviour:
     - Spell_F
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: a5706c27aa96f8d8fd823d027e97af4a
+      Hash: 82f0cb73dd840ebbf059d204919861ee
     _KeySynced: 1
   _Colors:
     _Keys: 000000000100000002000000
@@ -75,14 +75,14 @@ MonoBehaviour:
     - _Value:
         Value: {r: 0, g: 0.6531446, b: 1, a: 1}
     - _Value:
-        Value: {r: 1, g: 0.28504565, b: 0, a: 1}
+        Value: {r: 1, g: 0.008962935, b: 0, a: 1}
     - _Value:
-        Value: {r: 1, g: 0.015686275, b: 0, a: 1}
+        Value: {r: 1, g: 0.28627452, b: 0, a: 1}
     _KeyNames:
     - Blue
     - Red
     - Orange
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: a5706c27aa96f8d8fd823d027e97af4a
+      Hash: 82f0cb73dd840ebbf059d204919861ee
     _KeySynced: 1

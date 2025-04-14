@@ -2,7 +2,6 @@
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct SyncHybridModelClientSystem : ISystem {
@@ -13,53 +12,73 @@ public partial struct SyncHybridModelClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        Sync_Anim_Pos_Highlight(ref state);
-        Sync_AttackRangeShower(ref state);
+        SyncAnim_PosHighlight(ref state);
+        SyncSkillPreview_Turret(ref state);
+        SyncSkillPreview_OwnChamp(ref state);
     }
 
-    private void Sync_Anim_Pos_Highlight(ref SystemState state) {
+    private void SyncAnim_PosHighlight(ref SystemState state) {
         foreach (var (
                 hybridData
               , animData
               , locTrans
-              , highlightData)
+              , highlightData
+              , highlightVisible)
             in SystemAPI.Query<
-                RefRO<HybridModelData>
-              , RefRW<SharedAnimData>
-              , RefRO<LocalTransform>
-              , RefRO<HighlightData>>()) {
+                    RefRO<HybridModelData>
+                  , RefRW<SharedAnimData>
+                  , RefRO<LocalTransform>
+                  , RefRO<HighlightData>
+                  , EnabledRefRO<HighlightVisible>>()
+                .WithPresent<HighlightVisible>()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;
 
+            // POSITION
             trans.position = locTrans.ValueRO.Position;
             trans.rotation = locTrans.ValueRO.Rotation;
 
-            animCtrl.SyncAnim(animData.ValueRO.curAnim, ref animData.ValueRW.isNeedRestart);
+            // ANIMATION
+            animCtrl.SyncAnim(
+                animData.ValueRO.curAnim
+              , ref animData.ValueRW.isNeedRestart
+              , animData.ValueRO.hardCutAnim);
 
-            if (highlightData.ValueRO.isHighlighted != outline.enabled)
-                outline.enabled = highlightData.ValueRO.isHighlighted;
+            // HIGHLIGHT
+            bool isHighlightNow =
+                highlightData.ValueRO.isHighlighted
+             && highlightVisible.ValueRO;
+            if (isHighlightNow != outline.enabled)
+                outline.enabled = isHighlightNow;
         }
     }
 
-    private void Sync_AttackRangeShower(ref SystemState state) {
-        var attackRangeId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
+    private void SyncSkillPreview_Turret(ref SystemState state) {
+        foreach (var data in SystemAPI
+            .Query<SyncSkillPreviewAspect>()
+            .WithAll<TurretTag>())
+            data.Sync();
+    }
 
-        foreach (var (
-                shower
-              , stats)
-            in SystemAPI
-                .Query<
-                    RefRO<HybridModelData>
-                  , DynamicBuffer<StatsBuffer>>()
-                .WithAll<
-                    ChampionTag
-                  , GhostOwnerIsLocal>())
-            shower.ValueRO.attackRangeShowerRef.Value.SyncType(
-                SystemAPI.GetSingleton<InputDirtyData>().a_key.IsHolding()
-                    ? SkillPreviewType.NormalAttack
-                    : SkillPreviewType.None
-              , SkillPreviewColor.Blue
-              , 2 * new Vector2(stats[attackRangeId].value, stats[attackRangeId].value));
+    private void SyncSkillPreview_OwnChamp(ref SystemState state) {
+        foreach (var data in SystemAPI
+            .Query<SyncSkillPreviewAspect>()
+            .WithAll<
+                ChampionTag
+              , GhostOwnerIsLocal>())
+            data.Sync();
+    }
+
+    private readonly partial struct SyncSkillPreviewAspect : IAspect {
+        private readonly RefRO<HybridModelData>  _HybridData;
+        private readonly RefRO<SkillPreviewData> _SkillPreviewData;
+
+        public void Sync() {
+            _HybridData.ValueRO.skillPreviewRef.Value.Sync(
+                _SkillPreviewData.ValueRO.type
+              , _SkillPreviewData.ValueRO.color
+              , _SkillPreviewData.ValueRO.scale);
+        }
     }
 }

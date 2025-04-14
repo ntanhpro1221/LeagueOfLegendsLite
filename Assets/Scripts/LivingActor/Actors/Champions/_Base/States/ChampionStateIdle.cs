@@ -10,6 +10,7 @@ public static partial class ChampionStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
         [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
@@ -19,6 +20,8 @@ public static partial class ChampionStateIdle {
             state.RequireForUpdate<EnumIndexData>();
 
             entityLookup = SystemAPI.GetEntityStorageInfoLookup();
+            selectLookup = SystemAPI.GetComponentLookup<Selectable>(
+                isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
             statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
@@ -28,6 +31,7 @@ public static partial class ChampionStateIdle {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
+            selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
             statsLookup.Update(ref state);
 
@@ -61,13 +65,13 @@ public static partial class ChampionStateIdle {
                     // Have move request
                     input.ValueRO.moveEvent.IsSet
                     // Need move to target
-                 || aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
+                 || aimedTarget.NeedMoveToTarget(entityLookup, selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
                     sharedState.SetMove();
 
                 // ATTACK STATE
                 else if (
                     // have target
-                    aimedTarget.IsTargetExists(entityLookup)
+                    aimedTarget.IsTargetExists(entityLookup, selectLookup)
                     // attack cool down done
                  && attackData.ValueRO.IsCooldownDone(curTick))
                     sharedState.SetAttack();
@@ -93,11 +97,14 @@ public static partial class ChampionStateIdle {
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
     public partial struct Update : ISystem {
         [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             entityLookup = SystemAPI.GetEntityStorageInfoLookup();
+            selectLookup = SystemAPI.GetComponentLookup<Selectable>(
+                isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
         }
@@ -105,6 +112,7 @@ public static partial class ChampionStateIdle {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
+            selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
 
             // ROTATE TO TARGET
@@ -114,7 +122,7 @@ public static partial class ChampionStateIdle {
                   , RefRW<MoveData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                if (target.IsTargetExists(entityLookup))
+                if (target.IsTargetExists(entityLookup, selectLookup))
                     moveData.ValueRW.RotateTo(locTrans.ValueRO.Position, target.Target, locTransLookup);
         }
     }

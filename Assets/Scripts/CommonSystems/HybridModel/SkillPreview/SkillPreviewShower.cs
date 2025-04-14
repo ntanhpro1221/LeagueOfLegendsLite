@@ -14,7 +14,7 @@ public class SkillPreviewShower : MonoBehaviour {
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    public void SyncType(SkillPreviewType type, SkillPreviewColor color, Vector2 scale) {
+    public void Sync(SkillPreviewType type, SkillPreviewColor color, Vector2 scale) {
         // nothing to update
         if (type == prevType && color == prevColor) return;
         prevType  = type;

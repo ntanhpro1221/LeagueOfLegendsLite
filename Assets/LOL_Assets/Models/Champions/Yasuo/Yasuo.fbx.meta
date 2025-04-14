@@ -99,7 +99,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Yasuo_Run1
+      name: Yasuo_Move
       takeName: Yasuo_Run1
       internalID: -5388781022898547358
       firstFrame: 0
@@ -273,7 +273,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Yasuo_Idle1
+      name: Yasuo_Idle
       takeName: Yasuo_Idle1
       internalID: 7077116186323418917
       firstFrame: 0
@@ -1085,7 +1085,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Death
+      name: Yasuo_Dead
       takeName: Death
       internalID: 4348485665485846014
       firstFrame: 0
@@ -1259,7 +1259,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attack1
+      name: Yasuo_Attack
       takeName: Attack1
       internalID: 7572344613039948371
       firstFrame: 0
@@ -1374,7 +1374,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 10.4
+    globalScale: 1040
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

@@ -11,10 +11,12 @@ public enum TeamType {
 
 public struct TeamTypeData : IComponentData {
     [GhostField] public TeamType teamType;
-    
+
     public TeamTypeData(TeamType teamType) {
         this.teamType = teamType;
     }
+
+    public bool IsSameTeam(TeamTypeData other) => teamType == other.teamType;
 }
 
 public class TeamTypeAuthoring : MonoBehaviour {

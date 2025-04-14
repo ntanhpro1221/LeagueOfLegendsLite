@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 2907014209381040497}
   - component: {fileID: -9146969485346626563}
   - component: {fileID: 1533971657701454682}
+  - component: {fileID: 4909889527471281986}
+  - component: {fileID: 5392229273288189392}
   m_Layer: 7
   m_Name: LivingActorBase
   m_TagString: Untagged
@@ -200,6 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entryAnim: 2
+  hardCutAnim: 0
+  animClipPrefix: Base_
+  animController: {fileID: 9100000, guid: 03b481fa35c8e824aa6e5de2c2569b63, type: 2}
 --- !u!114 &3909052697964651725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,6 +307,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f76d2315b14c409dfc091075af4bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _OverrideState:
+    _Keys: 000000000100000002000000030000000400000005000000
+    _Values:
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    _KeyNames:
+    - Attack
+    - Dead
+    - Idle
+    - Move
+    - Idle2Dead
+    - Dead2Idle
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 3c146b404f0242d3118f1c941d5b4763
+    _KeySynced: 1
 --- !u!114 &8701208352754206243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,8 +341,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   projectile: {fileID: 0}
-  speed:
-    value: 0
 --- !u!114 &2907014209381040497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,5 +376,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08e5cc4488984a418560eb2f0f1cf84c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4909889527471281986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393f391bf6054f5b94d9b409ae7d33a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5392229273288189392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d44c35daac4f83820ba833a9560490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

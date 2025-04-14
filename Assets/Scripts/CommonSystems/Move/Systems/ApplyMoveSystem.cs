@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(MoveSystemGroup))]
 public partial struct ApplyMoveSystem : ISystem {
@@ -33,18 +34,27 @@ public partial struct ApplyMoveSystem : ISystem {
 
         [BurstCompile]
         public void Execute(ref MoveData moveData, ref LocalTransform localTrans, ref PhysicsVelocity velocity) {
-            // RESET VELOCITY FIRST
-            velocity.Linear.AssignKeepY(float3.zero);
-            velocity.Angular = float3.zero;
+            Calc(ref moveData, ref localTrans, out var newLinear, out var newAngular);
+            
+            // APPLY VELOCITY
+            GameHelpers.AssignLinearVelocity(ref velocity, newLinear, moveData.controlYAxis);
+            velocity.Angular = newAngular;
+        }
+
+        [BurstCompile]
+        public void Calc(ref MoveData moveData, ref LocalTransform localTrans, out float3 newLinear, out float3 newAngular) {
+            newLinear = newAngular = float3.zero;
 
             // DO MOVE
             if (!moveData.isMoveDone) {
-                float  moveSpeed  = moveData.moveSpeed;
-                float3 moveVector = (moveData.targetLocPos.Full - localTrans.Position).WithoutY();
-                float  moveDis    = math.length(moveVector);
-                if (moveDis <= moveSpeed * deltaTime) moveData.MarkMoveDone();
+                float  moveSpeed        = moveData.moveSpeed;
+                float3 moveVector       = moveData.targetLocPos - localTrans.Position;
+                float  moveDis_WithoutY = math.length(moveVector.WithoutY());
+                if (moveDis_WithoutY <= moveSpeed * deltaTime) moveData.MarkMoveDone();
                 else {
-                    velocity.Linear.AssignKeepY(moveSpeed / moveDis * moveVector);
+                    // Yes, this is correct: here I use moveDis_WithoutY
+                    // Because velocity is only exactly for X and Z
+                    newLinear = moveSpeed / moveDis_WithoutY * moveVector;
 
                     // ROTATE RECALCULATING ONLY IF MOVING
                     moveData.RotateTo(moveVector.Quantizate3().xz);
@@ -57,7 +67,7 @@ public partial struct ApplyMoveSystem : ISystem {
             float      rotateDis    = math.abs(rotateVecY);
             if (rotateDis <= rotateSpeed * deltaTime)
                 localTrans.Rotation = rotateTarget;
-            else velocity.Angular.y = rotateSpeed / rotateDis * rotateVecY;
+            else newAngular.y       = rotateSpeed / rotateDis * rotateVecY;
         }
     }
 
@@ -66,9 +76,9 @@ public partial struct ApplyMoveSystem : ISystem {
     [WithDisabled(typeof(MoveableTag))]
     [BurstCompile]
     public partial struct StopDisabledMoveJob : IJobEntity {
-        public void Execute(ref PhysicsVelocity velocity) {
+        public void Execute(ref PhysicsVelocity velocity, in MoveData moveData) {
+            GameHelpers.AssignLinearVelocity(ref velocity, float3.zero, moveData.controlYAxis);
             velocity.Angular = float3.zero;
-            velocity.Linear.AssignKeepY(float3.zero);
         }
     }
 }

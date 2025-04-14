@@ -39,7 +39,7 @@ public partial struct InitHybridModelClientSystem : ISystem {
                 transformRef         = model.transform
               , animCtrlRef          = model.GetComponentInChildren<SharedAnimController>()
               , outlineRef           = model.GetComponentInChildren<Outline>()
-              , attackRangeShowerRef = model.GetComponentInChildren<SkillPreviewShower>()
+              , skillPreviewRef = model.GetComponentInChildren<SkillPreviewShower>()
             };
             hybridData.outlineRef.Value.OutlineColor = teamType.ValueRO.teamType == myTeam
                 ? AllyHighlightColor

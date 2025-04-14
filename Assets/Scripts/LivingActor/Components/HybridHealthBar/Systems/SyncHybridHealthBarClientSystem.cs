@@ -33,6 +33,8 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
               , maxMana: data.MaxMana(manaId)
               , curMana: data.CurMana
               , curLevel: data.CurLevel);
+            
+            data.SyncHealthBarVisible();
         }
 
         ecb.Playback(state.EntityManager);
@@ -48,8 +50,10 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
 
         [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
-        [Optional] private readonly RefRO<ManaData>  _ManaData;
-        [Optional] private readonly RefRO<LevelData> _LevelData;
+        [Optional] private readonly RefRO<ManaData>               _ManaData;
+        [Optional] private readonly RefRO<LevelData>              _LevelData;
+        
+        [Optional] private readonly EnabledRefRO<HybridHealthBarVisible> _HealthBarVisible;
 
         public Vector3 HybridPos {
             set => _HybridData.ValueRO.transRef.Value.position = value;
@@ -61,6 +65,9 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
 
         public float MaxHealth(int healthId) => _Stats[healthId].value;
         public float MaxMana(int   manaId)   => _ManaData.IsValid ? _Stats[manaId].value : DEFAULT_OPTIONAL_FLOAT;
+
+        public void SyncHealthBarVisible() => _HybridData.ValueRO.transRef.Value.gameObject.SetActive(
+            _HealthBarVisible.ValueRO);
 
         public float CurHealth => _HealthData.ValueRO.value;
         public float CurMana   => _ManaData.IsValid ? _ManaData.ValueRO.value : DEFAULT_OPTIONAL_FLOAT;

@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Height
-      value: 888
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Radius
@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Center.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2373267175499843026, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: prefabId
@@ -72,10 +72,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8230867433105210368, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: hardCutAnim
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: e2085dbe57531a73968829e54f30c4cd
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      insertIndex: 13
+      addedObject: {fileID: 2300490791562642724}
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: -3044300342929509598}
@@ -88,6 +100,34 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
   m_PrefabInstance: {fileID: 2497754093237039527}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2300490791562642724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32608205855955755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1846512b5758c4f9078ac56c70d8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OverrideState:
+    _Keys: 00000000010000000200000003000000
+    _Values:
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    _KeyNames:
+    - Attack
+    - Dead
+    - Idle
+    - Move
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: e2085dbe57531a73968829e54f30c4cd
+    _KeySynced: 1
 --- !u!114 &-3044300342929509598
 MonoBehaviour:
   m_ObjectHideFlags: 0

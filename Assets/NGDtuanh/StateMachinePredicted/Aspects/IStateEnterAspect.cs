@@ -5,5 +5,11 @@ namespace NGDtuanh.Entities.StateMachine {
         where TIdentity : unmanaged, IComponentData
         where TState : unmanaged, IComponentData, IEnableableComponent {
         protected EnabledRefRO<StateRequireEnter> StateRequireEnter { get; }
+
+        // ReSharper disable once PossibleInterfaceMemberAmbiguity
+        public new interface Base<TInheritTag> :
+            IStateEnterAspect<TIdentity, TState>
+          , IStateInheritable<TIdentity, TState, TInheritTag>
+            where TInheritTag : unmanaged, IStateInheritTag<TIdentity, TState> { }
     }
 }

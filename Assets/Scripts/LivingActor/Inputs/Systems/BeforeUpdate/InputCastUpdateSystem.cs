@@ -18,6 +18,7 @@ public partial struct InputCastUpdateSystem : ISystem {
 
     private EntityQuery            ownChampQuery;
     private NativeList<RaycastHit> castResult;
+    private ComponentLookup<Selectable> selectLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -32,10 +33,14 @@ public partial struct InputCastUpdateSystem : ISystem {
 
         state.EntityManager.CreateSingleton<InputCastData>();
         castResult = new NativeList<RaycastHit>(Allocator.Persistent);
+        selectLookup = SystemAPI.GetComponentLookup<Selectable>(
+            isReadOnly: true);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        state.CompleteDependency();
+        
         ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
         castData.Reset();
 
@@ -48,6 +53,8 @@ public partial struct InputCastUpdateSystem : ISystem {
           , Filter = filterGroundActor
         }, ref castResult)) return;
 
+        selectLookup.Update(ref state);
+        
         uint totalHitLayer = 0;
         uint hitLayer;
         foreach (var hit in castResult) {
@@ -58,10 +65,14 @@ public partial struct InputCastUpdateSystem : ISystem {
                 .BelongsTo) {
                 
                 case PhysicsLayerHelper.Actor:
+                    if (!selectLookup.HasComponent(hit.Entity) || !selectLookup.IsComponentEnabled(hit.Entity))
+                        continue;
+                    
                     if (SystemAPI.GetComponent<TeamTypeData>(hit.Entity).teamType
                      == ownChampQuery.GetSingleton<TeamTypeData>().teamType)
                         castData.SetHitAlly(hit.Entity);
                     else castData.SetHitEnemy(hit.Entity);
+                    
                     break;
                 
                 case PhysicsLayerHelper.Ground: 

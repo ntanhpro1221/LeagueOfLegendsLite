@@ -10,6 +10,7 @@ public static partial class ChampionStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
         [ReadOnly] private EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
@@ -18,6 +19,8 @@ public static partial class ChampionStateAttack {
             state.RequireForUpdate<EnumIndexData>();
 
             entityLookup = state.GetEntityStorageInfoLookup();
+            selectLookup = SystemAPI.GetComponentLookup<Selectable>(
+                isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
             statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
@@ -27,6 +30,7 @@ public static partial class ChampionStateAttack {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             entityLookup.Update(ref state);
+            selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
             statsLookup.Update(ref state);
 
@@ -56,13 +60,13 @@ public static partial class ChampionStateAttack {
                 // MOVE STATE
                 else if (
                     // Need move to target
-                    aimedTarget.NeedMoveToTarget(entityLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)
+                    aimedTarget.NeedMoveToTarget(entityLookup, selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)
                     // Have move request
                  || input.ValueRO.moveEvent.IsSet)
                     sharedState.SetMove();
 
                 // IDLE STATE
-                else if (!aimedTarget.IsTargetExists(entityLookup)) // Lost target
+                else if (!aimedTarget.IsTargetExists(entityLookup, selectLookup)) // Lost target
                     sharedState.SetIdle();
                 else continue;
 

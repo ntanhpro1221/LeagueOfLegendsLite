@@ -1,21 +1,11 @@
-using NGDtuanh.Singleton;
 using UnityEngine;
 
-public class Alice : SceneSingleton<Alice> {
-    public GameObject         ashe;
-    public AnimatorOverrideController Controller;
+public class Alice : MonoBehaviour {
+    public Animator animator;
 
-    // private void Update() {
-    //     // if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-    //     //     using var queryBuilder = new EntityQueryBuilder(Allocator.Temp);
-    //     //     var query = queryBuilder
-    //     //         .WithAll<LocalTransform, ChampionTag>()
-    //     //         .Build(World.DefaultGameObjectInjectionWorld.EntityManager);
-    //     //     Instantiate(ashe, query.GetSingleton<LocalTransform>().Position, Quaternion.identity);
-    //     // }
-    // }
-    
-    public void SpawnAshe(Vector3 position) {
-        Instantiate(ashe, position, Quaternion.identity);
+    private string[] stateNames = { "One", "Two", "Three" };
+
+    public void Start() {
+        animator.Play("Two");
     }
 }

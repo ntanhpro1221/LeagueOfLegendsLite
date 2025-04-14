@@ -41,7 +41,7 @@ public partial struct CommonRangedAttackSystem : ISystem {
         public void Execute(
             in AimedTargetData                target
           , in RangedAttackTriggerData        attackData
-          , in LocalTransform                   locTrans
+          , in LocalTransform                 locTrans
           , in ProjectileSpawnPoint           projSpawnPnt
           , in DynamicBuffer<StatsBuffer>     stats
           , EnabledRefRW<RangedAttackTrigger> attackTrigger) {
@@ -50,7 +50,6 @@ public partial struct CommonRangedAttackSystem : ISystem {
 
                 ecb.SetComponent(projectile, new AimedTargetData(target.target));
                 ecb.SetComponent(projectile, new DamageTriggerSource(stats[damageId].value));
-                ecb.SetComponent(projectile, new MoveData { moveSpeed = attackData.speed });
                 ecb.SetComponent(projectile, LocalTransform.FromPositionRotationScale(
                     // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
                     locTrans.TransformPoint(projSpawnPnt.point.position)

@@ -4,19 +4,17 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 [UpdateAfter(typeof(UpdateCollidedOpponentSystem))]
 public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
-    [ReadOnly] private ComponentLookup<LocalTransform>    locTransLookup;
     private            BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
 
-        locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
-            isReadOnly: true);
         incomingDmgLookup = SystemAPI.GetBufferLookup<IncomingDamageBuffer>(
             isReadOnly: false);
     }
@@ -25,13 +23,11 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
-        locTransLookup.Update(ref state);
         incomingDmgLookup.Update(ref state);
 
         // APPLY TARGETED DAMAGE
         state.Dependency = new ApplyTargetedDamageJob {
-            locTransLookup    = locTransLookup
-          , incomingDmgLookup = incomingDmgLookup
+            incomingDmgLookup = incomingDmgLookup
         }.Schedule(state.Dependency);
 
         // APPLY BLOCKABLE DAMAGE
@@ -54,17 +50,16 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
         typeof(NetworkDestroyedTag))]
     [BurstCompile]
     private partial struct ApplyTargetedDamageJob : IJobEntity {
-        [ReadOnly] public ComponentLookup<LocalTransform>    locTransLookup;
         public            BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
 
         [BurstCompile]
         public void Execute(
             in DamageTriggerSource            damageData
           , in AimedTargetData                targetData
-          , in LocalTransform                 locTrans
+            , in MoveData moveData
           , EnabledRefRW<NetworkDestroyedTag> destroy) {
-            float dis = math.length((locTrans.Position - this.locTransLookup[targetData.target].Position).WithoutY());
-            if (dis > float_Q3.EPSILON) return;
+            
+            if (!moveData.isMoveDone) return;
 
             incomingDmgLookup[targetData.target].Add(new IncomingDamageBuffer(damageData.damage));
 

@@ -7,7 +7,7 @@ namespace NGDtuanh.Entities.StateMachine {
         where TIdentity : unmanaged, IComponentData
         where TState : unmanaged, IComponentData, IEnableableComponent {
         RefRO<TState> IStateAspect<TIdentity, TState>.CurState => default; // we don't need this anymore
-        
+
         protected EnabledRefRW<StateNotExitedYet> StateNotExitedYet { get; }
         protected EnabledRefRW<TState>            CurStateEnable    { get; }
 
@@ -18,5 +18,11 @@ namespace NGDtuanh.Entities.StateMachine {
         /// <code>_stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;</code>
         /// </summary>
         void MarkExitExecuted();
+
+        // ReSharper disable once PossibleInterfaceMemberAmbiguity
+        public new interface Base<TInheritTag> :
+            IStateExitAspect<TIdentity, TState>
+          , IStateInheritable<TIdentity, TState, TInheritTag>
+            where TInheritTag : unmanaged, IStateInheritTag<TIdentity, TState> { }
     }
 }

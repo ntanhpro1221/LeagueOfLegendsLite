@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3044300342929509598, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: laneType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 24758857827221058, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: id
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 32608205855955755, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_Name
       value: NexusBase
@@ -30,23 +38,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 204956880325547665, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: teamType
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2129615819578557768, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: modelPrefab
       value: 
       objectReference: {fileID: 970068943506204971, guid: 6063a8cce1107b045afcd5751fce2fe8, type: 3}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: _OverrideState._Keys.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 62723d274af3b17e78f4b89a70b109f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: _OverrideState._Values.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[4]'
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[5]'
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: _OverrideState._KeyNames.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[4]'
+      value: Idle2Dead
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[5]'
+      value: Dead2Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5805179843284487591, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: animClipPrefix
+      value: Nexus_
+      objectReference: {fileID: 0}
+    - target: {fileID: 5805179843284487591, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: animController
+      value: 
+      objectReference: {fileID: 22100000, guid: dded4c3c2110e4a4c922d0c8cb6adb37, type: 2}
     - target: {fileID: 7719546667869989749, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2761.7854
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7719546667869989749, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -59.90271
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7719546667869989749, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3229.7786
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7719546667869989749, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -75,6 +123,10 @@ PrefabInstance:
     - target: {fileID: 7719546667869989749, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947553856389571863, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      propertyPath: deltaY
+      value: 250
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

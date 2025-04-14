@@ -26,11 +26,13 @@ public static partial class ChampionStateDead {
             foreach (var (
                     filter
                   , sharedState
-                  , data)
+                  , data
+                  , select_highlight_healthBar)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
-                  , UpdateAspect>()) {
+                  , UpdateAspect
+                  , Select_Highlight_HealthBarAspect>()) {
 
                 // IDLE STATE
                 if (curTick.IsNewerThan(data.RespawnTick)) // It's tick to respawn
@@ -44,6 +46,7 @@ public static partial class ChampionStateDead {
                 data.CurHealth = data.MaxHealth(healthId);                           // Respawn with full health
                 data.EnableMove();                                                   // enable move
                 data.RequireInputReset();                                            // require input reset
+                select_highlight_healthBar.EnableAll();                              // enable select and highlight and health bar
             }
         }
 
@@ -56,12 +59,12 @@ public static partial class ChampionStateDead {
 
             [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
-            [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
-            [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
+            [Optional] private readonly EnabledRefRW<MoveableTag>            _Moveable;
+            [Optional] private readonly EnabledRefRW<PlayerInputResetting>   _InputReset;
 
             public ref LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
-            public ref MoveData       MoveData  => ref _MoveData.ValueRW;
+            public ref MoveData       MoveData    => ref _MoveData.ValueRW;
             public     TeamType       TeamType    => _TeamType.ValueRO.teamType;
             public     NetworkTick    RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 
@@ -81,17 +84,19 @@ public static partial class ChampionStateDead {
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            foreach (var (_, data) in SystemAPI.Query<
+            foreach (var (_, data, select_highlight_healthBar) in SystemAPI.Query<
                 StateFilterAspect
-              , UpdateAspect>()) {
+              , UpdateAspect
+            , Select_Highlight_HealthBarAspect>()) {
                 data.CurAnim = SharedAnimKey.Dead;
 
-                data.RespawnAtTick = GameHelpers.CalcRespawnTick(
+                data.RespawnAtTick = GameHelpers.CalcRespawnTick_Champion(
                     SystemAPI.GetSingletonBuffer<BaseRespawnWaitTimeBuffer>()
                   , SystemAPI.GetSingleton<NetworkTime>()
                   , SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate
                   , data.CurLevel);
                 data.DisableMove();
+                select_highlight_healthBar.DisableAll();
             }
         }
 

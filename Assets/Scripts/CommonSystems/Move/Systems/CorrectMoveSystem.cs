@@ -19,8 +19,8 @@ public partial struct CorrectMoveSystem : ISystem {
         public void Execute(in MoveData moveData, ref LocalTransform localTrans, ref PhysicsVelocity velocity) {
             if (!moveData.isMoveDone) return;
 
-            localTrans.Position.AssignKeepY(moveData.targetLocPos.Full);
-            velocity.Linear.AssignKeepY(float3.zero);
+            localTrans.Position.AssignKeepY(moveData.targetLocPos);
+            GameHelpers.AssignLinearVelocity(ref velocity, float3.zero, moveData.controlYAxis);
         }
     }
 }

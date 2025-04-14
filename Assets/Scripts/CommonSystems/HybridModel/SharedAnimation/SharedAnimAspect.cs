@@ -4,4 +4,6 @@ public readonly partial struct SharedAnimAspect : IAspect {
     private readonly RefRW<SharedAnimData> _AnimData;
 
     public void SetAnim(SharedAnimKey newAnim) => _AnimData.ValueRW.curAnim = newAnim;
+
+    public ref bool HardCutAnim => ref _AnimData.ValueRW.hardCutAnim;
 }
