@@ -92,8 +92,8 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
 
             // Your champ is near this turret (1.5 x range)
             else if (false == GameHelpers.IsTargetOutOfRange(
-                ownChampLocTrans
-              , locTrans
+                ownChampLocTrans.Position
+              , locTrans.Position
               , stats[attackRangeId].value * 1.5f
               , ownChampRadius))
                 data.color = SkillPreviewColor.Orange;

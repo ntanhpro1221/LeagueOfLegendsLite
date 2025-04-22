@@ -25,8 +25,8 @@ public readonly partial struct AimedTargetAspectRO : IAspect {
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
         GameHelpers.IsTargetOutOfRange(
-            _LocTrans.ValueRO
-          , locTransLookup[_AimedTargetData.ValueRO.target]
+            _LocTrans.ValueRO.Position
+          , locTransLookup[_AimedTargetData.ValueRO.target].Position
           , _Stats[attackRangeId].value
           , statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value);
 

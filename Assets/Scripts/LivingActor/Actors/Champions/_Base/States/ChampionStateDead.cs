@@ -42,7 +42,7 @@ public static partial class ChampionStateDead {
                 filter.MarkExitExecuted();
 
                 data.LocalTrans = initTrans[data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
-                data.MoveData.SyncFromLocTrans(data.LocalTrans);                     // Reset target pos at init pos
+                data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                // Reset target pos at init pos
                 data.CurHealth = data.MaxHealth(healthId);                           // Respawn with full health
                 data.EnableMove();                                                   // enable move
                 data.RequireInputReset();                                            // require input reset
@@ -51,7 +51,6 @@ public static partial class ChampionStateDead {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<MoveData>       _MoveData;
             private readonly RefRW<HealthData>     _HealthData;
             private readonly RefRW<LocalTransform> _LocalTrans;
             private readonly RefRO<TeamTypeData>   _TeamType;
@@ -59,12 +58,13 @@ public static partial class ChampionStateDead {
 
             [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
-            [Optional] private readonly EnabledRefRW<MoveableTag>            _Moveable;
-            [Optional] private readonly EnabledRefRW<PlayerInputResetting>   _InputReset;
+            [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
+            [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
+
+            public readonly MoveRequesterAspect MoveRequester;
 
             public ref LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
-            public ref MoveData       MoveData    => ref _MoveData.ValueRW;
             public     TeamType       TeamType    => _TeamType.ValueRO.teamType;
             public     NetworkTick    RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 

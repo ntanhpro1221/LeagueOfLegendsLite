@@ -31,7 +31,7 @@ public partial struct PlayerInputUpdateSystem : ISystem {
 
             // CHECK MOVE
             if (CheckMoveEvent(dirtyData, castData)) {
-                inputData.SetMove(castData.groundPos);
+                inputData.SetMove(castData.walkableGroundPos);
                 inputData.CancelAttack();
             }
 
@@ -55,6 +55,6 @@ public partial struct PlayerInputUpdateSystem : ISystem {
 
     [BurstCompile]
     public static bool CheckMoveEvent(in InputDirtyData dirtyData, in InputCastData castData) =>
-        castData.isHitGround
+        castData.isHitWalkableGround
      && dirtyData.rightMouse.WasPressedThisFrame();
 }

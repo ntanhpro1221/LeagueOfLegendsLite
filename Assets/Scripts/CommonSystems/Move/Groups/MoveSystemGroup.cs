@@ -1,6 +1,5 @@
 ﻿using Unity.Entities;
-using Unity.NetCode;
+using Unity.Physics.Systems;
 
-[UpdateInGroup(typeof(Between_CopyCommand_PredictedFixed_SystemGroup))]
-[UpdateAfter(typeof(InputPredictedUpdateSystemGroup))]
+[UpdateInGroup(typeof(BeforePhysicsSystemGroup))]
 public partial class MoveSystemGroup : ComponentSystemGroup { }

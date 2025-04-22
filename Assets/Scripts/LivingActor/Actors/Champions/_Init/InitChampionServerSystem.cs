@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
@@ -32,7 +33,7 @@ public partial struct InitChampionServerSystem : ISystem {
               , health
               , mana
               , localTrans
-              , moveData
+              , moveRequester
               , entity)
             in SystemAPI
                 .Query<
@@ -41,7 +42,7 @@ public partial struct InitChampionServerSystem : ISystem {
                   , RefRW<HealthData>
                   , RefRW<ManaData>
                   , RefRW<LocalTransform>
-                  , RefRW<MoveData>>()
+                  , MoveRequesterAspect>()
                 .WithAll<
                     ChampionTag
                   , Simulate
@@ -63,7 +64,7 @@ public partial struct InitChampionServerSystem : ISystem {
 
             // init position, move target
             localTrans.ValueRW = champInitTrans[teamType.ValueRO.teamType][0].ToLocTrans_Directly();
-            moveData.ValueRW.SyncFromLocTrans(localTrans.ValueRO);
+            moveRequester.SyncFromLocTrans(localTrans.ValueRO);
         }
 
         ecb.Playback(state.EntityManager);

@@ -16,8 +16,8 @@ public partial struct InputCastUpdateSystem : ISystem {
       , CollidesWith = GROUND_ACTOR
     };
 
-    private EntityQuery            ownChampQuery;
-    private NativeList<RaycastHit> castResult;
+    private EntityQuery                 ownChampQuery;
+    private NativeList<RaycastHit>      castResult;
     private ComponentLookup<Selectable> selectLookup;
 
     [BurstCompile]

@@ -21,12 +21,12 @@ public static class GameHelpers {
 
     [BurstCompile]
     public static bool IsTargetOutOfRange(
-        in LocalTransform targetTrans
-      , in LocalTransform yourTrans
-      , float             yourRange
-      , float             targetRadius) =>
+        in float3 targetPos
+      , in float3 yourPos
+      , float     yourRange
+      , float     targetRadius) =>
         yourRange + targetRadius
-      < math.length((targetTrans.Position - yourTrans.Position).WithoutY());
+      < math.length((targetPos - yourPos).WithoutY());
 
     [BurstCompile]
     public static bool IsTargetExists(
@@ -45,4 +45,10 @@ public static class GameHelpers {
         if (controlYAxis) velocity.Linear = linear;
         else velocity.Linear.AssignKeepY(linear);
     }
+
+    public static float DistanceXZ_Sqr(float3 alice, float3 bob)
+        => math.lengthsq((alice - bob).WithoutY());
+
+    public static float DistanceXZ(float3 alice, float3 bob)
+        => math.length((alice - bob).WithoutY());
 }

@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
+using UnityEngine;
 
 public static partial class InhibitorStateDead {
     public const float RespawnTime = 10f;

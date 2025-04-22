@@ -20,10 +20,9 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
     private void UpdateRay(ref SystemState state, ref InputDirtyData inputData) {
         var ray = Camera.main!.ScreenPointToRay(Mouse.current.position.value);
-        SystemAPI.GetSingletonRW<InputDirtyData>().ValueRW = new() {
-            rayStart = ray.origin
-          , rayEnd   = ray.GetPoint(1e5f)
-        };
+        
+        inputData.rayStart = ray.origin;
+        inputData.rayEnd   = ray.GetPoint(1e5f);
     }
 
     private void UpdateMouseButtons(ref SystemState state, ref InputDirtyData inputData) {

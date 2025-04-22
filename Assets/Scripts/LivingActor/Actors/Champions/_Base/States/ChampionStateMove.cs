@@ -4,18 +4,18 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
         [ReadOnly] private EntityStorageInfoLookup         entityLookup;
-        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
+        [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<EnumIndexData>();
 
             entityLookup = SystemAPI.GetEntityStorageInfoLookup();
@@ -57,8 +57,8 @@ public static partial class ChampionStateMove {
 
                 // IDLE STATE
                 else if (
-                    // NOT HAVE VELOCITY
-                    !data.velocity.IsMoving
+                    // Done move
+                    data.moveRequester.IsMoveDone
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
@@ -72,18 +72,18 @@ public static partial class ChampionStateMove {
 
         private readonly partial struct UpdateAspect : IAspect {
             public readonly HealthAspectRO         health;
-            public readonly VelocityAspectRO       velocity;
             public readonly AimedTargetAspectRO    aimedTarget;
             public readonly ActorSharedStateAspect sharedState;
             public readonly RefRO<AttackStateData> attackData;
+            public readonly MoveRequesterAspect    moveRequester;
 
-            private readonly RefRW<MoveData>       moveData;
             private readonly RefRO<LocalTransform> localTrans;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
 
+
             public void StopMove() {
-                moveData.ValueRW.SyncFromLocTrans(localTrans.ValueRO);
+                moveRequester.SyncFromLocTrans(localTrans.ValueRO);
 
                 autoFollowTarget.ValueRW = false;
             }
@@ -104,14 +104,14 @@ public static partial class ChampionStateMove {
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
     public partial struct Update : ISystem {
-        private EntityStorageInfoLookup         entityLookup;
-        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
-        private ComponentLookup<LocalTransform> locTransLookup;
+        private            EntityStorageInfoLookup         entityLookup;
+        [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
+        private            ComponentLookup<LocalTransform> locTransLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            entityLookup   = SystemAPI.GetEntityStorageInfoLookup();
+            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -126,23 +126,26 @@ public static partial class ChampionStateMove {
 
             foreach (var (
                     _
-                  , moveData
+                  , moveRequester
                   , aimedTarget
                   , input
                   , autoFollowTarget)
                 in SystemAPI
                     .Query<
                         StateFilterAspect
-                      , RefRW<MoveData>
+                      , MoveRequesterAspect
                       , AimedTargetAspectRO
                       , RefRO<PlayerInputData>
                       , EnabledRefRW<AutoFollowTarget>>()
                     .WithPresent<AutoFollowTarget>()) {
 
+                // Try move to aimed target
                 autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(entityLookup, selectLookup);
 
-                if (!autoFollowTarget.ValueRO)
-                    moveData.ValueRW.MoveTo(input.ValueRO.moveLocalTarget);
+                // If not aiming to any target => move to input of user
+                if (!autoFollowTarget.ValueRO
+                 && moveRequester.NeedRecalculatePath(input.ValueRO.moveLocTarget))
+                    moveRequester.MoveSmartAttackTo(input.ValueRO.moveLocTarget);
             }
         }
     }
@@ -195,4 +198,4 @@ public static partial class ChampionStateMove {
             RefRO<Simulate> IStateAspect<ChampionTag, MoveState>.   Simulate => _simulate;
         }
     }
-}
+} 

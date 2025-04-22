@@ -5,11 +5,19 @@ public struct InputCastData : IComponentData {
     #region GROUND
 
     public float3_Q3 groundPos;
+    public float3_Q3 walkableGroundPos;
 
     [field: MarshalAs(UnmanagedType.U1)]
     public bool isHitGround { get; private set; }
 
-    public void SetHitGroundAt(float3_Q3 pos) => (isHitGround, groundPos) = (true, pos);
+    [field: MarshalAs(UnmanagedType.U1)]
+    public bool isHitWalkableGround { get; private set; }
+
+    public void SetHitGroundAt(float3_Q3 pos) => 
+        (isHitGround, groundPos) = (true, pos);
+
+    public void SetHitWalkableGroundAt(float3_Q3 pos) => 
+        (isHitWalkableGround, walkableGroundPos) = (true, pos);
 
     #endregion
 

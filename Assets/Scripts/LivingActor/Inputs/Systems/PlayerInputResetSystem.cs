@@ -24,7 +24,7 @@ public partial struct PlayerInputResetSystem : ISystem {
             inputData.doneResetEvent.Set();
 
             // set move pos
-            inputData.moveLocalTarget = locTrans.Position.Quantizate3();
+            inputData.moveLocTarget = locTrans.Position.Quantizate3();
         }
     }
 }

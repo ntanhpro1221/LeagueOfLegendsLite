@@ -92,8 +92,8 @@ public partial struct TurretControlSystem : ISystem {
                   , entityLookup
                   , selectLookup)
              && !GameHelpers.IsTargetOutOfRange(
-                    locTransLookup[targetData.target]
-                  , locTrans
+                    locTransLookup[targetData.target].Position
+                  , locTrans.Position
                   , stats[attackRangeId].value
                   , statsLookup[targetData.target][unitRadiusId].value))
                 return;
@@ -104,8 +104,8 @@ public partial struct TurretControlSystem : ISystem {
                 // if (champTeam[i].IsSameTeam(team)) continue;
 
                 if (GameHelpers.IsTargetOutOfRange(
-                    locTransLookup[target]
-                  , locTrans
+                    locTransLookup[target].Position
+                  , locTrans.Position
                   , stats[attackRangeId].value
                   , statsLookup[target][unitRadiusId].value))
                     continue;

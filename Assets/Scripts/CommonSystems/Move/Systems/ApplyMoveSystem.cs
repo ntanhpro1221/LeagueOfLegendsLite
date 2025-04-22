@@ -16,9 +16,9 @@ public partial struct ApplyMoveSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         state.Dependency = new ApplyMoveJob {
             rotateSpeed = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
-          , deltaTime   = SystemAPI.Time.DeltaTime
+          , deltaTime   = SystemAPI.Time.fixedDeltaTime
         }.ScheduleParallel(state.Dependency);
-
+        
         state.Dependency = new StopDisabledMoveJob()
             .ScheduleParallel(state.Dependency);
     }
@@ -29,32 +29,75 @@ public partial struct ApplyMoveSystem : ISystem {
     [WithNone(typeof(NetworkDestroyedTag))]
     [BurstCompile]
     public partial struct ApplyMoveJob : IJobEntity {
-        public float rotateSpeed;
-        public float deltaTime;
+        public float              rotateSpeed;
+        public float              deltaTime;
 
         [BurstCompile]
-        public void Execute(ref MoveData moveData, ref LocalTransform localTrans, ref PhysicsVelocity velocity) {
-            Calc(ref moveData, ref localTrans, out var newLinear, out var newAngular);
-            
+        public void Execute(
+            ref MoveData                      moveData
+          , ref DynamicBuffer<WaypointBuffer> waypoints
+          , ref LocalTransform                localTrans
+          , ref PhysicsVelocity               velocity) {
+            Calc(ref moveData, ref waypoints, ref localTrans, out var newLinear, out var newAngular);
+
             // APPLY VELOCITY
             GameHelpers.AssignLinearVelocity(ref velocity, newLinear, moveData.controlYAxis);
             velocity.Angular = newAngular;
         }
 
         [BurstCompile]
-        public void Calc(ref MoveData moveData, ref LocalTransform localTrans, out float3 newLinear, out float3 newAngular) {
+        public void Calc(
+            ref MoveData                      moveData
+          , ref DynamicBuffer<WaypointBuffer> waypoints
+          , ref LocalTransform                locTrans
+          , out float3                        newLinear
+          , out float3                        newAngular) {
             newLinear = newAngular = float3.zero;
 
             // DO MOVE
-            if (!moveData.isMoveDone) {
-                float  moveSpeed        = moveData.moveSpeed;
-                float3 moveVector       = moveData.targetLocPos - localTrans.Position;
-                float  moveDis_WithoutY = math.length(moveVector.WithoutY());
-                if (moveDis_WithoutY <= moveSpeed * deltaTime) moveData.MarkMoveDone();
+            if (!moveData.isMoveDone && !waypoints.Empty()) {
+                float3 moveVector           = waypoints.BackRO().pos - locTrans.Position;
+                float  disToTarget_WithoutY = math.length(moveVector.WithoutY());
+                float  disCanMove_WithoutY  = moveData.moveSpeed * deltaTime;
+                
+                // Manually move
+                if (disToTarget_WithoutY <= disCanMove_WithoutY) {
+                    float3_Q3 newPos;
+                    do {
+                        // Reach waypoint and remove it
+                        newPos = waypoints.PopBack().pos;
+                        if (waypoints.Length == 0) break;
+
+                        // decrease distance can move
+                        disCanMove_WithoutY  -= disToTarget_WithoutY;
+                        
+                        // recalculate distance to next waypoint
+                        disToTarget_WithoutY =  math.length(
+                            ((float3)(waypoints.BackRO().pos - newPos))
+                            .WithoutY());
+                    } while (disToTarget_WithoutY <= disCanMove_WithoutY);
+                    
+                    // No waypoint left => done move
+                    if (waypoints.Empty()) moveData.isMoveDone = true;
+                    // Move with the remain value of disCanMove_WithoutY
+                    else
+                        newPos = math.lerp(
+                                newPos
+                              , waypoints.BackRO().pos
+                              , disCanMove_WithoutY / disToTarget_WithoutY)
+                            .Quantizate3();
+
+                    // fix to new position
+                    moveData.FixToPos(newPos);
+                }  
+                // Move by Unity physics
                 else {
-                    // Yes, this is correct: here I use moveDis_WithoutY
+                    // Yes, this is correct: here I use disToTarget_WithoutY
                     // Because velocity is only exactly for X and Z
-                    newLinear = moveSpeed / moveDis_WithoutY * moveVector;
+                    newLinear = moveData.moveSpeed / disToTarget_WithoutY * moveVector;
+                    
+                    // indicate that Unity will move this entity
+                    moveData.isFixedPos = false;
 
                     // ROTATE RECALCULATING ONLY IF MOVING
                     moveData.RotateTo(moveVector.Quantizate3().xz);
@@ -63,10 +106,10 @@ public partial struct ApplyMoveSystem : ISystem {
 
             // DO ROTATE
             quaternion rotateTarget = quaternion.LookRotation(moveData.targetLocDir.Full, math.up());
-            float      rotateVecY   = mathHelpers.EulerDiff(localTrans.Rotation, rotateTarget).y;
+            float      rotateVecY   = mathHelpers.EulerDiff(locTrans.Rotation, rotateTarget).y;
             float      rotateDis    = math.abs(rotateVecY);
             if (rotateDis <= rotateSpeed * deltaTime)
-                localTrans.Rotation = rotateTarget;
+                locTrans.Rotation = rotateTarget;
             else newAngular.y       = rotateSpeed / rotateDis * rotateVecY;
         }
     }

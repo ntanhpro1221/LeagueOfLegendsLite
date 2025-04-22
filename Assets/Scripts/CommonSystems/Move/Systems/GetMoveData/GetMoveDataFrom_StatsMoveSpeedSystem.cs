@@ -1,7 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 
-[UpdateInGroup(typeof(BeforeMoveSystemGroup))]
+[UpdateInGroup(typeof(PrepareMoveSystemGroup))]
 public partial struct GetMoveDataFrom_StatsMoveSpeedSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {

@@ -2,8 +2,9 @@
 
 namespace NGDtuanh.Utils {
     public static class ListExtensions {
-        public static T Front<T>(this List<T> list) => list[0];
-        public static T Back<T>(this  List<T> list) => list[^1];
+        public static T   Front<T>(this     List<T> list) => list[0];
+        public static T   Back<T>(this      List<T> list) => list[^1];
+        public static int LastElementIndex<T>(this List<T> list) => list.Count - 1;
 
         public static void PushBack<T>(this  List<T> list, T value) => list.Add(value);
         public static void PushBack<T>(this  List<T> list)          => list.Add(default);

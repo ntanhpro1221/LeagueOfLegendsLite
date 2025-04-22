@@ -17,16 +17,16 @@ public struct PlayerInputData : IInputComponentData {
 
     #region MOVE
 
-    [GhostField] public float3_Q3  moveLocalTarget;
+    [GhostField] public float3_Q3  moveLocTarget;
     [GhostField] public InputEvent moveEvent;
 
     public void SetMove(float3_Q3 _targetLocalPos) {
-        moveLocalTarget = _targetLocalPos;
+        moveLocTarget = _targetLocalPos;
         moveEvent.Set();
     }
 
     public void CancelMove(in LocalTransform locTrans) {
-        moveLocalTarget = locTrans.Position.Quantizate3();
+        moveLocTarget = locTrans.Position.Quantizate3();
         moveEvent       = new InputEvent();
     }
 

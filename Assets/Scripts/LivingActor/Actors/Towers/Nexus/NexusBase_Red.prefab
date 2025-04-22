@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6926745531870558531, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: c5667e033fbe8863fd144b5addfd6640
+      value: 92d43bada8f7a7682cf7af82e5a1876b
       objectReference: {fileID: 0}
     - target: {fileID: 7080125069795883311, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
       propertyPath: modelPrefab

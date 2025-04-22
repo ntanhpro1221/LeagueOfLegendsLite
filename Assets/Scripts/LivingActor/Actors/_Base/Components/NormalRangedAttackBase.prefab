@@ -80,10 +80,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalRangedAttackBase
       objectReference: {fileID: 0}
-    - target: {fileID: 8325075222158815334, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: moveSpeed
-      value: 1500
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

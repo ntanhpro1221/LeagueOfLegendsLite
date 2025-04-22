@@ -19,22 +19,22 @@ public static class VectorExtensions {
         source.z = z;
         return source;
     }
-    
+
     public static Vector3 WithAddX(this Vector3 source, float x) {
         source.x += x;
         return source;
     }
-    
+
     public static Vector3 WithAddY(this Vector3 source, float y) {
         source.y += y;
         return source;
     }
-    
+
     public static Vector3 WithAddZ(this Vector3 source, float z) {
         source.z += z;
         return source;
     }
-    
+
     /// <returns>A new vector with only the X component preserved (Y and Z set to 0).</returns>
     public static Vector3 JustX(this Vector3 source) {
         source.y = source.z = 0;
@@ -70,10 +70,23 @@ public static class VectorExtensions {
         source.z = 0;
         return source;
     }
-    
+
     public static float4_Q3 Quantizate3(this Vector4 source)
         => (float4_Q3)source;
-    
+
     public static float3_Q3 Quantizate3(this Vector3 source)
         => (float3_Q3)source;
+
+    public static bool IsPositiveInfinity_Any(this Vector3 source) =>
+        float.IsPositiveInfinity(source.x)
+     || float.IsPositiveInfinity(source.y)
+     || float.IsPositiveInfinity(source.z);
+
+    public static bool IsPositiveInfinity_All(this Vector3 source) =>
+        float.IsPositiveInfinity(source.x)
+     && float.IsPositiveInfinity(source.y)
+     && float.IsPositiveInfinity(source.z);
+
+    public static bool IsPositiveInfinity_X(this Vector3 source) =>
+        float.IsPositiveInfinity(source.x);
 }
