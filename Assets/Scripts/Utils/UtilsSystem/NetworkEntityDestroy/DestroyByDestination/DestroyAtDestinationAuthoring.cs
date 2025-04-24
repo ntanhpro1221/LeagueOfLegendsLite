@@ -3,20 +3,25 @@ using Unity.Mathematics;
 using Unity.NetCode;
 using UnityEngine;
 
-public struct DestroyAtDestination : IComponentData {
-    [GhostField(Quantization = 0)] public float3 destination;
+[GhostEnabledBit]
+public struct DestroyAtDestination : IComponentData, IEnableableComponent {
+    [GhostField] public float3_Q3 destination;
 }
 
 [RequireComponent(typeof(NetworkDestroyableAuthoring))]
 public class DestroyAtDestinationAuthoring : MonoBehaviour {
-    public Vector3 destination;
+    public new bool    enabled;
+    public     Vector3 destination;
 
-    private class Baker : Baker<DestroyAtDestinationAuthoring> {
+    private class Baker : ExtendBaker<DestroyAtDestinationAuthoring> {
         public override void Bake(DestroyAtDestinationAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            GetDynamicEntity(out var entity);
+
             AddComponent(entity, new DestroyAtDestination {
-                destination = authoring.destination
+                destination = authoring.destination.Quantizate3()
             });
+
+            SetComponentEnabled<DestroyAtDestination>(entity, authoring.enabled);
         }
     }
 }

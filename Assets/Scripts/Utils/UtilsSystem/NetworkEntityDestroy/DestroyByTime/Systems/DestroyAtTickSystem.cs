@@ -21,23 +21,26 @@ public partial struct DestroyAtTickSystem : ISystem {
         var netTime = SystemAPI.GetSingleton<NetworkTime>();
         if (!netTime.IsFirstTimeFullyPredictingTick) return;
 
-        var curTick = netTime.ServerTick;
+        state.Dependency = new Job {
+            curTick = netTime.ServerTick
+        }.ScheduleParallel(state.Dependency);
+    }
 
-        using var ecb = new EntityCommandBuffer(Allocator.Temp);
+    [WithAll(typeof(Simulate))]
+    [WithPresent(typeof(NetworkDestroyedTag))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        public NetworkTick curTick;
 
-        foreach (var (
-                destroyTick
-              , entity)
-            in SystemAPI
-                .Query<RefRO<DestroyAtTick>>()
-                .WithAll<Simulate>()
-                .WithEntityAccess()) {
-            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            if (destroyTick.ValueRO.tick.IsNewerThan(curTick)) continue;
-            ecb.RemoveComponent<DestroyAtTick>(entity);
-            ecb.SetComponentEnabled<NetworkDestroyedTag>(entity, true);
+        [BurstCompile]
+        public void Execute(
+            ref DestroyAtTick                 destroyTick
+          , EnabledRefRW<DestroyAtTick>       destroyTickEnable
+          , EnabledRefRW<NetworkDestroyedTag> networkDestroyEnable) {
+            if (destroyTick.tick.IsNewerThan(curTick))
+                return;
+            destroyTickEnable.ValueRW    = false;
+            networkDestroyEnable.ValueRW = true;
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

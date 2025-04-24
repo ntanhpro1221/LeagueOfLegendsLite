@@ -8,25 +8,25 @@ using UnityEngine;
 public partial struct CleanHybridModelClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        using EntityQueryBuilder queryBuilder = new(Allocator.Temp);
-        state.RequireForUpdate(queryBuilder
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAll<HybridModelData>()
             .WithNone<LocalTransform>()
-            .Build(ref state));
+            .Build());
     }
 
     public void OnUpdate(ref SystemState state) {
-        using EntityCommandBuffer ecb = new(Allocator.Temp);
+        var ecb = SystemAPI
+            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (
             hybridData
-          , entity) in SystemAPI.Query<
-                RefRO<HybridModelData>>()
+          , entity) in SystemAPI
+            .Query<RefRO<HybridModelData>>()
             .WithEntityAccess()) {
             Object.Destroy(hybridData.ValueRO.transformRef.Value.gameObject);
             ecb.RemoveComponent<HybridModelData>(entity);
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

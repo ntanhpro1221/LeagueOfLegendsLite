@@ -140,7 +140,8 @@ PrefabInstance:
       propertyPath: deltaY
       value: 200
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7529110283091301495, guid: b1120452766d25e40bb0086652cb737e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

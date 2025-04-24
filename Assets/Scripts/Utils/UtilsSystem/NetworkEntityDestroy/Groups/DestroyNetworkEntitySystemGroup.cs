@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.NetCode;
 
-[UpdateInGroup(typeof(Between_CopyCommand_PredictedFixed_SystemGroup), OrderFirst = true)]
+[UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
 public partial class DestroyNetworkEntitySystemGroup : ComponentSystemGroup { }

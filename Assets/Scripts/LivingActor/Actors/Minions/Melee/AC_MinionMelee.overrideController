@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AC_MinionMelee
+  m_Controller: {fileID: 9100000, guid: 03b481fa35c8e824aa6e5de2c2569b63, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: c992191b70e03004386663830e512c40, type: 2}
+    m_OverrideClip: {fileID: 3659459257520913937, guid: 85f62f81a2d466c49968494f8d072884, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: a3b6fcaa71c6dac4d8995674c0dd55f2, type: 2}
+    m_OverrideClip: {fileID: -4014500988157257267, guid: 85f62f81a2d466c49968494f8d072884, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: d4b85a5d209a6054487c6a048f820fc3, type: 2}
+    m_OverrideClip: {fileID: 4208429735960464897, guid: 85f62f81a2d466c49968494f8d072884, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 680dcabe579e97249adc996eb6faab58, type: 2}
+    m_OverrideClip: {fileID: 3029921550975237460, guid: 85f62f81a2d466c49968494f8d072884, type: 3}

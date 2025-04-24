@@ -5,12 +5,10 @@ using Unity.NetCode;
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 [UpdateInGroup(typeof(DestroyNetworkEntitySystemGroup))]
 public partial struct DestroyNetworkEntityServerSystem : ISystem {
-    private EntityQuery _NetworkDestroyedQuery;
-
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<NetworkTime>();
-        state.RequireForUpdate(_NetworkDestroyedQuery = SystemAPI.QueryBuilder()
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAll<
                 NetworkDestroyedTag
               , Simulate>()
@@ -19,8 +17,24 @@ public partial struct DestroyNetworkEntityServerSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
+        state.Dependency = new Job {
+            ecbParallel = SystemAPI
+                .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged)
+                .AsParallelWriter()
+        }.ScheduleParallel(state.Dependency);
+    }
 
-        state.EntityManager.DestroyEntity(_NetworkDestroyedQuery);
+    [WithAll(
+        typeof(Simulate)
+      , typeof(NetworkDestroyedTag))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        public EntityCommandBuffer.ParallelWriter ecbParallel;
+
+        [BurstCompile]
+        public void Execute(in Entity entity, [EntityIndexInQuery] int queryId) {
+            ecbParallel.DestroyEntity(queryId, entity);
+        }
     }
 }

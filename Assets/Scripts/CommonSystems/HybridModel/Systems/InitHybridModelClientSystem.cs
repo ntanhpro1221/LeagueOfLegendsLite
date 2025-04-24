@@ -1,24 +1,28 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
+using Unity.Transforms;
 using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateAfter(typeof(PredictedSimulationSystemGroup))]
+[UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct InitHybridModelClientSystem : ISystem {
     private static readonly Color AllyHighlightColor  = Color.blue;
     private static readonly Color EnemyHighlightColor = Color.red;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<BattleInitData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
-            .WithAll<HybridModelInitRequest>()
-            .Build());
+        state.RequireForUpdate<HybridModelInitRequest>();
     }
 
     public void OnUpdate(ref SystemState state) {
-        using EntityCommandBuffer ecb = new(Allocator.Temp);
+        var ecb = SystemAPI
+            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
         var myTeam = SystemAPI.GetSingleton<BattleInitData>().teamType;
 
@@ -60,7 +64,5 @@ public partial struct InitHybridModelClientSystem : ISystem {
             // remove need spawn tag
             ecb.RemoveComponent<HybridModelInitRequest>(entity);
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

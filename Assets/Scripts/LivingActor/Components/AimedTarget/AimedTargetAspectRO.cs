@@ -12,11 +12,9 @@ public readonly partial struct AimedTargetAspectRO : IAspect {
     public ref readonly Entity Target => ref _AimedTargetData.ValueRO.target;
 
     public bool IsTargetExists(
-        in EntityStorageInfoLookup     entityLookup
-      , in ComponentLookup<Selectable> selectLookup) =>
+        in ComponentLookup<Selectable> selectLookup) =>
         GameHelpers.IsTargetExists(
             _AimedTargetData.ValueRO.target
-          , entityLookup
           , selectLookup);
 
     public bool IsTargetOutOfRange(
@@ -31,22 +29,20 @@ public readonly partial struct AimedTargetAspectRO : IAspect {
           , statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value);
 
     public bool NeedMoveToTarget(
-        in EntityStorageInfoLookup         entityLookup
-      , in ComponentLookup<Selectable>     selectLookup
+        in ComponentLookup<Selectable>     selectLookup
       , int                                attackRangeId
       , int                                unitRadiusId
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(entityLookup, selectLookup)
+        IsTargetExists(selectLookup)
      && IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // Out range
 
     public bool HaveTargetInRange(
-        in EntityStorageInfoLookup         entityLookup
-      , in ComponentLookup<Selectable>     selectLookup
+        in ComponentLookup<Selectable>     selectLookup
       , int                                attackRangeId
       , int                                unitRadiusId
       , in ComponentLookup<LocalTransform> locTransLookup
       , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(entityLookup, selectLookup)
+        IsTargetExists(selectLookup)
      && !IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // In range
 }

@@ -31,12 +31,9 @@ public static class GameHelpers {
     [BurstCompile]
     public static bool IsTargetExists(
         in Entity                      entity
-      , in EntityStorageInfoLookup     entityLookup
       , in ComponentLookup<Selectable> selectLookup) =>
         // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-        entityLookup.Exists(entity)
-        // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-     && selectLookup.HasComponent(entity)
+        selectLookup.HasComponent(entity)
         // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
      && selectLookup.IsComponentEnabled(entity);
 

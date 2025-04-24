@@ -8,10 +8,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7532512427967123564, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-      propertyPath: haveLevel
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Height
       value: 800
@@ -24,14 +20,14 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2373267175499843026, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-      propertyPath: prefabId
-      value: b1120452766d25e40bb0086652cb737e
-      objectReference: {fileID: 0}
     - target: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Name
       value: TowerBase
       objectReference: {fileID: 0}
+    - target: {fileID: 4549801463351850223, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: modelPrefab
+      value: 
+      objectReference: {fileID: 213768427558567613, guid: 34e362bae1c717d4aa264572ecefeae6, type: 3}
     - target: {fileID: 5298653007881902802, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -126,7 +122,7 @@ MonoBehaviour:
     - Move
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: e2085dbe57531a73968829e54f30c4cd
+      Hash: ab5dc3235d316de62c10da4ccd38cac6
     _KeySynced: 1
 --- !u!114 &-3044300342929509598
 MonoBehaviour:

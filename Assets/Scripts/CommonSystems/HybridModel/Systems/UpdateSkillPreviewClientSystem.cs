@@ -20,7 +20,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
         var     attackRangeId = statsId[StatsType.AttackRange];
         var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
-        // Loop through all own champions (it should just exist one)
+        // Still loop through all own champions (it should just exist one)
         foreach (var (
                 stats
               , skillPreview

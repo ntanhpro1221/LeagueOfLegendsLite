@@ -3,9 +3,11 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Physics;
+using Unity.Physics.Systems;
 using UnityEngine;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(PhysicsSystemGroup))]
+[UpdateAfter(typeof(PhysicsSimulationGroup))]
 public partial struct UpdateCollidedOpponentSystem : ISystem {
     private UpdateCollidedOpponentJob _UpdateCollidedJob;
 

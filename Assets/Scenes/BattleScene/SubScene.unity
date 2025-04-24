@@ -1482,6 +1482,10 @@ PrefabInstance:
       propertyPath: laneType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6926745531870558531, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 3205d2af058ca1818c4430b4ecd8acbf
+      objectReference: {fileID: 0}
     - target: {fileID: 9195141525675754021, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
       propertyPath: id
       value: 2
@@ -3428,6 +3432,10 @@ PrefabInstance:
       propertyPath: id
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3749108160741336481, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: c4363b5319a957b41d5e9486106d2745
+      objectReference: {fileID: 0}
     - target: {fileID: 4668588936004078576, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5367.739
@@ -3740,7 +3748,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 64699b17f7b18900edfc8a55a0a75d6c
+      Hash: d7b96ee9d32e00bb791cf901bfcaaf4c
     _KeySynced: 1
   champion:
     _serializedList:
@@ -3874,7 +3882,7 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: 64699b17f7b18900edfc8a55a0a75d6c
+          Hash: d7b96ee9d32e00bb791cf901bfcaaf4c
         _KeySynced: 1
     - Key: 2
       Value:
@@ -3931,7 +3939,7 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: 64699b17f7b18900edfc8a55a0a75d6c
+          Hash: d7b96ee9d32e00bb791cf901bfcaaf4c
         _KeySynced: 1
 --- !u!4 &1306003051
 Transform:
@@ -6002,8 +6010,44 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 7d5ad496195c550707f391121f295846
+      Hash: 0ef4595f532e6ff12d1a2ab047fcb1f4
     _KeySynced: 1
+  minionPrefabs:
+    _serializedList:
+    - Key: 1
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 592936608898618137, guid: bfc00af10602cae47b04571661572fac, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: ba3b7ba7d28aad841b399ca07b7ef3b6, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: 7ca3e25d376a1cc40b7523e6723bf26c, type: 3}
+        _KeyNames:
+        - Melee
+        - Ranged
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 0ef4595f532e6ff12d1a2ab047fcb1f4
+        _KeySynced: 1
+    - Key: 2
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 4403615691025025997, guid: cc6e84c5f109f3a4b8e188c0c04aaa85, type: 3}
+        - _Value: {fileID: 7653175153121926443, guid: d876141df0787ee4f96187b60407af09, type: 3}
+        - _Value: {fileID: 6934329527957958456, guid: f5dc0ab9d3dc9bf44b7b31c95b578aae, type: 3}
+        - _Value: {fileID: 1892266474963374816, guid: 4c1f4c5151bf05043ba2b96dd04083a5, type: 3}
+        _KeyNames:
+        - Melee
+        - Ranged
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 0ef4595f532e6ff12d1a2ab047fcb1f4
+        _KeySynced: 1
   monsterPrefabs:
     _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000
     _Values:
@@ -6028,7 +6072,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 7d5ad496195c550707f391121f295846
+      Hash: 0ef4595f532e6ff12d1a2ab047fcb1f4
     _KeySynced: 1
   towerPrefabs:
     _serializedList:
@@ -6037,11 +6081,11 @@ MonoBehaviour:
         _Keys: 000000000100000002000000030000000400000005000000
         _Values:
         - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 38022ebedaf07634991c1c8074afbc2b, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
         _KeyNames:
         - Nexus
         - Inhibitor
@@ -6051,18 +6095,18 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: 0a910389e006a303139bdf44677a2468
+          Hash: d7b96ee9d32e00bb791cf901bfcaaf4c
         _KeySynced: 1
     - Key: 2
       Value:
         _Keys: 000000000100000002000000030000000400000005000000
         _Values:
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
-        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
+        - _Value: {fileID: 5067106817271708551, guid: 7644038df1bf4fe4ba7e5976a07f2cbf, type: 3}
+        - _Value: {fileID: 5724632152328863135, guid: 7d97ee9ca696fe642b06858007c46228, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
         _KeyNames:
         - Nexus
         - Inhibitor
@@ -6072,43 +6116,7 @@ MonoBehaviour:
         - Turret_Outer
         _EditorSessionCode:
           serializedVersion: 2
-          Hash: 0a910389e006a303139bdf44677a2468
-        _KeySynced: 1
-  minionPrefabs:
-    _serializedList:
-    - Key: 1
-      Value:
-        _Keys: 00000000010000000200000003000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        _KeyNames:
-        - Melee
-        - Caster
-        - Siege
-        - Super
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: 0a910389e006a303139bdf44677a2468
-        _KeySynced: 1
-    - Key: 2
-      Value:
-        _Keys: 00000000010000000200000003000000
-        _Values:
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-        _KeyNames:
-        - Melee
-        - Caster
-        - Siege
-        - Super
-        _EditorSessionCode:
-          serializedVersion: 2
-          Hash: 0a910389e006a303139bdf44677a2468
+          Hash: d7b96ee9d32e00bb791cf901bfcaaf4c
         _KeySynced: 1
 --- !u!114 &2061999299
 MonoBehaviour:

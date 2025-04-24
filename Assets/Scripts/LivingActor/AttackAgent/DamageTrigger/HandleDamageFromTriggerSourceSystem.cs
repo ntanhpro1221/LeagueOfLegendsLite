@@ -3,9 +3,8 @@ using Unity.Entities;
 using Unity.NetCode;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
-[UpdateAfter(typeof(UpdateCollidedOpponentSystem))]
 public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
-    private            BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
+    private BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -46,15 +45,15 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
         typeof(NetworkDestroyedTag))]
     [BurstCompile]
     private partial struct ApplyTargetedDamageJob : IJobEntity {
-        public            BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
+        public BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
 
         [BurstCompile]
         public void Execute(
             in DamageTriggerSource            damageData
           , in AimedTargetData                targetData
-            , in MoveData moveData
+          , in MoveData                       moveData
           , EnabledRefRW<NetworkDestroyedTag> destroy) {
-            
+
             if (!moveData.isMoveDone) return;
 
             incomingDmgLookup[targetData.target].Add(new IncomingDamageBuffer(damageData.damage));

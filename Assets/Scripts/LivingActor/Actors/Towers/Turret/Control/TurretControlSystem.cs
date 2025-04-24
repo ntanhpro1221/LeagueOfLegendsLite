@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 [UpdateInGroup(typeof(ActorAIControlSystemGroup))]
 public partial struct TurretControlSystem : ISystem {
-    [ReadOnly] private EntityStorageInfoLookup         entityLookup;
     [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
     [ReadOnly] private ComponentLookup<TeamTypeData>   teamLookup;
@@ -21,7 +20,6 @@ public partial struct TurretControlSystem : ISystem {
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EnumIndexData>();
 
-        entityLookup = SystemAPI.GetEntityStorageInfoLookup();
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
             isReadOnly: true);
         locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -30,35 +28,24 @@ public partial struct TurretControlSystem : ISystem {
             isReadOnly: true);
         statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
             isReadOnly: true);
-
-        champQuery = SystemAPI.QueryBuilder()
-            .WithAll<
-                ChampionTag
-              , Selectable>()
-            .Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         ref var stateId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
-        entityLookup.Update(ref state);
         selectLookup.Update(ref state);
         locTransLookup.Update(ref state);
         teamLookup.Update(ref state);
         statsLookup.Update(ref state);
 
         state.Dependency = new Job {
-            entityLookup   = entityLookup
-          , selectLookup   = selectLookup
+            selectLookup   = selectLookup
           , locTransLookup = locTransLookup
           , teamLookup     = teamLookup
           , statsLookup    = statsLookup
-
-          , champEntity = champQuery.ToEntityArray(Allocator.TempJob)
-
-          , attackRangeId = stateId[StatsType.AttackRange]
-          , unitRadiusId  = stateId[StatsType.UnitRadius]
+          , attackRangeId  = stateId[StatsType.AttackRange]
+          , unitRadiusId   = stateId[StatsType.UnitRadius]
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -69,27 +56,23 @@ public partial struct TurretControlSystem : ISystem {
         typeof(DeadState))]
     [BurstCompile]
     public partial struct Job : IJobEntity {
-        [ReadOnly] public EntityStorageInfoLookup         entityLookup;
         [ReadOnly] public ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] public ComponentLookup<TeamTypeData>   teamLookup;
         [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
-
-        [DeallocateOnJobCompletion, ReadOnly] public NativeArray<Entity> champEntity;
 
         public int attackRangeId;
         public int unitRadiusId;
 
         [BurstCompile]
         public void Execute(
-            ref AimedTargetData            targetData
-          , in  Entity                     entity
-          , in  DynamicBuffer<StatsBuffer> stats
-          , in  LocalTransform             locTrans
-          , in  TeamTypeData               team) {
+            ref AimedTargetData                       targetData
+          , in  DynamicBuffer<StatsBuffer>            stats
+          , in  LocalTransform                        locTrans
+          , in  TeamTypeData                          team
+          , in  DynamicBuffer<DetectedChampionBuffer> detectedChamp) {
             if (GameHelpers.IsTargetExists(
                     targetData.target
-                  , entityLookup
                   , selectLookup)
              && !GameHelpers.IsTargetOutOfRange(
                     locTransLookup[targetData.target].Position
@@ -97,22 +80,10 @@ public partial struct TurretControlSystem : ISystem {
                   , stats[attackRangeId].value
                   , statsLookup[targetData.target][unitRadiusId].value))
                 return;
-            targetData.target = Entity.Null;
 
-            foreach (var target in champEntity) {
-                // Not now
-                // if (champTeam[i].IsSameTeam(team)) continue;
-
-                if (GameHelpers.IsTargetOutOfRange(
-                    locTransLookup[target].Position
-                  , locTrans.Position
-                  , stats[attackRangeId].value
-                  , statsLookup[target][unitRadiusId].value))
-                    continue;
-
-                targetData.target = target;
-                return;
-            }
+            targetData.target = detectedChamp.IsEmpty
+                ? Entity.Null
+                : detectedChamp[0].entity;
         }
     }
 }

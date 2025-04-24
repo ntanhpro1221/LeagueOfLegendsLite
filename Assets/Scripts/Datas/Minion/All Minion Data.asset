@@ -61,7 +61,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 44b489966ac6d269942932afe0f6d34a
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -79,7 +79,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 44b489966ac6d269942932afe0f6d34a
           _KeySynced: 1
         aggroRange: 500
     - _Value:
@@ -128,7 +128,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -146,7 +146,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -195,7 +195,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -213,7 +213,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -262,7 +262,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -280,15 +280,15 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 59bf6a8fa161b65e38c6ad5b9a9356f3
           _KeySynced: 1
         aggroRange: 1000
     _KeyNames:
     - Melee
-    - Caster
+    - Ranged
     - Siege
     - Super
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+      Hash: 44b489966ac6d269942932afe0f6d34a
     _KeySynced: 1

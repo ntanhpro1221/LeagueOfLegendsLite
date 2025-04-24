@@ -17,6 +17,8 @@ public struct TeamTypeData : IComponentData {
     }
 
     public bool IsSameTeam(TeamTypeData other) => teamType == other.teamType;
+
+    public static implicit operator TeamTypeData(TeamType teamType) => new() { teamType = teamType };
 }
 
 public class TeamTypeAuthoring : MonoBehaviour {

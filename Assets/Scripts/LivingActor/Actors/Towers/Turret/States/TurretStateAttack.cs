@@ -3,32 +3,24 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 public static partial class TurretStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
-        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<EnumIndexData>();
 
-            entityLookup = state.GetEntityStorageInfoLookup();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            entityLookup.Update(ref state);
             selectLookup.Update(ref state);
-
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
             
             foreach (var (
                     filter
@@ -48,7 +40,7 @@ public static partial class TurretStateAttack {
                     sharedState.SetDead();
 
                 // IDLE STATE
-                else if (!aimedTarget.IsTargetExists(entityLookup, selectLookup)) // Lost target
+                else if (!aimedTarget.IsTargetExists(selectLookup)) // Lost target
                     sharedState.SetIdle();
                 else continue;
 

@@ -8,15 +8,17 @@ using UnityEngine;
 public partial struct CleanHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        using EntityQueryBuilder queryBuilder = new(Allocator.Temp);
-        state.RequireForUpdate(queryBuilder
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAll<HybridHealthBarData>()
             .WithNone<LocalTransform>()
-            .Build(ref state));
+            .Build());
     }
 
     public void OnUpdate(ref SystemState state) {
-        using EntityCommandBuffer ecb = new(Allocator.Temp);
+        var ecb = SystemAPI
+            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (
             hybridData
@@ -26,7 +28,5 @@ public partial struct CleanHybridHealthBarClientSystem : ISystem {
             Object.Destroy(hybridData.ValueRO.transRef.Value.gameObject);
             ecb.RemoveComponent<HybridHealthBarData>(entity);
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

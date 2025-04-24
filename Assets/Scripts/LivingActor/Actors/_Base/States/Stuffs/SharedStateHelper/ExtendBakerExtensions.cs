@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -37,16 +38,34 @@ public static class ExtendBakerExtensions {
 
     #region ADD BUFFER
 
-    public static void AddCleanBuffer<TBuffer>(this IBaker baker, in Entity entity, int size)
-        where TBuffer : unmanaged, IBufferElementData {
-        var buffer = baker.AddBuffer<TBuffer>(entity);
+    public static void AddBuffer<TBufferElement>(
+        this IBaker                 baker
+      , in   Entity                 entity
+      , IEnumerable<TBufferElement> source)
+        where TBufferElement : unmanaged, IBufferElementData {
+        var buffer = baker.AddBuffer<TBufferElement>(entity);
+        foreach (var item in source) buffer.Add(item);
+    }
+
+    public static void AddBufferDisabled<TBufferElement>(
+        this IBaker                 baker
+      , in   Entity                 entity
+      , IEnumerable<TBufferElement> source)
+        where TBufferElement : unmanaged, IBufferElementData, IEnableableComponent {
+        baker.AddBuffer(entity, source);
+        baker.SetComponentEnabled<TBufferElement>(entity, false);
+    }
+
+    public static void AddCleanBuffer<TBufferElement>(this IBaker baker, in Entity entity, int size)
+        where TBufferElement : unmanaged, IBufferElementData {
+        var buffer = baker.AddBuffer<TBufferElement>(entity);
         buffer.Resize(size, NativeArrayOptions.ClearMemory);
     }
 
-    public static void AddCleanBufferDisabled<TBuffer>(this IBaker baker, in Entity entity, int size)
-        where TBuffer : unmanaged, IBufferElementData, IEnableableComponent {
-        baker.AddCleanBuffer<TBuffer>(entity, size);
-        baker.SetComponentEnabled<TBuffer>(entity, false);
+    public static void AddCleanBufferDisabled<TBufferElement>(this IBaker baker, in Entity entity, int size)
+        where TBufferElement : unmanaged, IBufferElementData, IEnableableComponent {
+        baker.AddCleanBuffer<TBufferElement>(entity, size);
+        baker.SetComponentEnabled<TBufferElement>(entity, false);
     }
 
     #endregion

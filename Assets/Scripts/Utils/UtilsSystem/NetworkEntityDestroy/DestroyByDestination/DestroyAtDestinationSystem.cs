@@ -1,13 +1,14 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 
 [UpdateInGroup(typeof(BeforeDestroyNetworkEntitySystemGroup))]
 public partial struct DestroyAtDestinationSystem : ISystem {
-    private const float DESTINATION_TOLERANCE = 0.001f;
+    private const float DESTINATION_TOLERANCE_SQR = 1f;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -25,22 +26,25 @@ public partial struct DestroyAtDestinationSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
-        using var ecb = new EntityCommandBuffer(Allocator.Temp);
+        state.Dependency = new Job()
+            .ScheduleParallel(state.Dependency);
+    }
 
-        foreach (var (
-                destroyDes
-              , localToWorld
-              , entity)
-            in SystemAPI.Query<
-                    RefRO<DestroyAtDestination>
-                  , RefRO<LocalToWorld>>()
-                .WithAll<Simulate>()
-                .WithEntityAccess()) {
-            if (DESTINATION_TOLERANCE < math.distance(localToWorld.ValueRO.Position, destroyDes.ValueRO.destination)) continue;
-            ecb.RemoveComponent<DestroyAtDestination>(entity);
-            ecb.SetComponentEnabled<NetworkDestroyedTag>(entity, true);
+    [WithAll(typeof(Simulate))]
+    [WithPresent(typeof(NetworkDestroyedTag))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        [BurstCompile]
+        public void Execute(
+            ref DestroyAtDestination           destroyDes
+          , EnabledRefRW<DestroyAtDestination> destroyDesEnable
+          , EnabledRefRW<NetworkDestroyedTag>  networkDestroyEnable
+          , in LocalTransform                  locTrans) {
+            if (DESTINATION_TOLERANCE_SQR
+              < math.distancesq(locTrans.Position, destroyDes.destination))
+                return;
+            destroyDesEnable.ValueRW     = false;
+            networkDestroyEnable.ValueRW = true;
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

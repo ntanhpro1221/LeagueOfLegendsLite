@@ -8,4 +8,5 @@ public static class PhysicsLayerHelper {
     public const uint Ground        = 1u << 6;
     public const uint Actor         = 1u << 7;
     public const uint Wall          = 1u << 8;
+    public const uint ActorDetector = 1u << 9;
 }

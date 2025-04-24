@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HybridAshe
       objectReference: {fileID: 0}
+    - target: {fileID: 4830956119272891467, guid: 184eb01ce4690004caf8a9047e8d58ee, type: 3}
+      propertyPath: _OverrideTextures._EditorSessionCode
+      value: 9ec1d654806b3ab6075e95b1a4c9b2f8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 970957927671631871, guid: 184eb01ce4690004caf8a9047e8d58ee, type: 3}

@@ -3,13 +3,11 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 public static partial class TurretStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
-        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
         [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
         [BurstCompile]
@@ -17,14 +15,12 @@ public static partial class TurretStateIdle {
             state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<EnumIndexData>();
 
-            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            entityLookup.Update(ref state);
             selectLookup.Update(ref state);
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
@@ -49,7 +45,7 @@ public static partial class TurretStateIdle {
                 // ATTACK STATE
                 else if (
                     // have target
-                    aimedTarget.IsTargetExists(entityLookup, selectLookup)
+                    aimedTarget.IsTargetExists(selectLookup)
                     // attack cool down done
                  && attackData.ValueRO.IsCooldownDone(curTick))
                     sharedState.SetAttack();

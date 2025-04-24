@@ -2,7 +2,8 @@
 using Unity.NetCode;
 using UnityEngine;
 
-public struct NeedInitTag : IComponentData { }
+[GhostEnabledBit]
+public struct NeedInitTag : IComponentData, IEnableableComponent { }
 
 public class NeedInitAuthoring : MonoBehaviour {
     private class Baker : TagBaker<NeedInitAuthoring, NeedInitTag> { }

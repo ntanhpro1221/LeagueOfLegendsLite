@@ -9,7 +9,6 @@ public struct HybridModelInitRequest : IComponentData {
 
 [RequireComponent(typeof(SharedAnimAuthoring))]
 [RequireComponent(typeof(HighlightableAuthoring))]
-[RequireComponent(typeof(SkillPreviewAuthoring))]
 [RequireComponent(typeof(TeamTypeAuthoring))]
 public class HybridModelInitAuthoring : MonoBehaviour {
     public GameObject modelPrefab;

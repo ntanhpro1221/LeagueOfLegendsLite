@@ -2,61 +2,73 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
+using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 [UpdateInGroup(typeof(InitBattleSystemGroup))]
 public partial struct HandleInGameRequestServerSystem : ISystem {
+    [ReadOnly] public ComponentLookup<NetworkId> netIdLookup;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<PrefabIdData>();
         state.RequireForUpdate<ChampionPrefabBuffer>();
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
-            .WithAll<
-                InGameClientRpc
-              , ReceiveRpcCommandRequest>()
-            .Build(ref state));
+        state.RequireForUpdate<InGameClientRpc>();
+
+        netIdLookup = SystemAPI.GetComponentLookup<NetworkId>(
+            isReadOnly: true);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        using var ecb = new EntityCommandBuffer(Allocator.Temp);
-        
-        var prefabId    = SystemAPI.GetSingleton<PrefabIdData>();
-        var champPrefab = SystemAPI.GetSingletonBuffer<ChampionPrefabBuffer>(true);
+        netIdLookup.Update(ref state);
 
-        foreach (var (
-            inGameClientRpc
-          , receiveRpc
-          , entity) in SystemAPI.Query<
-                RefRO<InGameClientRpc>
-              , RefRO<ReceiveRpcCommandRequest>>()
-            .WithEntityAccess()) {
+        state.Dependency = new Job {
+            ecbParallel = SystemAPI
+                .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged)
+                .AsParallelWriter()
+          , prefabId = SystemAPI.GetSingleton<PrefabIdData>()
+          , champPrefab = SystemAPI.GetSingletonBuffer<ChampionPrefabBuffer>(
+                isReadOnly: true)
+          , netIdLookup = netIdLookup
+        }.ScheduleParallel(state.Dependency);
+    }
+
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        public EntityCommandBuffer.ParallelWriter ecbParallel;
+        public PrefabIdData                       prefabId;
+
+        [ReadOnly] public DynamicBuffer<ChampionPrefabBuffer> champPrefab;
+        [ReadOnly] public ComponentLookup<NetworkId>          netIdLookup;
+
+        public void Execute(
+            in                   InGameClientRpc          inGameClientRpc
+          , in                   ReceiveRpcCommandRequest receiveRpc
+          , in                   Entity                   entity
+          , [EntityIndexInQuery] int                      queryId) {
             // destroy request
-            ecb.DestroyEntity(entity);
+            ecbParallel.DestroyEntity(queryId, entity);
 
             // mark client in game
-            ecb.AddComponent<NetworkStreamInGame>(receiveRpc.ValueRO.SourceConnection);
+            ecbParallel.AddComponent<NetworkStreamInGame>(queryId, receiveRpc.SourceConnection);
 
             // spawn player's champ
-            var inGameData  = inGameClientRpc.ValueRO.initData;
-            var champEntity = ecb.Instantiate(champPrefab[prefabId.ChampionId[inGameData.champion]].Entity);
-            
+            var inGameData  = inGameClientRpc.initData;
+            var champEntity = ecbParallel.Instantiate(queryId, champPrefab[prefabId.ChampionId[inGameData.champion]].Entity);
+
             // set champ's team
-            ecb.SetComponent(champEntity, new TeamTypeData {
-                teamType = inGameData.teamType
-            });
+            ecbParallel.SetComponent<TeamTypeData>(queryId, champEntity, inGameData.teamType);
 
             // assign champ's owner to this client
-            ecb.SetComponent(champEntity, new GhostOwner {
-                NetworkId = SystemAPI.GetComponent<NetworkId>(receiveRpc.ValueRO.SourceConnection).Value
+            ecbParallel.SetComponent(queryId, champEntity, new GhostOwner {
+                NetworkId = netIdLookup[receiveRpc.SourceConnection].Value
             });
 
             // link champ entity with this client connection
-            ecb.AppendToBuffer(receiveRpc.ValueRO.SourceConnection, new LinkedEntityGroup {
-                Value = champEntity
-            });
+            ecbParallel.AppendToBuffer<LinkedEntityGroup>(queryId, receiveRpc.SourceConnection, champEntity);
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

@@ -9,16 +9,15 @@ using UnityEngine;
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
-        [ReadOnly] private EntityStorageInfoLookup         entityLookup;
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
+            state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<EnumIndexData>();
 
-            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -29,7 +28,6 @@ public static partial class ChampionStateMove {
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            entityLookup.Update(ref state);
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
             statsLookup.Update(ref state);
@@ -44,7 +42,7 @@ public static partial class ChampionStateMove {
                 in SystemAPI.Query<
                     StateFilterAspect
                   , UpdateAspect>()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(entityLookup, selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
+                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
@@ -104,14 +102,12 @@ public static partial class ChampionStateMove {
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
     public partial struct Update : ISystem {
-        private            EntityStorageInfoLookup         entityLookup;
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
-        private            ComponentLookup<LocalTransform> locTransLookup;
+        [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            entityLookup = SystemAPI.GetEntityStorageInfoLookup();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -120,7 +116,6 @@ public static partial class ChampionStateMove {
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            entityLookup.Update(ref state);
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
 
@@ -140,7 +135,7 @@ public static partial class ChampionStateMove {
                     .WithPresent<AutoFollowTarget>()) {
 
                 // Try move to aimed target
-                autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(entityLookup, selectLookup);
+                autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(selectLookup);
 
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO

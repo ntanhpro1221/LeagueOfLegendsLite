@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -33,6 +34,14 @@ public abstract class ExtendBaker<TAuthoringType> : Baker<TAuthoringType>
     #endregion
 
     #region ADD BUFFER
+
+    public void AddBuffer<TBufferElement>(in Entity entity, IEnumerable<TBufferElement> source)
+        where TBufferElement : unmanaged, IBufferElementData =>
+        (this as IBaker).AddBuffer(entity, source);
+
+    public void AddBufferDisabled<TBufferElement>(in Entity entity, IEnumerable<TBufferElement> source)
+        where TBufferElement : unmanaged, IBufferElementData, IEnableableComponent =>
+        (this as IBaker).AddBufferDisabled(entity, source);
 
     public void AddCleanBuffer<TBuffer>(in Entity entity, int size)
         where TBuffer : unmanaged, IBufferElementData =>

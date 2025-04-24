@@ -87,7 +87,7 @@ public static partial class ChampionStateDead {
             foreach (var (_, data, select_highlight_healthBar) in SystemAPI.Query<
                 StateFilterAspect
               , UpdateAspect
-            , Select_Highlight_HealthBarAspect>()) {
+              , Select_Highlight_HealthBarAspect>()) {
                 data.CurAnim = SharedAnimKey.Dead;
 
                 data.RespawnAtTick = GameHelpers.CalcRespawnTick_Champion(

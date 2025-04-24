@@ -1,30 +1,37 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.NetCode;
 using Unity.Transforms;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 [UpdateInGroup(typeof(DestroyNetworkEntitySystemGroup))]
 public partial struct HideNetworkDestroyedEntityInClientSystem : ISystem {
-    private const float  BLACK_HOLE_DEEP = -1e9f;
-    private       float3 _BlackHole;
-    
+    private static readonly float3 _BlackHole = -1e9f;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        _BlackHole = new float3(0, BLACK_HOLE_DEEP, 0);
-        
         state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAllRW<LocalTransform>()
-            .WithAll<NetworkDestroyedTag>()
+            .WithAll<
+                Simulate
+              , NetworkDestroyedTag>()
             .Build());
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        foreach (var trans in SystemAPI
-            .Query<RefRW<LocalTransform>>()
-            .WithAll<NetworkDestroyedTag>())
-            trans.ValueRW.Position = _BlackHole;
+        state.Dependency = new Job()
+            .ScheduleParallel(state.Dependency);
+    }
+
+    [WithAll(
+        typeof(Simulate)
+      , typeof(NetworkDestroyedTag))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        [BurstCompile]
+        public void Execute(ref LocalTransform locTrans) {
+            locTrans.Position = _BlackHole;
+        }
     }
 }

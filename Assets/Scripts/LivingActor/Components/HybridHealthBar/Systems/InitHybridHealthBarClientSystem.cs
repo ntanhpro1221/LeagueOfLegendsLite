@@ -1,19 +1,25 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
+using Unity.Transforms;
 using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
-public partial struct HybridHealthBarClientSystem : ISystem {
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateAfter(typeof(PredictedSimulationSystemGroup))]
+[UpdateBefore(typeof(TransformSystemGroup))]
+public partial struct InitHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
-            .WithAll<HybridHealthBarInitRequest>()
-            .Build());
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate<HybridHealthBarInitRequest>();
     }
 
     public void OnUpdate(ref SystemState state) {
-        using EntityCommandBuffer ecb = new(Allocator.Temp);
+        var ecb = SystemAPI
+            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
         var canvasRoot = MainCanvasRoot.Value;
 
@@ -39,7 +45,5 @@ public partial struct HybridHealthBarClientSystem : ISystem {
             // remove need spawn tag 
             ecb.RemoveComponent<HybridHealthBarInitRequest>(entity);
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

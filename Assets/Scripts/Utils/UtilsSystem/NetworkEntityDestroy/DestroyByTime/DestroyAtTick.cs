@@ -1,6 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.NetCode;
 
-public struct DestroyAtTick : IComponentData {
+[GhostEnabledBit]
+public struct DestroyAtTick : IComponentData, IEnableableComponent {
     [GhostField] public NetworkTick tick;
 }
