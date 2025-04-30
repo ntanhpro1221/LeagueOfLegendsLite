@@ -1,5 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
+using Unity.NetCode;
+using UnityEngine;
 
 [UpdateInGroup(typeof(UpdateObstacleSystemGroup))]
 [UpdateAfter(typeof(RequestObstacleSystem))]
@@ -10,8 +12,9 @@ public partial struct ProvideObstacleSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        var pool = ObstacleProvider.Instance;
+        var provider = ObstacleProvider.Instance;
 
+        // phase 1: Get cutter but avoid create new instance (assign null instead)
         foreach (var (
                 obstacle
               , entity)
@@ -19,8 +22,22 @@ public partial struct ProvideObstacleSystem : ISystem {
                 .Query<RefRW<ActiveObstacle>>()
                 .WithAll<Simulate>()
                 .WithEntityAccess())
-            obstacle.ValueRW.Obstacle = pool.Get(entity);
+            obstacle.ValueRW.Obstacle = provider.Get(entity, false);
         
-        pool.CleanUpBuild();
+        // release unused cutter
+        provider.ReleaseUnusedCutter();
+        
+        // phase 2: Only get cutter for ActiveObstacle that null in phase 1
+        foreach (var (
+                obstacle
+              , entity)
+            in SystemAPI
+                .Query<RefRW<ActiveObstacle>>()
+                .WithAll<Simulate>()
+                .WithEntityAccess())
+            if (obstacle.ValueRW.Obstacle == null)
+                obstacle.ValueRW.Obstacle = provider.Get(entity, true);
+        
+        provider.SwapUsedContainer();
     }
 }

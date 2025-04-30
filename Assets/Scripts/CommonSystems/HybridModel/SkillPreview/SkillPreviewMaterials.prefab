@@ -67,7 +67,7 @@ MonoBehaviour:
     - Spell_F
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 82f0cb73dd840ebbf059d204919861ee
+      Hash: 4a4279ff113e8240f3ed003939a241cb
     _KeySynced: 1
   _Colors:
     _Keys: 000000000100000002000000
@@ -84,5 +84,5 @@ MonoBehaviour:
     - Orange
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 82f0cb73dd840ebbf059d204919861ee
+      Hash: 4a4279ff113e8240f3ed003939a241cb
     _KeySynced: 1

@@ -16,15 +16,18 @@ public class ObstacleProvider : SceneSingleton<ObstacleProvider> {
     private          Dictionary<Entity, NavmeshCut> _PrevUsed  = new();
     private          Dictionary<Entity, NavmeshCut> _Used      = new();
 
-    public NavmeshCut Get(in Entity entity) {
+    public NavmeshCut Get(in Entity entity, bool allowCreateNewInstance) {
         NavmeshCut result;
 
         // Try to get from previous used cutter first
         if (!_PrevUsed.Remove(entity, out result))
             // Then try to get from available cutter
-            if (!_Available.TryPop(out result))
-                // Final, instantiate new cutter
-                result = Instantiate(_ObstaclePrefab).GetComponent<NavmeshCut>();
+            if (!_Available.TryPop(out result)) {
+                // Final, instantiate new cutter 
+                if (allowCreateNewInstance)
+                    result = Instantiate(_ObstaclePrefab).GetComponent<NavmeshCut>();
+                else return null;
+            }
 
         // Active and add to used cutters collection
         _Used.Add(entity, result);
@@ -32,16 +35,17 @@ public class ObstacleProvider : SceneSingleton<ObstacleProvider> {
 
         return result;
     }
-
-    public void CleanUpBuild() {
-        // Release unused cutter
+    
+    public void ReleaseUnusedCutter() {
         foreach (var cutter in _PrevUsed.Values) {
             _Available.Push(cutter);
             cutter.gameObject.SetActive(false);
         }
 
         _PrevUsed.Clear();
-
+    }
+    
+    public void SwapUsedContainer() {
         Swapper.Swap(ref _PrevUsed, ref _Used);
     }
 }

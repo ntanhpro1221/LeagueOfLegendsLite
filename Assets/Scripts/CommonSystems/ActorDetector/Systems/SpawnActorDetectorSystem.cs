@@ -4,7 +4,7 @@ using Unity.NetCode;
 using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
-public partial struct SpawnActorDetectorServerSystem : ISystem {
+public partial struct SpawnActorDetectorSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
