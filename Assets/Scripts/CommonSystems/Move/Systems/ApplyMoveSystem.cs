@@ -18,7 +18,7 @@ public partial struct ApplyMoveSystem : ISystem {
             rotateSpeed = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
           , deltaTime   = SystemAPI.Time.fixedDeltaTime
         }.ScheduleParallel(state.Dependency);
-        
+
         state.Dependency = new StopDisabledMoveJob()
             .ScheduleParallel(state.Dependency);
     }
@@ -29,8 +29,8 @@ public partial struct ApplyMoveSystem : ISystem {
     [WithNone(typeof(NetworkDestroyedTag))]
     [BurstCompile]
     public partial struct ApplyMoveJob : IJobEntity {
-        public float              rotateSpeed;
-        public float              deltaTime;
+        public float rotateSpeed;
+        public float deltaTime;
 
         [BurstCompile]
         public void Execute(
@@ -59,7 +59,7 @@ public partial struct ApplyMoveSystem : ISystem {
                 float3 moveVector           = waypoints.BackRO().pos - locTrans.Position;
                 float  disToTarget_WithoutY = math.length(moveVector.WithoutY());
                 float  disCanMove_WithoutY  = moveData.moveSpeed * deltaTime;
-                
+
                 // Manually move
                 if (disToTarget_WithoutY <= disCanMove_WithoutY) {
                     float3_Q3 newPos;
@@ -69,14 +69,14 @@ public partial struct ApplyMoveSystem : ISystem {
                         if (waypoints.Length == 0) break;
 
                         // decrease distance can move
-                        disCanMove_WithoutY  -= disToTarget_WithoutY;
-                        
+                        disCanMove_WithoutY -= disToTarget_WithoutY;
+
                         // recalculate distance to next waypoint
-                        disToTarget_WithoutY =  math.length(
+                        disToTarget_WithoutY = math.length(
                             ((float3)(waypoints.BackRO().pos - newPos))
                             .WithoutY());
                     } while (disToTarget_WithoutY <= disCanMove_WithoutY);
-                    
+
                     // No waypoint left => done move
                     if (waypoints.Empty()) moveData.isMoveDone = true;
                     // Move with the remain value of disCanMove_WithoutY
@@ -89,13 +89,13 @@ public partial struct ApplyMoveSystem : ISystem {
 
                     // fix to new position
                     moveData.FixToPos(newPos);
-                }  
+                }
                 // Move by Unity physics
                 else {
                     // Yes, this is correct: here I use disToTarget_WithoutY
                     // Because velocity is only exactly for X and Z
                     newLinear = moveData.moveSpeed / disToTarget_WithoutY * moveVector;
-                    
+
                     // indicate that Unity will move this entity
                     moveData.isFixedPos = false;
 
@@ -110,7 +110,7 @@ public partial struct ApplyMoveSystem : ISystem {
             float      rotateDis    = math.abs(rotateVecY);
             if (rotateDis <= rotateSpeed * deltaTime)
                 locTrans.Rotation = rotateTarget;
-            else newAngular.y       = rotateSpeed / rotateDis * rotateVecY;
+            else newAngular.y     = rotateSpeed / rotateDis * rotateVecY;
         }
     }
 

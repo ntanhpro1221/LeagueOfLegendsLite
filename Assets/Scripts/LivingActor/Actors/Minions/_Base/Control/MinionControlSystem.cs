@@ -33,10 +33,8 @@ public partial struct MinionControlSystem : ISystem {
             if (!pathBuffer.Empty()
              && REACH_PATH_DIS_TOLERANCE_SQR > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos)) {
                 pathBuffer.PopFront();
-                if (!pathBuffer.Empty()) {
-                    Debug.Log(($"Move to {(float3)pathBuffer.FrontRO().pos}"));
+                if (!pathBuffer.Empty())
                     moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
-                }
             }
         }
     }
