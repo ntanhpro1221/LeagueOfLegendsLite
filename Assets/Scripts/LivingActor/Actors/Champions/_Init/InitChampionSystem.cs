@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 public partial struct InitChampionSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {

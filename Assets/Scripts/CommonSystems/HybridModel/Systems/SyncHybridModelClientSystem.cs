@@ -30,7 +30,8 @@ public partial struct SyncHybridModelClientSystem : ISystem {
                   , RefRO<LocalTransform>
                   , RefRO<HighlightData>
                   , EnabledRefRO<HighlightVisible>>()
-                .WithPresent<HighlightVisible>()) {
+                .WithPresent<HighlightVisible>()
+                .WithNone<NeedInitTag>()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;

@@ -21,10 +21,12 @@ public partial struct CleanHybridHealthBarClientSystem : ISystem {
             .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (
-            hybridData
-          , entity) in SystemAPI.Query<
-                RefRO<HybridHealthBarData>>()
-            .WithEntityAccess()) {
+                hybridData
+              , entity)
+            in SystemAPI
+                .Query<RefRO<HybridHealthBarData>>()
+                .WithNone<LocalTransform>()
+                .WithEntityAccess()) {
             Object.Destroy(hybridData.ValueRO.transRef.Value.gameObject);
             ecb.RemoveComponent<HybridHealthBarData>(entity);
         }

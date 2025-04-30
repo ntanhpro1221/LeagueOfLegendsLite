@@ -8,9 +8,11 @@ using Unity.NetCode;
 public partial struct BuildRawStatsRefSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<AllTowerData>();
-        state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<NetworkTime>();
+        
+        state.RequireForUpdate<AllChampionData>();
+        state.RequireForUpdate<AllMinionData>();
+        state.RequireForUpdate<AllTowerData>();
     }
 
     [BurstCompile]
@@ -20,6 +22,7 @@ public partial struct BuildRawStatsRefSystem : ISystem {
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
         BuildChampion(ref state, ecb);
+        BuildMinion(ref state, ecb);
         BuildTower(ref state, ecb);
 
         ecb.Playback(state.EntityManager);
@@ -54,6 +57,30 @@ public partial struct BuildRawStatsRefSystem : ISystem {
         }
     }
 
+    [BurstCompile]
+    private void BuildMinion(ref SystemState state, in EntityCommandBuffer ecb) {
+        ref var minionSource = ref SystemAPI.GetSingleton<AllMinionData>().Minions;
+
+        foreach (var (minionTag, entity)
+            in SystemAPI
+                .Query<RefRO<MinionTag>>()
+                .WithAll<
+                    NeedBuildRawStats
+                  , Simulate>()
+                .WithEntityAccess()) {
+            var rawStats         = new RawStatsData();
+
+            minionSource[minionTag.ValueRO.id].stats
+                .CreateBlobAssetReference(out rawStats._Ref);
+
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+            ecb.AddComponent(entity, rawStats);
+
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+            ecb.RemoveComponent<NeedBuildRawStats>(entity);
+        }
+    }
+    
     [BurstCompile]
     private void BuildTower(ref SystemState state, in EntityCommandBuffer ecb) {
         ref var towerSource = ref SystemAPI.GetSingleton<AllTowerData>().Towers;

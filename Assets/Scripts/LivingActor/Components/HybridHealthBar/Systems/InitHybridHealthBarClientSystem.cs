@@ -7,8 +7,6 @@ using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 [UpdateInGroup(typeof(SimulationSystemGroup))]
-[UpdateAfter(typeof(PredictedSimulationSystemGroup))]
-[UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct InitHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {

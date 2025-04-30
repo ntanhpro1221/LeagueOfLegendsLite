@@ -2,8 +2,9 @@
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 public partial struct InitMinionSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -48,6 +49,7 @@ public partial struct InitMinionSystem : ISystem {
           , MoveRequesterAspect            moveRequester
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled) {
+            
             // remove init request
             needInit.ValueRW = false;
 
