@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 150
       objectReference: {fileID: 0}
+    - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: b4d98433a554a7874433bf025c415ea4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -113,6 +117,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1460236672414726341}
+    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7056535038696729768}
   m_SourcePrefab: {fileID: 100100000, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
 --- !u!1 &6210338472452448258 stripped
 GameObject:
@@ -180,10 +187,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6210338472452448258}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 2e+9, y: 2e+9, z: 2e+9}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -228,3 +235,15 @@ MonoBehaviour:
   value:
     value: 0
   useThisDefaultValue: 0
+--- !u!114 &7056535038696729768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210338472452448258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d55485d3d96544f5a95d1febb7d3236c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

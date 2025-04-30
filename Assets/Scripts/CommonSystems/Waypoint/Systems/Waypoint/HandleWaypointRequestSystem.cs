@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using NGDtuanh.Utils;
 using Pathfinding;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 
-[UpdateInGroup(typeof(PrepareMoveSystemGroup))]
+[UpdateInGroup(typeof(UpdateWaypointSystemGroup))]
+[UpdateAfter(typeof(FixWaypointSystem))]
 public partial struct HandleWaypointRequestSystem : ISystem {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<PhysicsWorldSingleton>();
         state.RequireForUpdate<NeedHandleWaypointRequest>();
