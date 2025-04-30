@@ -44,7 +44,7 @@ public readonly partial struct MoveRequesterAspect : IAspect {
     /// This method is expensive because it has to run pathfinding algorithm.
     /// (Try to use it as sparingly as possible)
     /// </summary>
-    public void MoveSmartAttackTo(float3_Q3 targetLocPos) {
+    public void MoveSmartTo(float3_Q3 targetLocPos) {
         IsMoveDone       = false;
         NeedCalcWaypoint = true;
 

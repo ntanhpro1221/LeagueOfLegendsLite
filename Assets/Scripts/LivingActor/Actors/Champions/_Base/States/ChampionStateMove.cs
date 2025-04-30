@@ -140,7 +140,7 @@ public static partial class ChampionStateMove {
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO
                  && moveRequester.NeedRecalculatePath(input.ValueRO.moveLocTarget))
-                    moveRequester.MoveSmartAttackTo(input.ValueRO.moveLocTarget);
+                    moveRequester.MoveSmartTo(input.ValueRO.moveLocTarget);
             }
         }
     }

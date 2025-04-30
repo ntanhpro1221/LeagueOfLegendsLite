@@ -24,7 +24,7 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 325000
+              value: 700000
           - _Value:
               value: 1000
           - _Value:
@@ -61,7 +61,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 978c0784ca49e3b28326b30115a08ae4
+            Hash: 021ba53352509c90f29f8dd71106c759
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -79,7 +79,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 978c0784ca49e3b28326b30115a08ae4
+            Hash: 021ba53352509c90f29f8dd71106c759
           _KeySynced: 1
         aggroRange: 500
     - _Value:
@@ -290,5 +290,5 @@ MonoBehaviour:
     - Super
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 978c0784ca49e3b28326b30115a08ae4
+      Hash: 021ba53352509c90f29f8dd71106c759
     _KeySynced: 1

@@ -90,7 +90,7 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
                         // The difference between previous and current (direction to target) is large and need update
                      || MAX_DIR_DEGREE_ERROR < Vector3.Angle(dirToTarget
                           , (targetPos - moveRequester.WaypointDestination).WithoutY()))
-                        moveRequester.MoveSmartAttackTo(math.lerp(
+                        moveRequester.MoveSmartTo(math.lerp(
                                 targetPos         // Dont need .WithoutY()
                               , locTrans.Position // Dont need .WithoutY()
                               , (targetRadius + 200) / GameHelpers.DistanceXZ(targetPos, locTrans.Position))
