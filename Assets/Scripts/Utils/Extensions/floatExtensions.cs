@@ -13,6 +13,10 @@ public static class floatExtensions {
         source.y = y;
         return source;
     }
+    
+    public static float3_Q3 WithY(this float3_Q3 source, float y) {
+        return ((float3)source).WithY(y).Quantizate3();
+    }
 
     /// <returns>A new vector with the modified Z component.</returns>
     public static float3 WithZ(this float3 source, float z) {

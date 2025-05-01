@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using NGDtuanh.Collections;
 using NGDtuanh.Singleton;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class MovementIndicatorPoolingManager : SceneSingleton<MovementIndicatorPoolingManager> {
@@ -8,26 +8,35 @@ public class MovementIndicatorPoolingManager : SceneSingleton<MovementIndicatorP
     [field: SerializeField] public float ringScaleEnd { get; private set; } = 1;
     [field: SerializeField] public float duration     { get; private set; } = 1;
 
-    [SerializeField] private GameObject pattern;
+    [SerializeField] private EnumMap<MovementIndicatorType, GameObject> pattern;
 
-    private Stack<MovementIndicator> availableIndicator = new();
+    private EnumMap<MovementIndicatorType, Stack<MovementIndicator>> available;
 
-    public static void Pool(Vector3 position) {
-        var stack = Instance.availableIndicator;
-        if (stack.Count == 0)
-            stack.Push(Instantiate(
-                    Instance.pattern
+    protected override void Awake() {
+        base.Awake();
+
+        foreach (var key in (available = new()).Keys) available[key] = new();
+    }
+
+    public static void Pool(Vector3 position, MovementIndicatorType type) {
+        var available = Instance.available[type];
+        if (available.Count == 0) {
+            var newIndicator = Instantiate(
+                    Instance.pattern[type]
                   , Instance.transform)
-                .GetComponent<MovementIndicator>());
+                .GetComponent<MovementIndicator>();
+            available.Push(newIndicator);
+            newIndicator.OnComplete += () => ImDone(newIndicator, type);
+        }
 
-        var indicator = stack.Pop();
+        var indicator = available.Pop();
         indicator.Restart();
         indicator.gameObject.SetActive(true);
         indicator.transform.position = position;
     }
 
-    public static void ImDone(MovementIndicator indicator) {
-        Instance.availableIndicator.Push(indicator);
+    public static void ImDone(MovementIndicator indicator, MovementIndicatorType type) {
+        Instance.available[type].Push(indicator);
         indicator.gameObject.SetActive(false);
     }
 }

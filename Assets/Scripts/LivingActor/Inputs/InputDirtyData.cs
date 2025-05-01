@@ -19,10 +19,10 @@ public struct InputDirtyData : IComponentData {
     public ButtonState r_key;
 
     public enum ButtonState {
-        None
-      , Down
-      , Up
-        , Hold
+        None = 0
+      , Down = 1
+      , Up   = 2
+      , Hold = 3
     }
 }
 

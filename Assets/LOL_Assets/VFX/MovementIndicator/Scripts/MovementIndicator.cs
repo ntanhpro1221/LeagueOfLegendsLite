@@ -9,6 +9,11 @@ public class MovementIndicator : MonoBehaviour {
     private List<Tweener> arrowTweeners = new();
     private Tweener       ringTweener;
 
+    public TweenCallback OnComplete {
+        get => ringTweener.onComplete;
+        set => ringTweener.onComplete = value;
+    }
+    
     private void Awake() {
         var poolMan = MovementIndicatorPoolingManager.Instance;
 
@@ -24,8 +29,6 @@ public class MovementIndicator : MonoBehaviour {
             .SetEase(Ease.OutCubic)
             .SetAutoKill(false)
             .Pause();
-
-        ringTweener.onComplete += () => MovementIndicatorPoolingManager.ImDone(this);
     }
 
     public void Restart() {

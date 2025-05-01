@@ -17,7 +17,7 @@ public partial struct InputCastUpdateSystem : ISystem {
     };
 
     private EntityQuery                 ownChampQuery;
-    private NativeList<RaycastHit>      castResult;
+    private NativeList<RaycastHit>      castGroundActorResult;
     private ComponentLookup<Selectable> selectLookup;
 
     [BurstCompile]
@@ -32,7 +32,7 @@ public partial struct InputCastUpdateSystem : ISystem {
             .Build());
 
         state.EntityManager.CreateSingleton<InputCastData>();
-        castResult = new NativeList<RaycastHit>(Allocator.Persistent);
+        castGroundActorResult = new NativeList<RaycastHit>(Allocator.Persistent);
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
             isReadOnly: true);
     }
@@ -46,37 +46,38 @@ public partial struct InputCastUpdateSystem : ISystem {
 
         var rayData        = SystemAPI.GetSingleton<InputDirtyData>();
         var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
-        castResult.Clear();
+        castGroundActorResult.Clear();
         if (!collisionWorld.CastRay(new RaycastInput {
             Start  = rayData.rayStart
           , End    = rayData.rayEnd
           , Filter = filterGroundActor
-        }, ref castResult)) return;
+        }, ref castGroundActorResult)) return;
 
         selectLookup.Update(ref state);
         
         uint totalHitLayer = 0;
         uint hitLayer;
-        foreach (var hit in castResult) {
+        foreach (var actorGroundHit in castGroundActorResult) {
             switch (hitLayer = collisionWorld
-                .Bodies[hit.RigidBodyIndex]
+                .Bodies[actorGroundHit.RigidBodyIndex]
                 .Collider.Value
-                .GetCollisionFilter(hit.ColliderKey)
+                .GetCollisionFilter(actorGroundHit.ColliderKey)
                 .BelongsTo) {
-                
+
                 case PhysicsLayerHelper.Actor:
-                    if (!selectLookup.HasComponent(hit.Entity) || !selectLookup.IsComponentEnabled(hit.Entity))
+                    if (!selectLookup.HasComponent(actorGroundHit.Entity) || !selectLookup.IsComponentEnabled(actorGroundHit.Entity))
                         continue;
-                    
-                    if (SystemAPI.GetComponent<TeamTypeData>(hit.Entity).teamType
+
+                    if (SystemAPI.GetComponent<TeamTypeData>(actorGroundHit.Entity).teamType
                      == ownChampQuery.GetSingleton<TeamTypeData>().teamType)
-                        castData.SetHitAlly(hit.Entity);
-                    else castData.SetHitEnemy(hit.Entity);
-                    
+                        castData.SetHitAlly(actorGroundHit.Entity);
+                    else castData.SetHitEnemy(actorGroundHit.Entity);
+
                     break;
-                
-                case PhysicsLayerHelper.Ground: 
-                    castData.SetHitGroundAt(hit.Position.Quantizate3()); 
+
+                case PhysicsLayerHelper.Ground:
+                    castData.SetHitGroundAt(actorGroundHit.Position.Quantizate3());
+
                     break;
             }
 
@@ -87,6 +88,6 @@ public partial struct InputCastUpdateSystem : ISystem {
 
     [BurstCompile]
     public void OnDestroy(ref SystemState state) {
-        castResult.Dispose();
+        castGroundActorResult.Dispose();
     }
 }

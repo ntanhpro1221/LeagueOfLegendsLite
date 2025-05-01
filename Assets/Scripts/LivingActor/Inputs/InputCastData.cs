@@ -6,12 +6,16 @@ public struct InputCastData : IComponentData {
 
     public float3_Q3 groundPos;
     public float3_Q3 walkableGroundPos;
+    public Entity    closestEntityAtGroundHit;
 
     [field: MarshalAs(UnmanagedType.U1)]
     public bool isHitGround { get; private set; }
 
     [field: MarshalAs(UnmanagedType.U1)]
     public bool isHitWalkableGround { get; private set; }
+    
+    [field: MarshalAs(UnmanagedType.U1)]
+    public bool isHitClosestEntityAtGroundHit { get; private set; }
 
     public void SetHitGroundAt(float3_Q3 pos) => 
         (isHitGround, groundPos) = (true, pos);
@@ -19,6 +23,9 @@ public struct InputCastData : IComponentData {
     public void SetHitWalkableGroundAt(float3_Q3 pos) => 
         (isHitWalkableGround, walkableGroundPos) = (true, pos);
 
+    public void SetClosestEntityAtGroundHit(Entity _closestEntityAtGroundHit) =>
+        (isHitClosestEntityAtGroundHit, closestEntityAtGroundHit) = (true, _closestEntityAtGroundHit);
+    
     #endregion
 
     #region ACTOR

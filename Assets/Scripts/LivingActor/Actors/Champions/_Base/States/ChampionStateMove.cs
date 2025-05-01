@@ -59,10 +59,9 @@ public static partial class ChampionStateMove {
                     data.moveRequester.IsMoveDone
                     // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup))) {
+                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup)))
                     data.sharedState.SetIdle();
-                    Debug.Log("Im done");
-                }
+                
                 else continue;
 
                 filter.MarkExitExecuted();

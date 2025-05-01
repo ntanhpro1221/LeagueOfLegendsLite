@@ -13,8 +13,10 @@ public partial struct ShowMovementIndicatorSystem : ISystem {
         var dirtyData = SystemAPI.GetSingleton<InputDirtyData>();
         var castData  = SystemAPI.GetSingleton<InputCastData>();
 
-        if (!PlayerInputUpdateSystem.CheckMoveEvent(dirtyData, castData)) return;
+        if (PlayerInputUpdateSystem.CheckMoveEvent(dirtyData, castData))
+            MovementIndicatorPoolingManager.Pool(castData.walkableGroundPos, MovementIndicatorType.Green);
 
-        MovementIndicatorPoolingManager.Pool(castData.walkableGroundPos);
+        if (PlayerInputUpdateSystem.CheckMoveAttackEvent(dirtyData, castData))
+            MovementIndicatorPoolingManager.Pool(castData.walkableGroundPos, MovementIndicatorType.Red);
     }
 }

@@ -36,14 +36,13 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             }
 
             // CHECK ATTACK
-            if (castData.isHitActor)
-                if ( // Left click
-                    dirtyData.leftMouse.WasPressedThisFrame()
-                    // Release A_Key
-                 || dirtyData.a_key.WasReleasedThisFrame()) {
-                    inputData.SetAttack(castData.actor);
-                    inputData.CancelMove(locTrans);
-                }
+            if (castData.isHitActor && dirtyData.leftMouse.WasPressedThisFrame()) {
+                inputData.SetAttack(castData.actor);
+                inputData.CancelMove(locTrans);
+            } else if (castData.isHitClosestEntityAtGroundHit && dirtyData.leftMouse.WasPressedThisFrame()) {
+                inputData.SetAttack(castData.closestEntityAtGroundHit);
+                inputData.CancelMove(locTrans);
+            }
 
             // CANCEL MOVE AND ATTACK
             if (dirtyData.s_key.WasPressedThisFrame()) {
@@ -57,4 +56,9 @@ public partial struct PlayerInputUpdateSystem : ISystem {
     public static bool CheckMoveEvent(in InputDirtyData dirtyData, in InputCastData castData) =>
         castData.isHitWalkableGround
      && dirtyData.rightMouse.WasPressedThisFrame();
+
+    [BurstCompile]
+    public static bool CheckMoveAttackEvent(in InputDirtyData dirtyData, in InputCastData castData) =>
+        castData.isHitWalkableGround
+     && dirtyData.leftMouse.WasPressedThisFrame();
 }

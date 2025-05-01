@@ -47,4 +47,15 @@ MonoBehaviour:
   <arrowRollEnd>k__BackingField: -170
   <ringScaleEnd>k__BackingField: 1
   <duration>k__BackingField: 1
-  pattern: {fileID: 3114653502510382759, guid: 511edeff22e2217489b0de42eb468ae2, type: 3}
+  pattern:
+    _Keys: 0000000001000000
+    _Values:
+    - _Value: {fileID: 3114653502510382759, guid: 511edeff22e2217489b0de42eb468ae2, type: 3}
+    - _Value: {fileID: 3510429509895591868, guid: eedb487d70931e94b99b78a3df86f55d, type: 3}
+    _KeyNames:
+    - Green
+    - Red
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1e871a7f337838904406333a37d8d016
+    _KeySynced: 1
