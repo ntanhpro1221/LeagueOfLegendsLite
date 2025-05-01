@@ -42,13 +42,15 @@ public static partial class MinionStateIdle {
                   , health
                   , aimedTarget
                   , sharedState
-                  , attackData)
+                  , attackData
+                  , pathBuffer)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
-                  , RefRO<AttackStateData>>()) {
+                  , RefRO<AttackStateData>
+                  , DynamicBuffer<MinionFixedPathBuffer>>()) {
 
                 // DEAD STATE
                 if (health.IsDead) // RUN OUT OF HEALTH
@@ -67,6 +69,13 @@ public static partial class MinionStateIdle {
                     // attack cool down done
                  && attackData.ValueRO.IsCooldownDone(curTick))
                     sharedState.SetAttack();
+
+                // MOVE STATE
+                else if (
+                    // there is still a path
+                    !pathBuffer.Empty())
+                    sharedState.SetMove();
+
                 else continue;
 
                 filter.MarkExitExecuted();

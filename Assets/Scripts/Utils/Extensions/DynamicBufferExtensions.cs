@@ -25,20 +25,20 @@ public static class DynamicBufferExtensions {
         where TBuffer : unmanaged
         => ref buffer.ElementAt(buffer.Length - 1);
 
-    public static ref readonly TBuffer BackRO<TBuffer>(
+    public static TBuffer BackRO<TBuffer>(
         this DynamicBuffer<TBuffer> buffer)
         where TBuffer : unmanaged
-        => ref buffer.ElementAt(buffer.Length - 1);
+        => buffer[buffer.Length - 1];
 
     public static ref TBuffer FrontRW<TBuffer>(
         this DynamicBuffer<TBuffer> buffer)
         where TBuffer : unmanaged
         => ref buffer.ElementAt(0);
 
-    public static ref readonly TBuffer FrontRO<TBuffer>(
+    public static TBuffer FrontRO<TBuffer>(
         this DynamicBuffer<TBuffer> buffer)
         where TBuffer : unmanaged
-        => ref buffer.ElementAt(0);
+        => buffer[0];
 
     public static TBuffer PopBack<TBuffer>(
         this DynamicBuffer<TBuffer> buffer)

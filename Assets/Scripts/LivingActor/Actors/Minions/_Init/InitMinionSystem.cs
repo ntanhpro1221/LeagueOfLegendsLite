@@ -9,6 +9,7 @@ using UnityEngine;
 public partial struct InitMinionSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllMinionData>();
         state.RequireForUpdate<InitTransformData>();
         state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate(SystemAPI.QueryBuilder()
@@ -24,9 +25,9 @@ public partial struct InitMinionSystem : ISystem {
         ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         state.Dependency = new Job {
-            initTrans = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId  = statsId[StatsType.Health]
-          , side      = state.WorldName()
+            initTrans     = SystemAPI.GetSingleton<InitTransformData>()
+          , healthId      = statsId[StatsType.Health]
+          , allMinionData = SystemAPI.GetSingleton<AllMinionData>()
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -38,18 +39,20 @@ public partial struct InitMinionSystem : ISystem {
         typeof(HealthData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public InitTransformData  initTrans;
-        public int                healthId;
-        public FixedString32Bytes side;
+        public InitTransformData initTrans;
+        public AllMinionData     allMinionData;
+        public int               healthId;
 
         [BurstCompile]
         public void Execute(
             in  LaneTypeData                         laneType
           , in  TeamTypeData                         teamType
+          , in  MinionTag                            tag
           , in  DynamicBuffer<StatsBuffer>           stats
           , ref HealthData                           health
           , ref LocalTransform                       locTrans
           , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
+          , ref MinionControlFactor                  controlFactor
           , MoveRequesterAspect                      moveRequester
           , EnabledRefRW<NeedInitTag>                needInit
           , EnabledRefRW<HealthData>                 healthEnabled) {
@@ -71,6 +74,9 @@ public partial struct InitMinionSystem : ISystem {
             pathBuffer.Resize(pathSource.Count, NativeArrayOptions.UninitializedMemory);
             for (int i = 0; i < pathBuffer.Length; i++)
                 pathBuffer[i] = new MinionFixedPathBuffer { pos = pathSource[i].position };
+
+            // init control factor
+            controlFactor.aggroRangeSqr = allMinionData.Minions[tag.id].aggroRange.Sqr();
         }
     }
 }

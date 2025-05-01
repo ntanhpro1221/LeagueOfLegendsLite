@@ -4,45 +4,60 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 public readonly partial struct AimedTargetAspectRO : IAspect {
-    private readonly RefRO<LocalTransform>  _LocTrans;
-    private readonly RefRO<AimedTargetData> _AimedTargetData;
+  public const int CLOSE_TO_TARGET_TOLERANCE = 5;
 
-    [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+  private readonly RefRO<LocalTransform>  _LocTrans;
+  private readonly RefRO<AimedTargetData> _AimedTargetData;
 
-    public ref readonly Entity Target => ref _AimedTargetData.ValueRO.target;
+  [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
-    public bool IsTargetExists(
-        in ComponentLookup<Selectable> selectLookup) =>
-        GameHelpers.IsTargetExists(
-            _AimedTargetData.ValueRO.target
-          , selectLookup);
+  public ref readonly Entity Target => ref _AimedTargetData.ValueRO.target;
 
-    public bool IsTargetOutOfRange(
-        int                                attackRangeId
-      , int                                unitRadiusId
-      , in ComponentLookup<LocalTransform> locTransLookup
-      , in BufferLookup<StatsBuffer>       statsLookup) =>
-        GameHelpers.IsTargetOutOfRange(
-            _LocTrans.ValueRO.Position
-          , locTransLookup[_AimedTargetData.ValueRO.target].Position
-          , _Stats[attackRangeId].value
-          , statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value);
+  public bool IsTargetExists(in ComponentLookup<Selectable> selectLookup) =>
+    GameHelpers.IsTargetExists(
+      _AimedTargetData.ValueRO.target
+    , selectLookup);
 
-    public bool NeedMoveToTarget(
-        in ComponentLookup<Selectable>     selectLookup
-      , int                                attackRangeId
-      , int                                unitRadiusId
-      , in ComponentLookup<LocalTransform> locTransLookup
-      , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(selectLookup)
-     && IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // Out range
+  public bool IsTargetOutOfRange(
+    int                                attackRangeId
+  , int                                unitRadiusId
+  , in ComponentLookup<LocalTransform> locTransLookup
+  , in BufferLookup<StatsBuffer>       statsLookup) =>
+    GameHelpers.IsTargetOutOfRange(
+      _LocTrans.ValueRO.Position
+    , locTransLookup[_AimedTargetData.ValueRO.target].Position
+    , _Stats[attackRangeId].value
+    , statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value);
 
-    public bool HaveTargetInRange(
-        in ComponentLookup<Selectable>     selectLookup
-      , int                                attackRangeId
-      , int                                unitRadiusId
-      , in ComponentLookup<LocalTransform> locTransLookup
-      , in BufferLookup<StatsBuffer>       statsLookup) =>
-        IsTargetExists(selectLookup)
-     && !IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // In range
+  public bool NeedMoveToTarget(
+    in ComponentLookup<Selectable>     selectLookup
+  , int                                attackRangeId
+  , int                                unitRadiusId
+  , in ComponentLookup<LocalTransform> locTransLookup
+  , in BufferLookup<StatsBuffer>       statsLookup) =>
+    IsTargetExists(selectLookup)
+ && IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // Out range
+
+  public bool HaveTargetInRange(
+    in ComponentLookup<Selectable>     selectLookup
+  , int                                attackRangeId
+  , int                                unitRadiusId
+  , in ComponentLookup<LocalTransform> locTransLookup
+  , in BufferLookup<StatsBuffer>       statsLookup) =>
+    IsTargetExists(selectLookup)
+ && !IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup); // In range
+
+  public bool SoCloseToTarget(
+    in ComponentLookup<Selectable>     selectLookup
+  , int                                unitRadiusId
+  , in ComponentLookup<LocalTransform> locTransLookup
+  , in BufferLookup<StatsBuffer>       statsLookup)
+    =>
+      _Stats[unitRadiusId].value
+    + statsLookup[_AimedTargetData.ValueRO.target][unitRadiusId].value
+    + CLOSE_TO_TARGET_TOLERANCE
+    > math.length((
+          _LocTrans.ValueRO.Position
+        - locTransLookup[_AimedTargetData.ValueRO.target].Position)
+        .WithoutY());
 }

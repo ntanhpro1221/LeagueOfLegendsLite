@@ -92,4 +92,5 @@ public static class floatExtensions {
     public static float LengthSqr(this floatXZ_Q3 source) =>
         math.square((float)source.x / floatXZ_Q3.MULTIPLIER)
       + math.square((float)source.z / floatXZ_Q3.MULTIPLIER);
+
 }

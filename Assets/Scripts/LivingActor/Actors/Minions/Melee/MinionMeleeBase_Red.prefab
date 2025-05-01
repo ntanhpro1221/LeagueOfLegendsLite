@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 592936608898618137, guid: bfc00af10602cae47b04571661572fac, type: 3}
       propertyPath: m_Name
-      value: MinionMeleeBase
+      value: MinionMeleeBase_Red
       objectReference: {fileID: 0}
     - target: {fileID: 761521184774233763, guid: bfc00af10602cae47b04571661572fac, type: 3}
       propertyPath: teamType
@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: modelPrefab
       value: 
       objectReference: {fileID: 8625522513821530663, guid: 384d378b21b6fdc45b7d81d391949589, type: 3}
+    - target: {fileID: 5936026731606778285, guid: bfc00af10602cae47b04571661572fac, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 7bc1a1f922ba8c3b7cf62233fb428f9a
+      objectReference: {fileID: 0}
     - target: {fileID: 7162982365432931143, guid: bfc00af10602cae47b04571661572fac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

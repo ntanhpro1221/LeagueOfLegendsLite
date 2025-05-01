@@ -4,10 +4,7 @@ using UnityEngine;
 
 public struct AimedTargetData : IComponentData {
     [GhostField] public Entity target;
-    
-    public AimedTargetData(Entity target) {
-        this.target = target;
-    }
+    [GhostField] public bool   targetIsChampion;
 }
 
 public class AimedTargetAuthoring : MonoBehaviour {

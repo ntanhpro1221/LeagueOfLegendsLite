@@ -48,7 +48,7 @@ public partial struct CommonRangedAttackSystem : ISystem {
             if (isFirstTimeFullyPredictingTick) {
                 var projectile = ecb.Instantiate(attackData.projectile);
 
-                ecb.SetComponent(projectile, new AimedTargetData(target.target));
+                ecb.SetComponent(projectile, new AimedTargetData { target = target.target });
                 ecb.SetComponent(projectile, new DamageTriggerSource(stats[damageId].value));
                 ecb.SetComponent(projectile, LocalTransform.FromPositionRotationScale(
                     // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable

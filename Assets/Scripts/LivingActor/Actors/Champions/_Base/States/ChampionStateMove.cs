@@ -57,10 +57,12 @@ public static partial class ChampionStateMove {
                 else if (
                     // Done move
                     data.moveRequester.IsMoveDone
-                    // have target within range but cooldown not done
+                    // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                 || (haveTargetInRange && !attackCooldownDone))
+                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup))) {
                     data.sharedState.SetIdle();
+                    Debug.Log("Im done");
+                }
                 else continue;
 
                 filter.MarkExitExecuted();

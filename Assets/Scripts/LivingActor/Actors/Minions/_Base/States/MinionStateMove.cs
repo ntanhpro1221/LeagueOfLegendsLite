@@ -55,8 +55,8 @@ public static partial class MinionStateMove {
 
                 // IDLE STATE
                 else if (
-                    // Done move
-                    data.moveRequester.IsMoveDone
+                    // Don't have path left
+                    data.PathBuffer.Empty()
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
@@ -79,6 +79,7 @@ public static partial class MinionStateMove {
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
 
+            [ReadOnly] public readonly DynamicBuffer<MinionFixedPathBuffer> PathBuffer;
 
             public void StopMove() {
                 moveRequester.SyncFromLocTrans(localTrans.ValueRO);
@@ -102,35 +103,111 @@ public static partial class MinionStateMove {
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
     public partial struct Update : ISystem {
-        [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
-        [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
+        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
+            state.RequireForUpdate<MinionBehaviourConfigData>();
             state.RequireForUpdate<NetworkTime>();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
-                isReadOnly: true);
-            locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             selectLookup.Update(ref state);
-            locTransLookup.Update(ref state);
 
-            foreach (var (
-                    _
-                  , aimedTarget
-                  , autoFollowTarget)
-                in SystemAPI
-                    .Query<
-                        StateFilterAspect
-                      , AimedTargetAspectRO
-                      , EnabledRefRW<AutoFollowTarget>>()
-                    .WithPresent<AutoFollowTarget>()) {
-                // Try move to aimed target
+            state.Dependency = new SeekTargetJob {
+                selectLookup = selectLookup
+            }.ScheduleParallel(state.Dependency);
+
+            state.Dependency = new FollowTargetJob {
+                selectLookup = selectLookup
+            }.ScheduleParallel(state.Dependency);
+
+            state.Dependency = new FollowFixedPathJob {
+                reachPathDisToleranceSqr = SystemAPI.GetSingleton<MinionBehaviourConfigData>().reachPathDisToleranceSqr
+            }.ScheduleParallel(state.Dependency);
+        }
+
+        [WithPresent(
+            typeof(AggroAnchor)
+          , typeof(AggroDisabling))]
+        [BurstCompile]
+        private partial struct SeekTargetJob : IJobEntity {
+            [ReadOnly] public ComponentLookup<Selectable> selectLookup;
+
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect                         _
+              , ref AimedTargetData                       aimedTarget
+              , in  DynamicBuffer<DetectedMinionBuffer>   detectedMinion
+              , in  DynamicBuffer<DetectedTowerBuffer>    detectedTower
+              , in  DynamicBuffer<DetectedChampionBuffer> detectedChampion
+              , in  DynamicBuffer<MinionFixedPathBuffer>  pathBuffer
+              , in  LocalTransform                        locTrans
+              , ref AggroAnchor                           aggroAnchor
+              , EnabledRefRW<AggroAnchor>                 anchorEnable
+              , EnabledRefRO<AggroDisabling>              aggroDisable
+              , MoveRequesterAspect                       moveRequester) {
+                if (GameHelpers.IsTargetExists(aimedTarget.target, selectLookup)) {
+                    if (aimedTarget.targetIsChampion
+                     && aggroDisable.ValueRO) {
+                        aimedTarget.target = Entity.Null;
+                        if (!pathBuffer.Empty()) 
+                            moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
+                    }
+                }
+                else {
+                    anchorEnable.ValueRW         = false;
+                    aimedTarget.targetIsChampion = false;
+
+                    if (!detectedMinion.Empty()) aimedTarget.target = detectedMinion.FrontRO().entity;
+                    // else if (!detectedTower.Empty()) aimedTarget.target = detectedTower.FrontRO().entity;
+                    else if (!detectedChampion.Empty()
+                     && !aggroDisable.ValueRO) {
+                        aimedTarget.target           = detectedChampion.FrontRO().entity;
+                        aggroAnchor.anchor           = locTrans.Position.Quantizate3();
+                        anchorEnable.ValueRW         = true;
+                        aimedTarget.targetIsChampion = true;
+                    }
+                }
+            }
+        }
+
+        [WithPresent(typeof(AutoFollowTarget))]
+        [BurstCompile]
+        private partial struct FollowTargetJob : IJobEntity {
+            [ReadOnly] public ComponentLookup<Selectable> selectLookup;
+
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect              _
+              , AimedTargetAspectRO            aimedTarget
+              , EnabledRefRW<AutoFollowTarget> autoFollowTarget) {
                 autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(selectLookup);
+            }
+        }
+
+        [WithNone(typeof(AutoFollowTarget))] // Don't need to calculate fix path when we have a target to follow
+        [BurstCompile]
+        private partial struct FollowFixedPathJob : IJobEntity {
+            public float_Q3 reachPathDisToleranceSqr;
+
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect                        _
+              , ref MinionControlFactor                  controlData
+              , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
+              , MoveRequesterAspect                      moveRequester
+              , in LocalTransform                        locTrans) {
+
+                if (!pathBuffer.Empty()
+                 && reachPathDisToleranceSqr > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos)) {
+                    pathBuffer.PopFront();
+                    if (!pathBuffer.Empty())
+                        moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
+                }
             }
         }
     }

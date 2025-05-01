@@ -54,13 +54,12 @@ public static partial class MinionStateAttack {
 
                 // MOVE STATE
                 else if (
-                    // Need move to target
-                    aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
+                    // Don't have target in range and already perform attack
+                    // => transit to moveState to move and seek for new target
+                    attackData.ValueRO.isAttacked
+                 && !aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
                     sharedState.SetMove();
-
-                // IDLE STATE
-                else if (!aimedTarget.IsTargetExists(selectLookup)) // Lost target
-                    sharedState.SetIdle();
+                
                 else continue;
 
                 filter.MarkExitExecuted();
