@@ -14,8 +14,8 @@ public struct TowerData : IBlobBuildable<TowerDataManaged>, IBlobBuildableSelf<T
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref TowerData source) {
-        stats.BuildBlob(ref builder, source.stats);
+        stats.BuildBlob(ref builder, ref source.stats);
 
-        bounty.BuildBlob(ref builder, source.bounty);
+        bounty.BuildBlob(ref builder, ref source.bounty);
     }
 }

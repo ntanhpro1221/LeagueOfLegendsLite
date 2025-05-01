@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NGDtuanh.BubleAsset;
 using NGDtuanh.Collections;
 using NGDtuanh.Utils;
@@ -12,7 +13,7 @@ namespace NGDtuanh.BubleAsset.Generator {
     internal static class BubleShortCutGenerator {
         public static readonly string path;
 
-        public static readonly string SpaceName = "NGDtuanh.BlobAssetExtend.ShortCut";
+        public static readonly string SpaceName = $"{nameof(NGDtuanh)}.{nameof(NGDtuanh.BubleAsset)}.ShortCut";
 
         public static readonly string[] Usings = new string[] {
             nameof(System)
@@ -109,6 +110,80 @@ namespace NGDtuanh.BubleAsset.Generator {
             }
         };
         
+        public static readonly TypeData[] AllTypesLite = new TypeData[] {
+            new() {
+                Name       = nameof(BubleMap<int, int>)
+              , ShortName  = "Map"
+              , SourceName = nameof(ICovKVPCollection<int, int>)
+              , Generics = new List<GenericData> {
+                    new GenericData {
+                        Name = "Init_Key"
+                      , Constraints = new List<ConstraintType> {
+                            ConstraintType.Unmanaged
+                          , ConstraintType.Equatable
+                        }
+                      , GenericType = GenericType.Key
+                    }
+                }
+              , ChildGeneric = new GenericData {
+                    Name        = "Init_ValueResult"
+                  , GenericType = GenericType.ValueResult
+                  , Constraints = new List<ConstraintType> {
+                        ConstraintType.Struct
+                    }
+                }
+              , SourceGeneric = new GenericData {
+                    Name        = "Init_ValueSource"
+                  , GenericType = GenericType.ValueSource
+                  , Constraints = new List<ConstraintType> { }
+                }
+            }
+          , new() {
+                Name       = nameof(BubleEnMap<GenericType, int>)
+              , ShortName  = "EnMap"
+              , SourceName = nameof(ICovKVPCollection<int, int>)
+              , Generics = new List<GenericData> {
+                    new GenericData {
+                        Name = "Init_Key"
+                      , Constraints = new List<ConstraintType> {
+                            ConstraintType.Unmanaged
+                          , ConstraintType.Enum
+                        }
+                      , GenericType = GenericType.Key
+                    }
+                }
+              , ChildGeneric = new GenericData {
+                    Name        = "Init_ValueResult"
+                  , GenericType = GenericType.ValueResult
+                  , Constraints = new List<ConstraintType> {
+                        ConstraintType.Struct
+                    }
+                }
+              , SourceGeneric = new GenericData {
+                    Name        = "Init_ValueSource"
+                  , GenericType = GenericType.ValueSource
+                  , Constraints = new List<ConstraintType> { }
+                }
+            }
+           ,new() {
+                Name       = nameof(BubleArray<int>)
+              , ShortName  = "Array"
+              , SourceName = nameof(IReadOnlyCollection<int>)
+              , ChildGeneric = new GenericData {
+                    Name        = "Init_ValueResult"
+                  , GenericType = GenericType.ValueResult
+                  , Constraints = new List<ConstraintType> {
+                        ConstraintType.Struct
+                    }
+                }
+              , SourceGeneric = new GenericData {
+                    Name        = "Init_ValueSource"
+                  , GenericType = GenericType.ValueSource
+                  , Constraints = new List<ConstraintType> { }
+                }
+            }
+        };
+        
         static BubleShortCutGenerator() {
             path = Path.Combine(AssetHelper.GetScriptPathWithoutFileName(nameof(BubleShortCutGenerator)), "Generated");
         }
@@ -148,14 +223,24 @@ namespace NGDtuanh.BubleAsset.Generator {
                   , out string fileName);
                 AssetHelper.WriteToFile(Path.Combine(path, fileName + ".cs"), content, false);
 
-                content = BuildSource(
-                    seeds
-                  , false
-                  , SpaceName
-                  , Usings
-                  , Inherits
-                  , out fileName);
-                AssetHelper.WriteToFile(Path.Combine(path, fileName + "Lite.cs"), content, false);
+                for (int i = 0; i < AllTypes.Length; ++i) {
+                    if (seeds[^1] != AllTypes[i]) continue;
+
+                    seeds[^1] = AllTypesLite[i];
+                    
+                    content = BuildSource(
+                        seeds
+                      , false
+                      , SpaceName
+                      , Usings
+                      , Inherits
+                      , out fileName);
+                    AssetHelper.WriteToFile(Path.Combine(path, fileName + "Lite.cs"), content, false);
+                    
+                    seeds[^1] = AllTypes[i];
+                    
+                    break;
+                }
             }
 
             if (curDepth > DEPTH) return;

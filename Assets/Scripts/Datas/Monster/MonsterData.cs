@@ -17,9 +17,9 @@ public struct MonsterData : IBlobBuildable<MonsterDataManaged>, IBlobBuildableSe
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref MonsterData source) {
-        stats.BuildBlob(ref builder, source.stats);
+        stats.BuildBlob(ref builder, ref source.stats);
 
-        bounty.BuildBlob(ref builder, source.bounty);
+        bounty.BuildBlob(ref builder, ref source.bounty);
 
         leashRange = source.leashRange;
     }

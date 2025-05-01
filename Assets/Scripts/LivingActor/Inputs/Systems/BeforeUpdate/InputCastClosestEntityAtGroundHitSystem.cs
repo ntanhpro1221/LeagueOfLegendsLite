@@ -2,6 +2,7 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 using Unity.Physics;
 
 /// <summary>
@@ -45,6 +46,6 @@ public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
                     curClosest = actorHit.Distance;
                     castData.SetClosestEntityAtGroundHit(actorHit.Entity);
                 }
-        }
+        } 
     }
 }

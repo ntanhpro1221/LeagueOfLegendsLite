@@ -17,9 +17,9 @@ public struct MinionData : IBlobBuildable<MinionDataManaged>, IBlobBuildableSelf
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref MinionData source) {
-        stats.BuildBlob(ref builder, source.stats);
+        stats.BuildBlob(ref builder, ref source.stats);
 
-        bounty.BuildBlob(ref builder, source.bounty);
+        bounty.BuildBlob(ref builder, ref source.bounty);
 
         aggroRange = source.aggroRange;
     }
