@@ -18,6 +18,13 @@ public struct TeamTypeData : IComponentData {
 
     public bool IsSameTeam(TeamTypeData other) => teamType == other.teamType;
 
+    /// <summary>
+    /// Regardless who is red or who is blue
+    /// </summary>
+    public bool IsRedBlue(TeamTypeData other) =>
+        (teamType == TeamType.Blue && other.teamType == TeamType.Red)
+     || (teamType == TeamType.Red  && other.teamType == TeamType.Blue);
+
     public static implicit operator TeamTypeData(TeamType teamType) => new() { teamType = teamType };
 }
 

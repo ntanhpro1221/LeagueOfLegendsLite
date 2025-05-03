@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6638954478031481456, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6638954478031481456, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_InertiaTensor.x
+      value: 2e+9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6638954478031481456, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_InertiaTensor.y
+      value: 2e+9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6638954478031481456, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: m_InertiaTensor.z
+      value: 2e+9
+      objectReference: {fileID: 0}
     - target: {fileID: 2361130300847117537, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Height
       value: 200
@@ -78,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 7bc1a1f922ba8c3b7cf62233fb428f9a
+      value: 8e15eba8db9d76f85f1b041db861ad7a
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5392229273288189392, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
@@ -97,9 +113,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 22885486153027504}
-    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1998636112357475419}
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8018114365186711175}
@@ -173,33 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enabled: 0
   followMethod: 1
---- !u!54 &1998636112357475419
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32608205855955755}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 2e+9, y: 2e+9, z: 2e+9}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &8018114365186711175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorDetectorPrefab: {fileID: 0}
   targets: 7
+  teamFilter: 0
 --- !u!114 &6364089881559914435
 MonoBehaviour:
   m_ObjectHideFlags: 0

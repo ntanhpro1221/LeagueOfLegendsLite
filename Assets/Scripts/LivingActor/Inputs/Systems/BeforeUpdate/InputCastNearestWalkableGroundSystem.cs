@@ -8,10 +8,6 @@ using Unity.Mathematics;
 [UpdateInGroup(typeof(BeforeInputLocalUpdateSystemGroup))]
 [UpdateAfter(typeof(InputCastUpdateSystem))]
 public partial struct InputCastNearestWalkableGroundSystem : ISystem {
-    public static readonly NNConstraint nnWalkableGround = new() {
-        distanceMetric = DistanceMetric.ClosestAsSeenFromAbove(math.up())
-    };
-
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InputDirtyData>();
     }
@@ -21,7 +17,7 @@ public partial struct InputCastNearestWalkableGroundSystem : ISystem {
 
         if (!castData.isHitGround) return;
 
-        var nnResult = AstarPath.active.GetNearest(castData.groundPos, nnWalkableGround).position;
+        var nnResult = AstarPath.active.GetNearest(castData.groundPos, NNConstraintHub.ClosestAsSeenFromAbove).position;
         if (nnResult.IsPositiveInfinity_X()) return;
 
         castData.SetHitWalkableGroundAt(nnResult.Quantizate3());

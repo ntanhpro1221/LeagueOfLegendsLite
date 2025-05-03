@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 897348304078590646, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 4d70f745c0be3ea73b9fd60a5bb7e9e2
+      value: 373340de79219c2dbdbc5566dd5644d3
       objectReference: {fileID: 0}
     - target: {fileID: 1710513814157459105, guid: 840d22698500d004e98d6a3b13745806, type: 3}
       propertyPath: m_LocalPosition.y
@@ -104,7 +104,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AsheBase
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -6943888993422156025, guid: 840d22698500d004e98d6a3b13745806, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

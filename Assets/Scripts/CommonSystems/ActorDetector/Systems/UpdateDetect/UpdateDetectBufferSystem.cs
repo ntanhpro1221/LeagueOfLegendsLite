@@ -1,9 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
+using UnityEngine;
 
 /// <summary>
 /// To add more detect agent, look at:
@@ -27,7 +27,7 @@ public partial struct UpdateDetectedActorSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         ScheduleClearBuffer_AllPartial(ref state);
-        
+
         state.CompleteDependency();
 
         UpdateData_AllPartial(ref state);
@@ -55,6 +55,23 @@ public partial struct UpdateDetectedActorSystem : ISystem {
             if (!data.actorDetectorLookup.TryGetComponent(detectorEntity, out var detector)
              || detector.holder == target) // Not include itself
                 return;
+
+            if (!data.filterLookup.EntityExists(detector.holder)
+             || !data.filterLookup.EntityExists(target)) {
+                Debug.LogWarning($"NGDtuanh: holder or target of detector doesn't exist (may be relative to predicted spawn ghost)");
+                return;
+            }
+
+            // Team filter
+            switch (data.filterLookup[detector.holder].teamFilter) {
+                case ActorDetectFilter.TeamFilter.Opponent:
+                    if (!data.teamLookup[detector.holder].IsRedBlue(data.teamLookup[target]))
+                        return;
+                    break;
+                case ActorDetectFilter.TeamFilter.All:
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
 
             AppendToBuffer_AllPartial(detector.holder, target);
         }

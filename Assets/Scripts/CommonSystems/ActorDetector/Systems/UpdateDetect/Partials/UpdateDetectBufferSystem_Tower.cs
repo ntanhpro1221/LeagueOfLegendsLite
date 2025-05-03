@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 public partial struct UpdateDetectedActorSystem {
@@ -9,15 +8,10 @@ public partial struct UpdateDetectedActorSystem {
 
         mainJob.data.detectedTowerLookup = SystemAPI.GetBufferLookup<DetectedTowerBuffer>(
             isReadOnly: false);
-        mainJob.data.detectedByTowerLookup = SystemAPI.GetBufferLookup<DetectedByTowerBuffer>(
-            isReadOnly: false);
     }
 
     private void ScheduleClearBuffer_Tower(ref SystemState state) {
         state.Dependency = new ClearDetectedTowerJob()
-            .ScheduleParallel(state.Dependency);
-
-        state.Dependency = new ClearDetectedByTowerJob()
             .ScheduleParallel(state.Dependency);
     }
 
@@ -25,7 +19,6 @@ public partial struct UpdateDetectedActorSystem {
         mainJob.data.TowerLookup.Update(ref state);
 
         mainJob.data.detectedTowerLookup.Update(ref state);
-        mainJob.data.detectedByTowerLookup.Update(ref state);
     }
 
     private partial struct MainJob {
@@ -33,10 +26,6 @@ public partial struct UpdateDetectedActorSystem {
             if (data.TowerLookup.HasComponent(target)
              && data.detectedTowerLookup.TryGetBuffer(detector, out var detectedBuffer))
                 detectedBuffer.Add(target);
-
-            if (data.TowerLookup.HasComponent(detector)
-             && data.detectedByTowerLookup.TryGetBuffer(target, out var detectByBuffer))
-                detectByBuffer.Add(detector);
         }
     }
 
@@ -46,15 +35,6 @@ public partial struct UpdateDetectedActorSystem {
         [BurstCompile]
         public void Execute(ref DynamicBuffer<DetectedTowerBuffer> detectedBuffer) {
             detectedBuffer.Clear();
-        }
-    }
-
-    [WithAll(typeof(Simulate))]
-    [BurstCompile]
-    private partial struct ClearDetectedByTowerJob : IJobEntity {
-        [BurstCompile]
-        public void Execute(ref DynamicBuffer<DetectedByTowerBuffer> detectedByBuffer) {
-            detectedByBuffer.Clear();
         }
     }
 }

@@ -5,7 +5,11 @@ public partial struct UpdateDetectedActorSystem {
     private void InitBuffer_AllPartial(ref SystemState state) {
         mainJob.data.actorDetectorLookup = SystemAPI.GetComponentLookup<ActorDetector>(
             isReadOnly: true);
-
+        mainJob.data.filterLookup = SystemAPI.GetComponentLookup<ActorDetectFilter>(
+            isReadOnly: true);
+        mainJob.data.teamLookup = SystemAPI.GetComponentLookup<TeamTypeData>(
+            isReadOnly: true);
+        
         InitBuffer_Champion(ref state);
         InitBuffer_Minion(ref state);
         InitBuffer_Monster(ref state);
@@ -21,6 +25,8 @@ public partial struct UpdateDetectedActorSystem {
 
     private void UpdateData_AllPartial(ref SystemState state) {
         mainJob.data.actorDetectorLookup.Update(ref state);
+        mainJob.data.filterLookup.Update(ref state);
+        mainJob.data.teamLookup.Update(ref state);
 
         UpdateData_Champion(ref state);
         UpdateData_Minion(ref state);
@@ -37,23 +43,21 @@ public partial struct UpdateDetectedActorSystem {
         }
 
         public struct Data {
-            [ReadOnly] public ComponentLookup<ActorDetector> actorDetectorLookup;
+            [ReadOnly] public ComponentLookup<ActorDetector>     actorDetectorLookup;
+            [ReadOnly] public ComponentLookup<ActorDetectFilter> filterLookup;
+            [ReadOnly] public ComponentLookup<TeamTypeData>      teamLookup;
 
             [ReadOnly] public ComponentLookup<ChampionTag>           ChampionLookup;
             public            BufferLookup<DetectedChampionBuffer>   detectedChampionLookup;
-            public            BufferLookup<DetectedByChampionBuffer> detectedByChampionLookup;
 
             [ReadOnly] public ComponentLookup<MinionTag>           MinionLookup;
             public            BufferLookup<DetectedMinionBuffer>   detectedMinionLookup;
-            public            BufferLookup<DetectedByMinionBuffer> detectedByMinionLookup;
 
             [ReadOnly] public ComponentLookup<MonsterTag>           MonsterLookup;
             public            BufferLookup<DetectedMonsterBuffer>   detectedMonsterLookup;
-            public            BufferLookup<DetectedByMonsterBuffer> detectedByMonsterLookup;
 
             [ReadOnly] public ComponentLookup<TowerTag>           TowerLookup;
             public            BufferLookup<DetectedTowerBuffer>   detectedTowerLookup;
-            public            BufferLookup<DetectedByTowerBuffer> detectedByTowerLookup;
         }
     }
 }

@@ -8,6 +8,15 @@ public struct NeedSpawnActorDetector : IComponentData, IEnableableComponent {
     public Entity prefab;
 }
 
+public struct ActorDetectFilter : IComponentData {
+    public TeamFilter teamFilter;
+
+    public enum TeamFilter {
+        Opponent = 0
+      , All      = 1
+    }
+}
+
 public struct DetectedChampionBuffer : IBufferElementData {
     [GhostField] public Entity entity;
 
@@ -38,17 +47,22 @@ public struct DetectedMonsterBuffer : IBufferElementData {
 
 [RequireComponent(typeof(LinkedEntityGroupAuthoring))] // To link actor detector
 public class ActorDetectorHolderAuthoring : MonoBehaviour {
-    public GameObject actorDetectorPrefab;
-    public DetectTarget targets;
+    public GameObject                   actorDetectorPrefab;
+    public DetectTarget                 targets;
+    public ActorDetectFilter.TeamFilter teamFilter;
 
     private class Baker : ExtendBaker<ActorDetectorHolderAuthoring> {
         public override void Bake(ActorDetectorHolderAuthoring authoring) {
             GetDynamicEntity(out var entity);
-            
+
             AddComponent(entity, new NeedSpawnActorDetector {
                 prefab = GetDynamicEntity(authoring.actorDetectorPrefab)
             });
             
+            AddComponent(entity, new ActorDetectFilter {
+                teamFilter = authoring.teamFilter
+            });
+
             if (authoring.targets.HasFlag(DetectTarget.Champion))
                 AddBuffer<DetectedChampionBuffer>(entity);
 

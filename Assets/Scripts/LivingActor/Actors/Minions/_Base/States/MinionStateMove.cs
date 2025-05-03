@@ -57,11 +57,11 @@ public static partial class MinionStateMove {
                 else if (
                     // Don't have path left
                     data.PathBuffer.Empty()
-                    // have target within range but cooldown not done
-                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                 // have target within range but cooldown not done
+                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
                     data.sharedState.SetIdle();
-                else continue;
+                else continue; 
 
                 filter.MarkExitExecuted();
                 data.StopMove();
@@ -144,26 +144,21 @@ public static partial class MinionStateMove {
               , in  DynamicBuffer<DetectedMinionBuffer>   detectedMinion
               , in  DynamicBuffer<DetectedTowerBuffer>    detectedTower
               , in  DynamicBuffer<DetectedChampionBuffer> detectedChampion
-              , in  DynamicBuffer<MinionFixedPathBuffer>  pathBuffer
               , in  LocalTransform                        locTrans
               , ref AggroAnchor                           aggroAnchor
               , EnabledRefRW<AggroAnchor>                 anchorEnable
-              , EnabledRefRO<AggroDisabling>              aggroDisable
-              , MoveRequesterAspect                       moveRequester) {
+              , EnabledRefRO<AggroDisabling>              aggroDisable) {
                 if (GameHelpers.IsTargetExists(aimedTarget.target, selectLookup)) {
                     if (aimedTarget.targetIsChampion
-                     && aggroDisable.ValueRO) {
+                     && aggroDisable.ValueRO)
                         aimedTarget.target = Entity.Null;
-                        if (!pathBuffer.Empty()) 
-                            moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
-                    }
                 }
                 else {
                     anchorEnable.ValueRW         = false;
                     aimedTarget.targetIsChampion = false;
 
                     if (!detectedMinion.Empty()) aimedTarget.target = detectedMinion.FrontRO().entity;
-                    // else if (!detectedTower.Empty()) aimedTarget.target = detectedTower.FrontRO().entity;
+                    else if (!detectedTower.Empty()) aimedTarget.target = detectedTower.FrontRO().entity;
                     else if (!detectedChampion.Empty()
                      && !aggroDisable.ValueRO) {
                         aimedTarget.target           = detectedChampion.FrontRO().entity;
@@ -197,16 +192,16 @@ public static partial class MinionStateMove {
             [BurstCompile]
             public void Execute(
                 StateFilterAspect                        _
-              , ref MinionControlFactor                  controlData
               , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
               , MoveRequesterAspect                      moveRequester
               , in LocalTransform                        locTrans) {
 
-                if (!pathBuffer.Empty()
-                 && reachPathDisToleranceSqr > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos)) {
-                    pathBuffer.PopFront();
-                    if (!pathBuffer.Empty())
+                if (!pathBuffer.IsEmpty) {
+                    bool reachPathPnt = reachPathDisToleranceSqr > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos);
+                    if (reachPathPnt || !moveRequester.AlreadyHaveWaypoint) {
+                        if (reachPathPnt) pathBuffer.PopFront();
                         moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
+                    }
                 }
             }
         }

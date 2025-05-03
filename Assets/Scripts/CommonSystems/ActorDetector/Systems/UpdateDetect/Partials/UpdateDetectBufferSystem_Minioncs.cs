@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 public partial struct UpdateDetectedActorSystem {
@@ -9,15 +8,10 @@ public partial struct UpdateDetectedActorSystem {
 
         mainJob.data.detectedMinionLookup = SystemAPI.GetBufferLookup<DetectedMinionBuffer>(
             isReadOnly: false);
-        mainJob.data.detectedByMinionLookup = SystemAPI.GetBufferLookup<DetectedByMinionBuffer>(
-            isReadOnly: false);
     }
 
     private void ScheduleClearBuffer_Minion(ref SystemState state) {
         state.Dependency = new ClearDetectedMinionJob()
-            .ScheduleParallel(state.Dependency);
-
-        state.Dependency = new ClearDetectedByMinionJob()
             .ScheduleParallel(state.Dependency);
     }
 
@@ -25,7 +19,6 @@ public partial struct UpdateDetectedActorSystem {
         mainJob.data.MinionLookup.Update(ref state);
 
         mainJob.data.detectedMinionLookup.Update(ref state);
-        mainJob.data.detectedByMinionLookup.Update(ref state);
     }
 
     private partial struct MainJob {
@@ -33,10 +26,6 @@ public partial struct UpdateDetectedActorSystem {
             if (data.MinionLookup.HasComponent(target)
              && data.detectedMinionLookup.TryGetBuffer(detector, out var detectedBuffer))
                 detectedBuffer.Add(target);
-
-            if (data.MinionLookup.HasComponent(detector)
-             && data.detectedByMinionLookup.TryGetBuffer(target, out var detectByBuffer))
-                detectByBuffer.Add(detector);
         }
     }
 
@@ -46,15 +35,6 @@ public partial struct UpdateDetectedActorSystem {
         [BurstCompile]
         public void Execute(ref DynamicBuffer<DetectedMinionBuffer> detectedBuffer) {
             detectedBuffer.Clear();
-        }
-    }
-
-    [WithAll(typeof(Simulate))]
-    [BurstCompile]
-    private partial struct ClearDetectedByMinionJob : IJobEntity {
-        [BurstCompile]
-        public void Execute(ref DynamicBuffer<DetectedByMinionBuffer> detectedByBuffer) {
-            detectedByBuffer.Clear();
         }
     }
 }

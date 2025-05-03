@@ -70,7 +70,8 @@ public partial struct TurretControlSystem : ISystem {
           , in  DynamicBuffer<StatsBuffer>            stats
           , in  LocalTransform                        locTrans
           , in  TeamTypeData                          team
-          , in  DynamicBuffer<DetectedChampionBuffer> detectedChamp) {
+          , in  DynamicBuffer<DetectedChampionBuffer> detectedChamp
+            , in DynamicBuffer<DetectedMinionBuffer> detectedMinion) {
             if (GameHelpers.IsTargetExists(
                     targetData.target
                   , selectLookup)
@@ -81,9 +82,9 @@ public partial struct TurretControlSystem : ISystem {
                   , statsLookup[targetData.target][unitRadiusId].value))
                 return;
 
-            targetData.target = detectedChamp.IsEmpty
-                ? Entity.Null
-                : detectedChamp[0].entity;
+            targetData.target = Entity.Null;
+            if (!detectedMinion.IsEmpty) targetData.target     = detectedMinion[0].entity;
+            else if (!detectedChamp.IsEmpty) targetData.target = detectedChamp[0].entity;
         }
     }
 }

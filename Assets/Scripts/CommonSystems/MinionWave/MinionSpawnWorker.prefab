@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetInhibitor: {fileID: 0}
   netcodeConfig: {fileID: 11400000, guid: 2639303ac9b6f414999e4057ccd555c6, type: 2}
-  firstWaveTime: 10
+  firstWaveTime: 5
   waveInterval: 180
   minionInterval: 1
 --- !u!114 &8401526325879947397

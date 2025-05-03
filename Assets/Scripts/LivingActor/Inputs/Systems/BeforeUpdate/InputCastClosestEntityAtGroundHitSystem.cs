@@ -48,4 +48,8 @@ public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
                 }
         } 
     }
+
+    public void OnDestroy(ref SystemState state) {
+        castActorResult.Dispose();
+    }
 }

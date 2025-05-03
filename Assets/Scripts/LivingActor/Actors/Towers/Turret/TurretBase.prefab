@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 59bf6a8fa161b65e38c6ad5b9a9356f3
+      value: c8f92d823d210c65c28000f6461dfde8
       objectReference: {fileID: 0}
     - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: _OverrideState._Values.Array.size
@@ -190,3 +190,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorDetectorPrefab: {fileID: 8973156400918872574, guid: 987f300ecfeb05c4aab0f29dc854ffc0, type: 3}
   targets: 3
+  teamFilter: 0

@@ -8,6 +8,8 @@ using UnityEngine;
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 [UpdateBefore(typeof(SyncHybridModelClientSystem))]
 public partial struct UpdateSkillPreviewClientSystem : ISystem {
+    public const float DISTANCE_TURRET_SHOW_WARNING_FACTOR = 1.3f;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EnumIndexData>();
@@ -25,12 +27,14 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
                 stats
               , skillPreview
               , locTrans
+              , teamData
               , entity)
             in SystemAPI
                 .Query<
                     DynamicBuffer<StatsBuffer>
                   , RefRW<SkillPreviewData>
-                  , RefRO<LocalTransform>>()
+                  , RefRO<LocalTransform>
+                  , RefRO<TeamTypeData>>()
                 .WithAll<
                     ChampionTag
                   , GhostOwnerIsLocal>()
@@ -41,6 +45,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
                 ownChampEntity   = entity
               , ownChampLocTrans = locTrans.ValueRO
               , ownChampRadius   = stats[unitRadiusId].value
+              , ownChampTeam     = teamData.ValueRO.teamType
               , attackRangeId    = attackRangeId
             }.ScheduleParallel(state.Dependency);
 
@@ -70,6 +75,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
         public Entity         ownChampEntity;
         public LocalTransform ownChampLocTrans;
         public float_Q3       ownChampRadius;
+        public TeamType       ownChampTeam;
         public int            attackRangeId;
 
         [BurstCompile]
@@ -78,6 +84,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
           , AimedTargetAspectRO           target
           , in LocalTransform             locTrans
           , in DynamicBuffer<StatsBuffer> stats
+          , in TeamTypeData               teamData
           , EnabledRefRO<DeadState>       isDead) {
 
             // Reset first
@@ -90,11 +97,11 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
             if (target.Target == ownChampEntity)
                 data.color = SkillPreviewColor.Red;
 
-            // Your champ is near this turret (1.5 x range)
-            else if (false == GameHelpers.IsTargetOutOfRange(
+            // Your champ is near this turret and different team
+            else if (teamData.teamType != ownChampTeam && !GameHelpers.IsTargetOutOfRange(
                 ownChampLocTrans.Position
               , locTrans.Position
-              , stats[attackRangeId].value * 1.5f
+              , stats[attackRangeId].value * DISTANCE_TURRET_SHOW_WARNING_FACTOR
               , ownChampRadius))
                 data.color = SkillPreviewColor.Orange;
 
@@ -105,4 +112,4 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
             data.scale = 2 * new float2(stats[attackRangeId].value);
         }
     }
-} 
+}

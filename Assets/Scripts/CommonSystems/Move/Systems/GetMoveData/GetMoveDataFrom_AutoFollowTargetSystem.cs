@@ -35,13 +35,52 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
 
         ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
+        state.Dependency = new DirtyJob {
+            locTransLookup = locTransLookup,
+            statsLookup    = statsLookup,
+            attackRangeId  = statsId[StatsType.AttackRange],
+            unitRadiusId   = statsId[StatsType.UnitRadius]
+        }.ScheduleParallel(state.Dependency);
+
         state.Dependency = new Job {
             locTransLookup       = locTransLookup
           , takeDamageSpotLookup = takeDamageSpotLookup
-          , statsLookup          = statsLookup
-          , attackRangeId        = statsId[StatsType.AttackRange]
-          , unitRadiusId         = statsId[StatsType.UnitRadius]
         }.ScheduleParallel(state.Dependency);
+    }
+
+    [WithAll(
+        typeof(Simulate))]
+    [WithNone(
+        typeof(NetworkDestroyedTag))]
+    public partial struct DirtyJob : IJobEntity {
+        [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
+        [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
+
+        public int attackRangeId;
+        public int unitRadiusId;
+
+        public void Execute(
+            in LocalTransform locTrans
+          , ref AutoFollowTarget autoFollow
+          , in AimedTargetData target
+          , MoveRequesterAspect moveRequester
+          , in Entity entity) {
+            if (autoFollow.followMethod != AutoFollowTarget.Method.SmartAttack) return;
+
+            // Just log warning in main job below
+            if (!locTransLookup.HasComponent(target.target)) return;
+
+            float3 rawTargetPos = locTransLookup[target.target].Position;
+            autoFollow.tmpTargetRadius = statsLookup[target.target][unitRadiusId].value;
+            autoFollow.tmpYourRange    = statsLookup[entity][attackRangeId].value;
+            autoFollow.tmpReachableTargetPos    = AstarPath.active.GetNearest(
+                math.lerp(
+                    rawTargetPos      // Dont need .WithoutY()
+                  , locTrans.Position // Dont need .WithoutY()
+                  , autoFollow.tmpTargetRadius / GameHelpers.DistanceXZ(rawTargetPos, locTrans.Position))
+              , NNConstraintHub.ClosestAsSeenFromAbove).position;
+            autoFollow.tmpCurDirToTarget = (rawTargetPos - autoFollow.tmpReachableTargetPos).WithoutY();
+        }
     }
 
     [WithAll(
@@ -52,18 +91,12 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
     public partial struct Job : IJobEntity {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] public ComponentLookup<TakeDamageSpot> takeDamageSpotLookup;
-        [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
-
-        public int attackRangeId;
-        public int unitRadiusId;
 
         [BurstCompile]
         public void Execute(
-            in LocalTransform   locTrans
-          , in AutoFollowTarget autoFollow
+            in AutoFollowTarget autoFollow
           , in AimedTargetData  target
-          , MoveRequesterAspect moveRequester
-          , in Entity           entity) {
+          , MoveRequesterAspect moveRequester) {
             switch (autoFollow.followMethod) {
                 case AutoFollowTarget.Method.Straight:
                     moveRequester.MoveStraightTo(locTransLookup[target.target]
@@ -78,29 +111,20 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
                         Debug.LogWarning($"NGDtuanh: target not exists {target.target} (May be relative to predicted spawn ghost)");
                         return;
                     }
-                    
-                    float3   targetPos    = locTransLookup[target.target].Position;
-                    float3   dirToTarget  = (targetPos - locTrans.Position).WithoutY();
-                    float_Q3 yourRange    = statsLookup[entity][attackRangeId].value;
-                    float_Q3 targetRadius = statsLookup[target.target][unitRadiusId].value;
+
+                    float3 rawTargetPos = locTransLookup[target.target].Position;
 
                     // NEED TO RECALCULATE PATH
-                    if (
-                        // Not have a path
+                    if (// Not have a path
                         !moveRequester.AlreadyHaveWaypoint
                         // End point of the current path cannot reach target
                      || GameHelpers.IsTargetOutOfRange(
-                            targetPos, moveRequester.WaypointDestination
-                          , yourRange, targetRadius)
+                            rawTargetPos, moveRequester.WaypointDestination
+                          , autoFollow.tmpYourRange, autoFollow.tmpTargetRadius)
                         // The difference between previous and current (direction to target) is large and need update
-                     || MAX_DIR_DEGREE_ERROR < Vector3.Angle(dirToTarget
-                          , (targetPos - moveRequester.WaypointDestination).WithoutY())) {
-                        moveRequester.MoveSmartTo(math.lerp(
-                                targetPos         // Dont need .WithoutY()
-                              , locTrans.Position // Dont need .WithoutY()
-                              , targetRadius / GameHelpers.DistanceXZ(targetPos, locTrans.Position))
-                            .Quantizate3());
-                    }
+                     || MAX_DIR_DEGREE_ERROR < Vector3.Angle(autoFollow.tmpCurDirToTarget
+                          , (rawTargetPos - moveRequester.WaypointDestination).WithoutY()))
+                        moveRequester.MoveSmartTo(autoFollow.tmpReachableTargetPos.Quantizate3());
 
                     return;
             }

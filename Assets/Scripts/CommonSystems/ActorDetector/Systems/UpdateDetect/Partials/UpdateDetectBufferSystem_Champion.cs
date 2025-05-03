@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 public partial struct UpdateDetectedActorSystem {
@@ -9,15 +8,10 @@ public partial struct UpdateDetectedActorSystem {
 
         mainJob.data.detectedChampionLookup = SystemAPI.GetBufferLookup<DetectedChampionBuffer>(
             isReadOnly: false);
-        mainJob.data.detectedByChampionLookup = SystemAPI.GetBufferLookup<DetectedByChampionBuffer>(
-            isReadOnly: false);
     }
 
     private void ScheduleClearBuffer_Champion(ref SystemState state) {
         state.Dependency = new ClearDetectedChampionJob()
-            .ScheduleParallel(state.Dependency);
-
-        state.Dependency = new ClearDetectedByChampionJob()
             .ScheduleParallel(state.Dependency);
     }
 
@@ -25,7 +19,6 @@ public partial struct UpdateDetectedActorSystem {
         mainJob.data.ChampionLookup.Update(ref state);
 
         mainJob.data.detectedChampionLookup.Update(ref state);
-        mainJob.data.detectedByChampionLookup.Update(ref state);
     }
 
     private partial struct MainJob {
@@ -33,10 +26,6 @@ public partial struct UpdateDetectedActorSystem {
             if (data.ChampionLookup.HasComponent(target)
              && data.detectedChampionLookup.TryGetBuffer(detector, out var detectedBuffer))
                 detectedBuffer.Add(target);
-
-            if (data.ChampionLookup.HasComponent(detector)
-             && data.detectedByChampionLookup.TryGetBuffer(target, out var detectByBuffer))
-                detectByBuffer.Add(detector);
         }
     }
 
@@ -46,15 +35,6 @@ public partial struct UpdateDetectedActorSystem {
         [BurstCompile]
         public void Execute(ref DynamicBuffer<DetectedChampionBuffer> detectedBuffer) {
             detectedBuffer.Clear();
-        }
-    }
-
-    [WithAll(typeof(Simulate))]
-    [BurstCompile]
-    private partial struct ClearDetectedByChampionJob : IJobEntity {
-        [BurstCompile]
-        public void Execute(ref DynamicBuffer<DetectedByChampionBuffer> detectedByBuffer) {
-            detectedByBuffer.Clear();
         }
     }
 }

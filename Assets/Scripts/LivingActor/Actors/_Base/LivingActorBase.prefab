@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 5298653007881902802}
   - component: {fileID: -3916493006081611069}
   - component: {fileID: 2361130300847117537}
+  - component: {fileID: -6638954478031481456}
   - component: {fileID: -5795621777290632104}
   - component: {fileID: 6811086194763175088}
   - component: {fileID: 4549801463351850223}
@@ -150,6 +151,33 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-6638954478031481456
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &-5795621777290632104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +268,7 @@ MonoBehaviour:
   TrackInterpolationDelay: 0
   GhostGroup: 0
   UsePreSerialization: 0
+  UseSingleBaseline: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
 --- !u!114 &-6885465965426350282
@@ -325,7 +354,7 @@ MonoBehaviour:
     - Dead2Idle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: ab5dc3235d316de62c10da4ccd38cac6
+      Hash: 45709051e2a54d78870af1984797d904
     _KeySynced: 1
 --- !u!114 &8701208352754206243
 MonoBehaviour:

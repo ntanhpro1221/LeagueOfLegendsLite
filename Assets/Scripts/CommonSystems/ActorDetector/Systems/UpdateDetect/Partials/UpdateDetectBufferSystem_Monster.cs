@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 public partial struct UpdateDetectedActorSystem {
@@ -9,15 +8,10 @@ public partial struct UpdateDetectedActorSystem {
 
         mainJob.data.detectedMonsterLookup = SystemAPI.GetBufferLookup<DetectedMonsterBuffer>(
             isReadOnly: false);
-        mainJob.data.detectedByMonsterLookup = SystemAPI.GetBufferLookup<DetectedByMonsterBuffer>(
-            isReadOnly: false);
     }
 
     private void ScheduleClearBuffer_Monster(ref SystemState state) {
         state.Dependency = new ClearDetectedMonsterJob()
-            .ScheduleParallel(state.Dependency);
-
-        state.Dependency = new ClearDetectedByMonsterJob()
             .ScheduleParallel(state.Dependency);
     }
 
@@ -25,7 +19,6 @@ public partial struct UpdateDetectedActorSystem {
         mainJob.data.MonsterLookup.Update(ref state);
 
         mainJob.data.detectedMonsterLookup.Update(ref state);
-        mainJob.data.detectedByMonsterLookup.Update(ref state);
     }
 
     private partial struct MainJob {
@@ -33,10 +26,6 @@ public partial struct UpdateDetectedActorSystem {
             if (data.MonsterLookup.HasComponent(target)
              && data.detectedMonsterLookup.TryGetBuffer(detector, out var detectedBuffer))
                 detectedBuffer.Add(target);
-
-            if (data.MonsterLookup.HasComponent(detector)
-             && data.detectedByMonsterLookup.TryGetBuffer(target, out var detectByBuffer))
-                detectByBuffer.Add(detector);
         }
     }
 
@@ -46,15 +35,6 @@ public partial struct UpdateDetectedActorSystem {
         [BurstCompile]
         public void Execute(ref DynamicBuffer<DetectedMonsterBuffer> detectedBuffer) {
             detectedBuffer.Clear();
-        }
-    }
-
-    [WithAll(typeof(Simulate))]
-    [BurstCompile]
-    private partial struct ClearDetectedByMonsterJob : IJobEntity {
-        [BurstCompile]
-        public void Execute(ref DynamicBuffer<DetectedByMonsterBuffer> detectedByBuffer) {
-            detectedByBuffer.Clear();
         }
     }
 }

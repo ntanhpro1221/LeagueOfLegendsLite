@@ -1,10 +1,16 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using UnityEngine;
 
 [GhostEnabledBit]
 public struct AutoFollowTarget : IComponentData, IEnableableComponent {
     [GhostField] public Method followMethod;
+
+    public float3 tmpCurDirToTarget;
+    public float3 tmpReachableTargetPos;
+    public float  tmpYourRange;
+    public float  tmpTargetRadius;
     
     public enum Method {
         Straight = 0

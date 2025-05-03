@@ -65,26 +65,23 @@ public partial struct HandleWaypointRequestSystem : ISystem {
             path.vectorPath.Add(path.startPoint);
 
             modifier.Apply(path);
-        } 
+        }
     }
 
     private void ReturnRequestResult(ref SystemState state, List<ABPath> pendingPath) {
         foreach (var (
             request
-          , requestTrigger
           , waypoints) in SystemAPI
             .Query<
                 RefRO<WaypointRequestData>
-              , EnabledRefRW<NeedHandleWaypointRequest>
               , DynamicBuffer<WaypointBuffer>>()
-            .WithAll<Simulate>()) {
+            .WithAll<
+                Simulate
+              , NeedHandleWaypointRequest>()) {
             // Copy result to WaypointBuffer (In reversed order)
             waypoints.Clear();
             foreach (var point in pendingPath[request.ValueRO.tmpPathId].vectorPath)
                 waypoints.Add(new WaypointBuffer(point.Quantizate3()));
-
-            // Mark request completed
-            requestTrigger.ValueRW = false;
         }
     }
 
