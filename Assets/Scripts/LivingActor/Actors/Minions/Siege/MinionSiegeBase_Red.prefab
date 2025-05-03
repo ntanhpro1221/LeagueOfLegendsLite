@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MinionSiegeBase_Red
       objectReference: {fileID: 0}
+    - target: {fileID: 724824148267514951, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
+      propertyPath: prefabId
+      value: f5dc0ab9d3dc9bf44b7b31c95b578aae
+      objectReference: {fileID: 0}
     - target: {fileID: 761521184774233763, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
       propertyPath: teamType
       value: 2
@@ -20,6 +24,10 @@ PrefabInstance:
       propertyPath: modelPrefab
       value: 
       objectReference: {fileID: 1819559117190859909, guid: 94d742a26cb110b4f8555d50d7efc62d, type: 3}
+    - target: {fileID: 5936026731606778285, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: d3f289c13872c76ebbd8462804975d39
+      objectReference: {fileID: 0}
     - target: {fileID: 7162982365432931143, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

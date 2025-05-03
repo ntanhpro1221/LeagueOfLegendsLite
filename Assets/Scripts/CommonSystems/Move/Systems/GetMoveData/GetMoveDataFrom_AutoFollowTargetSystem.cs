@@ -74,6 +74,11 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
                     return;
 
                 case AutoFollowTarget.Method.SmartAttack:
+                    if (!locTransLookup.HasComponent(target.target)) {
+                        Debug.LogWarning($"NGDtuanh: target not exists {target.target} (May be relative to predicted spawn ghost)");
+                        return;
+                    }
+                    
                     float3   targetPos    = locTransLookup[target.target].Position;
                     float3   dirToTarget  = (targetPos - locTrans.Position).WithoutY();
                     float_Q3 yourRange    = statsLookup[entity][attackRangeId].value;

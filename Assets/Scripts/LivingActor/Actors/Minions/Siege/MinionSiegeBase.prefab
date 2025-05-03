@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 22100000, guid: 0a2e3de3db6595e4e919eabf1a7a1242, type: 2}
     - target: {fileID: 6496531065238301087, guid: 153260c1286df294183460ce3ae1a6d8, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 59bf6a8fa161b65e38c6ad5b9a9356f3
+      value: d3f289c13872c76ebbd8462804975d39
       objectReference: {fileID: 0}
     - target: {fileID: 6514783383216224132, guid: 153260c1286df294183460ce3ae1a6d8, type: 3}
       propertyPath: attackType
