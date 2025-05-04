@@ -38,6 +38,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
                 .WithAll<
                     ChampionTag
                   , GhostOwnerIsLocal>()
+                .WithNone<DummyTag>()
                 .WithEntityAccess()) {
 
             // Update skill preview

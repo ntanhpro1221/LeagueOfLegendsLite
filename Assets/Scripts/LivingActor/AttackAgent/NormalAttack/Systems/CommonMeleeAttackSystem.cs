@@ -33,9 +33,10 @@ public partial struct CommonMeleeAttackSystem : ISystem {
         public void Execute(
             in AimedTargetData               target
           , in DynamicBuffer<StatsBuffer>    stats
-          , EnabledRefRW<MeleeAttackTrigger> attackTrigger) {
+          , EnabledRefRW<MeleeAttackTrigger> attackTrigger
+          , in Entity entity) {
 
-            incomingDmgLookup[target.target].Add(new IncomingDamageBuffer(stats[damageId].value));
+            incomingDmgLookup[target.target].Add(new IncomingDamageBuffer(stats[damageId].value, entity));
 
             attackTrigger.ValueRW = false;
         }

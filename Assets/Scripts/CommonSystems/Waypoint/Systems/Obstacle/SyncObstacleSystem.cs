@@ -1,6 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(UpdateObstacleSystemGroup))]
 [UpdateAfter(typeof(ProvideObstacleSystem))]
@@ -18,14 +19,18 @@ public partial struct SyncObstacleSystem : ISystem {
         foreach (var (
                 obstacle
               , locTrans
-              , stats)
+              , stats
+              , entity)
             in SystemAPI
                 .Query<
                     RefRW<ActiveObstacle>
                   , RefRO<LocalTransform>
                   , DynamicBuffer<StatsBuffer>>()
-                .WithAll<Simulate>()) {
-            obstacle.ValueRW.Obstacle.transform.position = locTrans.ValueRO.Position;
+                .WithAll<Simulate>()
+                .WithEntityAccess()) {
+            if (locTrans.ValueRO.Position.IsNaN())
+                Debug.LogWarning($"NGDtuanh: {state.WorldName()} position of entity({entity.Index}) is NaN => {locTrans.ValueRO.Position}");
+            else obstacle.ValueRW.Obstacle.transform.position = locTrans.ValueRO.Position;
             obstacle.ValueRW.Obstacle.circleRadius       = stats[radiusId].value + radiusBonus;
         }
     }

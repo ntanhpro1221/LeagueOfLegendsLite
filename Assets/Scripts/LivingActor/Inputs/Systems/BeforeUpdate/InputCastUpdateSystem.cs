@@ -29,6 +29,7 @@ public partial struct InputCastUpdateSystem : ISystem {
                 ChampionTag
               , GhostOwnerIsLocal
               , TeamTypeData>()
+            .WithNone<DummyTag>()
             .Build());
 
         state.EntityManager.CreateSingleton<InputCastData>();

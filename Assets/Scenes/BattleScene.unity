@@ -1129,7 +1129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6379411897540483116, guid: 88355bc6f853cd849b7a8fc3a01edd3a, type: 3}
       propertyPath: pattern._EditorSessionCode
-      value: f99bfef03e05b14392ab3a5830bce009
+      value: aff41171adf4fd4cbd157061400efc5f
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,9 +5,11 @@ using UnityEngine;
 
 public struct DamageTriggerSource : IComponentData {
     [GhostField] public float_Q3 damage;
+    [GhostField] public Entity   source;
 
-    public DamageTriggerSource(float_Q3 damage) {
+    public DamageTriggerSource(float_Q3 damage, Entity source) {
         this.damage = damage;
+        this.source = source;
     }
 
     public struct TargetedTag : IComponentData { }

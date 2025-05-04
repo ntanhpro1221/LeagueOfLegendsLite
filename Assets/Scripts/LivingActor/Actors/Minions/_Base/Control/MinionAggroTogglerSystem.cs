@@ -6,18 +6,23 @@ using Unity.Transforms;
 using UnityEngine;
 
 [UpdateInGroup(typeof(ActorAIControlSystemGroup))]
+[UpdateBefore(typeof(MinionControlSystem))]
 public partial struct MinionAggroTogglerSystem : ISystem {
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
+    [ReadOnly] private ComponentLookup<ChampionTag>    champLookup;
     [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        Debug.LogWarning("NGDtuanh TEST: tmp disable aggro cooldown time");
         state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<ClientServerTickRate>();
         state.RequireForUpdate<MinionBehaviourConfigData>();
         state.RequireForUpdate<NetworkTime>();
 
         locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
+            isReadOnly: true);
+        champLookup = SystemAPI.GetComponentLookup<ChampionTag>(
             isReadOnly: true);
         statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
             isReadOnly: true);
@@ -26,6 +31,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         locTransLookup.Update(ref state);
+        champLookup.Update(ref state);
         statsLookup.Update(ref state);
 
         var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
@@ -37,11 +43,12 @@ public partial struct MinionAggroTogglerSystem : ISystem {
             locTransLookup = locTransLookup
           , statsLookup    = statsLookup
           , doneAtTick     = doneAtTick
-            , radiusId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.UnitRadius]
+          , radiusId       = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.UnitRadius]
         }.ScheduleParallel(state.Dependency);
 
         state.Dependency = new EnableJob {
-            curTick = curTick
+            champLookup = champLookup
+          , curTick = curTick
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -88,15 +95,22 @@ public partial struct MinionAggroTogglerSystem : ISystem {
       , typeof(MinionTag))]
     [BurstCompile]
     private partial struct EnableJob : IJobEntity {
+        [ReadOnly] public ComponentLookup<ChampionTag> champLookup;
+
         public NetworkTick curTick;
 
         [BurstCompile]
         public void Execute(
             ref AggroDisabling                      disableData
           , EnabledRefRW<AggroDisabling>            disableTrigger
-          , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer) {
-            if ( // Done cooldown
-                curTick.IsNewerThan(disableData.doneAtTick)
+          , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer
+          , in AimedTargetData                      target) {
+            if (
+                // Done cooldown
+                // curTick.IsNewerThan(disableData.doneAtTick) ||
+
+                // Have target but target is not champion (turret or another minion)
+                champLookup.EntityExists(target.target) && !champLookup.HasComponent(target.target)
                 // Reach some path point
              || pathBuffer.Length < disableData.pathLengthWhenDiable)
                 disableTrigger.ValueRW = false;

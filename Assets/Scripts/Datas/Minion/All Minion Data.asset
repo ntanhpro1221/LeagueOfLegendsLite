@@ -20,7 +20,7 @@ MonoBehaviour:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
-              value: 477000
+              value: 47700000
           - _Value:
               value: 0
           - _Value:
@@ -61,7 +61,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: b8102bcf25376bf4166d90d198d5e6b2
+            Hash: 616815520e44d423b248bacb759428eb
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -79,7 +79,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: b8102bcf25376bf4166d90d198d5e6b2
+            Hash: 616815520e44d423b248bacb759428eb
           _KeySynced: 1
         aggroRange: 500
     - _Value:
@@ -109,7 +109,7 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 667
+              value: 200
           - _Value:
               value: 35000
           _KeyNames:
@@ -128,7 +128,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: b8102bcf25376bf4166d90d198d5e6b2
+            Hash: 90dc06d201f87e09ad273818a73b1008
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -146,7 +146,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: b8102bcf25376bf4166d90d198d5e6b2
+            Hash: 90dc06d201f87e09ad273818a73b1008
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -290,5 +290,5 @@ MonoBehaviour:
     - Super
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: b8102bcf25376bf4166d90d198d5e6b2
+      Hash: 90dc06d201f87e09ad273818a73b1008
     _KeySynced: 1

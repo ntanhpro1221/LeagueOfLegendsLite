@@ -17,11 +17,13 @@ public struct ActorDetectFilter : IComponentData {
     }
 }
 
-public struct DetectedChampionBuffer : IBufferElementData {
+public struct DetectedChampionBuffer : IBufferElementData, IEquatable<Entity> {
     [GhostField] public Entity entity;
 
     public static implicit operator DetectedChampionBuffer(Entity entity)
         => new() { entity = entity };
+
+    public bool Equals(Entity other) => entity == other;
 }
 
 public struct DetectedMinionBuffer : IBufferElementData {

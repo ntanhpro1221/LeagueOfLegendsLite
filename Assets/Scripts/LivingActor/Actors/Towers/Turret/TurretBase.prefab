@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: c8f92d823d210c65c28000f6461dfde8
+      value: 3bfab9bd9d811dda910492cd3b206fbe
       objectReference: {fileID: 0}
     - target: {fileID: 2300490791562642724, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       propertyPath: _OverrideState._Values.Array.size
@@ -158,6 +158,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 32608205855955755, guid: b1120452766d25e40bb0086652cb737e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8135172304752254573}
+    - targetCorrespondingSourceObject: {fileID: 32608205855955755, guid: b1120452766d25e40bb0086652cb737e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6207285909182798811}
   m_SourcePrefab: {fileID: 100100000, guid: b1120452766d25e40bb0086652cb737e, type: 3}
 --- !u!1 &9205246100901177164 stripped
 GameObject:
@@ -191,3 +194,15 @@ MonoBehaviour:
   actorDetectorPrefab: {fileID: 8973156400918872574, guid: 987f300ecfeb05c4aab0f29dc854ffc0, type: 3}
   targets: 3
   teamFilter: 0
+--- !u!114 &-6207285909182798811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205246100901177164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a1b3f674a8b824bb15918bd4384248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

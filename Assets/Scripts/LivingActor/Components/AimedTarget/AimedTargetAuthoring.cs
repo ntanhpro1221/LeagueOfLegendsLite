@@ -1,9 +1,12 @@
-﻿using Unity.Entities;
+﻿using System.Runtime.InteropServices;
+using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
 public struct AimedTargetData : IComponentData {
     [GhostField] public Entity target;
+    
+    [MarshalAs(UnmanagedType.U1)]
     [GhostField] public bool   targetIsChampion;
 }
 

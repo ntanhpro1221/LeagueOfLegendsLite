@@ -1,4 +1,5 @@
-﻿using NGDtuanh.Entities.StateMachine;
+﻿using System;
+using NGDtuanh.Entities.StateMachine;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -47,19 +48,21 @@ public static partial class MinionStateAttack {
                   , HealthAspectRO
                   , AimedTargetAspectRO
                   , RefRW<AttackStateData>>()) {
-
                 // DEAD STATE
                 if (health.IsDead) // Run out of health
                     sharedState.SetDead();
 
                 // MOVE STATE
                 else if (
-                    // Don't have target in range and already perform attack
-                    // => transit to moveState to move and seek for new target
-                    attackData.ValueRO.isAttacked
-                 && !aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
+                    // Target no longer exists
+                    !aimedTarget.IsTargetExists(selectLookup)
+                 || ( // have target but
+                        // already perform attack
+                        attackData.ValueRO.isAttacked
+                        // and target is out of range now
+                     && aimedTarget.IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup)))
                     sharedState.SetMove();
-                
+
                 else continue;
 
                 filter.MarkExitExecuted();

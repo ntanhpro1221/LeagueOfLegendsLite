@@ -2,6 +2,7 @@
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct SyncHybridModelClientSystem : ISystem {
@@ -23,7 +24,8 @@ public partial struct SyncHybridModelClientSystem : ISystem {
               , animData
               , locTrans
               , highlightData
-              , highlightVisible)
+              , highlightVisible
+              , entity)
             in SystemAPI.Query<
                     RefRO<HybridModelData>
                   , RefRW<SharedAnimData>
@@ -31,13 +33,16 @@ public partial struct SyncHybridModelClientSystem : ISystem {
                   , RefRO<HighlightData>
                   , EnabledRefRO<HighlightVisible>>()
                 .WithPresent<HighlightVisible>()
-                .WithNone<NeedInitTag>()) {
+                .WithNone<NeedInitTag>()
+                .WithEntityAccess()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;
 
             // POSITION
-            trans.position = locTrans.ValueRO.Position;
+            if (locTrans.ValueRO.Position.IsNaN())
+                Debug.LogWarning($"NGDtuanh: {state.WorldName()} position of entity({entity.Index}) is NaN => {locTrans.ValueRO.Position}");
+            else trans.position = locTrans.ValueRO.Position;
             trans.rotation = locTrans.ValueRO.Rotation;
 
             // ANIMATION

@@ -9,13 +9,14 @@ public partial struct UpdateFixedPathAfterCalculateWaypointSystem : ISystem {
     public void OnUpdate(ref SystemState state) {
         foreach (var (
             pathBuffer
-          , waypointBuffer, entity) in SystemAPI
+          , waypointBuffer) in SystemAPI
             .Query<
                 DynamicBuffer<MinionFixedPathBuffer>
               , DynamicBuffer<WaypointBuffer>>()
             .WithAll<
                 Simulate
-              , NeedHandleWaypointRequest>().WithEntityAccess())
+              , NeedHandleWaypointRequest>()
+            .WithNone<AutoFollowTarget>())
             pathBuffer.ElementAt(0).pos = waypointBuffer[0].pos;
-    }
+    } 
 }

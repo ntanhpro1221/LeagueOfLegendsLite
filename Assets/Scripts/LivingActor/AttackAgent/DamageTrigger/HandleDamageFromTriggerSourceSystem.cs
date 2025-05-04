@@ -56,7 +56,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
 
             if (!moveData.isMoveDone) return;
 
-            incomingDmgLookup[targetData.target].Add(new IncomingDamageBuffer(damageData.damage));
+            incomingDmgLookup[targetData.target].Add(new IncomingDamageBuffer(damageData.damage, damageData.source));
 
             destroy.ValueRW = true;
         }
@@ -86,7 +86,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
             if (collidedOpponent.Length == 0) return;
 
             // handle only one entity here
-            incomingDmgLookup[collidedOpponent[0].entity].Add(new IncomingDamageBuffer(damageData.damage));
+            incomingDmgLookup[collidedOpponent[0].entity].Add(new IncomingDamageBuffer(damageData.damage, damageData.source));
 
             destroy.ValueRW = true;
         }
@@ -115,7 +115,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
 
             for (int i = damagedCount.count + 1; i <= collidedOpponent.Length; ++i)
                 incomingDmgLookup[collidedOpponent[i].entity]
-                    .Add(new IncomingDamageBuffer(damageData.damage));
+                    .Add(new IncomingDamageBuffer(damageData.damage, damageData.source));
 
             damagedCount.count = collidedOpponent.Length;
         }

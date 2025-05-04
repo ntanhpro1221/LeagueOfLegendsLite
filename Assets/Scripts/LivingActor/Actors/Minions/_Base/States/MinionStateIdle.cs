@@ -51,6 +51,8 @@ public static partial class MinionStateIdle {
                   , ActorSharedStateAspect
                   , RefRO<AttackStateData>
                   , DynamicBuffer<MinionFixedPathBuffer>>()) {
+                bool targetExist  = aimedTarget.IsTargetExists(selectLookup);
+                bool attackCDDone = attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
                 if (health.IsDead) // RUN OUT OF HEALTH
@@ -58,23 +60,19 @@ public static partial class MinionStateIdle {
 
                 // MOVE STATE
                 else if (
-                    // need move to target
-                    aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
+                    // Target NOT exist
+                    !targetExist
+                    // Or target is out of range
+                 || aimedTarget.IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup))
                     sharedState.SetMove();
 
                 // ATTACK STATE
                 else if (
                     // have target
-                    aimedTarget.IsTargetExists(selectLookup)
+                    targetExist
                     // attack cool down done
-                 && attackData.ValueRO.IsCooldownDone(curTick))
+                 && attackCDDone)
                     sharedState.SetAttack();
-
-                // MOVE STATE
-                else if (
-                    // there is still a path
-                    !pathBuffer.Empty())
-                    sharedState.SetMove();
 
                 else continue;
 

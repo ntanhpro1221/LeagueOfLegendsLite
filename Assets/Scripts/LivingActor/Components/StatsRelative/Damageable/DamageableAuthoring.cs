@@ -1,13 +1,14 @@
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public struct IncomingDamageBuffer : IBufferElementData {
     [GhostField] public float_Q3 damage;
+    [GhostField] public Entity   source;
     
-    public IncomingDamageBuffer(float_Q3 damage) {
+    public IncomingDamageBuffer(float_Q3 damage, Entity source) {
         this.damage = damage;
+        this.source = source;
     }
 }
 

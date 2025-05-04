@@ -1,37 +1,37 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using Unity.Transforms;
+using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 public partial struct AssignFollowTagToMyChampionClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithAll<ChampionTag, GhostOwnerIsLocal>()
-            .Build(ref state));
-        state.RequireForUpdate(new EntityQueryBuilder(Allocator.Temp)
+            .WithNone<DummyTag>()
+            .Build());
+        state.RequireForUpdate(SystemAPI.QueryBuilder()
             .WithNone<CameraFollowTag>()
-            .Build(ref state));
+            .Build());
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
     }
         
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        using var ecb = new EntityCommandBuffer(Allocator.Temp);
+        var ecb = SystemAPI
+            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (
-            localTrans
+            tag
           , entity) in SystemAPI
-            .Query<RefRO<LocalTransform>>()
-            .WithAll<
-                ChampionTag
-              , GhostOwnerIsLocal>()
+            .Query<ChampionTag>()
+            .WithAll<GhostOwnerIsLocal>()
+            .WithNone<DummyTag>()
             .WithEntityAccess()) {
             ecb.AddComponent<CameraFollowTag>(entity);
             break; // just add to one target
         }
-
-        ecb.Playback(state.EntityManager);
     }
 }

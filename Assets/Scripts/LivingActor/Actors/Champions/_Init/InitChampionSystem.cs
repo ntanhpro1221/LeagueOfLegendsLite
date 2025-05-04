@@ -1,10 +1,13 @@
 ﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
 
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 public partial struct InitChampionSystem : ISystem {
+    [ReadOnly] private ComponentLookup<DummyTag> dummyLookup;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InitTransformData>();
@@ -15,14 +18,20 @@ public partial struct InitChampionSystem : ISystem {
               , Simulate
               , NeedInitTag>()
             .Build());
+
+        dummyLookup = SystemAPI.GetComponentLookup<DummyTag>(
+            isReadOnly: true);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        dummyLookup.Update(ref state);
+
         ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         state.Dependency = new Job {
-            initTrans = SystemAPI.GetSingleton<InitTransformData>()
+            dummyLookup = dummyLookup
+          , initTrans = SystemAPI.GetSingleton<InitTransformData>()
           , healthId  = statsId[StatsType.Health]
           , manaId    = statsId[StatsType.Mana]
         }.ScheduleParallel(state.Dependency);
@@ -37,6 +46,8 @@ public partial struct InitChampionSystem : ISystem {
       , typeof(ManaData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
+        [ReadOnly] public ComponentLookup<DummyTag> dummyLookup;
+
         public InitTransformData initTrans;
         public int               healthId;
         public int               manaId;
@@ -51,7 +62,8 @@ public partial struct InitChampionSystem : ISystem {
           , MoveRequesterAspect            moveRequester
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled
-          , EnabledRefRW<ManaData>         manaEnabled) {
+          , EnabledRefRW<ManaData>         manaEnabled
+          , in Entity entity) {
             // remove init request
             needInit.ValueRW = false;
 
@@ -64,9 +76,11 @@ public partial struct InitChampionSystem : ISystem {
             manaEnabled.ValueRW = true;
 
             // init position, move target
-            locTrans = initTrans.Champion.Value[teamType.teamType]
-                [0]
-                .ToLocTrans_Directly();
+            // not init for dummy
+            if (!dummyLookup.HasComponent(entity))
+                locTrans = initTrans.Champion.Value[teamType.teamType]
+                    [0]
+                    .ToLocTrans_Directly();
             moveRequester.SyncFromLocTrans(locTrans);
         }
     }

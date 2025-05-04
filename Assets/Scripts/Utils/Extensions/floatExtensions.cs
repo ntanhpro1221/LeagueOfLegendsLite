@@ -13,7 +13,7 @@ public static class floatExtensions {
         source.y = y;
         return source;
     }
-    
+
     public static float3_Q3 WithY(this float3_Q3 source, float y) {
         return ((float3)source).WithY(y).Quantizate3();
     }
@@ -97,4 +97,8 @@ public static class floatExtensions {
         math.square((float)source.x / floatXZ_Q3.MULTIPLIER)
       + math.square((float)source.z / floatXZ_Q3.MULTIPLIER);
 
+    public static bool IsNaN(this float3 source) =>
+        float.IsNaN(source.x)
+     || float.IsNaN(source.y)
+     || float.IsNaN(source.z);
 }
