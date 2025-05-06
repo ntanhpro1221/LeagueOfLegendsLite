@@ -4,15 +4,15 @@ using Unity.Transforms;
 using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
-public partial struct CleanHybridModelClientSystem : ISystem {
+public partial struct CleanHybridModelClientSystem_ManualMinion : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate(SystemAPI.QueryBuilder()
-            .WithAll<HybridModelCleanupData>()
-            .WithNone<
-                LocalTransform
+            .WithAll<
+                HybridModelCleanupData
               , ManualPoolingHybridModel_Cleanup>()
+            .WithNone<LocalTransform>()
             .Build());
     }
 
@@ -25,12 +25,12 @@ public partial struct CleanHybridModelClientSystem : ISystem {
             cleanupData
           , entity) in SystemAPI
             .Query<RefRO<HybridModelCleanupData>>()
-            .WithNone<
-                LocalTransform
-              , ManualPoolingHybridModel_Cleanup>()
+            .WithAll<ManualPoolingHybridModel_Cleanup>()
+            .WithNone<LocalTransform>()
             .WithEntityAccess()) {
-            Object.Destroy(cleanupData.ValueRO.objectRef.Value);
-            ecb.RemoveComponent<HybridModelData>(entity);
+            PoolCenter.Instance.Minion.Destroy(cleanupData.ValueRO.objectRef.Value);
+            ecb.RemoveComponent<HybridModelCleanupData>(entity);
+            ecb.RemoveComponent<ManualPoolingHybridModel_Cleanup>(entity);
         }
     }
 }

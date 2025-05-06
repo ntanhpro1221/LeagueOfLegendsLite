@@ -22,26 +22,40 @@ public partial struct InitHybridHealthBarClientSystem : ISystem {
         var canvasRoot = MainCanvasRoot.Value;
 
         foreach (var (
-            spawnRequest
+            requestData
+          , requestTrigger
+          , hybridData
+          , hybridTrigger
           , entity) in SystemAPI
-            .Query<RefRO<HybridHealthBarInitRequest>>()
+            .Query<
+                RefRW<HybridHealthBarInitRequest>
+              , EnabledRefRW<HybridHealthBarInitRequest>
+              , RefRW<HybridHealthBarData>
+              , EnabledRefRW<HybridHealthBarData>>()
+            .WithPresent<HybridHealthBarData>()
             .WithEntityAccess()) {
 
             // spawn
-            var healthBar = Object.Instantiate(spawnRequest.ValueRO.healthBarPrefab.Value, canvasRoot);
+            var healthBar = PoolCenter.Instance.HealthBar.Instantiate(requestData.ValueRO.healthBarType);
+
+            // set root
+            healthBar.transform.SetParent(canvasRoot);
 
             // Link healthBar with HybridHealthBarData
-            var hybridData = new HybridHealthBarData {
-                deltaY   = spawnRequest.ValueRO.deltaY
+            hybridData.ValueRW = new HybridHealthBarData {
+                deltaY   = requestData.ValueRO.deltaY
               , transRef = healthBar.transform as RectTransform
               , UIRef    = healthBar.GetComponent<HealthBarUI>()
             };
-            if (SystemAPI.HasComponent<HybridHealthBarData>(entity))
-                ecb.SetComponent(entity, hybridData);
-            else ecb.AddComponent(entity, hybridData);
+            
+            // Add cleanup
+            ecb.AddComponent(entity, new HybridHealthBarCleanup {
+                healthBarRef = healthBar
+            });
 
-            // remove need spawn tag 
-            ecb.RemoveComponent<HybridHealthBarInitRequest>(entity);
+            // Mark request done
+            requestTrigger.ValueRW = false;
+            hybridTrigger.ValueRW  = true;
         }
     }
 }

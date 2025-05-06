@@ -137,8 +137,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _OverrideState:
-    _Keys: 00000000010000000200000003000000
+    _Keys: 000000000100000002000000030000000400000005000000
     _Values:
+    - _Value: 0
+    - _Value: 0
     - _Value: 0
     - _Value: 0
     - _Value: 0
@@ -148,9 +150,11 @@ MonoBehaviour:
     - Dead
     - Idle
     - Move
+    - Idle2Dead
+    - Dead2Idle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: ab5dc3235d316de62c10da4ccd38cac6
+      Hash: d9c1f3030335b79bb5065d9bb6e33571
     _KeySynced: 1
 --- !u!114 &-3044300342929509598
 MonoBehaviour:
