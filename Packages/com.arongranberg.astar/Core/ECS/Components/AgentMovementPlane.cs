@@ -1,5 +1,6 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -8,6 +9,7 @@ namespace Pathfinding.ECS {
 
 	/// <summary>Holds an agent's movement plane</summary>
 	[System.Serializable]
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct AgentMovementPlane : IComponentData {
 		/// <summary>
 		/// The movement plane for the agent.

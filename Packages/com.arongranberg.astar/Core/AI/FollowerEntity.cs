@@ -1712,7 +1712,7 @@ namespace Pathfinding {
 
 		void ClearPath() => ClearPath(entity);
 
-		static void ClearPath (Entity entity) {
+		public static void ClearPath (Entity entity) {
 			if (entityStorageCache.Update(World.DefaultGameObjectInjectionWorld, entity, out var entityManager, out var storage)) {
 				agentOffMeshLinkTraversalRO.Update(entityManager);
 

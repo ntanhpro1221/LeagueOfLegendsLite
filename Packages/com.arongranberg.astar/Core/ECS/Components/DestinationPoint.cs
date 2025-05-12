@@ -1,9 +1,11 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	/// <summary>Holds an agent's destination point</summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct DestinationPoint : IComponentData {
 		/// <summary>
 		/// The destination point that the agent is moving towards.

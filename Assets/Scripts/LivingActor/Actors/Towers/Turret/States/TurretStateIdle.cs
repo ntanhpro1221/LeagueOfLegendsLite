@@ -7,6 +7,7 @@ using UnityEngine;
 
 public static partial class TurretStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
@@ -57,6 +58,7 @@ public static partial class TurretStateIdle {
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {

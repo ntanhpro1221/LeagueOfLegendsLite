@@ -1,6 +1,7 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -29,6 +30,7 @@ namespace Pathfinding.ECS {
 	/// See: <see cref="FollowerEntity.orientation"/>
 	/// See: <see cref="OrientationMode"/>
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct OrientationYAxisForward : IComponentData {
 	}
 }

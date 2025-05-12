@@ -1,12 +1,14 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	/// <summary>
 	/// Holds the final movement data for an entity.
 	/// This is the data that is used by the movement system to move the entity.
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct ResolvedMovement : IComponentData {
 		/// <summary>\copydocref{MovementControl.targetPoint}</summary>
 		public float3 targetPoint;

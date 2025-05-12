@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: prefabId
       value: b1120452766d25e40bb0086652cb737e
       objectReference: {fileID: 0}
+    - target: {fileID: 2373267175499843026, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: DefaultGhostMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_Name
       value: TowerBase

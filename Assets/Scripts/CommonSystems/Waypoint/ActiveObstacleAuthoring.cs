@@ -3,7 +3,9 @@ using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
-[GhostEnabledBit]
+/// <summary>
+/// Don't need to synchronize because every frame, it will be prepared in <see cref="PrepareObstacleDataSystem.UpdateActiveObstacleDataJob"/> before calculate
+/// </summary>
 public struct ActiveObstacle : IComponentData, IEnableableComponent {
     public UnityObjectRef<NavmeshCut> _Ref;
 

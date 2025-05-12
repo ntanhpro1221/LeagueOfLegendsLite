@@ -1,12 +1,14 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 using Unity.Profiling;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
 	using Pathfinding.PID;
 
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct MovementState : IComponentData {
 		/// <summary>State of the PID controller for the movement</summary>
 		public PIDMovement.PersistentState followerState;

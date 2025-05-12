@@ -1,5 +1,5 @@
 ﻿using Unity.Entities;
 
 [UpdateInGroup(typeof(WaypointSystemGroup))]
-[UpdateAfter(typeof(UpdateGraphSystemGroup))]
+[UpdateAfter(typeof(UpdateObstacleSystemGroup))]
 public partial class UpdateWaypointSystemGroup : ComponentSystemGroup { }

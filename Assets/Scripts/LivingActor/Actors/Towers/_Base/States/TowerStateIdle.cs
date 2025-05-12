@@ -4,6 +4,7 @@ using Unity.Entities;
 
 public static partial class TowerStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
@@ -28,6 +29,7 @@ public static partial class TowerStateIdle {
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {

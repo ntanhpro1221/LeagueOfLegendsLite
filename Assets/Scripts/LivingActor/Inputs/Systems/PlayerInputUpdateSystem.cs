@@ -38,15 +38,15 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             // CHECK ATTACK
             if (castData.isHitActor && dirtyData.leftMouse.WasPressedThisFrame()) {
                 inputData.SetAttack(castData.actor);
-                inputData.CancelMove(locTrans);
+                inputData.CancelMove();
             } else if (castData.isHitClosestEntityAtGroundHit && dirtyData.leftMouse.WasPressedThisFrame()) {
                 inputData.SetAttack(castData.closestEntityAtGroundHit);
-                inputData.CancelMove(locTrans);
+                inputData.CancelMove();
             }
 
             // CANCEL MOVE AND ATTACK
             if (dirtyData.s_key.WasPressedThisFrame()) {
-                inputData.CancelMove(locTrans);
+                inputData.CancelMove();
                 inputData.CancelAttack();
             }
         }

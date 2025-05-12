@@ -1,6 +1,7 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -13,6 +14,7 @@ namespace Pathfinding.ECS {
 	///
 	/// See: <see cref="ResolvedMovement"/>
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct MovementControl : IComponentData {
 		/// <summary>The point the agent should move towards</summary>
 		public float3 targetPoint;

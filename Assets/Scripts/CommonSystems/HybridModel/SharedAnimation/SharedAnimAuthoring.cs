@@ -9,14 +9,14 @@ using UnityEngine;
 public struct SharedAnimData : IComponentData {
     [GhostField] public SharedAnimKey curAnim;
 
-    public bool isNeedRestart;
+    [GhostField] public int currentSessionToRestart;
 
-    public bool hardCutAnim;
+    [GhostField] public bool hardCutAnim;
 
     public     BlobAssetReference<BubleEnMap<SharedAnimKey, float>> _AnimLengthsRef;
     public ref BubleEnMap<SharedAnimKey, float>                     AnimLengths => ref _AnimLengthsRef.Value;
 
-    public void MarkNeedRestart() => isNeedRestart = true;
+    public void MarkNeedRestart() => ++currentSessionToRestart;
 }
 
 public class SharedAnimAuthoring : MonoBehaviour {

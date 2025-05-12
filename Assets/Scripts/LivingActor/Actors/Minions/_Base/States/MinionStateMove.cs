@@ -1,13 +1,17 @@
 ﻿using NGDtuanh.Entities.StateMachine;
+using Pathfinding;
+using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 using UnityEngine;
 
 public static partial class MinionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
@@ -38,10 +42,11 @@ public static partial class MinionStateMove {
             var     attackRangeId = statsId[StatsType.AttackRange];
             var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
-            foreach (var (filter, data)
+            foreach (var (filter, data, entity)
                 in SystemAPI.Query<
                     StateFilterAspect
-                  , UpdateAspect>()) {
+                  , UpdateAspect>()
+                    .WithEntityAccess()) {
                 bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
@@ -65,36 +70,42 @@ public static partial class MinionStateMove {
                 else continue;
 
                 filter.MarkExitExecuted();
-                data.StopMove();
+                data.StopMove(entity);
             }
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO         health;
-            public readonly AimedTargetAspectRO    aimedTarget;
-            public readonly ActorSharedStateAspect sharedState;
-            public readonly RefRO<AttackStateData> attackData;
-            public readonly MoveRequesterAspect    moveRequester;
+            public readonly HealthAspectRO          health;
+            public readonly AimedTargetAspectRO     aimedTarget;
+            public readonly ActorSharedStateAspect  sharedState;
+            public readonly RefRO<AttackStateData>  attackData;
+            public readonly RefRW<DestinationPoint> desSetter;
 
-            private readonly RefRO<LocalTransform> localTrans;
-
-            [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
+            [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow;
 
             [ReadOnly] public readonly DynamicBuffer<MinionFixedPathBuffer> PathBuffer;
 
-            public void StopMove() {
-                moveRequester.SyncFromLocTrans(localTrans.ValueRO);
+            public void StopMove(in Entity entity) {
+                // FollowerEntity.ClearPath(entity);
 
-                autoFollowTarget.ValueRW = false;
+                desSetter.ValueRW.destination = new float3(
+                    float.PositiveInfinity
+                  , float.PositiveInfinity
+                  , float.PositiveInfinity);
+                
+                autoFollow.ValueRW = false;
             }
         }
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            foreach (var (_, anim) in SystemAPI.Query<
+            foreach (var (
+                _
+              , anim) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect>()) {
                 anim.SetAnim(SharedAnimKey.Move);
@@ -103,6 +114,7 @@ public static partial class MinionStateMove {
     }
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Update : ISystem {
         [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
@@ -168,7 +180,7 @@ public static partial class MinionStateMove {
             }
         }
 
-        [WithPresent(typeof(AutoFollowTarget))]
+        [WithPresent(typeof(AutoFollowTarget_FollowerEntity))]
         [BurstCompile]
         private partial struct FollowTargetJob : IJobEntity {
             [ReadOnly] public ComponentLookup<Selectable> selectLookup;
@@ -177,20 +189,13 @@ public static partial class MinionStateMove {
             public void Execute(
                 StateFilterAspect              _
               , AimedTargetAspectRO            aimedTarget
-              , EnabledRefRW<AutoFollowTarget> autoFollowTarget
-              , MoveRequesterAspect            moveRequester
+              , EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow
               , in LocalTransform              locTrans) {
-                var old = autoFollowTarget.ValueRO;
-                autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(selectLookup);
-
-                // Clear waypoint when give up target
-                if (true  == old
-                 && false == autoFollowTarget.ValueRO)
-                    moveRequester.SyncFromLocTrans(locTrans);
+                autoFollow.ValueRW = aimedTarget.IsTargetExists(selectLookup);
             }
         }
 
-        [WithNone(typeof(AutoFollowTarget))] // Don't need to calculate fix path when we have a target to follow
+        [WithNone(typeof(AutoFollowTarget_FollowerEntity))]
         [BurstCompile]
         private partial struct FollowFixedPathJob : IJobEntity {
             public float_Q3 reachPathDisToleranceSqr;
@@ -199,16 +204,14 @@ public static partial class MinionStateMove {
             public void Execute(
                 StateFilterAspect                        _
               , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
-              , MoveRequesterAspect                      moveRequester
-              , in LocalTransform                        locTrans) {
+              , ref DestinationPoint                     desSetter
+              , in  LocalTransform                       locTrans) {
+                if (pathBuffer.IsEmpty) return;
 
-                if (!pathBuffer.IsEmpty) {
-                    bool reachPathPnt = reachPathDisToleranceSqr > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos);
-                    if (reachPathPnt || !moveRequester.AlreadyHaveWaypoint) {
-                        if (reachPathPnt) pathBuffer.PopFront();
-                        moveRequester.MoveSmartTo(pathBuffer.FrontRO().pos);
-                    }
-                }
+                if (reachPathDisToleranceSqr
+                  > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos))
+                    pathBuffer.PopFront();
+                desSetter.destination = pathBuffer[0].pos;
             }
         }
     }

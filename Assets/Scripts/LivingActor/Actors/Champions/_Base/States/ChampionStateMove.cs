@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -55,13 +54,15 @@ public static partial class ChampionStateMove {
 
                 // IDLE STATE
                 else if (
+                    // Have cancel request
+                    data.HaveCancelMoveRequest
                     // Done move
-                    data.moveRequester.IsMoveDone
+                 || data.moveRequester.IsMoveDone
                     // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup)))
                     data.sharedState.SetIdle();
-                
+
                 else continue;
 
                 filter.MarkExitExecuted();
@@ -75,12 +76,14 @@ public static partial class ChampionStateMove {
             public readonly ActorSharedStateAspect sharedState;
             public readonly RefRO<AttackStateData> attackData;
             public readonly MoveRequesterAspect    moveRequester;
+            public readonly RefRO<PlayerInputData> input;
 
             private readonly RefRO<LocalTransform> localTrans;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
 
-
+            public bool HaveCancelMoveRequest => input.ValueRO.cancelMoveEvent.IsSet;
+            
             public void StopMove() {
                 moveRequester.SyncFromLocTrans(localTrans.ValueRO);
 
@@ -125,14 +128,16 @@ public static partial class ChampionStateMove {
                   , moveRequester
                   , aimedTarget
                   , input
-                  , autoFollowTarget)
+                  , autoFollowTarget
+                  , locTrans)
                 in SystemAPI
                     .Query<
                         StateFilterAspect
                       , MoveRequesterAspect
                       , AimedTargetAspectRO
                       , RefRO<PlayerInputData>
-                      , EnabledRefRW<AutoFollowTarget>>()
+                      , EnabledRefRW<AutoFollowTarget>
+                      , RefRO<LocalTransform>>()
                     .WithPresent<AutoFollowTarget>()) {
 
                 // Try move to aimed target
@@ -141,7 +146,7 @@ public static partial class ChampionStateMove {
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO
                  && moveRequester.NeedRecalculatePath(input.ValueRO.moveLocTarget))
-                    moveRequester.MoveSmartTo(input.ValueRO.moveLocTarget);
+                    moveRequester.MoveSmartTo(input.ValueRO.moveLocTarget, locTrans.ValueRO);
             }
         }
     }

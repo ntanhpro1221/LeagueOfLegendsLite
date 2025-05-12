@@ -14,6 +14,10 @@ public static class TickHelpers {
         curTick.Add(tick);
         return curTick;
     }
+
+    public static bool IsNewerThanOrEqual(this NetworkTick lhs, NetworkTick rhs) =>
+        lhs.Equals(rhs)
+     || lhs.IsNewerThan(rhs);
     
     public static NetworkTick StartTick(float startTime, int tickRate) =>
         new NetworkTick(CountTick(startTime, tickRate));

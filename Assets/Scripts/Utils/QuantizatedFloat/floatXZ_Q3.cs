@@ -39,7 +39,9 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
 
     public override string ToString() => ((float2)this).ToString();
 
-    #region CAST
+    public override int GetHashCode() => HashCode.Combine(x, z);
+
+#region CAST
 
     public static explicit operator floatXZ_Q3(float2 source) => new(
         source.x

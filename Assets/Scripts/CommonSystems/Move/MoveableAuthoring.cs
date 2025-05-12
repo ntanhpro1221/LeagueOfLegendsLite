@@ -1,5 +1,4 @@
-﻿using Unity.Collections;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -48,12 +47,38 @@ public struct WaypointBuffer : IBufferElementData {
 public struct NeedHandleWaypointRequest : IComponentData, IEnableableComponent { }
 
 public struct WaypointRequestData : IComponentData {
-    [GhostField] public float3_Q3 targetLocPos;
+    [GhostField] public PathId pid;
+}
 
-    /// <summary>
-    /// Just for tmp calculating
-    /// </summary>
-    public int tmpPathId;
+[GhostEnabledBit]
+public struct PathIsHandling : IComponentData, IEnableableComponent { }
+
+public struct PathHandlingData : IComponentData {
+    [GhostField] public NetworkTick doneAtTick;
+
+    [GhostField] public PathId orgPID;
+    [GhostField] public PathId newPID;
+
+    public PathHandlingData(
+        NetworkTick doneAtTick
+      , float3_Q3   startPnt
+      , float3_Q3   endPnt) {
+        this.doneAtTick = doneAtTick;
+
+        orgPID = newPID = new PathId(startPnt, endPnt);
+    }
+    
+    public PathHandlingData(
+        NetworkTick doneAtTick
+      , PathId pid) {
+        this.doneAtTick = doneAtTick;
+
+        orgPID = newPID = pid;
+    }
+
+    public void UpdatePID(PathId pid) {
+        newPID = pid;
+    }
 }
 
 [RequireComponent(typeof(Rigidbody))]
@@ -75,6 +100,9 @@ public class MoveableAuthoring : MonoBehaviour {
             AddBuffer<WaypointBuffer>(entity);
             AddComponent<WaypointRequestData>(entity);
             AddComponentDisabled<NeedHandleWaypointRequest>(entity);
+
+            AddComponent<PathHandlingData>(entity);
+            AddComponentDisabled<PathIsHandling>(entity);
         }
     }
 }

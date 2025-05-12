@@ -1,8 +1,10 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct MovementStatistics : IComponentData {
 		/// <summary>
 		/// The estimated velocity that the agent is moving with.

@@ -2,6 +2,7 @@
 using Unity.Entities;
 using UnityEngine;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding.PID;
@@ -49,6 +50,7 @@ namespace Pathfinding.ECS {
 	}
 
 	[System.Serializable]
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct MovementSettings : IComponentData {
 		/// <summary>Additional movement settings</summary>
 		public PIDMovement follower;

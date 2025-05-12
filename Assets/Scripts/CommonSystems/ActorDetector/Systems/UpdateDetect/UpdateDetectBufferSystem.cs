@@ -58,7 +58,7 @@ public partial struct UpdateDetectedActorSystem : ISystem {
 
             if (!data.filterLookup.EntityExists(detector.holder)
              || !data.filterLookup.EntityExists(target)) {
-                Debug.LogWarning($"NGDtuanh: holder or target of detector doesn't exist (may be relative to predicted spawn ghost)");
+                // Debug.LogWarning($"NGDtuanh: holder or target of detector doesn't exist (may be relative to predicted spawn ghost)");
                 return;
             }
 

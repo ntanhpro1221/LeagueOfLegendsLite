@@ -1,6 +1,7 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -16,6 +17,7 @@ namespace Pathfinding.ECS {
 	///
 	/// Removing one of the above components can be useful if you want to override the movement of an agent in some way.
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct SimulateMovement : IComponentData {
 	}
 
@@ -27,6 +29,7 @@ namespace Pathfinding.ECS {
 	/// Note: <see cref="JobRepairPath"/> will, at the moment, run even if this component is not present, when manually setting some properties on the agent (e.g. ai.position, ai.destination, etc.).
 	/// Create a forum post if you have a use case which isn't supported by this.
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct SimulateMovementRepair : IComponentData {
 	}
 
@@ -35,6 +38,7 @@ namespace Pathfinding.ECS {
 	///
 	/// Allows the <see cref="JobControl"/> to run.
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct SimulateMovementControl : IComponentData {
 	}
 
@@ -43,6 +47,7 @@ namespace Pathfinding.ECS {
 	///
 	/// Allows <see cref="AIMoveSystem"/> to run the <see cref="JobApplyGravity"/>, <see cref="JobAlignAgentWithMovementDirection"/> and <see cref="JobMoveAgent"/> jobs.
 	/// </summary>
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct SimulateMovementFinalize : IComponentData {
 	}
 }

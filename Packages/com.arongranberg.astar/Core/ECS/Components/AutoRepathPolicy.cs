@@ -1,6 +1,7 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	/// <summary>
@@ -11,6 +12,7 @@ namespace Pathfinding.ECS {
 	/// This is the unmanaged equivalent of <see cref="Pathfinding.AutoRepathPolicy"/>.
 	/// </summary>
 	[System.Serializable]
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public struct AutoRepathPolicy : IComponentData {
 		/// <summary>
 		/// How sensitive the agent should be to changes in its destination for Mode.Dynamic.

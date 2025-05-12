@@ -1,5 +1,6 @@
 ﻿using System;
 using NGDtuanh.Entities.StateMachine;
+using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -9,6 +10,7 @@ using UnityEngine;
 
 public static partial class MinionStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
@@ -41,12 +43,14 @@ public static partial class MinionStateAttack {
                   , sharedState
                   , health
                   , aimedTarget
+                    , desSetter
                   , attackData)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
+                    , RefRW<DestinationPoint>
                   , RefRW<AttackStateData>>()) {
                 // DEAD STATE
                 if (health.IsDead) // Run out of health
@@ -70,11 +74,14 @@ public static partial class MinionStateAttack {
                 // restart attack cooldown if not actually dealt damage yet
                 if (!attackData.ValueRO.isAttacked)
                     attackData.ValueRW.ResetCooldown();
+
+                desSetter.ValueRW.facingDirection = default;
             }
         }
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -105,6 +112,7 @@ public static partial class MinionStateAttack {
     }
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Update : ISystem {
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
 
@@ -164,13 +172,20 @@ public static partial class MinionStateAttack {
                 }
 
             // ROTATE TO TARGET
-            foreach (var (_, moveData, target, locTrans) in SystemAPI
+            foreach (var (
+                _
+              , desSetter
+              , target
+              , locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<MoveData>
+                  , RefRW<DestinationPoint>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                moveData.ValueRW.RotateTo(locTrans.ValueRO.Position, target.Target, locTransLookup);
+                desSetter.ValueRW.facingDirection = (
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position)
+                    .WithoutY();
         }
     }
 }

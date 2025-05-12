@@ -15,8 +15,8 @@ public partial struct ApplyMoveSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.Dependency = new ApplyMoveJob {
-            rotateSpeed = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
-          , deltaTime   = SystemAPI.Time.fixedDeltaTime
+            rotateSpeed    = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
+          , fixedDeltaTime = SystemAPI.Time.fixedDeltaTime
         }.ScheduleParallel(state.Dependency);
 
         state.Dependency = new StopDisabledMoveJob()
@@ -30,7 +30,7 @@ public partial struct ApplyMoveSystem : ISystem {
     [BurstCompile]
     public partial struct ApplyMoveJob : IJobEntity {
         public float rotateSpeed;
-        public float deltaTime;
+        public float fixedDeltaTime;
 
         [BurstCompile]
         public void Execute(
@@ -38,7 +38,7 @@ public partial struct ApplyMoveSystem : ISystem {
           , ref DynamicBuffer<WaypointBuffer> waypoints
           , ref LocalTransform                localTrans
           , ref PhysicsVelocity               velocity) {
-            Calc(ref moveData, ref waypoints, ref localTrans, out var newLinear, out var newAngular);
+            DoMoveAndRotate(ref moveData, ref waypoints, ref localTrans, out var newLinear, out var newAngular);
 
             // APPLY VELOCITY
             GameHelpers.AssignLinearVelocity(ref velocity, newLinear, moveData.controlYAxis);
@@ -46,19 +46,19 @@ public partial struct ApplyMoveSystem : ISystem {
         }
 
         [BurstCompile]
-        public void Calc(
+        private void DoMoveAndRotate(
             ref MoveData                      moveData
           , ref DynamicBuffer<WaypointBuffer> waypoints
           , ref LocalTransform                locTrans
           , out float3                        newLinear
           , out float3                        newAngular) {
-            newLinear = newAngular = float3.zero;
-
             // DO MOVE
-            if (!moveData.isMoveDone && !waypoints.Empty()) {
+            newLinear = float3.zero;
+
+            if (!moveData.isMoveDone && !waypoints.IsEmpty) {
                 float3 moveVector           = waypoints.BackRO().pos - locTrans.Position;
                 float  disToTarget_WithoutY = math.length(moveVector.WithoutY());
-                float  disCanMove_WithoutY  = moveData.moveSpeed * deltaTime;
+                float  disCanMove_WithoutY  = moveData.moveSpeed * fixedDeltaTime;
 
                 // Manually move
                 if (disToTarget_WithoutY <= disCanMove_WithoutY) {
@@ -105,10 +105,12 @@ public partial struct ApplyMoveSystem : ISystem {
             }
 
             // DO ROTATE
+            newAngular = float3.zero;
+
             quaternion rotateTarget = quaternion.LookRotation(moveData.targetLocDir.Full, math.up());
             float      rotateVecY   = mathHelpers.EulerDiff(locTrans.Rotation, rotateTarget).y;
             float      rotateDis    = math.abs(rotateVecY);
-            if (rotateDis <= rotateSpeed * deltaTime)
+            if (rotateDis <= rotateSpeed * fixedDeltaTime)
                 locTrans.Rotation = rotateTarget;
             else newAngular.y     = rotateSpeed / rotateDis * rotateVecY;
         }

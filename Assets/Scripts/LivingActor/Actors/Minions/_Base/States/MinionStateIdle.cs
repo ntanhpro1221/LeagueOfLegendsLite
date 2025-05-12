@@ -1,12 +1,15 @@
 ﻿using NGDtuanh.Entities.StateMachine;
+using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 
 public static partial class MinionStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
@@ -42,15 +45,15 @@ public static partial class MinionStateIdle {
                   , health
                   , aimedTarget
                   , sharedState
-                  , attackData
-                  , pathBuffer)
+                  , desSetter
+                  , attackData)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
-                  , RefRO<AttackStateData>
-                  , DynamicBuffer<MinionFixedPathBuffer>>()) {
+                    , RefRW<DestinationPoint>
+                  , RefRO<AttackStateData>>()) {
                 bool targetExist  = aimedTarget.IsTargetExists(selectLookup);
                 bool attackCDDone = attackData.ValueRO.IsCooldownDone(curTick);
 
@@ -77,11 +80,14 @@ public static partial class MinionStateIdle {
                 else continue;
 
                 filter.MarkExitExecuted();
+                
+                desSetter.ValueRW.facingDirection = default;
             }
         }
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
@@ -94,6 +100,7 @@ public static partial class MinionStateIdle {
     }
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Update : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
@@ -112,14 +119,21 @@ public static partial class MinionStateIdle {
             locTransLookup.Update(ref state);
 
             // ROTATE TO TARGET
-            foreach (var (_, moveData, target, locTrans) in SystemAPI
+            foreach (var (
+                _
+              , desSetter
+              , target
+              , locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<MoveData>
+                  , RefRW<DestinationPoint>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
                 if (target.IsTargetExists(selectLookup))
-                    moveData.ValueRW.RotateTo(locTrans.ValueRO.Position, target.Target, locTransLookup);
+                    desSetter.ValueRW.facingDirection = (
+                            locTransLookup[target.Target].Position
+                          - locTrans.ValueRO.Position)
+                        .WithoutY();
         }
     }
 }

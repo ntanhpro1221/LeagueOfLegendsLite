@@ -1,6 +1,7 @@
-﻿using Pathfinding;
+﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 /// <summary>
 /// Not run in <see cref="InputCastUpdateSystem"/> because of burst
@@ -8,8 +9,9 @@ using Unity.Mathematics;
 [UpdateInGroup(typeof(BeforeInputLocalUpdateSystemGroup))]
 [UpdateAfter(typeof(InputCastUpdateSystem))]
 public partial struct InputCastNearestWalkableGroundSystem : ISystem {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<InputDirtyData>();
+        state.RequireForUpdate<InputCastData>();
     }
 
     public void OnUpdate(ref SystemState state) {

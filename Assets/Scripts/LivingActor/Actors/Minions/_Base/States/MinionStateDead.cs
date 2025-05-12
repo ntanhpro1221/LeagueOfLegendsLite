@@ -5,6 +5,7 @@ using Unity.NetCode;
 
 public static partial class MinionStateDead {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -47,6 +48,7 @@ public static partial class MinionStateDead {
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {

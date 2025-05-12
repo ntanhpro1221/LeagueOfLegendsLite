@@ -1,51 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NGDtuanh.Singleton;
 using NGDtuanh.Utils;
 using Pathfinding;
+using Pathfinding.Util;
 using Unity.Entities;
 using UnityEngine;
 
 /// <summary>
-/// Just to be used in <see cref="ProvideObstacleSystem"/>
+/// Just to be used in <see cref="PrepareObstacleDataSystem"/>
 /// </summary>
 public class ObstacleProvider : SceneSingleton<ObstacleProvider> {
+    private static readonly Vector3 BLANK_ROOM = new Vector3(1e5f, 1e5f, 1e5f);
+
     [SerializeField]
     private GameObject _ObstaclePrefab;
 
-    private readonly Stack<NavmeshCut>              _Available = new();
-    private          Dictionary<Entity, NavmeshCut> _PrevUsed  = new();
-    private          Dictionary<Entity, NavmeshCut> _Used      = new();
+    private readonly Stack<NavmeshCut> _Available = new();
+    private readonly Stack<NavmeshCut> _Used      = new();
 
-    public NavmeshCut Get(in Entity entity, bool allowCreateNewInstance) {
-        NavmeshCut result;
-
-        // Try to get from previous used cutter first
-        if (!_PrevUsed.Remove(entity, out result))
-            // Then try to get from available cutter
-            if (!_Available.TryPop(out result)) {
-                // Final, instantiate new cutter 
-                if (allowCreateNewInstance)
-                    result = Instantiate(_ObstaclePrefab).GetComponent<NavmeshCut>();
-                else return null;
-            }
-
-        // Active and add to used cutters collection
-        _Used.Add(entity, result);
-        result.gameObject.SetActive(true);
-
-        return result;
-    }
-    
-    public void ReleaseUnusedCutter() {
-        foreach (var cutter in _PrevUsed.Values) {
+    public void ReleaseAllCutter() {
+        foreach (var cutter in _Used) {
             _Available.Push(cutter);
-            cutter.gameObject.SetActive(false);
+            cutter.transform.position = BLANK_ROOM;
         }
 
-        _PrevUsed.Clear();
+        _Used.Clear();
     }
-    
-    public void SwapUsedContainer() {
-        Swapper.Swap(ref _PrevUsed, ref _Used);
+
+    public NavmeshCut Get() {
+        NavmeshCut result;
+
+        // Try to get from available cutter
+        if (!_Available.TryPop(out result))
+            // instantiate new cutter 
+            result = Instantiate(_ObstaclePrefab).GetComponent<NavmeshCut>();
+
+        // Add to used cutters collection
+        _Used.Push(result);
+
+        return result;
     }
 }

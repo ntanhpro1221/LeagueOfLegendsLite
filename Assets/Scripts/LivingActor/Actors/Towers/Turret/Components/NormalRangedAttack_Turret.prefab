@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: prefabId
       value: 07f7b7fb554301646866ec92163e42d2
       objectReference: {fileID: 0}
+    - target: {fileID: 6998172064886576760, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      propertyPath: DefaultGhostMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

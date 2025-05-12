@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: ccb62403d907aaaabe8944b6a88afe36
+      value: afcd4e56ce29bed97d5a7f38bd0032b5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6210338472452448258}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d55485d3d96544f5a95d1febb7d3236c, type: 3}
   m_Name: 

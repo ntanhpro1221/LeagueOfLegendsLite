@@ -1,5 +1,6 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -18,6 +19,7 @@ namespace Pathfinding.ECS {
 	/// It can also be used for things that are not used often, and so are best kept out-of-band to avoid bloating the ECS chunks too much.
 	/// </summary>
 	[System.Serializable]
+	[GhostComponent(PrefabType = GhostPrefabType.Server)]
 	public class ManagedState : IComponentData, System.IDisposable, System.ICloneable {
 		/// <summary>
 		/// Settings for when to recalculate the path.

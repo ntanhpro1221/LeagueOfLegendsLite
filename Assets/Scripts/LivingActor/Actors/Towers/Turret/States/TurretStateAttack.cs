@@ -7,6 +7,7 @@ using UnityEngine;
 
 public static partial class TurretStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
 
@@ -54,6 +55,7 @@ public static partial class TurretStateAttack {
     }
 
     [UpdateInGroup(typeof(StateEnterSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -84,6 +86,7 @@ public static partial class TurretStateAttack {
     }
 
     [UpdateInGroup(typeof(StateUpdateSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Update : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {

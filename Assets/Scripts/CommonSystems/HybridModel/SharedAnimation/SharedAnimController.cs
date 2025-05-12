@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.NetCode;
+using UnityEngine;
 
 public class SharedAnimController : MonoBehaviour {
     private Animator _Animator;
+    private int      _CurrentSessionToRestart;
 
     public SharedAnimKey CurAnim { get; private set; } = SharedAnimKey.Idle;
 
@@ -9,7 +11,7 @@ public class SharedAnimController : MonoBehaviour {
         _Animator = GetComponentInChildren<Animator>();
     }
 
-    public void SyncAnim(SharedAnimKey key, ref bool isNeedRestart, bool hardCutAnim) {
+    public void SyncAnim(SharedAnimKey key, int newSession, bool hardCutAnim) {
         if (CurAnim != key) {
             _Animator.SetBool(CurAnim.StateVarName(), false);
             CurAnim = key;
@@ -19,9 +21,9 @@ public class SharedAnimController : MonoBehaviour {
                 _Animator.Play(CurAnim.KeyName());
         }
 
-        if (isNeedRestart) {
-            isNeedRestart = false;
-
+        if (_CurrentSessionToRestart != newSession) {
+            _CurrentSessionToRestart = newSession;
+            
             if (hardCutAnim)
                 _Animator.Play(_Animator.GetCurrentAnimatorStateInfo(0).fullPathHash);
             else _Animator.CrossFade(_Animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0.2f, 0, 0);

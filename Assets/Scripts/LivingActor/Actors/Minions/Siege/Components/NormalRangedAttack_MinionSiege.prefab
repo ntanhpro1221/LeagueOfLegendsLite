@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716139915936838169, guid: e738aa010959bef4488b777c60856c45, type: 3}
       propertyPath: m_Name
-      value: NormalRangedAttackBase
+      value: NormalRangedAttack_MinionSiege
       objectReference: {fileID: 0}
     - target: {fileID: 2692789286365586849, guid: e738aa010959bef4488b777c60856c45, type: 3}
       propertyPath: m_LocalPosition.x
@@ -50,6 +50,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692789286365586849, guid: e738aa010959bef4488b777c60856c45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998172064886576760, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      propertyPath: prefabId
+      value: 137818663bab90f40b8f0a16252c3a71
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998172064886576760, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      propertyPath: DefaultGhostMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

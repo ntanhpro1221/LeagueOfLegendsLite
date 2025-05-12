@@ -1,11 +1,11 @@
-﻿using Unity.Burst;
+﻿using Pathfinding.ECS;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct InitMinionSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -53,7 +53,7 @@ public partial struct InitMinionSystem : ISystem {
           , ref LocalTransform                       locTrans
           , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , ref MinionControlFactor                  controlFactor
-          , MoveRequesterAspect                      moveRequester
+          , ref DestinationPoint                     desSetter
           , EnabledRefRW<NeedInitTag>                needInit
           , EnabledRefRW<HealthData>                 healthEnabled) {
 
@@ -67,8 +67,8 @@ public partial struct InitMinionSystem : ISystem {
             ref var pathSource = ref initTrans.Minion.Value[laneType.laneType][teamType.teamType];
 
             // init position
-            locTrans = pathSource[0].ToLocTrans_Directly();
-            moveRequester.SyncFromLocTrans(locTrans);
+            locTrans              = pathSource[0].ToLocTrans_Directly();
+            desSetter.destination = locTrans.Position;
 
             // init path
             pathBuffer.Resize(pathSource.Count, NativeArrayOptions.UninitializedMemory);

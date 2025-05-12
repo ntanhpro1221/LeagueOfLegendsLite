@@ -24,8 +24,7 @@ public partial struct SyncHybridModelClientSystem : ISystem {
               , animData
               , locTrans
               , highlightData
-              , highlightVisible
-              , entity)
+              , highlightVisible)
             in SystemAPI.Query<
                     RefRO<HybridModelData>
                   , RefRW<SharedAnimData>
@@ -33,22 +32,19 @@ public partial struct SyncHybridModelClientSystem : ISystem {
                   , RefRO<HighlightData>
                   , EnabledRefRO<HighlightVisible>>()
                 .WithPresent<HighlightVisible>()
-                .WithNone<NeedInitTag>()
-                .WithEntityAccess()) {
+                .WithNone<NeedInitTag>()) {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;
 
             // POSITION
-            if (locTrans.ValueRO.Position.IsNaN())
-                Debug.LogWarning($"NGDtuanh: {state.WorldName()} position of entity({entity.Index}) is NaN => {locTrans.ValueRO.Position}");
-            else trans.position = locTrans.ValueRO.Position;
+            if (!locTrans.ValueRO.Position.IsNaN()) trans.position = locTrans.ValueRO.Position;
             trans.rotation = locTrans.ValueRO.Rotation;
 
             // ANIMATION
             animCtrl.SyncAnim(
                 animData.ValueRO.curAnim
-              , ref animData.ValueRW.isNeedRestart
+              , animData.ValueRW.currentSessionToRestart
               , animData.ValueRO.hardCutAnim);
 
             // HIGHLIGHT
