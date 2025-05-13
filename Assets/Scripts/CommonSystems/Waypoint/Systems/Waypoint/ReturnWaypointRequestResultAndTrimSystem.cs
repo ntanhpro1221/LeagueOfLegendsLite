@@ -21,8 +21,8 @@ public partial struct ReturnWaypointRequestResultAndTrimSystem : ISystem {
 
         foreach (var (
             waypoints
-          , pathIsHandling
-          , pathIsHandlingTrigger
+          , handlingData
+          , handlingTrigger
             , moveData
             ) in SystemAPI
             .Query<
@@ -32,12 +32,13 @@ public partial struct ReturnWaypointRequestResultAndTrimSystem : ISystem {
             , RefRW<MoveData>>()
             .WithAll<Simulate>()) {
             // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            if (pathIsHandling.ValueRO.doneAtTick.IsNewerThan(curTick))
+            if (handlingData.ValueRO.doneAtTick.IsNewerThan(curTick))
                 continue;
-            pathIsHandlingTrigger.ValueRW = false;
+
+            handlingTrigger.ValueRW = false;
 
             waypoints.Clear();
-            foreach (var point in cachedPath.GetData(pathIsHandling.ValueRO.newPID.code).waypoints)
+            foreach (var point in cachedPath.GetData(handlingData.ValueRO.newPID.code).waypoints)
                 waypoints.Add(new WaypointBuffer(point.Quantizate3()));
 
             // This is very necessary

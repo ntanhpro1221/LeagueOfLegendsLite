@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 616815520e44d423b248bacb759428eb
+      value: bf92433232286f57c5bc8ab78e63eb52
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5392229273288189392, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
@@ -126,9 +126,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: -4466223679555644477}
-    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5115819672134949862}
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4826754101813740604}
@@ -186,7 +183,7 @@ MonoBehaviour:
       locked: 0
     pathfindingSettings:
       graphMask:
-        value: -1
+        value: 2
       tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
       traversableTags: -1
     enableLocalAvoidance: 1
@@ -271,21 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a1b3f674a8b824bb15918bd4384248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5115819672134949862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32608205855955755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4f84ae8c7a49bf81c2c9ca83710b4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enabled: 0
-  controlYAxis: 0
-  moveSpeed: 0
 --- !u!114 &4826754101813740604
 MonoBehaviour:
   m_ObjectHideFlags: 0

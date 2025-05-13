@@ -7,8 +7,13 @@ using Unity.Physics;
 [UpdateInGroup(typeof(BeforeInputLocalUpdateSystemGroup))]
 [UpdateAfter(typeof(InputDirtyUpdateSystem))]
 public partial struct InputCastUpdateSystem : ISystem {
-    private const uint GROUND_ACTOR = 
-        PhysicsLayerHelper.Ground 
+    /// <summary>
+    /// Because max fraction is 1
+    /// </summary>
+    private const float MAX_NULL_HIT_FRACTION = 2;
+
+    private const uint GROUND_ACTOR =
+        PhysicsLayerHelper.Ground
       | PhysicsLayerHelper.Actor;
 
     private static readonly CollisionFilter filterGroundActor = new() {
@@ -55,19 +60,21 @@ public partial struct InputCastUpdateSystem : ISystem {
         }, ref castGroundActorResult)) return;
 
         selectLookup.Update(ref state);
-        
-        uint totalHitLayer = 0;
-        uint hitLayer;
-        foreach (var actorGroundHit in castGroundActorResult) {
-            switch (hitLayer = collisionWorld
-                .Bodies[actorGroundHit.RigidBodyIndex]
-                .Collider.Value
-                .GetCollisionFilter(actorGroundHit.ColliderKey)
-                .BelongsTo) {
+
+        var bodies = collisionWorld.Bodies;
+        float actorFraction  = MAX_NULL_HIT_FRACTION
+            , groundFraction = MAX_NULL_HIT_FRACTION;
+        foreach (var actorGroundHit in castGroundActorResult)
+            switch (bodies[actorGroundHit.RigidBodyIndex].Collider.Value
+                .GetCollisionFilter(actorGroundHit.ColliderKey).BelongsTo) {
 
                 case PhysicsLayerHelper.Actor:
                     if (!selectLookup.HasComponent(actorGroundHit.Entity) || !selectLookup.IsComponentEnabled(actorGroundHit.Entity))
-                        continue;
+                        break;
+
+                    if (actorFraction < actorGroundHit.Fraction)
+                        break;
+                    actorFraction = actorGroundHit.Fraction;
 
                     if (SystemAPI.GetComponent<TeamTypeData>(actorGroundHit.Entity).teamType
                      == ownChampQuery.GetSingleton<TeamTypeData>().teamType)
@@ -77,14 +84,14 @@ public partial struct InputCastUpdateSystem : ISystem {
                     break;
 
                 case PhysicsLayerHelper.Ground:
+                    if (groundFraction < actorGroundHit.Fraction)
+                        break;
+                    groundFraction = actorGroundHit.Fraction;
+
                     castData.SetHitGroundAt(actorGroundHit.Position.Quantizate3());
 
                     break;
             }
-
-            if ((totalHitLayer |= hitLayer) == GROUND_ACTOR) 
-                break;
-        }
     }
 
     [BurstCompile]

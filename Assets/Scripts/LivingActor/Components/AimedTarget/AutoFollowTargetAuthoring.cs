@@ -11,10 +11,10 @@ public struct AutoFollowTarget : IComponentData, IEnableableComponent {
     public float3 tmpReachableTargetPos;
     public float  tmpYourRange;
     public float  tmpTargetRadius;
-    
+
     public enum Method {
-        Straight = 0
-      , SmartAttack    = 1
+        Straight    = 0
+      , SmartAttack = 1
     }
 }
 

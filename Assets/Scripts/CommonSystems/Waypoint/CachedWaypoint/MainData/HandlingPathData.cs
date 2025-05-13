@@ -20,7 +20,7 @@ public class HandlingPathData : ICachedData<HandlingPathData.ItemData> {
                 // Wait for complete
                 AstarPath.BlockUntilCalculated(path);
 
-                // Apply Filter
+                // Fix start point and end point
                 path.vectorPath.Add(path.endPoint);
                 path.vectorPath.Reverse();
                 path.vectorPath.Add(path.startPoint);

@@ -1,9 +1,12 @@
 ﻿using NGDtuanh.Entities.StateMachine;
+using Pathfinding;
+using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 
 public static partial class MinionStateDead {
+    // Exit to destroy minion
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
@@ -77,15 +80,19 @@ public static partial class MinionStateDead {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<DeadStateData>  _DeadStateData;
-            private readonly RefRW<SharedAnimData> _AnimData;
+            private readonly RefRW<DeadStateData>    _DeadStateData;
+            private readonly RefRW<SharedAnimData>   _AnimData;
+            private readonly  RefRW<MovementSettings> _MoveSetting;
 
-            [Optional] private readonly EnabledRefRW<MoveableTag> _Moveable;
+            [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> _AutoFollow;
 
             public ref NetworkTick   RespawnAtTick => ref _DeadStateData.ValueRW.respawnAtTick;
             public ref SharedAnimKey CurAnim       => ref _AnimData.ValueRW.curAnim;
 
-            public void DisableMove() => _Moveable.ValueRW = false;
+            public void DisableMove() {
+                _MoveSetting.ValueRW.isStopped = true;
+                _AutoFollow.ValueRW            = false;
+            }
         }
     }
 }
@@ -94,13 +101,13 @@ public static partial class MinionStateDead {
     public partial struct Exit {
         private readonly partial struct StateFilterAspect : IAspect, IStateExitAspect<MinionTag, DeadState> {
             private readonly RefRO<MinionTag> _identity;
-            private readonly RefRO<Simulate>    _simulate;
+            private readonly RefRO<Simulate>  _simulate;
 
             private readonly EnabledRefRW<StateNotExitedYet> _stateNotExitedYet;
             private readonly EnabledRefRW<DeadState>         _curStateEnable;
 
             RefRO<MinionTag> IStateAspect<MinionTag, DeadState>.Identity => _identity;
-            RefRO<Simulate> IStateAspect<MinionTag, DeadState>.   Simulate => _simulate;
+            RefRO<Simulate> IStateAspect<MinionTag, DeadState>. Simulate => _simulate;
 
             EnabledRefRW<StateNotExitedYet> IStateExitAspect<MinionTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
             EnabledRefRW<DeadState> IStateExitAspect<MinionTag, DeadState>.        CurStateEnable    => _curStateEnable;

@@ -9,10 +9,10 @@ using UnityEditor;
 
 [Serializable]
 public struct float4_Q3 : IEquatable<float4_Q3> {
-    public const           int       MULTIPLIER = 1000;
+    public const           float     MULTIPLIER = 1000;
     public static readonly float4_Q3 zero       = new(0, 0, 0, 0);
     public static readonly float4_Q3 identity   = new(0, 0, 0, MULTIPLIER);
-    
+
     public int x;
     public int y;
     public int z;
@@ -26,12 +26,12 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
     }
 
     public float4_Q3(float xyzw) : this(xyzw, xyzw, xyzw, xyzw) { }
-    
+
     public float4_Q3(int x, int y, int z, int w) {
-        this.x = x * MULTIPLIER;
-        this.y = y * MULTIPLIER;
-        this.z = z * MULTIPLIER;
-        this.w = w * MULTIPLIER;
+        this.x = x * (int)MULTIPLIER;
+        this.y = y * (int)MULTIPLIER;
+        this.z = z * (int)MULTIPLIER;
+        this.w = w * (int)MULTIPLIER;
     }
 
     public float4_Q3(int xyzw) : this(xyzw, xyzw, xyzw, xyzw) { }
@@ -44,7 +44,7 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
 
     public override string ToString() => ((float4)this).ToString();
 
-    #region CAST
+#region CAST
 
     public static explicit operator float4_Q3(float4 source) => new(
         source.x
@@ -53,10 +53,10 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , source.w);
 
     public static implicit operator float4(float4_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER
-      , (float)source.w / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER
+      , source.w / MULTIPLIER);
 
     public static explicit operator float4_Q3(Vector4 source) => new(
         source.x
@@ -65,10 +65,10 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , source.w);
 
     public static implicit operator Vector4(float4_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER
-      , (float)source.w / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER
+      , source.w / MULTIPLIER);
 
     public static explicit operator float4_Q3(quaternion source) => new(
         source.value.x
@@ -77,10 +77,10 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , source.value.w);
 
     public static implicit operator quaternion(float4_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER
-      , (float)source.w / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER
+      , source.w / MULTIPLIER);
 
     public static explicit operator float4_Q3(Quaternion source) => new(
         source.x
@@ -89,14 +89,14 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , source.w);
 
     public static implicit operator Quaternion(float4_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER
-      , (float)source.w / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER
+      , source.w / MULTIPLIER);
 
-    #endregion
+#endregion
 
-    #region OPERATOR
+#region OPERATOR
 
     public static float4_Q3 operator +(float4_Q3 a, float4_Q3 b) => new() {
         x = a.x + b.x
@@ -134,10 +134,10 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
     };
 
     public static float4_Q3 operator /(float4_Q3 a, int div) => new() {
-        x = a.x / div
-      , y = a.y / div
-      , z = a.z / div
-      , w = a.w / div
+        x = Mathf.RoundToInt(a.x / (float)div)
+      , y = Mathf.RoundToInt(a.y / (float)div)
+      , z = Mathf.RoundToInt(a.z / (float)div)
+      , w = Mathf.RoundToInt(a.w / (float)div)
     };
 
     public static float4_Q3 operator /(float4_Q3 a, float div) => new() {
@@ -147,8 +147,8 @@ public struct float4_Q3 : IEquatable<float4_Q3> {
       , w = Mathf.RoundToInt(a.w / div)
     };
 
-    #endregion
-    
+#endregion
+
     #if UNITY_EDITOR
 
     [CustomPropertyDrawer(typeof(float4_Q3))]

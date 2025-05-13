@@ -124,7 +124,8 @@ PrefabInstance:
       propertyPath: actorDetectorPrefab
       value: 
       objectReference: {fileID: 8973156400918872574, guid: 91621ef4fc9d09447a3905051ee5ac0b, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5680946554530249233, guid: 153260c1286df294183460ce3ae1a6d8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

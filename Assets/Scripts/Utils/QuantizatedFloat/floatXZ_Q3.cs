@@ -9,7 +9,7 @@ using UnityEditor;
 
 [Serializable]
 public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
-    public const           int       MULTIPLIER = 1000;
+    public const float MULTIPLIER = 1000;
 
     public int x;
     public int z;
@@ -18,7 +18,7 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
         x = x
       , z = z
     };
-    
+
     public floatXZ_Q3(float x, float z) {
         this.x = Mathf.RoundToInt(x * MULTIPLIER);
         this.z = Mathf.RoundToInt(z * MULTIPLIER);
@@ -27,8 +27,8 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
     public floatXZ_Q3(float xz) : this(xz, xz) { }
 
     public floatXZ_Q3(int x, int z) {
-        this.x = (x * MULTIPLIER);
-        this.z = (z * MULTIPLIER);
+        this.x = x * (int)MULTIPLIER;
+        this.z = z * (int)MULTIPLIER;
     }
 
     public floatXZ_Q3(int xz) : this(xz, xz) { }
@@ -48,20 +48,20 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
       , source.y);
 
     public static implicit operator float2(floatXZ_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.z / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.z / MULTIPLIER);
 
     public static explicit operator floatXZ_Q3(Vector2 source) => new(
         source.x
       , source.y);
 
     public static implicit operator Vector2(floatXZ_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.z / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.z / MULTIPLIER);
 
-    #endregion
+#endregion
 
-    #region OPERATOR
+#region OPERATOR
 
     public static floatXZ_Q3 operator +(floatXZ_Q3 a, floatXZ_Q3 b) => new() {
         x = a.x + b.x
@@ -89,8 +89,8 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
     };
 
     public static floatXZ_Q3 operator /(floatXZ_Q3 a, int div) => new() {
-        x = a.x / div
-      , z = a.z / div
+        x = Mathf.RoundToInt(a.x / (float)div)
+      , z = Mathf.RoundToInt(a.z / (float)div)
     };
 
     public static floatXZ_Q3 operator /(floatXZ_Q3 a, float div) => new() {
@@ -98,7 +98,7 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
       , z = Mathf.RoundToInt(a.z / div)
     };
 
-    #endregion
+#endregion
 
     #if UNITY_EDITOR
 

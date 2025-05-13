@@ -6,7 +6,7 @@ using UnityEngine;
 
 [Serializable]
 public struct float_Q3 : IEquatable<float_Q3> {
-    public const int   MULTIPLIER = 1000;
+    public const float MULTIPLIER = 1000;
     public const float EPSILON    = 10f / MULTIPLIER;
 
     public int value;
@@ -14,9 +14,9 @@ public struct float_Q3 : IEquatable<float_Q3> {
     public float_Q3(float value) {
         this.value = Mathf.RoundToInt(value * MULTIPLIER);
     }
-    
+
     public float_Q3(int value) {
-        this.value = value * MULTIPLIER;
+        this.value = value * (int)MULTIPLIER;
     }
 
     public bool Equals(float_Q3 other) =>
@@ -24,23 +24,23 @@ public struct float_Q3 : IEquatable<float_Q3> {
 
     public override string ToString() => ((float)this).ToString(CultureInfo.CurrentCulture);
 
-    #region CAST
-    
+#region CAST
+
     public static explicit operator float_Q3(float source) =>
         new(source);
 
     public static implicit operator float(float_Q3 source) =>
-        (float)source.value / MULTIPLIER;
-    
+        source.value / MULTIPLIER;
+
     public static implicit operator float_Q3(int source) =>
         new(source);
 
     public static explicit operator int(float_Q3 source) =>
-        source.value / MULTIPLIER;
-    
-    #endregion
-    
-    #region OPERATOR
+        Mathf.RoundToInt(source.value / MULTIPLIER);
+
+#endregion
+
+#region OPERATOR
 
     public static float_Q3 operator +(float_Q3 a, float_Q3 b) => new() {
         value = a.value + b.value
@@ -63,15 +63,15 @@ public struct float_Q3 : IEquatable<float_Q3> {
     };
 
     public static float_Q3 operator /(float_Q3 a, int div) => new() {
-        value = a.value / div
+        value = Mathf.RoundToInt(a.value / (float)div)
     };
 
     public static float_Q3 operator /(float_Q3 a, float div) => new() {
         value = Mathf.RoundToInt(a.value / div)
     };
-    
-    #endregion
-    
+
+#endregion
+
     #if UNITY_EDITOR
 
     [CustomPropertyDrawer(typeof(float_Q3))]
@@ -93,7 +93,7 @@ public struct float_Q3 : IEquatable<float_Q3> {
               * EditorGUI.FloatField(
                     position
                   , label
-                  , (float)drawer.intValue / MULTIPLIER));
+                  , drawer.intValue / MULTIPLIER));
         }
     }
 

@@ -29,13 +29,18 @@ public partial struct HandleWaypointRequestSystem : ISystem {
         var  cachedLinecast    = SystemAPI.ManagedAPI.GetSingleton<CachedLineCastData>();
         var  handlingPath      = SystemAPI.ManagedAPI.GetSingleton<HandlingPathData>();
         bool isClient          = state.WorldUnmanaged.IsClient();
-        var  mainGraph         = AstarPath.active.data.recastGraph;
+        var  champGraph         = AstarPath.active.graphs[GraphIndexHelper.Champion] as NavmeshBase;
         var  modifier          = PathModifierHub.Raycast;
         var  config            = SystemAPI.GetSingleton<WaypointCalculateConfig>();
         var  fixablePathDisSqr = config.fixablePathDisSqr;
         var  curTick           = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         var  curDoneAtTick     = config.DoneAtTick(curTick);
 
+        if (champGraph == null) {
+            Debug.LogError("Fail to get champion graph");
+            return;
+        }
+        
         foreach (var (
             rawHandlingData
           , rawRequestData
@@ -67,11 +72,11 @@ public partial struct HandleWaypointRequestSystem : ISystem {
             // And new pid can see ORIGIN pid
             // ==> Update it's new PID and CONTINUE.
             if (orgHandlingTrigger && orgRequestTrigger
-             && !cachedLinecast.Linecast(curTick, mainGraph, new PathId(
+             && !cachedLinecast.Linecast(curTick, champGraph, new PathId(
                         handlingData.orgPID.start
                       , requestData.pid.start))
                     .haveObstacle
-             && !cachedLinecast.Linecast(curTick, mainGraph, new PathId(
+             && !cachedLinecast.Linecast(curTick, champGraph, new PathId(
                         handlingData.orgPID.end
                       , requestData.pid.end))
                     .haveObstacle) {
@@ -84,7 +89,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                   , requestData.pid
                   , cachedLinecast
                   , curTick
-                  , mainGraph);
+                  , champGraph);
                 continue;
             }
 
@@ -103,34 +108,26 @@ public partial struct HandleWaypointRequestSystem : ISystem {
             var orgPID     = handlingData.orgPID;
             var newPID     = handlingData.newPID;
 
-            // Filter out already done path
-            if (cachedPath.ContainsCode(newPID.code)) {
-                if (cachedPath.IsCanReturnImmediately(newPID.code))
-                    doneAtTick = handlingData.doneAtTick = curTick;
-
-                if (!cachedPath.ContainsTick(newPID.code, doneAtTick))
-                    cachedPath.PushTick(newPID.code, doneAtTick);
+            if (TryFilterOutCachedPath(orgPID
+              , cachedPath, ref handlingData, curTick, ref doneAtTick))
                 continue;
-            }
 
-            // Filter out already in handling state
-            if (handlingPath.ContainsCode(newPID.code)) {
-                if (!handlingPath.ContainsTick(newPID.code, doneAtTick))
-                    handlingPath.PushTick(newPID.code, doneAtTick);
-
-                // We have to set temporary waypoint to fake move when waiting for calculating done
-                if (orgRequestTrigger) AssignTemporaryWaypoint(
-                    waypoints
-                  , newPID
-                  , cachedLinecast
-                  , curTick
-                  , mainGraph);
-
+            if (orgPID.code != newPID.code
+             && TryFilterOutCachedPath(newPID
+                  , cachedPath, ref handlingData, curTick, ref doneAtTick))
                 continue;
-            }
 
+            if (TryFilterOutHandlingPath(orgPID
+              , handlingPath, cachedLinecast, curTick, doneAtTick, waypoints, orgRequestTrigger, champGraph))
+                continue;
+            
+            if (orgPID.code != newPID.code
+            && TryFilterOutHandlingPath(newPID
+              , handlingPath, cachedLinecast, curTick, doneAtTick, waypoints, orgRequestTrigger, champGraph))
+                continue;
+            
             // There is no obstacle, so just go ahead
-            if (!cachedLinecast.Linecast(curTick, mainGraph, orgPID).haveObstacle) {
+            if (!cachedLinecast.Linecast(curTick, champGraph, orgPID).haveObstacle) {
                 // Cache origin path
                 CachePathDirectly(
                     cachedPath
@@ -141,29 +138,26 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                 cachedOrgData.canReturnImmediately = true;
 
                 // Cache new path
-                bool canNewPIDReturnImmediately = false;
-                if (orgPID.code == newPID.code) canNewPIDReturnImmediately = true;
-                else {
+                if (orgPID.code != newPID.code)  {
                     CachePathDirectly(
                         cachedPath
                       , newPID
                       , curTick // because return result immediately
                       , cachedPath.GetData(orgPID.code).waypoints
                       , modifier);
-                    if (!cachedLinecast.Linecast(curTick, mainGraph, newPID).haveObstacle) {
-                        canNewPIDReturnImmediately                           = true;
+                    if (!cachedLinecast.Linecast(curTick, champGraph, newPID).haveObstacle)
                         cachedPath.GetData(newPID.code).canReturnImmediately = true;
-                    }
                 }
 
                 // try return immediately
-                if (canNewPIDReturnImmediately)
+                if (cachedPath.GetData(newPID.code).canReturnImmediately)
                     handlingData.doneAtTick = curTick;
 
                 continue;
             }
 
             // There is request when not handling path and already have waypoint
+            // Try to fix existing waypoint
             if (!orgHandlingTrigger && !waypoints.IsEmpty) {
                 float3 newTarget        = newPID.end;
                 int    nearestOldEndPnt = -1;
@@ -174,7 +168,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                         continue;
 
                     // There is obstacle, skip
-                    if (cachedLinecast.Linecast(curTick, mainGraph, new PathId(
+                    if (cachedLinecast.Linecast(curTick, champGraph, new PathId(
                             waypoints[i].pos
                           , newTarget.Quantizate3()))
                         .haveObstacle)
@@ -216,16 +210,18 @@ public partial struct HandleWaypointRequestSystem : ISystem {
               , newPID
               , cachedLinecast
               , curTick
-              , mainGraph);
+              , champGraph);
 
             // If this path has not in handling state yet
             if (!handlingPath.ContainsCode(orgPID.code)) {
                 // Create new path request
                 var path = ABPath.Construct(
-                    CachedLineCastData.TryGetExactlyEdgePnt(orgPID.start, mainGraph, out _)
-                  , CachedLineCastData.TryGetExactlyEdgePnt(orgPID.end,   mainGraph, out _));
-                path.nnConstraint.distanceMetric = DistanceMetric.ClosestAsSeenFromAbove(math.up());
+                    CachedLineCastData.TryGetExactlyEdgePnt(orgPID.start, champGraph, out _)
+                  , CachedLineCastData.TryGetExactlyEdgePnt(orgPID.end,   champGraph, out _));
                 PathHolderForWaypoint.Claim(path);
+                
+                path.nnConstraint.distanceMetric = DistanceMetric.ClosestAsSeenFromAbove(math.up());
+                path.nnConstraint.graphMask      = GraphMask.FromGraphIndex(GraphIndexHelper.Champion);
 
                 // Save handling path
                 handlingPath.PushData(orgPID.code, HandlingPathData.NewData(path));
@@ -238,6 +234,49 @@ public partial struct HandleWaypointRequestSystem : ISystem {
 
             handlingPath.PushTick(orgPID.code, doneAtTick);
         }
+    }
+
+    public static bool TryFilterOutCachedPath(
+        in  PathId           pid
+      , in  CachedPathData   cachedPath
+      , ref PathHandlingData handlingData
+      , in  NetworkTick      curTick
+      , ref NetworkTick      doneAtTick) {
+        if (!cachedPath.ContainsCode(pid.code)) return false;
+        
+        if (cachedPath.IsCanReturnImmediately(pid.code))
+            doneAtTick = handlingData.doneAtTick = curTick;
+
+        if (!cachedPath.ContainsTick(pid.code, doneAtTick))
+            cachedPath.PushTick(pid.code, doneAtTick);
+            
+        return true;
+    }
+
+    public static bool TryFilterOutHandlingPath(
+        in  PathId                        pid
+      , in  HandlingPathData              handlingPath
+      , in  CachedLineCastData            cachedLinecast
+      , in  NetworkTick                   curTick
+      , in NetworkTick                   doneAtTick
+      , in  DynamicBuffer<WaypointBuffer> waypoints
+      , bool                              orgRequestTrigger
+      , in NavmeshBase                    champGraph) {
+        if (!handlingPath.ContainsCode(pid.code)) return false;
+
+        if (!handlingPath.ContainsTick(pid.code, doneAtTick))
+            handlingPath.PushTick(pid.code, doneAtTick);
+
+        // We have to set temporary waypoint to fake move when waiting for calculating done
+        if (orgRequestTrigger)
+            AssignTemporaryWaypoint(
+                waypoints
+              , pid
+              , cachedLinecast
+              , curTick
+              , champGraph);
+
+        return true;
     }
 
     public static void AssignTemporaryWaypoint(

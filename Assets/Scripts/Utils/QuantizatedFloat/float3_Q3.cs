@@ -9,21 +9,21 @@ using UnityEditor;
 
 [Serializable]
 public struct float3_Q3 : IEquatable<float3_Q3> {
-    public const           int       MULTIPLIER        = 1000;
-    public static readonly float3_Q3 zero              = new(0, 0, 0);
-    public static readonly float3_Q3 up                = new(0, 0, MULTIPLIER);
-    public static readonly float3_Q3 down              = new(0, 0, -MULTIPLIER);
-    public static readonly float3_Q3 forward           = new(0, MULTIPLIER, 0);
-    public static readonly float3_Q3 back              = new(0, -MULTIPLIER, 0);
-    public static readonly float3_Q3 right             = new(MULTIPLIER, 0, 0);
-    public static readonly float3_Q3 left              = new(-MULTIPLIER, 0, 0);
+    public const           float     MULTIPLIER = 1000;
+    public static readonly float3_Q3 zero       = new(0, 0, 0);
+    public static readonly float3_Q3 up         = new(0, 0, MULTIPLIER);
+    public static readonly float3_Q3 down       = new(0, 0, -MULTIPLIER);
+    public static readonly float3_Q3 forward    = new(0, MULTIPLIER, 0);
+    public static readonly float3_Q3 back       = new(0, -MULTIPLIER, 0);
+    public static readonly float3_Q3 right      = new(MULTIPLIER, 0, 0);
+    public static readonly float3_Q3 left       = new(-MULTIPLIER, 0, 0);
 
     public static readonly float3_Q3 positiveInfinity = new() {
         x = int.MaxValue
       , y = int.MaxValue
       , z = int.MaxValue
     };
-    
+
     public int x;
     public int y;
     public int z;
@@ -42,9 +42,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     public float3_Q3(float xyz) : this(xyz, xyz, xyz) { }
 
     public float3_Q3(int x, int y, int z) {
-        this.x = (x * MULTIPLIER);
-        this.y = (y * MULTIPLIER);
-        this.z = (z * MULTIPLIER);
+        this.x = x * (int)MULTIPLIER;
+        this.y = y * (int)MULTIPLIER;
+        this.z = z * (int)MULTIPLIER;
     }
 
     public float3_Q3(int xyz) : this(xyz, xyz, xyz) { }
@@ -58,6 +58,10 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
 
     public override int GetHashCode() => HashCode.Combine(x, y, z);
 
+    public int GetHashCodeXZ_Q1() => HashCode.Combine(
+        Mathf.RoundToInt(x / 100f)
+      , Mathf.RoundToInt(z / 100f));
+
 #region CAST
 
     public static explicit operator float3_Q3(float3 source) => new(
@@ -66,9 +70,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
       , source.z);
 
     public static implicit operator float3(float3_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER);
 
     public static explicit operator float3_Q3(Vector3 source) => new(
         source.x
@@ -76,9 +80,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
       , source.z);
 
     public static implicit operator Vector3(float3_Q3 source) => new(
-        (float)source.x / MULTIPLIER
-      , (float)source.y / MULTIPLIER
-      , (float)source.z / MULTIPLIER);
+        source.x / MULTIPLIER
+      , source.y / MULTIPLIER
+      , source.z / MULTIPLIER);
 
 #endregion
 
@@ -115,9 +119,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     };
 
     public static float3_Q3 operator /(float3_Q3 a, int div) => new() {
-        x = a.x / div
-      , y = a.y / div
-      , z = a.z / div
+        x = Mathf.RoundToInt(a.x / (float)div)
+      , y = Mathf.RoundToInt(a.y / (float)div)
+      , z = Mathf.RoundToInt(a.z / (float)div)
     };
 
     public static float3_Q3 operator /(float3_Q3 a, float div) => new() {

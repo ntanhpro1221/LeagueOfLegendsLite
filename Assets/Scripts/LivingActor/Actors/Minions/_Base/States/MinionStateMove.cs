@@ -80,6 +80,7 @@ public static partial class MinionStateMove {
             public readonly ActorSharedStateAspect  sharedState;
             public readonly RefRO<AttackStateData>  attackData;
             public readonly RefRW<DestinationPoint> desSetter;
+            public readonly RefRW<MovementSettings> moveSetting;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow;
 
@@ -92,7 +93,8 @@ public static partial class MinionStateMove {
                     float.PositiveInfinity
                   , float.PositiveInfinity
                   , float.PositiveInfinity);
-                
+
+                moveSetting.ValueRW.isStopped = true;
                 autoFollow.ValueRW = false;
             }
         }
@@ -105,10 +107,13 @@ public static partial class MinionStateMove {
         public void OnUpdate(ref SystemState state) {
             foreach (var (
                 _
-              , anim) in SystemAPI.Query<
+              , anim
+                , moveSetting) in SystemAPI.Query<
                 StateFilterAspect
-              , SharedAnimAspect>()) {
+              , SharedAnimAspect
+            , RefRW<MovementSettings>>()) {
                 anim.SetAnim(SharedAnimKey.Move);
+                moveSetting.ValueRW.isStopped = false;
             }
         }
     }

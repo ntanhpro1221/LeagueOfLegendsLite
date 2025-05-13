@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1073741824
   graphMask:
-    value: -1
+    value: 2
   type: 1
   mesh: {fileID: 0}
   rectangleSize: {x: 1, y: 1}

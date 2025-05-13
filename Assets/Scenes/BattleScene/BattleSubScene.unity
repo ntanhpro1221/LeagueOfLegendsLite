@@ -3938,7 +3938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4668588936004078576, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5600.9575
+      value: -5612
       objectReference: {fileID: 0}
     - target: {fileID: 4668588936004078576, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3946,7 +3946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4668588936004078576, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -973.583
+      value: -967
       objectReference: {fileID: 0}
     - target: {fileID: 4668588936004078576, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7107,7 +7107,7 @@ Transform:
   m_GameObject: {fileID: 2121935530}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.5142898, z: -0, w: 0.8576165}
-  m_LocalPosition: {x: -6430.9966, y: -33.959045, z: -7335.44}
+  m_LocalPosition: {x: 2894.0918, y: -170.44287, z: -6102.7925}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7329,7 +7329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5195527391809511057
 Transform:
   m_ObjectHideFlags: 0
@@ -7375,7 +7375,7 @@ MonoBehaviour:
     - WithSuper
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: feb83a01fd272c703b7b9309833fb616
+      Hash: 63539ed038c91ea9acf82d5761d34d45
     _KeySynced: 1
   waveLoop: 0000000001000000
 --- !u!1660057539 &9223372036854775807
