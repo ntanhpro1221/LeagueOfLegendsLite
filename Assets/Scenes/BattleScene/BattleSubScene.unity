@@ -6776,7 +6776,7 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d3f289c13872c76ebbd8462804975d39
+      Hash: edba71d1717f5737b14e1181de673e40
     _KeySynced: 1
   minionPrefabs:
     _serializedList:
@@ -6838,7 +6838,7 @@ MonoBehaviour:
     - Scuttle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d3f289c13872c76ebbd8462804975d39
+      Hash: edba71d1717f5737b14e1181de673e40
     _KeySynced: 1
   towerPrefabs:
     _serializedList:
