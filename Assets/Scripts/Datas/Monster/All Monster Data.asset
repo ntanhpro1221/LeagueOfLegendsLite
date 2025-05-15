@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: All Monster Data
   m_EditorClassIdentifier: 
   value:
-    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000
+    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
     _Values:
     - _Value:
         stats:
@@ -61,16 +61,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 44b489966ac6d269942932afe0f6d34a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 90
-          - _Value: 0
-          - _Value: 95
-          - _Value: 0
-          - _Value: 4
+          - _Value:
+              value: 90000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 95000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -79,7 +84,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 44b489966ac6d269942932afe0f6d34a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         leashRange: 650
     - _Value:
@@ -128,16 +133,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 90
-          - _Value: 0
-          - _Value: 95
-          - _Value: 0
-          - _Value: 4
+          - _Value:
+              value: 90000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 95000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -146,7 +156,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         leashRange: 650
     - _Value:
@@ -195,16 +205,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 80
-          - _Value: 0
-          - _Value: 120
-          - _Value: 0
-          - _Value: 4
+          - _Value:
+              value: 90000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 120000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -213,7 +228,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         leashRange: 450
     - _Value:
@@ -262,16 +277,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 55
-          - _Value: 0
-          - _Value: 50
-          - _Value: 0
-          - _Value: 2
+          - _Value:
+              value: 55000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 50000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 2000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -280,7 +300,79 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
+          _KeySynced: 1
+        leashRange: 650
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 630000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 525000
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 110000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 10000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 625
+          - _Value:
+              value: 50000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: 16af799e17624872a830e56e9d9cd1ae
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 13000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 15000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 1000
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         leashRange: 650
     - _Value:
@@ -329,16 +421,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 35
-          - _Value: 0
-          - _Value: 20
-          - _Value: 0
-          - _Value: 2
+          - _Value:
+              value: 35000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 2000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -347,7 +444,79 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
+          _KeySynced: 1
+        leashRange: 650
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 500000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 525000
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 110000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 7000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 1000
+          - _Value:
+              value: 50000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 8000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 10000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 400
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
           _KeySynced: 1
         leashRange: 650
     - _Value:
@@ -396,16 +565,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 15
-          - _Value: 0
-          - _Value: 15
-          - _Value: 0
-          - _Value: 2
+          - _Value:
+              value: 15000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 15000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 2000
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -414,7 +588,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 20e3979a24391c5efa02cf13497c2bb7
           _KeySynced: 1
         leashRange: 650
     - _Value:
@@ -422,31 +596,31 @@ MonoBehaviour:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
-              value: 11400000
-          - _Value:
-              value: 0
-          - _Value:
-              value: 300000
-          - _Value:
-              value: 120000
-          - _Value:
-              value: 70000
-          - _Value:
-              value: 955000
-          - _Value:
-              value: 15000
-          - _Value:
-              value: 0
+              value: 650000
           - _Value:
               value: 0
           - _Value:
               value: 350000
           - _Value:
+              value: 20000
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 110000
+          - _Value:
               value: 0
           - _Value:
-              value: 625
+              value: 0
           - _Value:
-              value: 100000
+              value: 0
+          - _Value:
+              value: 20000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 613
+          - _Value:
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -463,16 +637,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 25
-          - _Value: 300
-          - _Value: 0
-          - _Value: 600
-          - _Value: 4
+          - _Value:
+              value: 10000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 10000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 500
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -481,39 +660,39 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
-        leashRange: 0
+        leashRange: 650
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
-              value: 5730000
+              value: 60000
           - _Value:
               value: 0
           - _Value:
-              value: 330000
+              value: 400000
           - _Value:
-              value: 21000
+              value: 20000
           - _Value:
-              value: 30000
+              value: 20000
           - _Value:
-              value: 500000
-          - _Value:
-              value: 0
+              value: 110000
           - _Value:
               value: 0
           - _Value:
               value: 0
           - _Value:
-              value: 70000
+              value: 0
+          - _Value:
+              value: 13000
           - _Value:
               value: 0
           - _Value:
-              value: 500
+              value: 613
           - _Value:
-              value: 80000
+              value: 25000
           _KeyNames:
           - Health
           - Mana
@@ -530,16 +709,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 25
-          - _Value: 0
-          - _Value: 150
-          - _Value: 0
-          - _Value: 4
+          - _Value:
+              value: 14000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 16000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 250
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -548,9 +732,9 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 16af799e17624872a830e56e9d9cd1ae
           _KeySynced: 1
-        leashRange: 0
+        leashRange: 650
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -597,16 +781,21 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 42eb4156e221663ec8077e89a3484428
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
           _Values:
-          - _Value: 55
-          - _Value: 0
-          - _Value: 100
-          - _Value: 0
-          - _Value: 4
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Gold_Local
           - Gold_Global
@@ -615,20 +804,314 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 42eb4156e221663ec8077e89a3484428
           _KeySynced: 1
         leashRange: 0
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 11400000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 300000
+          - _Value:
+              value: 120000
+          - _Value:
+              value: 70000
+          - _Value:
+              value: 955000
+          - _Value:
+              value: 15000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 350000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 625
+          - _Value:
+              value: 100000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 25000
+          - _Value:
+              value: 300000
+          - _Value:
+              value: 800000
+          - _Value:
+              value: 600000
+          - _Value:
+              value: 4000
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        leashRange: 0
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 7125000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 325000
+          - _Value:
+              value: 60000
+          - _Value:
+              value: 50000
+          - _Value:
+              value: 250000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 99500
+          - _Value:
+              value: 0
+          - _Value:
+              value: 400
+          - _Value:
+              value: 110000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: e87826883e57ed0eb0d51814044bbfd2
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 100000
+          - _Value:
+              value: 100000
+          - _Value:
+              value: 306000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: e87826883e57ed0eb0d51814044bbfd2
+          _KeySynced: 1
+        leashRange: 1200
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 5730000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 330000
+          - _Value:
+              value: 21000
+          - _Value:
+              value: 30000
+          - _Value:
+              value: 500000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 70000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 500
+          - _Value:
+              value: 80000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 25000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 150000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        leashRange: 1200
+    - _Value:
+        stats:
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Values:
+          - _Value:
+              value: 6400000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 330000
+          - _Value:
+              value: 120000
+          - _Value:
+              value: 70000
+          - _Value:
+              value: 500000
+          - _Value:
+              value: 250000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 105000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 500
+          - _Value:
+              value: 125000
+          _KeyNames:
+          - Health
+          - Mana
+          - MoveSpeed
+          - Armor
+          - SpellBlock
+          - AttackRange
+          - HealthRegen
+          - ManaRegen
+          - Crit
+          - PhysicDamage
+          - MagicDamage
+          - AttackSpeed
+          - UnitRadius
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        bounty:
+          _Keys: 0000000001000000020000000300000004000000
+          _Values:
+          - _Value:
+              value: 100000
+          - _Value:
+              value: 250000
+          - _Value:
+              value: 650000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 4000
+          _KeyNames:
+          - Gold_Local
+          - Gold_Global
+          - Exp_Local
+          - Exp_Global
+          - CreepScore
+          _EditorSessionCode:
+            serializedVersion: 2
+            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+          _KeySynced: 1
+        leashRange: 1200
     _KeyNames:
     - RedBrambleback
     - BlueSentinel
     - Gromp
     - Wolf
+    - WolfSmall
     - Raptor
+    - RaptorSmall
     - Krug
-    - Baron
-    - Dragon
+    - KrugSmall
+    - KrugTiny
     - Scuttle
+    - Baron
+    - RiftHerald
+    - DragonMaterial
+    - DragonElder
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: fd9bcb5e205cb72645a2c1506d1353de
+      Hash: a3400ceaafa0dc1810186d502ef6b5eb
     _KeySynced: 1

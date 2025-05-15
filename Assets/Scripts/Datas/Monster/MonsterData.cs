@@ -4,9 +4,9 @@ using Unity.Entities;
 
 [Serializable]
 public struct MonsterData : IBlobBuildable<MonsterDataManaged>, IBlobBuildableSelf<MonsterData> {
-    public BubleEnMap<StatsType, float_Q3> stats;
-    public BubleEnMap<BountyType, int>     bounty;
-    public int                             leashRange;
+    public BubleEnMap<StatsType, float_Q3>  stats;
+    public BubleEnMap<BountyType, float_Q3> bounty;
+    public int                              leashRange;
 
     public void BuildBlob(ref BlobBuilder builder, MonsterDataManaged source) {
         stats.BuildBlob(ref builder, source.stats);
