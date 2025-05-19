@@ -3,7 +3,7 @@
 public class TowerSharedStateAuthoring : ActorSharedStateAuthoring {
     protected class TowerSharedStateBaker : InheritTagBaker<TowerSharedStateAuthoring> {
         public override void MoreBake(TowerSharedStateAuthoring authoring)
-            => BakeActorSharedState(this);
+            => BakeActorSharedState<IdleState>(this);
     }
 
     protected override IStateInheritTag GetInheritTag(SharedAnimKey state, StateStep inheritAt)

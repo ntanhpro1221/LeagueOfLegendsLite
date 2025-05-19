@@ -84,6 +84,6 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
           , in Entity bob)
             => _TeamTypeLookup.HasComponent(alice)
              && _TeamTypeLookup.HasComponent(bob)
-             && _TeamTypeLookup[alice].teamType != _TeamTypeLookup[bob].teamType;
+             && _TeamTypeLookup[alice].team != _TeamTypeLookup[bob].team;
     }
 }

@@ -7,7 +7,7 @@ namespace NGDtuanh.Entities.StateMachine {
         protected EnabledRefRO<StateRequireEnter> StateRequireEnter { get; }
 
         // ReSharper disable once PossibleInterfaceMemberAmbiguity
-        public new interface Base<TInheritTag> :
+        public new interface RequireInherit<TInheritTag> :
             IStateEnterAspect<TIdentity, TState>
           , IStateInheritable<TIdentity, TState, TInheritTag>
             where TInheritTag : unmanaged, IStateInheritTag<TIdentity, TState> { }

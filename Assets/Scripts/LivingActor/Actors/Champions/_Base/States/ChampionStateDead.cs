@@ -65,7 +65,7 @@ public static partial class ChampionStateDead {
 
             public ref LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
-            public     TeamType       TeamType    => _TeamType.ValueRO.teamType;
+            public     TeamType       TeamType    => _TeamType.ValueRO.team;
             public     NetworkTick    RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 
             public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;

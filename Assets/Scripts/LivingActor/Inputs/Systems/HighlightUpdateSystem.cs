@@ -1,5 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
+using UnityEngine;
 
 [UpdateInGroup(typeof(InputLocalUpdateSystemGroup))]
 public partial struct HighlightUpdateSystem : ISystem {
@@ -15,14 +16,16 @@ public partial struct HighlightUpdateSystem : ISystem {
 
         // UPDATE HIGHLIGHT
         if (curHighlighted != castResult.actor) {
-            SetHighlight(ref state, curHighlighted, false);
+            SetHighlight(ref state, false);
             curHighlighted = castResult.actor;
-            SetHighlight(ref state, curHighlighted, true);
+            SetHighlight(ref state, true);
         }
     }
 
-    private void SetHighlight(ref SystemState state, Entity entity, bool isHighlighted) {
-        if (entity == Entity.Null) return;
-        SystemAPI.SetComponent(entity, new HighlightData(isHighlighted));
+    private void SetHighlight(ref SystemState state, bool isHighlighted) {
+        if (!SystemAPI.Exists(curHighlighted)
+            // May have cleanup component
+         || !SystemAPI.HasComponent<HighlightData>(curHighlighted)) return;
+        SystemAPI.SetComponent(curHighlighted, new HighlightData(isHighlighted));
     }
 }

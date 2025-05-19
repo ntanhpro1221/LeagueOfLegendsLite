@@ -44,7 +44,7 @@ MonoBehaviour:
           - _Value:
               value: 1250
           - _Value:
-              value: 35000
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -61,7 +61,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -79,7 +79,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         aggroRange: 500
     - _Value:
@@ -111,7 +111,7 @@ MonoBehaviour:
           - _Value:
               value: 667
           - _Value:
-              value: 35000
+              value: 50000
           _KeyNames:
           - Health
           - Mana
@@ -128,7 +128,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -146,7 +146,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -178,7 +178,7 @@ MonoBehaviour:
           - _Value:
               value: 1000
           - _Value:
-              value: 50000
+              value: 80000
           _KeyNames:
           - Health
           - Mana
@@ -195,7 +195,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -213,7 +213,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -245,7 +245,7 @@ MonoBehaviour:
           - _Value:
               value: 850
           - _Value:
-              value: 50000
+              value: 80000
           _KeyNames:
           - Health
           - Mana
@@ -262,7 +262,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -280,7 +280,7 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
           _KeySynced: 1
         aggroRange: 1000
     _KeyNames:
@@ -290,5 +290,5 @@ MonoBehaviour:
     - Super
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 69a346ddca2fb36785b3e66751036d3a
+      Hash: 02427ad0c7763a7d2f041c1eeb9cbc0e
     _KeySynced: 1

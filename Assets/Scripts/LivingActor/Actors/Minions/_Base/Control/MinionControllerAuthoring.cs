@@ -15,12 +15,12 @@ public struct MinionFixedPathBuffer : IBufferElementData {
 }
 
 [GhostEnabledBit]
-public struct AggroAnchor : IComponentData, IEnableableComponent {
+public struct MinionAggroAnchor : IComponentData, IEnableableComponent {
     [GhostField] public float3_Q3 anchor;
 }
 
 [GhostEnabledBit]
-public struct AggroDisabling : IComponentData, IEnableableComponent {
+public struct MinionAggroDisabling : IComponentData, IEnableableComponent {
     [GhostField] public NetworkTick doneAtTick;
     [GhostField] public int         pathLengthWhenDiable;
 }
@@ -33,8 +33,8 @@ public class MinionControllerAuthoring : MonoBehaviour {
             AddComponent<MinionControlFactor>(entity);
             AddBuffer<MinionFixedPathBuffer>(entity);
 
-            AddComponentDisabled<AggroAnchor>(entity);
-            AddComponentDisabled<AggroDisabling>(entity);
+            AddComponentDisabled<MinionAggroAnchor>(entity);
+            AddComponentDisabled<MinionAggroDisabling>(entity);
         }
     }
 }

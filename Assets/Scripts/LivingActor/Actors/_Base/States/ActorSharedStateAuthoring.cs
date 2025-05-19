@@ -3,7 +3,8 @@ using Unity.Entities;
 using UnityEngine;
 
 public class ActorSharedStateAuthoring : IAllStateAuthoring<SharedAnimKey> {
-    protected static void BakeActorSharedState(IBaker baker) {
+    protected static void BakeActorSharedState<TEntryState>(IBaker baker)
+        where TEntryState : struct, IEnableableComponent {
         baker.GetDynamicEntity(out var entity);
 
         // Require for the state machine
@@ -11,8 +12,8 @@ public class ActorSharedStateAuthoring : IAllStateAuthoring<SharedAnimKey> {
         baker.AddComponent<StateNotExitedYet>(entity);
         baker.AddComponent<TransitionStateData>(entity);
 
-        // Idle: entry state
-        baker.AddComponent<IdleState>(entity);
+        // Idle
+        baker.AddComponentDisabled<IdleState>(entity);
 
         // Attack
         baker.AddComponentDisabled<AttackState>(entity);
@@ -33,11 +34,13 @@ public class ActorSharedStateAuthoring : IAllStateAuthoring<SharedAnimKey> {
         
         // Idle2Dead
         baker.AddComponentDisabled<Idle2DeadState>(entity);
+        
+        baker.SetComponentEnabled<TEntryState>(entity, true);
     }
 
     protected class ActorSharedStateBaker : InheritTagBaker<ActorSharedStateAuthoring> {
         public override void MoreBake(ActorSharedStateAuthoring authoring)
-            => BakeActorSharedState(this);
+            => BakeActorSharedState<IdleState>(this);
     }
 
     protected override IStateInheritTag GetInheritTag(SharedAnimKey state, StateStep inheritAt)

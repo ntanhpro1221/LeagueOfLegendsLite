@@ -51,7 +51,7 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
 
             foreach (var hit in castResult) {
                 if (!SystemAPI.HasComponent<TeamTypeData>(hit.Entity)
-                 || SystemAPI.GetComponent<TeamTypeData>(hit.Entity).teamType == teamType.ValueRO.teamType)
+                 || SystemAPI.GetComponent<TeamTypeData>(hit.Entity).team == teamType.ValueRO.team)
                     continue;
 
                 if (!SystemAPI.HasBuffer<IncomingDamageBuffer>(hit.Entity)) continue;

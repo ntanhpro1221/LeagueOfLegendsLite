@@ -3,6 +3,7 @@ using Unity.NetCode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[GhostComponent(PrefabType = GhostPrefabType.Server)]
 public struct MinionSpawnerData : IComponentData {
     [GhostField] public Entity      targetInhibitor;
     [GhostField] public NetworkTick nextWaveTick;
@@ -17,6 +18,7 @@ public struct MinionSpawnerData : IComponentData {
     }
 }
 
+[GhostComponent(PrefabType = GhostPrefabType.Server)]
 public struct MinionSpawnQueueData : IBufferElementData {
     [GhostField] public MinionId minionId;
     [GhostField] public NetworkTick spawnTick;
@@ -42,7 +44,7 @@ public class MinionSpawnerAuthoring : MonoBehaviour {
 
             var spawnerData = new MinionSpawnerData {
                 targetInhibitor = GetDynamicEntity(authoring.targetInhibitor)
-              , nextWaveTick    = TickHelpers.StartTick(authoring.firstWaveTime, tickRate)
+              , nextWaveTick    = TickHelpers.CalcStartTick(authoring.firstWaveTime, tickRate)
               , waveInterval    = TickHelpers.CountTick(authoring.waveInterval,   tickRate)
               , minionInterval  = TickHelpers.CountTick(authoring.minionInterval, tickRate)
             };

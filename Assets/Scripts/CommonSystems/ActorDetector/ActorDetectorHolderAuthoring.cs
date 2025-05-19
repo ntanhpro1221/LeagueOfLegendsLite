@@ -5,7 +5,11 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct NeedSpawnActorDetector : IComponentData, IEnableableComponent {
-    public Entity prefab;
+    public Entity    prefab;
+}
+
+public struct ActorDetectInitPos : IComponentData {
+    public float3_Q3 pos;
 }
 
 public struct ActorDetectFilter : IComponentData {
@@ -52,6 +56,7 @@ public class ActorDetectorHolderAuthoring : MonoBehaviour {
     public GameObject                   actorDetectorPrefab;
     public DetectTarget                 targets;
     public ActorDetectFilter.TeamFilter teamFilter;
+    public Transform                    initTrans;
 
     private class Baker : ExtendBaker<ActorDetectorHolderAuthoring> {
         public override void Bake(ActorDetectorHolderAuthoring authoring) {
@@ -60,7 +65,13 @@ public class ActorDetectorHolderAuthoring : MonoBehaviour {
             AddComponent(entity, new NeedSpawnActorDetector {
                 prefab = GetDynamicEntity(authoring.actorDetectorPrefab)
             });
-            
+
+            AddComponent(entity, new ActorDetectInitPos {
+                pos = authoring.initTrans == null
+                    ? default
+                    : authoring.initTrans.position.Quantizate3()
+            });
+
             AddComponent(entity, new ActorDetectFilter {
                 teamFilter = authoring.teamFilter
             });

@@ -78,7 +78,7 @@ public partial struct InitChampionSystem : ISystem {
             // init position, move target
             // not init for dummy
             if (!dummyLookup.HasComponent(entity))
-                locTrans = initTrans.Champion.Value[teamType.teamType]
+                locTrans = initTrans.Champion.Value[teamType.team]
                     [0]
                     .ToLocTrans_Directly();
             moveRequester.SyncFromLocTrans(locTrans);

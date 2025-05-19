@@ -126,7 +126,7 @@ MonoBehaviour:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
-              value: 150000000
+              value: 15000000
           - _Value:
               value: 280000
           - _Value:
@@ -144,7 +144,7 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 1000000
+              value: 200000
           - _Value:
               value: 0
           - _Value:
@@ -167,7 +167,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 45410938659328728dd74fb8580e2799
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -214,7 +214,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 69a346ddca2fb36785b3e66751036d3a
+            Hash: 45410938659328728dd74fb8580e2799
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passiveAvatar: {fileID: 21300000, guid: 50470aaecefdd06429fa03276e067f48, type: 3}
@@ -333,5 +333,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 69a346ddca2fb36785b3e66751036d3a
+      Hash: 45410938659328728dd74fb8580e2799
     _KeySynced: 1

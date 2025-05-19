@@ -4,10 +4,8 @@ using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
-/// <summary>
-/// Just auto target to champion now
-/// </summary>
 [UpdateInGroup(typeof(ActorAIControlSystemGroup))]
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct TurretControlSystem : ISystem {
     [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;

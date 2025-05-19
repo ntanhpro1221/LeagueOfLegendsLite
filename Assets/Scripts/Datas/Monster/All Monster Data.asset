@@ -44,7 +44,7 @@ MonoBehaviour:
           - _Value:
               value: 493
           - _Value:
-              value: 50000
+              value: 120000
           _KeyNames:
           - Health
           - Mana
@@ -61,7 +61,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -84,9 +84,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -116,7 +118,7 @@ MonoBehaviour:
           - _Value:
               value: 493
           - _Value:
-              value: 50000
+              value: 120000
           _KeyNames:
           - Health
           - Mana
@@ -133,7 +135,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -156,9 +158,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -188,7 +192,7 @@ MonoBehaviour:
           - _Value:
               value: 425
           - _Value:
-              value: 50000
+              value: 120000
           _KeyNames:
           - Health
           - Mana
@@ -205,7 +209,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 59ea20edd075e60d013e1c888f41bc34
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -228,9 +232,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 59ea20edd075e60d013e1c888f41bc34
           _KeySynced: 1
         leashRange: 450
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -260,7 +266,7 @@ MonoBehaviour:
           - _Value:
               value: 625
           - _Value:
-              value: 50000
+              value: 80000
           _KeyNames:
           - Health
           - Mana
@@ -277,7 +283,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -300,9 +306,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -349,7 +357,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -372,9 +380,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -404,7 +414,7 @@ MonoBehaviour:
           - _Value:
               value: 667
           - _Value:
-              value: 50000
+              value: 75000
           _KeyNames:
           - Health
           - Mana
@@ -421,7 +431,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: c270b42b9fefdbc824f0c8d0fd65cbf7
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -444,9 +454,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: c270b42b9fefdbc824f0c8d0fd65cbf7
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -493,7 +505,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: c270b42b9fefdbc824f0c8d0fd65cbf7
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -516,9 +528,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: c270b42b9fefdbc824f0c8d0fd65cbf7
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -548,7 +562,7 @@ MonoBehaviour:
           - _Value:
               value: 613
           - _Value:
-              value: 50000
+              value: 100000
           _KeyNames:
           - Health
           - Mana
@@ -565,7 +579,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -588,9 +602,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 20e3979a24391c5efa02cf13497c2bb7
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -637,7 +653,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -660,9 +676,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -709,7 +727,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -732,9 +750,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 16af799e17624872a830e56e9d9cd1ae
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 650
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -781,7 +801,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 42eb4156e221663ec8077e89a3484428
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -804,9 +824,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 42eb4156e221663ec8077e89a3484428
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 0
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -836,7 +858,7 @@ MonoBehaviour:
           - _Value:
               value: 625
           - _Value:
-              value: 100000
+              value: 105000
           _KeyNames:
           - Health
           - Mana
@@ -853,7 +875,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -876,9 +898,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 0
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -925,7 +949,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: e87826883e57ed0eb0d51814044bbfd2
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -948,9 +972,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: e87826883e57ed0eb0d51814044bbfd2
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 1200
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -997,7 +1023,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -1020,9 +1046,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 1200
+        respawnCDTime: 10
+        staticTickRate: 60
     - _Value:
         stats:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -1069,7 +1097,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         bounty:
           _Keys: 0000000001000000020000000300000004000000
@@ -1092,9 +1120,11 @@ MonoBehaviour:
           - CreepScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: a3400ceaafa0dc1810186d502ef6b5eb
+            Hash: 07c3e8bf72fd83d01526f03661460e6b
           _KeySynced: 1
         leashRange: 1200
+        respawnCDTime: 10
+        staticTickRate: 60
     _KeyNames:
     - RedBrambleback
     - BlueSentinel
@@ -1113,5 +1143,5 @@ MonoBehaviour:
     - DragonElder
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: a3400ceaafa0dc1810186d502ef6b5eb
+      Hash: c270b42b9fefdbc824f0c8d0fd65cbf7
     _KeySynced: 1

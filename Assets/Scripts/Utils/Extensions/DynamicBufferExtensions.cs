@@ -14,6 +14,24 @@ public static class DynamicBufferExtensions {
                 return true;
         return false;
     }
+    
+    [BurstCompile]
+    public static bool Remove<TBuffer, TValue>(
+        this DynamicBuffer<TBuffer> buffer
+      , TValue                      value)
+        where TBuffer : unmanaged, IEquatable<TValue> {
+        int id = 0;
+        foreach (var item in buffer) {
+            if (item.Equals(value)) {
+                buffer.RemoveAt(id);
+                return true;
+            }
+
+            ++id;
+        }
+
+        return false;
+    }
 
     public static bool Empty<TBuffer>(
         this DynamicBuffer<TBuffer> buffer)

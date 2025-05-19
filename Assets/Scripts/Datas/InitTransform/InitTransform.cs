@@ -12,7 +12,7 @@ public struct InitTransform : IBlobBuildable<Transform>, IBlobBuildableSelf<Init
         rotation = (float4_Q3)transform.rotation;
     }
 
-    public LocalTransform ToLocTrans_Directly()
+    public readonly LocalTransform ToLocTrans_Directly()
         => LocalTransform.FromPositionRotation(
             position
           , rotation);
@@ -21,7 +21,7 @@ public struct InitTransform : IBlobBuildable<Transform>, IBlobBuildableSelf<Init
     /// Because it uses <see cref="LocalToWorld"/> matrix (and it may be not up-to-date value) so it may be incorrect.<br/>
     /// If you need precise value use <see cref="ToLocTrans_Precise"/>
     /// </summary>
-    public LocalTransform ToLocTrans_Fast(in LocalToWorld localToWorld)
+    public readonly LocalTransform ToLocTrans_Fast(in LocalToWorld localToWorld)
         => LocalTransform.FromPositionRotation(
             localToWorld.Value.InverseTransformPoint(position)
           , localToWorld.Value.InverseTransformRotation(rotation)
@@ -30,7 +30,7 @@ public struct InitTransform : IBlobBuildable<Transform>, IBlobBuildableSelf<Init
     /// <summary>
     /// Calculate very up to date because it uses <see cref="TransformHelpers.ComputeWorldTransformMatrix"/> but slower than <see cref="ToLocTrans_Fast"/>.
     /// </summary>
-    public LocalTransform ToLocTrans_Precise(
+    public readonly LocalTransform ToLocTrans_Precise(
         in  Entity                               entity
       , ref ComponentLookup<LocalTransform>      localTransformLookup
       , ref ComponentLookup<Parent>              parentLookup

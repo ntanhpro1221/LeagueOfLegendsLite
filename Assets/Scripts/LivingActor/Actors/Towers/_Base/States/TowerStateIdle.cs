@@ -46,7 +46,7 @@ public static partial class TowerStateIdle {
     public partial struct Exit {
         public struct InheritTag : IStateInheritTag<TowerTag, IdleState> { }
 
-        private readonly partial struct StateFilterAspect : IAspect, IStateExitAspect<TowerTag, IdleState>.Base<InheritTag> {
+        private readonly partial struct StateFilterAspect : IAspect, IStateExitAspect<TowerTag, IdleState>.RequireInherit<InheritTag> {
             private readonly RefRO<TowerTag> _identity;
             private readonly RefRO<Simulate> _simulate;
 

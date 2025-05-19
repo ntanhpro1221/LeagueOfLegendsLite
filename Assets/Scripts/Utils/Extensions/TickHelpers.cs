@@ -19,7 +19,7 @@ public static class TickHelpers {
         lhs.Equals(rhs)
      || lhs.IsNewerThan(rhs);
     
-    public static NetworkTick StartTick(float startTime, int tickRate) =>
+    public static NetworkTick CalcStartTick(float startTime, int tickRate) =>
         new NetworkTick(CountTick(startTime, tickRate));
 
     public static uint CountTick(float time, int tickRate, RoundMethod method = RoundMethod.Lower) => method switch {

@@ -8,7 +8,8 @@ public class SharedAnimController : MonoBehaviour {
     public SharedAnimKey CurAnim { get; private set; } = SharedAnimKey.Idle;
 
     private void Awake() {
-        _Animator = GetComponentInChildren<Animator>();
+        (_Animator = GetComponentInChildren<Animator>())
+            .gameObject.transform.localPosition = Vector3.zero;
     }
 
     public void SyncAnim(SharedAnimKey key, int newSession, bool hardCutAnim) {

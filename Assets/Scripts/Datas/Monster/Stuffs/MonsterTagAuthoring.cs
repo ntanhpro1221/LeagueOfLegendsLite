@@ -2,9 +2,10 @@
 using UnityEngine;
 
 public struct MonsterTag : IComponentData {
-    public MonsterId id;
+    public MonsterId     id;
 }
 
+[RequireComponent(typeof(JungleTeamTypeAuthoring))]
 public class MonsterTagAuthoring : MonoBehaviour {
     public MonsterId id;
 

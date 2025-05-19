@@ -17,7 +17,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
         Debug.LogWarning("NGDtuanh TEST: tmp disable aggro cooldown time");
         state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<ClientServerTickRate>();
-        state.RequireForUpdate<MinionBehaviourConfigData>();
+        state.RequireForUpdate<MinionCommonBehaviourConfigData>();
         state.RequireForUpdate<NetworkTime>();
 
         locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -36,7 +36,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
 
         var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         var doneAtTick = curTick.WithDeltaTime(
-            SystemAPI.GetSingleton<MinionBehaviourConfigData>().aggroCD
+            SystemAPI.GetSingleton<MinionCommonBehaviourConfigData>().aggroCD
           , SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate);
 
         state.Dependency = new DisableJob {
@@ -56,7 +56,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
         typeof(Simulate)
       , typeof(MinionTag))]
     [WithPresent(
-        typeof(AggroDisabling))]
+        typeof(MinionAggroDisabling))]
     [BurstCompile]
     private partial struct DisableJob : IJobEntity {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
@@ -67,10 +67,10 @@ public partial struct MinionAggroTogglerSystem : ISystem {
 
         [BurstCompile]
         public void Execute(
-            ref AggroAnchor                         aggroAnchorData
-          , EnabledRefRW<AggroAnchor>               aggroAnchorEnable
-          , ref AggroDisabling                      aggroDisableData
-          , EnabledRefRW<AggroDisabling>            aggroDisableTrigger
+            ref MinionAggroAnchor                         aggroAnchorData
+          , EnabledRefRW<MinionAggroAnchor>               aggroAnchorEnable
+          , ref MinionAggroDisabling                      aggroDisableData
+          , EnabledRefRW<MinionAggroDisabling>            aggroDisableTrigger
           , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , in LocalTransform                       locTrans
           , in MinionControlFactor                  controlFactor
@@ -101,8 +101,8 @@ public partial struct MinionAggroTogglerSystem : ISystem {
 
         [BurstCompile]
         public void Execute(
-            ref AggroDisabling                      disableData
-          , EnabledRefRW<AggroDisabling>            disableTrigger
+            ref MinionAggroDisabling                      disableData
+          , EnabledRefRW<MinionAggroDisabling>            disableTrigger
           , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , in AimedTargetData                      target) {
             if (

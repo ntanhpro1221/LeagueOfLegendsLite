@@ -8,7 +8,7 @@ namespace NGDtuanh.Entities.StateMachine {
         protected RefRO<TState>    CurState { get; }
         protected RefRO<Simulate>  Simulate { get; }
 
-        public interface Base<TInheritTag> :
+        public interface RequireInherit<TInheritTag> :
             IStateAspect<TIdentity, TState>
           , IStateInheritable<TIdentity, TState, TInheritTag>
             where TInheritTag : unmanaged, IStateInheritTag<TIdentity, TState> { }

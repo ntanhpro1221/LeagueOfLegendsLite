@@ -125,7 +125,7 @@ public static partial class MinionStateMove {
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<MinionBehaviourConfigData>();
+            state.RequireForUpdate<MinionCommonBehaviourConfigData>();
             state.RequireForUpdate<NetworkTime>();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -144,13 +144,13 @@ public static partial class MinionStateMove {
             }.ScheduleParallel(state.Dependency);
 
             state.Dependency = new FollowFixedPathJob {
-                reachPathDisToleranceSqr = SystemAPI.GetSingleton<MinionBehaviourConfigData>().reachPathDisToleranceSqr
+                reachPathDisToleranceSqr = SystemAPI.GetSingleton<MinionCommonBehaviourConfigData>().reachPathDisToleranceSqr
             }.ScheduleParallel(state.Dependency);
         }
 
         [WithPresent(
-            typeof(AggroAnchor)
-          , typeof(AggroDisabling))]
+            typeof(MinionAggroAnchor)
+          , typeof(MinionAggroDisabling))]
         [BurstCompile]
         private partial struct SeekTargetJob : IJobEntity {
             [ReadOnly] public ComponentLookup<Selectable> selectLookup;
@@ -163,9 +163,9 @@ public static partial class MinionStateMove {
               , in  DynamicBuffer<DetectedTowerBuffer>    detectedTower
               , in  DynamicBuffer<DetectedChampionBuffer> detectedChampion
               , in  LocalTransform                        locTrans
-              , ref AggroAnchor                           aggroAnchor
-              , EnabledRefRW<AggroAnchor>                 anchorEnable
-              , EnabledRefRO<AggroDisabling>              aggroDisable) {
+              , ref MinionAggroAnchor                           aggroAnchor
+              , EnabledRefRW<MinionAggroAnchor>                 anchorEnable
+              , EnabledRefRO<MinionAggroDisabling>              aggroDisable) {
                 // Already have target
                 if (GameHelpers.IsTargetExists(aimedTarget.target, selectLookup)) return;
 

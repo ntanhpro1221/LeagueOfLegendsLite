@@ -24,7 +24,7 @@ public static partial class TowerStateDead {
     public partial struct Enter {
         public struct InheritTag : IStateInheritTag<TowerTag, DeadState> { }
 
-        private readonly partial struct StateFilterAspect : IAspect, IStateEnterAspect<TowerTag, DeadState>.Base<InheritTag> {
+        private readonly partial struct StateFilterAspect : IAspect, IStateEnterAspect<TowerTag, DeadState>.RequireInherit<InheritTag> {
             private readonly RefRO<TowerTag>  _identity;
             private readonly RefRO<DeadState> _curState;
             private readonly RefRO<Simulate>  _simulate;

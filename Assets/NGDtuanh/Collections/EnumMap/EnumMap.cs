@@ -19,8 +19,8 @@ namespace NGDtuanh.Collections {
         private Dictionary<TKey, int> _HashedKeys = new();
 
         public int                 Count  => _Keys.Length;
-        public IEnumerable<TKey>   Keys   => Array.AsReadOnly(_Keys);
-        public IEnumerable<TValue> Values => Array.AsReadOnly(_Values.Cast<TValue>().ToArray());
+        public IEnumerable<TKey>   Keys   => _Keys;
+        public IEnumerable<TValue> Values => _Values.Select(item => item.Value);
 
         public EnumMap() {
             _Keys   = (TKey[])Enum.GetValues(typeof(TKey));

@@ -53,7 +53,6 @@ public partial struct InitMinionSystem : ISystem {
           , ref LocalTransform                       locTrans
           , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , ref MinionControlFactor                  controlFactor
-          , ref DestinationPoint                     desSetter
           , EnabledRefRW<NeedInitTag>                needInit
           , EnabledRefRW<HealthData>                 healthEnabled) {
 
@@ -64,11 +63,10 @@ public partial struct InitMinionSystem : ISystem {
             health.value          = stats[healthId].value;
             healthEnabled.ValueRW = true;
 
-            ref var pathSource = ref initTrans.Minion.Value[laneType.laneType][teamType.teamType];
+            ref var pathSource = ref initTrans.Minion.Value[laneType.laneType][teamType.team];
 
             // init position
-            locTrans              = pathSource[0].ToLocTrans_Directly();
-            desSetter.destination = locTrans.Position;
+            locTrans = pathSource[0].ToLocTrans_Directly();
 
             // init path
             pathBuffer.Resize(pathSource.Count, NativeArrayOptions.UninitializedMemory);

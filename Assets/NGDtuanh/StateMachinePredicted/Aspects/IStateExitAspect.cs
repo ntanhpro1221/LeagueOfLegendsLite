@@ -20,7 +20,7 @@ namespace NGDtuanh.Entities.StateMachine {
         void MarkExitExecuted();
 
         // ReSharper disable once PossibleInterfaceMemberAmbiguity
-        public new interface Base<TInheritTag> :
+        public new interface RequireInherit<TInheritTag> :
             IStateExitAspect<TIdentity, TState>
           , IStateInheritable<TIdentity, TState, TInheritTag>
             where TInheritTag : unmanaged, IStateInheritTag<TIdentity, TState> { }

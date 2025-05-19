@@ -89,6 +89,9 @@ namespace Pathfinding {
 		[BurstCompile]
 		public void OnCreate(ref SystemState state) {
 			state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+			state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
+				ManagedState
+			  , ManagedStateInit>().Build());
 		}
 
 		public void OnUpdate(ref SystemState state) {

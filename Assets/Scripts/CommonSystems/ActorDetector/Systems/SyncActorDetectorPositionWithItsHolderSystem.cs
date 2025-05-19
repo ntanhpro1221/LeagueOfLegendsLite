@@ -30,6 +30,7 @@ public partial struct SyncActorDetectorPositionWithItsHolderSystem : ISystem {
 
 
     [WithAll(typeof(Simulate))]
+    [WithDisabled(typeof(DontFollowHolder))]
     [BurstCompile]
     private partial struct GetHolderPositionJob : IJobEntity {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
@@ -45,6 +46,7 @@ public partial struct SyncActorDetectorPositionWithItsHolderSystem : ISystem {
     }
 
     [WithAll(typeof(Simulate))]
+    [WithDisabled(typeof(DontFollowHolder))]
     [BurstCompile]
     private partial struct UpdatePositionJob : IJobEntity {
         [BurstCompile]

@@ -6,9 +6,6 @@ using Unity.NetCode;
 using Unity.Transforms;
 using UnityEngine;
 
-/// <summary>
-/// Just follow <see cref="MinionFixedPathBuffer"/> now
-/// </summary>
 [UpdateInGroup(typeof(ActorAIControlSystemGroup))]
 public partial struct MinionControlSystem : ISystem {
     [ReadOnly] private ComponentLookup<Selectable> selectLookup;
@@ -32,8 +29,8 @@ public partial struct MinionControlSystem : ISystem {
         typeof(Simulate)
       , typeof(MinionTag))]
     [WithPresent(
-        typeof(AggroAnchor)
-      , typeof(AggroDisabling))]
+        typeof(MinionAggroAnchor)
+      , typeof(MinionAggroDisabling))]
     [BurstCompile]
     private partial struct SeekTargetJob : IJobEntity {
         [ReadOnly] public ComponentLookup<Selectable> selectLookup;
@@ -44,9 +41,9 @@ public partial struct MinionControlSystem : ISystem {
           , in  AllyBeAttackedData                    allyBeAttacked
           , in  DynamicBuffer<DetectedChampionBuffer> detectedChampion
           , in  LocalTransform                        locTrans
-          , ref AggroAnchor                           aggroAnchor
-          , EnabledRefRW<AggroAnchor>                 anchorEnable
-          , EnabledRefRO<AggroDisabling>              aggroDisable) {
+          , ref MinionAggroAnchor                           aggroAnchor
+          , EnabledRefRW<MinionAggroAnchor>                 anchorEnable
+          , EnabledRefRO<MinionAggroDisabling>              aggroDisable) {
             // When my champ be attack by enemy champ
             if (GameHelpers.IsTargetExists(allyBeAttacked.champByChamp, selectLookup)
                  && detectedChampion.Contains(allyBeAttacked.champByChamp))
@@ -70,8 +67,8 @@ public partial struct MinionControlSystem : ISystem {
         in  Entity                    target
       , in  LocalTransform            locTrans
       , ref AimedTargetData           aimedTarget
-      , ref AggroAnchor               aggroAnchor
-      , in  EnabledRefRW<AggroAnchor> anchorEnable) {
+      , ref MinionAggroAnchor               aggroAnchor
+      , in  EnabledRefRW<MinionAggroAnchor> anchorEnable) {
         aimedTarget.target           = target;
         aggroAnchor.anchor           = locTrans.Position.Quantizate3();
         anchorEnable.ValueRW         = true;

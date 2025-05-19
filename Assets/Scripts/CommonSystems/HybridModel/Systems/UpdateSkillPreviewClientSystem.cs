@@ -46,7 +46,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
                 ownChampEntity   = entity
               , ownChampLocTrans = locTrans.ValueRO
               , ownChampRadius   = stats[unitRadiusId].value
-              , ownChampTeam     = teamData.ValueRO.teamType
+              , ownChampTeam     = teamData.ValueRO.team
               , attackRangeId    = attackRangeId
             }.ScheduleParallel(state.Dependency);
 
@@ -99,7 +99,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
                 data.color = SkillPreviewColor.Red;
 
             // Your champ is near this turret and different team
-            else if (teamData.teamType != ownChampTeam && !GameHelpers.IsTargetOutOfRange(
+            else if (teamData.team != ownChampTeam && !GameHelpers.IsTargetOutOfRange(
                 ownChampLocTrans.Position
               , locTrans.Position
               , stats[attackRangeId].value * DISTANCE_TURRET_SHOW_WARNING_FACTOR

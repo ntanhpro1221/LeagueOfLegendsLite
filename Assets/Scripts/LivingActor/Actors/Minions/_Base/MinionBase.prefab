@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shape:
     radius: 0.5
-    height: 100
+    height: 300
   movement:
     follower:
       rotationSpeed: 600
@@ -232,6 +232,7 @@ MonoBehaviour:
   actorDetectorPrefab: {fileID: 0}
   targets: 7
   teamFilter: 0
+  initTrans: {fileID: 0}
 --- !u!114 &8678814769214816780
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,22 +10,22 @@ public enum TeamType {
 }
 
 public struct TeamTypeData : IComponentData {
-    [GhostField] public TeamType teamType;
+    [GhostField] public TeamType team;
 
     public TeamTypeData(TeamType teamType) {
-        this.teamType = teamType;
+        this.team = teamType;
     }
 
-    public bool IsSameTeam(TeamTypeData other) => teamType == other.teamType;
+    public bool IsSameTeam(TeamTypeData other) => team == other.team;
 
     /// <summary>
     /// Regardless who is red or who is blue
     /// </summary>
     public bool IsRedBlue(TeamTypeData other) =>
-        (teamType == TeamType.Blue && other.teamType == TeamType.Red)
-     || (teamType == TeamType.Red  && other.teamType == TeamType.Blue);
+        (team == TeamType.Blue && other.team == TeamType.Red)
+     || (team == TeamType.Red  && other.team == TeamType.Blue);
 
-    public static implicit operator TeamTypeData(TeamType teamType) => new() { teamType = teamType };
+    public static implicit operator TeamTypeData(TeamType teamType) => new() { team = teamType };
 }
 
 public class TeamTypeAuthoring : MonoBehaviour {
@@ -35,7 +35,7 @@ public class TeamTypeAuthoring : MonoBehaviour {
         public override void Bake(TeamTypeAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new TeamTypeData {
-                teamType = authoring.teamType
+                team = authoring.teamType
             });
         }
     }

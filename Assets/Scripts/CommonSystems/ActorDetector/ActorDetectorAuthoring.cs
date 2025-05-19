@@ -18,13 +18,21 @@ public struct ActorDetector : IComponentData {
         => new() { holder = holder };
 }
 
+[GhostEnabledBit]
+public struct DontFollowHolder : IComponentData, IEnableableComponent { }
+
 [RequireComponent(typeof(CapsuleCollider))]
 public class ActorDetectorAuthoring : MonoBehaviour {
+    public bool dontFollowHolder;
+    
     private class Baker : ExtendBaker<ActorDetectorAuthoring> {
         public override void Bake(ActorDetectorAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
             AddComponent<ActorDetector>(entity);
+            
+            AddComponent<DontFollowHolder>(entity);
+            SetComponentEnabled<DontFollowHolder>(entity, authoring.dontFollowHolder);
         }
     }
 }

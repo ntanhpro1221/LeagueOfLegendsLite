@@ -76,8 +76,8 @@ public partial struct InputCastUpdateSystem : ISystem {
                         break;
                     actorFraction = actorGroundHit.Fraction;
 
-                    if (SystemAPI.GetComponent<TeamTypeData>(actorGroundHit.Entity).teamType
-                     == ownChampQuery.GetSingleton<TeamTypeData>().teamType)
+                    if (SystemAPI.GetComponent<TeamTypeData>(actorGroundHit.Entity).team
+                     == ownChampQuery.GetSingleton<TeamTypeData>().team)
                         castData.SetHitAlly(actorGroundHit.Entity);
                     else castData.SetHitEnemy(actorGroundHit.Entity);
 

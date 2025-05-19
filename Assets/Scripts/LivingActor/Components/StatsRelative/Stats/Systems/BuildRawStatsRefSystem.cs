@@ -9,10 +9,11 @@ public partial struct BuildRawStatsRefSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
-        
+
         state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<AllMinionData>();
         state.RequireForUpdate<AllTowerData>();
+        state.RequireForUpdate<AllMonsterData>();
     }
 
     [BurstCompile]
@@ -24,6 +25,7 @@ public partial struct BuildRawStatsRefSystem : ISystem {
         BuildChampion(ref state, ecb);
         BuildMinion(ref state, ecb);
         BuildTower(ref state, ecb);
+        BuildMonster(ref state, ecb);
 
         ecb.Playback(state.EntityManager);
     }
@@ -68,7 +70,7 @@ public partial struct BuildRawStatsRefSystem : ISystem {
                     NeedBuildRawStats
                   , Simulate>()
                 .WithEntityAccess()) {
-            var rawStats         = new RawStatsData();
+            var rawStats = new RawStatsData();
 
             minionSource[minionTag.ValueRO.id].stats
                 .CreateBlobAssetReference(out rawStats._Ref);
@@ -80,7 +82,7 @@ public partial struct BuildRawStatsRefSystem : ISystem {
             ecb.RemoveComponent<NeedBuildRawStats>(entity);
         }
     }
-    
+
     [BurstCompile]
     private void BuildTower(ref SystemState state, in EntityCommandBuffer ecb) {
         ref var towerSource = ref SystemAPI.GetSingleton<AllTowerData>().Towers;
@@ -95,6 +97,30 @@ public partial struct BuildRawStatsRefSystem : ISystem {
             var rawStats = new RawStatsData();
 
             towerSource[towerTag.ValueRO.id].stats
+                .CreateBlobAssetReference(out rawStats._Ref);
+
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+            ecb.AddComponent(entity, rawStats);
+
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+            ecb.RemoveComponent<NeedBuildRawStats>(entity);
+        }
+    }
+
+    [BurstCompile]
+    private void BuildMonster(ref SystemState state, in EntityCommandBuffer ecb) {
+        ref var monsterSource = ref SystemAPI.GetSingleton<AllMonsterData>().Monsters;
+
+        foreach (var (monsterTag, entity)
+            in SystemAPI
+                .Query<RefRO<MonsterTag>>()
+                .WithAll<
+                    NeedBuildRawStats
+                  , Simulate>()
+                .WithEntityAccess()) {
+            var rawStats = new RawStatsData();
+
+            monsterSource[monsterTag.ValueRO.id].stats
                 .CreateBlobAssetReference(out rawStats._Ref);
 
             // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
