@@ -1,5 +1,4 @@
-﻿using System;
-using NGDtuanh.Entities.StateMachine;
+﻿using NGDtuanh.Entities.StateMachine;
 using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
@@ -43,14 +42,12 @@ public static partial class MinionStateAttack {
                   , sharedState
                   , health
                   , aimedTarget
-                    , desSetter
                   , attackData)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
-                    , RefRW<DestinationPoint>
                   , RefRW<AttackStateData>>()) {
                 // DEAD STATE
                 if (health.IsDead) // Run out of health
@@ -74,8 +71,6 @@ public static partial class MinionStateAttack {
                 // restart attack cooldown if not actually dealt damage yet
                 if (!attackData.ValueRO.isAttacked)
                     attackData.ValueRW.ResetCooldown();
-
-                desSetter.ValueRW.facingDirection = default;
             }
         }
     }
@@ -172,20 +167,16 @@ public static partial class MinionStateAttack {
                 }
 
             // ROTATE TO TARGET
-            foreach (var (
-                _
-              , desSetter
-              , target
-              , locTrans) in SystemAPI
+            foreach (var (_, rotationData, target, locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<DestinationPoint>
+                  , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                desSetter.ValueRW.facingDirection = (
-                        locTransLookup[target.Target].Position
-                      - locTrans.ValueRO.Position)
-                    .WithoutY();
+                rotationData.ValueRW.RotateTo((
+                    locTransLookup[target.Target].Position
+                  - locTrans.ValueRO.Position
+                ).Quantizate3().xz);
         }
     }
 }

@@ -108,9 +108,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: 2
+      addedObject: {fileID: 5150060968995030082}
+    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      insertIndex: 3
       addedObject: {fileID: 3662369592399962001}
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
-      insertIndex: 15
+      insertIndex: 16
       addedObject: {fileID: -7285912311421547507}
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
@@ -136,6 +139,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
   m_PrefabInstance: {fileID: 2497754093237039527}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5150060968995030082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32608205855955755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f54a7ab4dc4c379e9a8bccd0b6ba5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3662369592399962001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +203,7 @@ MonoBehaviour:
       tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
       traversableTags: -1
     enableLocalAvoidance: 1
-    enableGravity: 1
+    enableGravity: 0
   autoRepathBacking:
     mode: 2
     period: 2
@@ -262,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77220b3ea71a45d5bf1478b8c37f07a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableHealthRegen: 0
 --- !u!114 &8018114365186711175
 MonoBehaviour:
   m_ObjectHideFlags: 0

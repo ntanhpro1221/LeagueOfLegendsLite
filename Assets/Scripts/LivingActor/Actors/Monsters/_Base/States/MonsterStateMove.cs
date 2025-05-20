@@ -84,11 +84,12 @@ public static partial class MonsterStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO          health;
-            public readonly AimedTargetAspectRO     aimedTarget;
-            public readonly ActorSharedStateAspect  sharedState;
-            public readonly RefRO<AttackStateData>  attackData;
-            public readonly RefRW<DestinationPoint> desSetter;
+            public readonly HealthAspectRO         health;
+            public readonly AimedTargetAspectRO    aimedTarget;
+            public readonly ActorSharedStateAspect sharedState;
+            public readonly RefRO<AttackStateData> attackData;
+            public readonly RefRO<LocalTransform>  locTrans;
+            public readonly FixablePosSetterAspect fixSetter;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow;
 
@@ -99,7 +100,7 @@ public static partial class MonsterStateMove {
             public bool IsLeashDisabling => _UnleashTrigger.ValueRO;
 
             public void StopMove(in Entity entity) {
-                desSetter.ValueRW.destination = mathHelpers.PositiveInfinity_Float3;
+                fixSetter.FixAt(locTrans.ValueRO.Position);
 
                 autoFollow.ValueRW            = false;
             }
@@ -113,10 +114,15 @@ public static partial class MonsterStateMove {
         public void OnUpdate(ref SystemState state) {
             foreach (var (
                 _
-              , anim) in SystemAPI.Query<
-                StateFilterAspect
-              , SharedAnimAspect>()) {
+              , anim
+              , fixSetter
+                ) in SystemAPI
+                .Query<
+                    StateFilterAspect
+                  , SharedAnimAspect
+                  , FixablePosSetterAspect>()) {
                 anim.SetAnim(SharedAnimKey.Move);
+                fixSetter.Release();
             }
         }
     }
@@ -141,6 +147,9 @@ public static partial class MonsterStateMove {
             }.ScheduleParallel(state.Dependency);
 
             state.Dependency = new ReturnToAnchorJob()
+                .ScheduleParallel(state.Dependency);
+
+            state.Dependency = new UpdateRotationDataJob()
                 .ScheduleParallel(state.Dependency);
         }
 
@@ -173,6 +182,20 @@ public static partial class MonsterStateMove {
               , ref DestinationPoint   desSetter
               , in  MonsterLeashAnchor anchor) {
                 desSetter.destination = anchor.anchorPos;
+            }
+        }
+
+        [BurstCompile]
+        private partial struct UpdateRotationDataJob : IJobEntity {
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect   _
+              , in  MovementStatistics moveStats
+              , ref RotationData    rotationData) {
+                if (math.abs(moveStats.estimatedVelocity.x)
+                  + math.abs(moveStats.estimatedVelocity.z)
+                  < 4) return;
+                rotationData.RotateTo(moveStats.estimatedVelocity.Quantizate3().xz);
             }
         }
     }

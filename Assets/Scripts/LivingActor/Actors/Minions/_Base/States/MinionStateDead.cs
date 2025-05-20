@@ -4,6 +4,7 @@ using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
+using Unity.Transforms;
 
 public static partial class MinionStateDead {
     // Exit to destroy minion
@@ -80,9 +81,10 @@ public static partial class MinionStateDead {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<DeadStateData>    _DeadStateData;
-            private readonly RefRW<SharedAnimData>   _AnimData;
-            private readonly  RefRW<MovementSettings> _MoveSetting;
+            private readonly RefRW<DeadStateData>   _DeadStateData;
+            private readonly RefRW<SharedAnimData>  _AnimData;
+            private readonly RefRO<LocalTransform>  _LocTrans;
+            private readonly FixablePosSetterAspect _FixSetter;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> _AutoFollow;
 
@@ -90,8 +92,8 @@ public static partial class MinionStateDead {
             public ref SharedAnimKey CurAnim       => ref _AnimData.ValueRW.curAnim;
 
             public void DisableMove() {
-                _MoveSetting.ValueRW.isStopped = true;
-                _AutoFollow.ValueRW            = false;
+                _FixSetter.FixAt(_LocTrans.ValueRO.Position);
+                _AutoFollow.ValueRW = false;
             }
         }
     }

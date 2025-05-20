@@ -38,22 +38,23 @@ public partial struct InitHybridModelClientSystem : ISystem {
 
             // Link model with HybridModelData
             var hybridData = new HybridModelData {
-                transformRef         = model.transform
-              , animCtrlRef          = model.GetComponentInChildren<SharedAnimController>()
-              , outlineRef           = model.GetComponentInChildren<Outline>()
+                transformRef    = model.transform
+              , animCtrlRef     = model.GetComponentInChildren<SharedAnimController>()
+              , outlineRef      = model.GetComponentInChildren<Outline>()
               , skillPreviewRef = model.GetComponentInChildren<SkillPreviewShower>()
+              , rotateRef       = model.GetComponentInChildren<RotationController>()
             };
             hybridData.outlineRef.Value.OutlineColor = teamType.ValueRO.team == myTeam
                 ? AllyHighlightColor
                 : EnemyHighlightColor;
-            
+
             // Set render queue of my champion
             if (SystemAPI.HasComponent<GhostOwnerIsLocal>(entity)
              && SystemAPI.IsComponentEnabled<GhostOwnerIsLocal>(entity))
                 foreach (var renderer in hybridData.outlineRef.Value.GetComponentsInChildren<Renderer>())
                 foreach (var material in renderer.materials)
                     material.renderQueue = RenderQueueHelper.OwnChamp;
-            
+
             // Add/Set data
             if (SystemAPI.HasComponent<HybridModelData>(entity))
                 ecb.SetComponent(entity, hybridData);

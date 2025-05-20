@@ -11,7 +11,7 @@ using UnityEditor;
 public struct float4_Q3 : IEquatable<float4_Q3> {
     public const           float     MULTIPLIER = 1000;
     public static readonly float4_Q3 zero       = new(0, 0, 0, 0);
-    public static readonly float4_Q3 identity   = new(0, 0, 0, MULTIPLIER);
+    public static readonly float4_Q3 identity   = new(0, 0, 0, 1);
 
     public int x;
     public int y;

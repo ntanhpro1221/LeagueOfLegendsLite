@@ -8,6 +8,7 @@ public readonly partial struct MoveRequesterAspect : IAspect {
     private readonly DynamicBuffer<WaypointBuffer> _Waypoints;
     private readonly RefRW<WaypointRequestData>    _RequestData;
     private readonly RefRW<PathHandlingData>       _HandlingData;
+    private readonly RefRW<RotationData>           _RotationData;
 
     [Optional] private readonly EnabledRefRW<NeedHandleWaypointRequest> _RequestTrigger;
     [Optional] private readonly EnabledRefRW<PathIsHandling>            _HandlingTrigger;
@@ -72,7 +73,6 @@ public readonly partial struct MoveRequesterAspect : IAspect {
     public void SyncFromLocTrans(in LocalTransform locTrans) {
         TeleTo(locTrans.Position.Quantizate3());
 
-        // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-        _MoveData.ValueRW.targetLocDir = locTrans.Forward().Quantizate3().xz;
+        _RotationData.ValueRW.StopRotate();
     }
 }

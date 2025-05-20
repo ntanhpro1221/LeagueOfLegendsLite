@@ -31,7 +31,9 @@ namespace Pathfinding {
 
 		[SerializeField]
 		public ManagedState managedState = new ManagedState {
-			enableLocalAvoidance = false, pathfindingSettings = PathRequestSettings.Default,
+			enableLocalAvoidance = false
+		  , pathfindingSettings  = PathRequestSettings.Default
+		  , enableGravity        = false
 		};
 
 		[SerializeField]

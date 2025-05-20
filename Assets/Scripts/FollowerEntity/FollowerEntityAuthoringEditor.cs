@@ -97,6 +97,11 @@ namespace Pathfinding {
 			FloatField("movement.follower.leadInRadiusWhenApproachingDestination", min: 0f);
 			FloatField("movement.follower.desiredWallDistance",                    min: 0f);
 
+			// if (PropertyField("managedState.enableGravity", "Gravity")) {
+			// 	EditorGUI.indentLevel++;
+			// 	PropertyField("movement.groundMask", "Raycast Ground Mask");
+			// 	EditorGUI.indentLevel--;
+			// }
 			var movementPlaneSource = FindProperty("movementPlaneSourceBacking");
 			PropertyField(movementPlaneSource, "Movement Plane Source");
 			if (AstarPath.active != null && AstarPath.active.data.graphs != null) {

@@ -1,5 +1,4 @@
-﻿using Unity.NetCode;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SharedAnimController : MonoBehaviour {
     private Animator _Animator;

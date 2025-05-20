@@ -3,6 +3,7 @@ using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 
 public static partial class ScuttleStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -74,6 +75,23 @@ public static partial class ScuttleStateMove {
         public void OnUpdate(ref SystemState state) {
             state.Dependency = new FollowerEntityFixedPathJob()
                 .ScheduleParallel(query, state.Dependency);
+
+            state.Dependency = new UpdateRotationDataJob()
+                .ScheduleParallel(state.Dependency);
+        }
+
+        [BurstCompile]
+        private partial struct UpdateRotationDataJob : IJobEntity {
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect      _
+              , in  MovementStatistics moveStats
+              , ref RotationData       rotationData) {
+                if (math.abs(moveStats.estimatedVelocity.x)
+                  + math.abs(moveStats.estimatedVelocity.z)
+                  < 4) return;
+                rotationData.RotateTo(moveStats.estimatedVelocity.Quantizate3().xz);
+            }
         }
     }
 }

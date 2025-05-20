@@ -43,9 +43,10 @@ public partial struct CommonRangedAttackSystem : ISystem {
           , in RangedAttackTriggerData        attackData
           , in LocalTransform                 locTrans
           , in ProjectileSpawnPoint           projSpawnPnt
+          , in RotationData                   rotationData
           , in DynamicBuffer<StatsBuffer>     stats
           , EnabledRefRW<RangedAttackTrigger> attackTrigger
-          , in Entity entity) {
+          , in Entity                         entity) {
             if (isFirstTimeFullyPredictingTick) {
                 var projectile = ecb.Instantiate(attackData.projectile);
 
@@ -53,7 +54,9 @@ public partial struct CommonRangedAttackSystem : ISystem {
                 ecb.SetComponent(projectile, new DamageTriggerSource(stats[damageId].value, entity));
                 ecb.SetComponent(projectile, LocalTransform.FromPositionRotationScale(
                     // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-                    locTrans.TransformPoint(projSpawnPnt.point.position)
+                    LocalTransform
+                        .FromPositionRotation(locTrans.Position, rotationData.quaternion)
+                        .TransformPoint(projSpawnPnt.point.position)
                   , quaternion.identity
                   , 35));
             }

@@ -73,7 +73,6 @@ public partial struct MonsterLeashTogglerSystem : ISystem {
             in MonsterLeashAnchor               anchorData
           , EnabledRefRW<MonsterLeashDisabling> leashDisableTrigger
           , in  LocalTransform                  locTrans) {
-            Debug.Log($"{GameHelpers.DistanceXZ_Sqr(anchorData.anchorPos, locTrans.Position)} {(float3)anchorData.anchorPos} {locTrans.Position}");
             if ( // Returned to anchor point and
                 1 > GameHelpers.DistanceXZ_Sqr(anchorData.anchorPos, locTrans.Position))
                 leashDisableTrigger.ValueRW = false;

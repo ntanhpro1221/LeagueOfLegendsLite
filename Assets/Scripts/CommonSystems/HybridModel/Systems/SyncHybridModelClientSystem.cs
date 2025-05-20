@@ -13,22 +13,24 @@ public partial struct SyncHybridModelClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        SyncAnim_PosHighlight(ref state);
+        SyncAnim_TransHighlight(ref state);
         SyncSkillPreview_Turret(ref state);
         SyncSkillPreview_OwnChamp(ref state);
     }
 
-    private void SyncAnim_PosHighlight(ref SystemState state) {
+    private void SyncAnim_TransHighlight(ref SystemState state) {
         foreach (var (
                 hybridData
               , animData
               , locTrans
+                , rotationData
               , highlightData
               , highlightVisible)
             in SystemAPI.Query<
                     RefRO<HybridModelData>
                   , RefRW<SharedAnimData>
                   , RefRO<LocalTransform>
+                  , RefRO<RotationData>
                   , RefRO<HighlightData>
                   , EnabledRefRO<HighlightVisible>>()
                 .WithPresent<HighlightVisible>()
@@ -36,10 +38,13 @@ public partial struct SyncHybridModelClientSystem : ISystem {
             var trans    = hybridData.ValueRO.transformRef.Value;
             var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
             var outline  = hybridData.ValueRO.outlineRef.Value;
+            var rotation = hybridData.ValueRO.rotateRef.Value;
 
             // POSITION
-            if (!locTrans.ValueRO.Position.IsNaN()) trans.position = locTrans.ValueRO.Position;
-            trans.rotation = locTrans.ValueRO.Rotation;
+            if (!locTrans.ValueRO.Position.IsAnyNaN()) trans.position = locTrans.ValueRO.Position;
+            
+            // ROTATION
+            rotation.RotateTo(rotationData.ValueRO.rotation);
 
             // ANIMATION
             animCtrl.SyncAnim(

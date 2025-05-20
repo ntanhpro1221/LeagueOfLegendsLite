@@ -84,8 +84,6 @@ public static partial class MonsterStateIdle {
                 else continue;
 
                 filter.MarkExitExecuted();
-
-                data.ResetFaceDirection();
             }
         }
 
@@ -94,7 +92,6 @@ public static partial class MonsterStateIdle {
             public readonly ActorSharedStateAspect SharedState;
             public readonly AimedTargetAspectRO    AimedTarget;
 
-            private readonly RefRW<DestinationPoint> _DesSetter;
             private readonly RefRO<AttackStateData>  _AttackData;
 
             [Optional] private readonly EnabledRefRO<MonsterLeashAnchor>    _LeashTrigger;
@@ -104,8 +101,6 @@ public static partial class MonsterStateIdle {
 
             public bool IsLeashing       => _LeashTrigger.ValueRO;
             public bool IsLeashDisabling => _UnleashTrigger.ValueRO;
-
-            public void ResetFaceDirection() => _DesSetter.ValueRW.facingDirection = default;
         }
     }
 
@@ -142,35 +137,28 @@ public static partial class MonsterStateIdle {
             locTransLookup.Update(ref state);
 
             // ROTATE TO TARGET
-            foreach (var (
-                _
-              , desSetter
-              , target
-              , locTrans) in SystemAPI
+            foreach (var (_, rotationData, target, locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<DestinationPoint>
+                  , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
                 if (target.IsTargetExists(selectLookup))
-                    desSetter.ValueRW.facingDirection = (
-                            locTransLookup[target.Target].Position
-                          - locTrans.ValueRO.Position)
-                        .WithoutY();
+                    rotationData.ValueRW.RotateTo((
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position
+                    ).Quantizate3().xz);
 
             // ROTATE TO INIT TRANSFORM
-            foreach (var (
-                _
-              , desSetter
-              , anchor) in SystemAPI
+            foreach (var (_, rotationData, anchor) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<DestinationPoint>
+                  , RefRW<RotationData>
                   , RefRO<MonsterLeashAnchor>>()
                 .WithDisabled<
                     MonsterLeashAnchor
                   , MonsterLeashDisabling>())
-                desSetter.ValueRW.facingDirection = anchor.ValueRO.anchorDir.Full;
+                rotationData.ValueRW.RotateTo(anchor.ValueRO.anchorDir);
         }
     }
 }

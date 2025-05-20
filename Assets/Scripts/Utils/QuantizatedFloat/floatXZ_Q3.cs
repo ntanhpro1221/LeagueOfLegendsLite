@@ -11,6 +11,12 @@ using UnityEditor;
 public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
     public const float MULTIPLIER = 1000;
 
+    public static readonly floatXZ_Q3 identity = new() { z = 1 };
+    public static readonly floatXZ_Q3 zero     = new();
+
+    public bool IsZero    => Equals(zero);
+    public void SetZero() => (x, z) = (0, 0);
+
     public int x;
     public int z;
 

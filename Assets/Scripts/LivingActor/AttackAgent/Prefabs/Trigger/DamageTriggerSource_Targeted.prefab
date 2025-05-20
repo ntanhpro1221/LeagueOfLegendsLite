@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5746079826975427702}
   - component: {fileID: 128708586823103259}
   - component: {fileID: 8325075222158815334}
+  - component: {fileID: 6430607434839018852}
   - component: {fileID: 2920119740064157288}
   m_Layer: 10
   m_Name: DamageTriggerSource_Targeted
@@ -89,6 +90,7 @@ MonoBehaviour:
   TrackInterpolationDelay: 0
   GhostGroup: 0
   UsePreSerialization: 0
+  UseSingleBaseline: 0
   RollbackPredictedSpawnedGhostState: 0
   RollbackPredictionOnStructuralChanges: 1
 --- !u!114 &5510948134592291115
@@ -144,6 +146,19 @@ MonoBehaviour:
   enabled: 1
   controlYAxis: 1
   moveSpeed: 1500
+--- !u!114 &6430607434839018852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392278292554583566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c26584320c4cdfae52e3527b6ed95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applyToEntity: 1
 --- !u!54 &2920119740064157288
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -151,10 +166,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7392278292554583566}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 2e+9, y: 2e+9, z: 2e+9}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

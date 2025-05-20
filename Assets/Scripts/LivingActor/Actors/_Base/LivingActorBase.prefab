@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 6811086194763175088}
   - component: {fileID: 4549801463351850223}
   - component: {fileID: 8230867433105210368}
+  - component: {fileID: 1984247651248614307}
   - component: {fileID: 3909052697964651725}
   - component: {fileID: 2373267175499843026}
   - component: {fileID: -6885465965426350282}
@@ -233,6 +234,19 @@ MonoBehaviour:
   hardCutAnim: 0
   animClipPrefix: Base_
   animController: {fileID: 9100000, guid: 03b481fa35c8e824aa6e5de2c2569b63, type: 2}
+--- !u!114 &1984247651248614307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c26584320c4cdfae52e3527b6ed95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applyToEntity: 0
 --- !u!114 &3909052697964651725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +368,7 @@ MonoBehaviour:
     - Dead2Idle
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 45709051e2a54d78870af1984797d904
+      Hash: d41363c285f166ab6faaa8efc7ed9629
     _KeySynced: 1
 --- !u!114 &8701208352754206243
 MonoBehaviour:

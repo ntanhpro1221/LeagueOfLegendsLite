@@ -8,4 +8,5 @@ public struct HybridModelData : ICleanupComponentData {
     public UnityObjectRef<SharedAnimController> animCtrlRef;
     public UnityObjectRef<Outline>              outlineRef;
     public UnityObjectRef<SkillPreviewShower>   skillPreviewRef;
+    public UnityObjectRef<RotationController>   rotateRef;
 }

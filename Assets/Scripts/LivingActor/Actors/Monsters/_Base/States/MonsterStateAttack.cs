@@ -67,8 +67,6 @@ public static partial class MonsterStateAttack {
                 // restart attack cooldown if not actually dealt damage yet
                 if (!data.AttackData.isAttacked)
                     data.AttackData.ResetCooldown();
-
-                data.ResetFaceDirection();
             }
         }
 
@@ -77,7 +75,6 @@ public static partial class MonsterStateAttack {
             public readonly HealthAspectRO         Health;
             public readonly AimedTargetAspectRO    AimedTarget;
 
-            private readonly RefRW<DestinationPoint> _DesSetter;
             private readonly RefRW<AttackStateData>  _AttackData;
 
             [Optional] private readonly EnabledRefRO<MonsterLeashDisabling> _UnleashTrigger;
@@ -85,8 +82,6 @@ public static partial class MonsterStateAttack {
             public ref AttackStateData AttackData => ref _AttackData.ValueRW;
 
             public bool IsLeashDisabling => _UnleashTrigger.ValueRO;
-
-            public void ResetFaceDirection() => _DesSetter.ValueRW.facingDirection = default;
         }
     }
 
@@ -182,20 +177,16 @@ public static partial class MonsterStateAttack {
                 }
 
             // ROTATE TO TARGET
-            foreach (var (
-                _
-              , desSetter
-              , target
-              , locTrans) in SystemAPI
+            foreach (var (_, rotationData, target, locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<DestinationPoint>
+                  , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                desSetter.ValueRW.facingDirection = (
-                        locTransLookup[target.Target].Position
-                      - locTrans.ValueRO.Position)
-                    .WithoutY();
+                rotationData.ValueRW.RotateTo((
+                    locTransLookup[target.Target].Position
+                  - locTrans.ValueRO.Position
+                ).Quantizate3().xz);
         }
     }
 }

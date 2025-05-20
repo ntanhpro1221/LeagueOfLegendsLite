@@ -166,13 +166,16 @@ public static partial class ChampionStateAttack {
                 }
 
             // ROTATE TO TARGET
-            foreach (var (_, moveData, target, locTrans) in SystemAPI
+            foreach (var (_, rotationData, target, locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<MoveData>
+                  , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                moveData.ValueRW.RotateTo(locTrans.ValueRO.Position, target.Target, locTransLookup);
+                rotationData.ValueRW.RotateTo((
+                    locTransLookup[target.Target].Position
+                  - locTrans.ValueRO.Position
+                ).Quantizate3().xz);
         }
     }
 }

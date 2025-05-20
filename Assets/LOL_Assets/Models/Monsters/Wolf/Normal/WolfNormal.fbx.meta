@@ -442,9 +442,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: SRU_Murkwolf_idle_aggro1.anm
-      takeName: SRU_Murkwolf_idle_aggro1.anm
-      internalID: -6805557608312799909
+      name: WolfNormal_Idle
+      takeName: WolfNormal_Idle
+      internalID: 9058967258669659823
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -453,7 +453,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -587,9 +587,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: WolfNormal_Idle
-      takeName: WolfNormal_Idle
-      internalID: 9058967258669659823
+      name: BurhBurhWolfNormal_Idle
+      takeName: BurhBurhWolfNormal_Idle
+      internalID: -6758042225131422489
       firstFrame: 0
       lastFrame: 64
       wrapMode: 0
@@ -598,7 +598,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

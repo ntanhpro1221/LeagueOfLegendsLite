@@ -7,9 +7,12 @@ public struct HybridModelInitRequest : IComponentData {
     public UnityObjectRef<GameObject> prefabRef;
 }
 
-[RequireComponent(typeof(SharedAnimAuthoring))]
-[RequireComponent(typeof(HighlightableAuthoring))]
-[RequireComponent(typeof(TeamTypeAuthoring))]
+[RequireComponent(
+    typeof(SharedAnimAuthoring)
+  , typeof(HighlightableAuthoring)
+  , typeof(TeamTypeAuthoring))]
+[RequireComponent(
+    typeof(RotationAuthoring))]
 public class HybridModelInitAuthoring : MonoBehaviour {
     public GameObject modelPrefab;
 

@@ -15,8 +15,8 @@ public partial struct ApplyMoveSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.Dependency = new ApplyMoveJob {
-            rotateSpeed    = SystemAPI.GetSingleton<CommonGameRulesData>().rotateSpeed
-          , fixedDeltaTime = SystemAPI.Time.fixedDeltaTime
+            entityRotateSpeed = SystemAPI.GetSingleton<CommonGameRulesData>().entityRotateSpeed
+          , fixedDeltaTime    = SystemAPI.Time.fixedDeltaTime
         }.ScheduleParallel(state.Dependency);
 
         state.Dependency = new StopDisabledMoveJob()
@@ -26,32 +26,40 @@ public partial struct ApplyMoveSystem : ISystem {
     [WithAll(
         typeof(Simulate)
       , typeof(MoveableTag))]
-    [WithNone(typeof(NetworkDestroyedTag))]
+    [WithNone(
+        typeof(NetworkDestroyedTag))]
+    [WithPresent(
+        typeof(RotationData.ApplyToEntity))]
     [BurstCompile]
     public partial struct ApplyMoveJob : IJobEntity {
-        public float rotateSpeed;
+        public float entityRotateSpeed;
         public float fixedDeltaTime;
 
         [BurstCompile]
         public void Execute(
-            ref MoveData                      moveData
-          , ref DynamicBuffer<WaypointBuffer> waypoints
-          , ref LocalTransform                localTrans
-          , ref PhysicsVelocity               velocity) {
-            DoMoveAndRotate(ref moveData, ref waypoints, ref localTrans, out var newLinear, out var newAngular);
+            ref MoveData                             moveData
+          , ref DynamicBuffer<WaypointBuffer>        waypoints
+          , ref LocalTransform                       localTrans
+          , ref RotationData                         rotationData
+          , ref PhysicsVelocity                      velocity
+          , EnabledRefRO<RotationData.ApplyToEntity> rotateEntityTrigger) {
+            DoMove(ref moveData, ref waypoints,       ref localTrans,    ref rotationData
+,                                rotateEntityTrigger, out var newLinear, out var newAngular);
 
             // APPLY VELOCITY
             GameHelpers.AssignLinearVelocity(ref velocity, newLinear, moveData.controlYAxis);
-            velocity.Angular = newAngular;
+            if (rotateEntityTrigger.ValueRO) velocity.Angular = newAngular;
         }
 
         [BurstCompile]
-        private void DoMoveAndRotate(
-            ref MoveData                      moveData
-          , ref DynamicBuffer<WaypointBuffer> waypoints
-          , ref LocalTransform                locTrans
-          , out float3                        newLinear
-          , out float3                        newAngular) {
+        private void DoMove(
+            ref MoveData                                 moveData
+          , ref DynamicBuffer<WaypointBuffer>            waypoints
+          , ref LocalTransform                           locTrans
+          , ref RotationData                             rotationData
+          , in  EnabledRefRO<RotationData.ApplyToEntity> rotateEntityTrigger
+          , out float3                                   newLinear
+          , out float3                                   newAngular) {
             // DO MOVE
             newLinear = float3.zero;
 
@@ -100,19 +108,21 @@ public partial struct ApplyMoveSystem : ISystem {
                     moveData.isFixedPos = false;
 
                     // ROTATE RECALCULATING ONLY IF MOVING
-                    moveData.RotateTo(moveVector.Quantizate3().xz);
+                    rotationData.RotateTo(moveVector.Quantizate3().xz);
                 }
             }
 
             // DO ROTATE
             newAngular = float3.zero;
 
-            quaternion rotateTarget = quaternion.LookRotation(moveData.targetLocDir.Full, math.up());
-            float      rotateVecY   = mathHelpers.EulerDiff(locTrans.Rotation, rotateTarget).y;
-            float      rotateDis    = math.abs(rotateVecY);
-            if (rotateDis <= rotateSpeed * fixedDeltaTime)
-                locTrans.Rotation = rotateTarget;
-            else newAngular.y     = rotateSpeed / rotateDis * rotateVecY;
+            if (rotateEntityTrigger.ValueRO) {
+                quaternion rotateTarget = quaternion.LookRotation(rotationData.rotation.Full, math.up());
+                float      rotateVecY   = mathHelpers.EulerDiff(locTrans.Rotation, rotateTarget).y;
+                float      rotateDis    = math.abs(rotateVecY);
+                if (rotateDis <= entityRotateSpeed * fixedDeltaTime)
+                    locTrans.Rotation = rotateTarget;
+                else newAngular.y     = entityRotateSpeed / rotateDis * rotateVecY;
+            }
         }
     }
 
@@ -121,9 +131,13 @@ public partial struct ApplyMoveSystem : ISystem {
     [WithDisabled(typeof(MoveableTag))]
     [BurstCompile]
     public partial struct StopDisabledMoveJob : IJobEntity {
-        public void Execute(ref PhysicsVelocity velocity, in MoveData moveData) {
+        public void Execute(
+            ref PhysicsVelocity                      velocity
+          , ref RotationData                         rotationData
+          , in  MoveData                             moveData
+          , EnabledRefRO<RotationData.ApplyToEntity> rotateEntityTrigger) {
             GameHelpers.AssignLinearVelocity(ref velocity, float3.zero, moveData.controlYAxis);
-            velocity.Angular = float3.zero;
+            if (rotateEntityTrigger.ValueRO) velocity.Angular = float3.zero;
         }
     }
 }

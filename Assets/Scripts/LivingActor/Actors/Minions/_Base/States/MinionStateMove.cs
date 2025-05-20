@@ -44,8 +44,8 @@ public static partial class MinionStateMove {
 
             foreach (var (filter, data, entity)
                 in SystemAPI.Query<
-                    StateFilterAspect
-                  , UpdateAspect>()
+                        StateFilterAspect
+                      , UpdateAspect>()
                     .WithEntityAccess()) {
                 bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
@@ -75,26 +75,20 @@ public static partial class MinionStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO          health;
-            public readonly AimedTargetAspectRO     aimedTarget;
-            public readonly ActorSharedStateAspect  sharedState;
-            public readonly RefRO<AttackStateData>  attackData;
-            public readonly RefRW<DestinationPoint> desSetter;
-            public readonly RefRW<MovementSettings> moveSetting;
+            public readonly HealthAspectRO         health;
+            public readonly AimedTargetAspectRO    aimedTarget;
+            public readonly ActorSharedStateAspect sharedState;
+            public readonly RefRO<AttackStateData> attackData;
+            public readonly RefRO<LocalTransform>  locTrans;
+            public readonly FixablePosSetterAspect fixSetter;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow;
 
             [ReadOnly] public readonly DynamicBuffer<MinionFixedPathBuffer> PathBuffer;
 
             public void StopMove(in Entity entity) {
-                // FollowerEntity.ClearPath(entity);
+                fixSetter.FixAt(locTrans.ValueRO.Position);
 
-                desSetter.ValueRW.destination = new float3(
-                    float.PositiveInfinity
-                  , float.PositiveInfinity
-                  , float.PositiveInfinity);
-
-                moveSetting.ValueRW.isStopped = true;
                 autoFollow.ValueRW = false;
             }
         }
@@ -108,12 +102,12 @@ public static partial class MinionStateMove {
             foreach (var (
                 _
               , anim
-                , moveSetting) in SystemAPI.Query<
+              , fixSetter) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect
-            , RefRW<MovementSettings>>()) {
+              , FixablePosSetterAspect>()) {
                 anim.SetAnim(SharedAnimKey.Move);
-                moveSetting.ValueRW.isStopped = false;
+                fixSetter.Release();
             }
         }
     }
@@ -146,6 +140,9 @@ public static partial class MinionStateMove {
             state.Dependency = new FollowFixedPathJob {
                 reachPathDisToleranceSqr = SystemAPI.GetSingleton<MinionCommonBehaviourConfigData>().reachPathDisToleranceSqr
             }.ScheduleParallel(state.Dependency);
+
+            state.Dependency = new UpdateRotationDataJob()
+                .ScheduleParallel(state.Dependency);
         }
 
         [WithPresent(
@@ -163,9 +160,9 @@ public static partial class MinionStateMove {
               , in  DynamicBuffer<DetectedTowerBuffer>    detectedTower
               , in  DynamicBuffer<DetectedChampionBuffer> detectedChampion
               , in  LocalTransform                        locTrans
-              , ref MinionAggroAnchor                           aggroAnchor
-              , EnabledRefRW<MinionAggroAnchor>                 anchorEnable
-              , EnabledRefRO<MinionAggroDisabling>              aggroDisable) {
+              , ref MinionAggroAnchor                     aggroAnchor
+              , EnabledRefRW<MinionAggroAnchor>           anchorEnable
+              , EnabledRefRO<MinionAggroDisabling>        aggroDisable) {
                 // Already have target
                 if (GameHelpers.IsTargetExists(aimedTarget.target, selectLookup)) return;
 
@@ -192,10 +189,10 @@ public static partial class MinionStateMove {
 
             [BurstCompile]
             public void Execute(
-                StateFilterAspect              _
-              , AimedTargetAspectRO            aimedTarget
+                StateFilterAspect                             _
+              , AimedTargetAspectRO                           aimedTarget
               , EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow
-              , in LocalTransform              locTrans) {
+              , in LocalTransform                             locTrans) {
                 autoFollow.ValueRW = aimedTarget.IsTargetExists(selectLookup);
             }
         }
@@ -217,6 +214,20 @@ public static partial class MinionStateMove {
                   > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos))
                     pathBuffer.PopFront();
                 desSetter.destination = pathBuffer[0].pos;
+            }
+        }
+
+        [BurstCompile]
+        private partial struct UpdateRotationDataJob : IJobEntity {
+            [BurstCompile]
+            public void Execute(
+                StateFilterAspect      _
+              , in  MovementStatistics moveStats
+              , ref RotationData       rotationData) {
+                if (math.abs(moveStats.estimatedVelocity.x)
+                  + math.abs(moveStats.estimatedVelocity.z)
+                  < 4) return;
+                rotationData.RotateTo(moveStats.estimatedVelocity.Quantizate3().xz);
             }
         }
     }

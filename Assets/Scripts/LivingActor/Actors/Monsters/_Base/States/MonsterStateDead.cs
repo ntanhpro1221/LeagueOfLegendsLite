@@ -1,6 +1,5 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Pathfinding;
-using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -60,7 +59,7 @@ public static partial class MonsterStateDead {
             private readonly RefRW<LocalTransform>     _LocalTrans;
             private readonly RefRO<JungleTeamTypeData> _TeamType;
             private readonly RefRO<DeadStateData>      _DeadStateData;
-            private readonly RefRW<MovementSettings>   _MoveSetting;
+            private readonly FixablePosSetterAspect    _FixSetter;
 
             [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
 
@@ -77,7 +76,7 @@ public static partial class MonsterStateDead {
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
             public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
-            public void     EnableMove()            => _MoveSetting.ValueRW.isStopped = false;
+            public void     EnableMove()            => _FixSetter.Release();
             public void     Destroy()               => _Destroyed.ValueRW = true;
 
             public void TrySpawnExtraMonster() {
@@ -115,7 +114,7 @@ public static partial class MonsterStateDead {
                 data.CurAnim = SharedAnimKey.Dead;
 
                 data.SetNullRespawnTick();
-                data.DisableMove();
+                data.DisableMoveAndAvoidance();
                 data.ResetLeashState();
                 data.UpdateUnderlingCountAndTryDivide(
                     leaderLookup
@@ -125,9 +124,10 @@ public static partial class MonsterStateDead {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<DeadStateData>    _DeadStateData;
-            private readonly RefRW<SharedAnimData>   _AnimData;
-            private readonly RefRW<MovementSettings> _MoveSetting;
+            private readonly RefRW<DeadStateData>   _DeadStateData;
+            private readonly RefRW<SharedAnimData>  _AnimData;
+            private readonly RefRO<LocalTransform>  _LocTrans;
+            private readonly FixablePosSetterAspect _FixSetter;
 
             private readonly MonsterCampRootRO _CampRoot;
 
@@ -143,8 +143,9 @@ public static partial class MonsterStateDead {
                 _DeadStateData.ValueRW.respawnAtTick = NetworkTick.Invalid;
             }
 
-            public void DisableMove() {
-                _MoveSetting.ValueRW.isStopped = true;
+            public void DisableMoveAndAvoidance() {
+                _FixSetter.FixAt(_LocTrans.ValueRO.Position, false);
+                
                 _AutoFollow.ValueRW            = false;
             }
 

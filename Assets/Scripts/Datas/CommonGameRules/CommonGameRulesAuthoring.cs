@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public struct CommonGameRulesData : IComponentData {
-    public int rotateSpeed;
+    public int entityRotateSpeed;
 }
 
 public class CommonGameRulesAuthoring : MonoBehaviour {
@@ -12,7 +12,7 @@ public class CommonGameRulesAuthoring : MonoBehaviour {
         public override void Bake(CommonGameRulesAuthoring authoring) {
             var eneity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(eneity, new CommonGameRulesData {
-                rotateSpeed = authoring.rotateSpeed
+                entityRotateSpeed = authoring.rotateSpeed
             });
         }
     }

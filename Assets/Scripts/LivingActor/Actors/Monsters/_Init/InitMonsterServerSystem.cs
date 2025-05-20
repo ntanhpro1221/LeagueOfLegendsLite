@@ -63,7 +63,6 @@ public partial struct InitMonsterServerSystem : ISystem {
           , ref HealthData                 health
           , ref LocalTransform             locTrans
           , ref MonsterControlFactor       controlFactor
-            , ref DestinationPoint desSetter
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled
           , in Entity                      entity) {
@@ -80,10 +79,6 @@ public partial struct InitMonsterServerSystem : ISystem {
                 anchorData = MonsterLeashAnchor.FromLocTrans(
                     locTrans = initTrans.Monster.Value[tag.id][teamType.team][0].ToLocTrans_Directly());
             
-            // set des and facing direction 
-            desSetter.destination     = locTrans.Position;
-            desSetter.facingDirection = locTrans.Forward().WithoutY();
-
             // init control factor
             controlFactor.leashRangeSqr = allMonsterData.Monsters[tag.id].leashRange.Sqr();
             controlFactor.respawnCDTick = allMonsterData.Monsters[tag.id].respawnCDTick;

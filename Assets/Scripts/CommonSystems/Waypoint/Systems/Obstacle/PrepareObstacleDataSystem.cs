@@ -34,7 +34,7 @@ public partial struct PrepareObstacleDataSystem : ISystem {
                 // Request obstacle when isn't moving and its position is valid
                 obstacleRequest.ValueRW =
                     moveRequester.IsMoveDone
-                 && !locTrans.Position.IsNaN();
+                 && !locTrans.Position.IsAnyNaN();
             }
         }
     }

@@ -45,14 +45,12 @@ public static partial class MinionStateIdle {
                   , health
                   , aimedTarget
                   , sharedState
-                  , desSetter
                   , attackData)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
-                    , RefRW<DestinationPoint>
                   , RefRO<AttackStateData>>()) {
                 bool targetExist  = aimedTarget.IsTargetExists(selectLookup);
                 bool attackCDDone = attackData.ValueRO.IsCooldownDone(curTick);
@@ -80,8 +78,6 @@ public static partial class MinionStateIdle {
                 else continue;
 
                 filter.MarkExitExecuted();
-                
-                desSetter.ValueRW.facingDirection = default;
             }
         }
     }
@@ -119,21 +115,17 @@ public static partial class MinionStateIdle {
             locTransLookup.Update(ref state);
 
             // ROTATE TO TARGET
-            foreach (var (
-                _
-              , desSetter
-              , target
-              , locTrans) in SystemAPI
+            foreach (var (_, rotationData, target, locTrans) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<DestinationPoint>
+                  , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
                 if (target.IsTargetExists(selectLookup))
-                    desSetter.ValueRW.facingDirection = (
-                            locTransLookup[target.Target].Position
-                          - locTrans.ValueRO.Position)
-                        .WithoutY();
+                    rotationData.ValueRW.RotateTo((
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position
+                    ).Quantizate3().xz);
         }
     }
 }
