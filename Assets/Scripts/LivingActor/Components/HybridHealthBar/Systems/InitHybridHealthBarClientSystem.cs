@@ -19,7 +19,7 @@ public partial struct InitHybridHealthBarClientSystem : ISystem {
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        var canvasRoot = MainCanvasRoot.Value;
+        var canvasRoot = MainCanvasRoot.Instance.RectTrans;
 
         foreach (var (
             spawnRequest
