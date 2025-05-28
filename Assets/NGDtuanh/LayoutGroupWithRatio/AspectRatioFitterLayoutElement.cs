@@ -154,8 +154,13 @@ public class AspectRatioFitterLayoutElement : UIBehaviour, ILayoutSelfController
 
         m_Tracker.Clear();
 
-        var groupTrans = (RectTransform)transform.parent;
-        var group = groupTrans.GetComponent<HorizontalOrVerticalLayoutGroupWithRatio>();
+        var groupTrans = transform.parent as RectTransform;
+        var group = groupTrans?.GetComponent<HorizontalOrVerticalLayoutGroupWithRatio>();
+        if (group == null) {
+            aspectMode = AspectMode.None;
+            return;
+        }
+
         float verMain = groupTrans.rect.height - VerticalPadding - group.padding.vertical;
         float horMain = groupTrans.rect.width - HorizontalPadding - group.padding.horizontal;
         switch (m_AspectMode) {
@@ -293,8 +298,8 @@ public class AspectRatioFitterLayoutElement : UIBehaviour, ILayoutSelfController
 
             m_ModeBool.target = m_AspectMode.intValue != 0;
 
+            EditorGUILayout.PropertyField(m_AspectRatio);
             if (EditorGUILayout.BeginFadeGroup(m_ModeBool.faded)) {
-                EditorGUILayout.PropertyField(m_AspectRatio);
                 if (aspectRatioFitter.aspectMode ==
                     AspectRatioFitterLayoutElement.AspectMode.WidthControlsHeight)
                     EditorGUILayout.PropertyField(m_HorizontalPadding);

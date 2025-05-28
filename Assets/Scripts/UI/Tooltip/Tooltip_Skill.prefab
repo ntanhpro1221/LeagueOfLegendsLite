@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ShowThreshold: 0
-  _HideThreshold: 0.2
+  _HideThreshold: 0
   _AnchorType: 1
   _MouseOffset: {x: 0, y: 0}
 --- !u!114 &6678079900625750120 stripped

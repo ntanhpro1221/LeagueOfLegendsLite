@@ -1,5 +1,6 @@
 using Unity.Entities;
 using Unity.NetCode;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct UpdatePlayerHUDClientSystem : ISystem {
@@ -16,52 +17,38 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
         ref var index      = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         foreach (var (
-            stats
-          , health
-          , mana
-          , level
-          , prevStateIsDead
-          , curDeadState
+            curDeadState
           , deadData
-            )in SystemAPI
+          , healthBarUpdateGenerator
+          , deadTrigger
+            ) in SystemAPI
             .Query<
-                DynamicBuffer<StatsBuffer>
-              , RefRO<HealthData>
-              , RefRO<ManaData>
-              , RefRO<LevelData>
-              , EnabledRefRW<PrevStateIsDead>
-              , EnabledRefRO<DeadState>
+                EnabledRefRO<DeadState>
               , RefRO<DeadStateData>
+              , HealthBarUpdateAspect
+              , DeadTriggerForUIData
             >().WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
             >().WithNone<
                 DummyTag
-            >().WithPresent<
-                PrevStateIsDead
-              , DeadState>()) {
+            >().WithPresent<DeadState>()) {
             // STATS
-            playerHUD.Stats.Update(stats, ref index);
-            playerHUD.Stats.UpdateCDReduce(333);
+            playerHUD.Stats.Update(healthBarUpdateGenerator.Stats, ref index);
+            playerHUD.Stats.UpdateCDReduce(333); 
 
             // HEALTH BAR
-            playerHUD.HealthBar.UpdateUI(
-                maxHealth: stats[index[StatsType.Health]].value
-              , curHealth: health.ValueRO.value
-              , curArmor: 0
-              , maxMana: stats[index[StatsType.Mana]].value
-              , curMana: mana.ValueRO.value
-              , curLevel: level.ValueRO.curLevel
-              , curExp: level.ValueRO.curExp
-              , requiredExp: requireExp.CalcRequireExpForNextLevel(level.ValueRO.curLevel));
+            playerHUD.HealthBar.UpdateUI(healthBarUpdateGenerator.GenerateUpdateData(
+                index[StatsType.Health]
+              , index[StatsType.Mana]
+              , requireExp));
 
             // DEAD EVENT
-            if (prevStateIsDead.ValueRO != curDeadState.ValueRO) {
-                if (curDeadState.ValueRO)
-                    playerHUD.DeadHandler.Dead(curTick, deadData.ValueRO.respawnAtTick);
-                else playerHUD.DeadHandler.Respawn();
-                prevStateIsDead.ValueRW = curDeadState.ValueRO;
-            } else if (curDeadState.ValueRO) playerHUD.DeadHandler.UpdateDead(curTick);
+            deadTrigger.UpdateHandler(
+                playerHUD.DeadHandler
+              , curTick
+              , deadData.ValueRO
+              , curDeadState);
         }
     }
 }

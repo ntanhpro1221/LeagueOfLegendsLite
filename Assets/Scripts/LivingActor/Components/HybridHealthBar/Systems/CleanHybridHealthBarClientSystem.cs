@@ -27,7 +27,10 @@ public partial struct CleanHybridHealthBarClientSystem : ISystem {
                 .Query<RefRO<HybridHealthBarData>>()
                 .WithNone<LocalTransform>()
                 .WithEntityAccess()) {
-            Object.Destroy(hybridData.ValueRO.transRef.Value.gameObject);
+            hybridData.ValueRO.dynamic.Destroy();
+            if (hybridData.ValueRO.sticky.initialized)
+                hybridData.ValueRO.sticky.Destroy();
+
             ecb.RemoveComponent<HybridHealthBarData>(entity);
         }
     }

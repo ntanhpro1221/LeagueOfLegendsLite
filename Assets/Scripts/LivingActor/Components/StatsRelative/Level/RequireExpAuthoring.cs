@@ -6,22 +6,23 @@ using UnityEngine;
 public struct RequireExpData : IComponentData {
     public BlobAssetReference<BubleArray<int>> _RequireExpRef;
 
-    public ref BubleArray<int> RequireExp => ref _RequireExpRef.Value;
-    public     int             MaxLevel   => _RequireExpRef.Value.Count;
+    public int MaxLevel => _RequireExpRef.Value.Count;
 
-    public int CalcRequireExpForNextLevel(int curLevel) {
+    public readonly int CalcRequireExpForNextLevel(int curLevel) {
+        ref var requireExp = ref _RequireExpRef.Value;
+
         --curLevel; // buffer start from 0 but level start from 1
 
         // invalid level
-        if (curLevel >= RequireExp.Count
+        if (curLevel >= requireExp.Count
          || curLevel < 0) {
             Debug.LogError("Invalid level to calculate require exp");
             return 0;
         }
 
-        return RequireExp[curLevel];
+        return requireExp[curLevel];
     }
-}
+} 
 
 public class RequireExpAuthoring : MonoBehaviour {
     public List<int> requireExp;

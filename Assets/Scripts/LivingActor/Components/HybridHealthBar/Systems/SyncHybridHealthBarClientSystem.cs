@@ -1,7 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
+using Unity.NetCode;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -10,67 +10,55 @@ using UnityEngine;
 public partial struct SyncHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<RequireExpData>();
         state.RequireForUpdate<EnumIndexData>();
+        state.RequireForUpdate<NetworkTime>();
     }
 
     public void OnUpdate(ref SystemState state) {
         using EntityCommandBuffer ecb = new(Allocator.Temp);
 
         var     cam            = Camera.main;
+        var     requireExp     = SystemAPI.GetSingleton<RequireExpData>();
+        var     curTick        = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
         var     healthId       = statsEnumIndex[StatsType.Health];
         var     manaId         = statsEnumIndex[StatsType.Mana];
 
         foreach (var data in SystemAPI.Query<UpdateAspect>()) {
-            data.HybridPos = cam!
-                .WorldToScreenPoint(data.LocPos.WithAddY(data.DeltaY))
-                .WithoutZ();
+            var uiUpdateData = data.HealthBarUpdateAspect.GenerateUpdateData(healthId, manaId, requireExp);
 
-            data.UI.UpdateUI(
-                maxHealth: data.MaxHealth(healthId)
-              , curHealth: data.CurHealth
-              , curArmor: 0
-              , maxMana: data.MaxMana(manaId)
-              , curMana: data.CurMana
-              , curLevel: data.CurLevel);
-            
-            data.SyncHealthBarVisible();
+            data.DynamicUI.Update(
+                uiUpdateData
+              , data.LocTrans
+              , data.HealthBarVisible.ValueRO
+              , cam);
+
+            if (data.HaveStickyUI) {
+                data.StickyUI.Update(uiUpdateData, data.DeadTriggerUI.ValueRO
+                  , curTick, data.DeadData.ValueRO, data.DeadState);
+            }
         }
 
         ecb.Playback(state.EntityManager);
     }
 
     private readonly partial struct UpdateAspect : IAspect {
-        private const float DEFAULT_OPTIONAL_FLOAT = 1;
-        private const int   DEFAULT_OPTIONAL_INT   = 1;
-
         private readonly RefRO<HybridHealthBarData> _HybridData;
-        private readonly RefRO<HealthData>          _HealthData;
         private readonly RefRO<LocalTransform>      _LocTrans;
 
-        [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+        public readonly HealthBarUpdateAspect HealthBarUpdateAspect;
 
-        [Optional] private readonly RefRO<ManaData>               _ManaData;
-        [Optional] private readonly RefRO<LevelData>              _LevelData;
+        public readonly RefRO<DeadStateData> DeadData;
         
-        [Optional] private readonly EnabledRefRO<HybridHealthBarVisible> _HealthBarVisible;
+        [Optional] public readonly EnabledRefRO<HybridHealthBarVisible> HealthBarVisible;
+        [Optional] public readonly EnabledRefRO<DeadState>              DeadState;
+        [Optional] public readonly RefRO<DeadTriggerForUIData>          DeadTriggerUI;
 
-        public Vector3 HybridPos {
-            set => _HybridData.ValueRO.transRef.Value.position = value;
-        }
+        public bool HaveStickyUI => _HybridData.ValueRO.sticky.initialized;
 
-        public float       DeltaY => _HybridData.ValueRO.deltaY;
-        public float3      LocPos => _LocTrans.ValueRO.Position;
-        public HealthBarUI UI     => _HybridData.ValueRO.UIRef.Value;
-
-        public float MaxHealth(int healthId) => _Stats[healthId].value;
-        public float MaxMana(int   manaId)   => _ManaData.IsValid ? _Stats[manaId].value : DEFAULT_OPTIONAL_FLOAT;
-
-        public void SyncHealthBarVisible() => _HybridData.ValueRO.transRef.Value.gameObject.SetActive(
-            _HealthBarVisible.ValueRO);
-
-        public float CurHealth => _HealthData.ValueRO.value;
-        public float CurMana   => _ManaData.IsValid ? _ManaData.ValueRO.value : DEFAULT_OPTIONAL_FLOAT;
-        public int   CurLevel  => _LevelData.IsValid ? _LevelData.ValueRO.curLevel : DEFAULT_OPTIONAL_INT;
+        public ref readonly HybridHealthBarData.Dynamic DynamicUI => ref _HybridData.ValueRO.dynamic;
+        public ref readonly HybridHealthBarData.Sticky  StickyUI  => ref _HybridData.ValueRO.sticky;
+        public ref readonly LocalTransform              LocTrans  => ref _LocTrans.ValueRO;
     }
 }

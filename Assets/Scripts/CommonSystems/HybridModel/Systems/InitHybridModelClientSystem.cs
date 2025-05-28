@@ -7,9 +7,6 @@ using UnityEngine;
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 public partial struct InitHybridModelClientSystem : ISystem {
-    private static readonly Color AllyHighlightColor  = Color.blue;
-    private static readonly Color EnemyHighlightColor = Color.red;
-
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
@@ -25,28 +22,14 @@ public partial struct InitHybridModelClientSystem : ISystem {
         var myTeam = SystemAPI.GetSingleton<BattleInitData>().teamType;
 
         foreach (var (
-            spawnRequest
-          , teamType
-          , entity) in SystemAPI
-            .Query<
-                RefRO<HybridModelInitRequest>
-              , RefRO<TeamTypeData>>()
+            data
+          , entity
+            ) in SystemAPI
+            .Query<UpdateAspect>()
             .WithEntityAccess()) {
+            var hybridData = new HybridModelData();
 
-            // spawn
-            var model = Object.Instantiate(spawnRequest.ValueRO.prefabRef.Value);
-
-            // Link model with HybridModelData
-            var hybridData = new HybridModelData {
-                transformRef    = model.transform
-              , animCtrlRef     = model.GetComponentInChildren<SharedAnimController>()
-              , outlineRef      = model.GetComponentInChildren<Outline>()
-              , skillPreviewRef = model.GetComponentInChildren<SkillPreviewShower>()
-              , rotateRef       = model.GetComponentInChildren<RotationController>()
-            };
-            hybridData.outlineRef.Value.OutlineColor = teamType.ValueRO.team == myTeam
-                ? AllyHighlightColor
-                : EnemyHighlightColor;
+            hybridData.InitRealModel(data, data.TeamData.ValueRO.team == myTeam);
 
             // Set render queue of my champion
             if (SystemAPI.HasComponent<GhostOwnerIsLocal>(entity)
@@ -63,5 +46,12 @@ public partial struct InitHybridModelClientSystem : ISystem {
             // remove need spawn tag
             ecb.RemoveComponent<HybridModelInitRequest>(entity);
         }
+    }
+
+    public readonly partial struct UpdateAspect : IAspect {
+        public readonly RefRO<HybridModelInitRequest> SpawnRequest;
+        public readonly RefRO<TeamTypeData>           TeamData;
+
+        [Optional] public readonly RefRO<ChampionTag> ChampTag;
     }
 }

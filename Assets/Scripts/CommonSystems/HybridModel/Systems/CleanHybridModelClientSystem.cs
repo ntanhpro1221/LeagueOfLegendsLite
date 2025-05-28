@@ -26,7 +26,7 @@ public partial struct CleanHybridModelClientSystem : ISystem {
             .Query<RefRO<HybridModelData>>()
             .WithNone<LocalTransform>()
             .WithEntityAccess()) {
-            Object.Destroy(hybridData.ValueRO.transformRef.Value.gameObject);
+            hybridData.ValueRO.Destroy();
             ecb.RemoveComponent<HybridModelData>(entity);
         }
     }

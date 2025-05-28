@@ -10,6 +10,7 @@ using UnityEngine;
 public partial struct InitHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<BattleInitData>();
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<HybridHealthBarInitRequest>();
     }
@@ -19,23 +20,22 @@ public partial struct InitHybridHealthBarClientSystem : ISystem {
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        var canvasRoot = MainCanvasRoot.Instance.RectTrans;
+        TeamType localTeam = SystemAPI.GetSingleton<BattleInitData>().teamType;
 
         foreach (var (
-            spawnRequest
+            data
           , entity) in SystemAPI
-            .Query<RefRO<HybridHealthBarInitRequest>>()
+            .Query<UpdateAspect>()
             .WithEntityAccess()) {
+            var hybridData = new HybridHealthBarData();
 
-            // spawn
-            var healthBar = Object.Instantiate(spawnRequest.ValueRO.healthBarPrefab.Value, canvasRoot);
+            hybridData.dynamic.Init(data.SpawnRequest.ValueRO);
 
-            // Link healthBar with HybridHealthBarData
-            var hybridData = new HybridHealthBarData {
-                deltaY   = spawnRequest.ValueRO.deltaY
-              , transRef = healthBar.transform as RectTransform
-              , UIRef    = healthBar.GetComponent<HealthBarUI>()
-            };
+            if (data.NeedSpawnStickyBar)
+                hybridData.sticky.Init(
+                    data.TeamData.ValueRO.team == localTeam
+                  , data.ChampTag.ValueRO.id);
+
             if (SystemAPI.HasComponent<HybridHealthBarData>(entity))
                 ecb.SetComponent(entity, hybridData);
             else ecb.AddComponent(entity, hybridData);
@@ -43,5 +43,17 @@ public partial struct InitHybridHealthBarClientSystem : ISystem {
             // remove need spawn tag 
             ecb.RemoveComponent<HybridHealthBarInitRequest>(entity);
         }
+    }
+
+    private readonly partial struct UpdateAspect : IAspect {
+        public readonly RefRO<HybridHealthBarInitRequest> SpawnRequest;
+        public readonly RefRO<TeamTypeData>               TeamData;
+
+        [Optional] public readonly RefRO<ChampionTag> ChampTag;
+        [Optional] public readonly RefRO<DummyTag>    DummyTag;
+
+        public bool NeedSpawnStickyBar =>
+            ChampTag.IsValid
+         && !DummyTag.IsValid;
     }
 }

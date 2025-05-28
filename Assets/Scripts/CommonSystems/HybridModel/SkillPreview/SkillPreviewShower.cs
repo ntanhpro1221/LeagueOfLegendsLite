@@ -14,21 +14,21 @@ public class SkillPreviewShower : MonoBehaviour {
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    public void Sync(SkillPreviewType type, SkillPreviewColor color, Vector2 scale) {
+    public void Sync(in SkillPreviewData data) {
         // nothing to update
-        if (type == prevType && color == prevColor) return;
-        prevType  = type;
-        prevColor = color;
+        if (data.type == prevType && data.color == prevColor) return;
+        prevType  = data.type;
+        prevColor = data.color;
 
         // update enable state
-        if (meshRenderer.enabled != (type != SkillPreviewType.None))
+        if (meshRenderer.enabled != (data.type != SkillPreviewType.None))
             meshRenderer.enabled = !meshRenderer.enabled;
 
         // none => do nothing (already disable above)
-        if (type == SkillPreviewType.None) return;
+        if (data.type == SkillPreviewType.None) return;
 
         // update visual
-        meshRenderer.transform.localScale = new(scale.x, scale.y, 1);
-        meshRenderer.material             = Materials[type][color];
+        meshRenderer.transform.localScale = new(data.scale.x, data.scale.y, 1);
+        meshRenderer.material             = Materials[data.type][data.color];
     }
 }

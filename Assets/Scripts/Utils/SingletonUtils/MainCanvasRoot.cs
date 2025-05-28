@@ -2,7 +2,10 @@ using NGDtuanh.Singleton;
 using UnityEngine;
 
 public class MainCanvasRoot : SceneSingleton<MainCanvasRoot> {
-    public RectTransform RectTrans;
+    [field: SerializeField]
+    public RectTransform HealthBarRoot { get; private set; }
+    
+    public RectTransform RectTrans     { get; private set; }
 
     protected override void OnTouched() {
         base.OnTouched();

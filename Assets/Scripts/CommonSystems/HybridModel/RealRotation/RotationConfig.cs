@@ -6,5 +6,5 @@ public class RotationConfig : SceneSingleton<RotationConfig> {
     /// Degree per second
     /// </summary>
     [Tooltip("Degree per second")]
-    public float speed = 300;
+    public float speed = 777;
 }

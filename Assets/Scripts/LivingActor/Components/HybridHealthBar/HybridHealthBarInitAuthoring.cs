@@ -5,7 +5,7 @@ using UnityEngine;
 [GhostComponent(PrefabType = GhostPrefabType.Client)]
 public struct HybridHealthBarInitRequest : IComponentData {
     public float                      deltaY;
-    public UnityObjectRef<GameObject> healthBarPrefab;
+    public UnityObjectRef<GameObject> dynamicHealthBarPrefab;
 }
 
 [GhostEnabledBit]
@@ -22,7 +22,7 @@ public class HybridHealthBarInitAuthoring : MonoBehaviour {
 
             AddComponent(entity, new HybridHealthBarInitRequest {
                 deltaY          = authoring.deltaY
-              , healthBarPrefab = authoring.healthBarPrefab
+              , dynamicHealthBarPrefab = authoring.healthBarPrefab
             });
             AddComponent<HybridHealthBarVisible>(entity);
         }

@@ -89,4 +89,6 @@ public static class VectorExtensions {
 
     public static bool IsPositiveInfinity_X(this Vector3 source) =>
         float.IsPositiveInfinity(source.x);
+
+    public static Vector2 XZ(this Vector3 source) => new(source.x, source.z);
 }

@@ -1,31 +1,46 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using NGDtuanh.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour {
-    public void UpdateUI(
-        float maxHealth
-      , float curHealth
-      , float curArmor
-      , float maxMana
-      , float curMana
-      , int   curLevel
-      , float curExp                 = 5
-      , float requiredExp            = 10
-      , bool  ignoreLostHealthEffect = false) {
-        SetHealth(maxHealth, curHealth, curArmor, ignoreLostHealthEffect);
-        SetMana(maxMana, curMana);
-        SetLevel(curLevel, curExp, requiredExp);
+    public struct UpdateData {
+        public float maxHealth;
+        public float curHealth;
+        public float curArmor;
+        public float maxMana;
+        public float curMana;
+        public int   curLevel;
+        public float curExp;
+        public float requiredExp;
+        public bool  ignoreLostHealthEffect;
+    }
+
+    public void UpdateUI(in UpdateData updateData) {
+        SetHealth(
+            updateData.maxHealth
+          , updateData.curHealth
+          , updateData.curArmor
+          , updateData.ignoreLostHealthEffect);
+        SetMana(
+            updateData.maxMana
+          , updateData.curMana);
+        SetLevel(
+            updateData.curLevel
+          , updateData.curExp
+          , updateData.requiredExp);
     }
 
     private void Awake() {
-        LostHealthTween = LostHealth
-            .DOFillAmount(Armor.fillAmount, LostHealthDuration)
-            .SetEase(Ease.InCubic)
-            .SetAutoKill(false);
+        if (LostHealth != null)
+            LostHealthTween = LostHealth
+                .DOFillAmount(Armor.fillAmount, LostHealthDuration)
+                .SetEase(Ease.InCubic)
+                .SetAutoKill(false);
     }
 
 #region HEALTH
@@ -38,6 +53,8 @@ public class HealthBarUI : MonoBehaviour {
     [SerializeField] private float           LostHealthDuration;
     [SerializeField] private TextMeshProUGUI HealthText;
 
+    private float prevMaxHealthArmorFill;
+
     private TweenerCore<float, float, FloatOptions> LostHealthTween;
 
     private void SetHealth(
@@ -46,19 +63,24 @@ public class HealthBarUI : MonoBehaviour {
       , float curArmor
       , bool  ignoreLostHealthEffect) {
 
-        float maxHealthWithArmor = Mathf.Max(maxHealth, curHealth + curArmor);
-        float prevArmorFill      = Armor.fillAmount;
+        float maxHealthWithArmor    = Mathf.Max(maxHealth, curHealth + curArmor);
+        float curMaxHealthArmorFill = 0;
 
-        if (Health != null) Health.fillAmount = curHealth              / maxHealthWithArmor;
-        if (Armor  != null) Armor.fillAmount  = (curHealth + curArmor) / maxHealthWithArmor;
+        if (Health != null) curMaxHealthArmorFill = Health.fillAmount = curHealth              / maxHealthWithArmor;
+        if (Armor  != null) curMaxHealthArmorFill = Armor.fillAmount  = (curHealth + curArmor) / maxHealthWithArmor;
 
-        if (ignoreLostHealthEffect) {
-            if (LostHealthTween.IsActive()) LostHealthTween.Complete();
-            if (LostHealth != null) LostHealth.fillAmount = Armor.fillAmount;
-        } else if (Mathf.Abs(prevArmorFill - Armor.fillAmount) > Mathf.Epsilon)
-            LostHealthTween.ChangeValues(prevArmorFill, Armor.fillAmount).Restart();
+        if (LostHealthTween != null) {
+            if (ignoreLostHealthEffect) {
+                if (LostHealthTween.IsActive()) LostHealthTween.Complete();
+                // No need to check null because losthealthtween != null
+                LostHealth.fillAmount = curMaxHealthArmorFill;
+            } else if (Mathf.Abs(prevMaxHealthArmorFill - curMaxHealthArmorFill) > Mathf.Epsilon)
+                LostHealthTween.ChangeValues(prevMaxHealthArmorFill, curMaxHealthArmorFill).Restart();
+        }
 
         if (HealthText != null) HealthText.text = $"{(int)curHealth} / {(int)maxHealth}";
+
+        prevMaxHealthArmorFill = curMaxHealthArmorFill;
     }
 
 #endregion
@@ -72,7 +94,7 @@ public class HealthBarUI : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI ManaText;
 
     private void SetMana(float maxMana, float curMana) {
-        if (Mana     != null) Mana.fillAmount = curMana / maxMana;
+        if (Mana     != null) Mana.fillAmount = curMana / Mathf.Max(1, maxMana);
         if (ManaText != null) ManaText.text   = $"{(int)curMana} / {(int)maxMana}";
     }
 
@@ -96,6 +118,6 @@ public class HealthBarUI : MonoBehaviour {
 #endregion
 
     private void OnDestroy() {
-        LostHealthTween.Kill();
+        LostHealthTween?.Kill();
     }
 }

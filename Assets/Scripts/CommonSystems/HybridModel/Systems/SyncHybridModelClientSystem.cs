@@ -1,91 +1,64 @@
-﻿using Unity.Burst;
-using Unity.Entities;
+﻿using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct SyncHybridModelClientSystem : ISystem {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate<InputDirtyData>();
-    }
-
     public void OnUpdate(ref SystemState state) {
-        SyncAnim_TransHighlight(ref state);
+        state.CompleteDependency();
+
+        UpdateModel(ref state);
         SyncSkillPreview_Turret(ref state);
         SyncSkillPreview_OwnChamp(ref state);
     }
 
-    private void SyncAnim_TransHighlight(ref SystemState state) {
-        foreach (var (
-                hybridData
-              , animData
-              , locTrans
-                , rotationData
-              , highlightData
-              , highlightVisible)
-            in SystemAPI.Query<
-                    RefRO<HybridModelData>
-                  , RefRW<SharedAnimData>
-                  , RefRO<LocalTransform>
-                  , RefRO<RotationData>
-                  , RefRO<HighlightData>
-                  , EnabledRefRO<HighlightVisible>>()
-                .WithPresent<HighlightVisible>()
-                .WithNone<NeedInitTag>()) {
-            var trans    = hybridData.ValueRO.transformRef.Value;
-            var animCtrl = hybridData.ValueRO.animCtrlRef.Value;
-            var outline  = hybridData.ValueRO.outlineRef.Value;
-            var rotation = hybridData.ValueRO.rotateRef.Value;
-
-            // POSITION
-            if (!locTrans.ValueRO.Position.IsAnyNaN()) trans.position = locTrans.ValueRO.Position;
-            
-            // ROTATION
-            rotation.RotateTo(rotationData.ValueRO.rotation);
-
-            // ANIMATION
-            animCtrl.SyncAnim(
-                animData.ValueRO.curAnim
-              , animData.ValueRW.currentSessionToRestart
-              , animData.ValueRO.hardCutAnim);
-
-            // HIGHLIGHT
-            bool isHighlightNow =
-                highlightData.ValueRO.isHighlighted
-             && highlightVisible.ValueRO;
-            if (isHighlightNow != outline.enabled)
-                outline.enabled = isHighlightNow;
-        }
+    private void UpdateModel(ref SystemState state) {
+        foreach (var data in SystemAPI.Query<UpdateModelAspect>())
+            data.HybridData.ValueRO.UpdateModel(data);
     }
 
     private void SyncSkillPreview_Turret(ref SystemState state) {
         foreach (var data in SystemAPI
-            .Query<SyncSkillPreviewAspect>()
+            .Query<UpdateSkillPreviewAspect>()
             .WithAll<TurretTag>())
-            data.Sync();
+            data.Update();
     }
 
     private void SyncSkillPreview_OwnChamp(ref SystemState state) {
         foreach (var data in SystemAPI
-            .Query<SyncSkillPreviewAspect>()
+            .Query<UpdateSkillPreviewAspect>()
             .WithAll<
                 ChampionTag
               , GhostOwnerIsLocal>())
-            data.Sync();
+            data.Update();
     }
 
-    private readonly partial struct SyncSkillPreviewAspect : IAspect {
+    public readonly partial struct UpdateModelAspect : IAspect {
+        public readonly RefRO<HybridModelData> HybridData;
+
+        private readonly RefRO<SharedAnimData> _AnimData;
+        private readonly RefRO<LocalTransform> _LocTrans;
+        private readonly RefRO<RotationData>   _RotationData;
+        private readonly RefRO<HighlightData>  _HighlightData;
+
+        [Optional] private readonly EnabledRefRO<HighlightVisible> _HighlightTrigger;
+
+        [Optional] public readonly RefRO<SkillPreviewData> PreviewData;
+
+        public ref readonly float3         Pos  => ref _LocTrans.ValueRO.Position;
+        public ref readonly floatXZ_Q3     Rot  => ref _RotationData.ValueRO.rotation;
+        public ref readonly SharedAnimData Anim => ref _AnimData.ValueRO;
+
+        public bool IsHighlighting =>
+            _HighlightData.ValueRO.isHighlighted
+         && _HighlightTrigger.ValueRO;
+    }
+
+    private readonly partial struct UpdateSkillPreviewAspect : IAspect {
         private readonly RefRO<HybridModelData>  _HybridData;
         private readonly RefRO<SkillPreviewData> _SkillPreviewData;
 
-        public void Sync() {
-            _HybridData.ValueRO.skillPreviewRef.Value.Sync(
-                _SkillPreviewData.ValueRO.type
-              , _SkillPreviewData.ValueRO.color
-              , _SkillPreviewData.ValueRO.scale);
-        }
+        public void Update() => _HybridData.ValueRO.skillPreviewRef.Value.Sync(_SkillPreviewData.ValueRO);
     }
 }
