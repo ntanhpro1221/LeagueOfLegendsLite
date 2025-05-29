@@ -4,6 +4,7 @@ namespace NGDtuanh.Collections {
     public class CovDictionary<TKey, TValue> :
         Dictionary<TKey, TValue>
       , ICovKVPCollection<TKey, TValue> {
+        public CovDictionary() { }
         public CovDictionary(Dictionary<TKey, TValue> source) : base(source) { }
 
         IEnumerator<ICovKVP<TKey, TValue>> IEnumerable<ICovKVP<TKey, TValue>>.GetEnumerator() {

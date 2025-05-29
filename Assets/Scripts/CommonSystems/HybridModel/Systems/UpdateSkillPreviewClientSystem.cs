@@ -53,7 +53,7 @@ public partial struct UpdateSkillPreviewClientSystem : ISystem {
             // Update own champ preview
             UpdateOwnChamp(
                 ref skillPreview.ValueRW
-              , SystemAPI.GetSingleton<InputDirtyData>().a_key
+              , SystemAPI.GetSingleton<InputDirtyData>().key_a
               , stats[attackRangeId].value);
         }
     }

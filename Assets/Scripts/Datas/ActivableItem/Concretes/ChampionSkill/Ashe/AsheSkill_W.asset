@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463df38d9dfea8c9d831fdc9f61e6f0f, type: 3}
+  m_Name: AsheSkill_W
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 21300000, guid: 18397e51bac0bed3cbae55f4644f358e, type: 3}
+  itemName: Volley
+  description: '<b>ACTIVE</b>: Ashe shoots a volley of arrows in a cone in the target
+    direction, each dealing <color=#ec8d34>physical damage</color> to the first enemy
+    hit, and applying Critical Slow Critical Slow to enemy champions hit.'
+  details: 'Damage: {{$damage}} (+100% AD)
+
+    Arrow amount: {{$arrowAmount}}'
+  activationCondition:
+    pointToTarget: 0
+    pointToWalkable: 0
+  maxLevel: 5
+  leveledData_Common:
+  - cooldownTime:
+      value: 18000
+    cost:
+      mana:
+        value: 75000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 14500
+    cost:
+      mana:
+        value: 70000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 11000
+    cost:
+      mana:
+        value: 65000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 7500
+    cost:
+      mana:
+        value: 60000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 4000
+    cost:
+      mana:
+        value: 55000
+      health:
+        value: 0
+  leveledData_Concrete:
+    _Keys: 0000000001000000
+    _Values:
+    - _Value:
+      - value: 20000
+      - value: 35000
+      - value: 50000
+      - value: 65000
+      - value: 80000
+    - _Value:
+      - value: 7000
+      - value: 8000
+      - value: 9000
+      - value: 10000
+      - value: 11000
+    _KeyNames:
+    - damage
+    - arrowAmount
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1
+  prefab_Concrete:
+    _Keys: 00000000
+    _Values:
+    - _Value: {fileID: 5267929586778141670, guid: be58a3d89102f1c4488d52074278441d, type: 3}
+    _KeyNames:
+    - arrow
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1

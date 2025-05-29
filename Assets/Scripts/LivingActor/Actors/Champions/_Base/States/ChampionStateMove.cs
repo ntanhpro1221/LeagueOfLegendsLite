@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -82,8 +83,8 @@ public static partial class ChampionStateMove {
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
 
-            public bool HaveCancelMoveRequest => input.ValueRO.cancelMoveEvent.IsSet;
-            
+            public bool HaveCancelMoveRequest => input.ValueRO.triggers.Event.CancelMove.IsSet;
+
             public void StopMove() {
                 moveRequester.SyncFromLocTrans(localTrans.ValueRO);
 
@@ -123,29 +124,34 @@ public static partial class ChampionStateMove {
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
 
+            var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+
             foreach (var (
                     _
                   , moveRequester
                   , aimedTarget
-                  , input
                   , autoFollowTarget
-                  , locTrans)
+                  , locTrans
+                  , input
+                  , inputPrevCode)
                 in SystemAPI
                     .Query<
                         StateFilterAspect
                       , MoveRequesterAspect
                       , AimedTargetAspectRO
-                      , RefRO<PlayerInputData>
                       , EnabledRefRW<AutoFollowTarget>
-                      , RefRO<LocalTransform>>()
+                      , RefRO<LocalTransform>
+                      , RefRO<PlayerInputData>
+                      , RefRO<PlayerInputPrevCode>>()
                     .WithPresent<AutoFollowTarget>()) {
 
                 // Try move to aimed target
                 autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(selectLookup);
 
+                var prevCode = inputPrevCode.ValueRO;
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO
-                 && moveRequester.NeedRecalculatePath(input.ValueRO.moveLocTarget))
+                 && input.ValueRO.GetFullWithTick(PlayerTrigger.Key.Move, ref prevCode, curTick))
                     moveRequester.MoveSmartTo(input.ValueRO.moveLocTarget, locTrans.ValueRO);
             }
         }

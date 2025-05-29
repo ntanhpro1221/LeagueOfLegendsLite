@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8a476d6d16b4d198c5a69729730de3, type: 3}
+  m_Name: AsheSkill_E
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 21300000, guid: 06e0a87a94023b749b3f7f2ed76a258f, type: 3}
+  itemName: Hawkshot
+  description: '<b>ACTIVE</b>: Ashe sends a hawk spirit toward the target location,
+    granting  sight of the area along its path repeatedly for 0.5 seconds after every
+    100 units traveled and at its destination for 5 seconds.'
+  details: 
+  activationCondition:
+    pointToTarget: 0
+    pointToWalkable: 0
+  maxLevel: 5
+  leveledData_Common:
+  - cooldownTime:
+      value: 90000
+    cost:
+      mana:
+        value: 0
+      health:
+        value: 0
+  - cooldownTime:
+      value: 80000
+    cost:
+      mana:
+        value: 0
+      health:
+        value: 0
+  - cooldownTime:
+      value: 70000
+    cost:
+      mana:
+        value: 0
+      health:
+        value: 0
+  - cooldownTime:
+      value: 60000
+    cost:
+      mana:
+        value: 0
+      health:
+        value: 0
+  - cooldownTime:
+      value: 50000
+    cost:
+      mana:
+        value: 0
+      health:
+        value: 0
+  leveledData_Concrete:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1
+  prefab_Concrete:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1

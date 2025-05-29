@@ -27,6 +27,7 @@ public partial struct InputCastUpdateSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<InputCastData>();
         state.RequireForUpdate<InputDirtyData>();
         state.RequireForUpdate<PhysicsWorldSingleton>();
         state.RequireForUpdate(ownChampQuery = SystemAPI.QueryBuilder()
@@ -37,7 +38,6 @@ public partial struct InputCastUpdateSystem : ISystem {
             .WithNone<DummyTag>()
             .Build());
 
-        state.EntityManager.CreateSingleton<InputCastData>();
         castGroundActorResult = new NativeList<RaycastHit>(Allocator.Persistent);
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
             isReadOnly: true);
@@ -54,8 +54,8 @@ public partial struct InputCastUpdateSystem : ISystem {
         var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
         castGroundActorResult.Clear();
         if (!collisionWorld.CastRay(new RaycastInput {
-            Start  = rayData.rayStart
-          , End    = rayData.rayEnd
+            Start  = rayData.mouse_ray_start
+          , End    = rayData.mouse_ray_end
           , Filter = filterGroundActor
         }, ref castGroundActorResult)) return;
 

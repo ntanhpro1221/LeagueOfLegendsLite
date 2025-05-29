@@ -60,7 +60,7 @@ public static partial class ChampionStateIdle {
                 // MOVE STATE
                 else if (
                     // Have move request
-                    input.ValueRO.moveEvent.IsSet
+                    input.ValueRO.triggers.Event.Move.IsSet
                     // Need move to target
                  || aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
                     sharedState.SetMove();

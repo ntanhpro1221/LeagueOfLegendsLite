@@ -3,15 +3,14 @@ using Unity.Entities;
 using UnityEngine;
 
 public class AllItemAuthoring : MonoBehaviour {
-    public AllItemDataSO itemsSO;
-
+    public DataSOReader soReader;
+    
     private class Baker : Baker<AllItemAuthoring> {
         public override void Bake(AllItemAuthoring authoring) {
-            if (authoring.itemsSO == null) return;
-            Entity entity = GetEntity(TransformUsageFlags.None);
+            var entity = GetEntity(TransformUsageFlags.None);
             
             AllItemData data = new();
-            authoring.itemsSO.value.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
+            authoring.soReader.Item.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
             AddComponent(entity, data);
         }
     }

@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,11 +20,11 @@ using Unity.Entities;
 using UnityEngine;
 
 public struct EnumIndexData : IComponentData {{
-{string.Join("\n", enumNames.Select(name =>
-    $"\tpublic BlobAssetReference<BubleEnMap<{name}, int>> _{name}Ref;"))}
+{string.Join("\n", enumNames.Select(pathName =>
+    $"\tpublic BlobAssetReference<BubleEnMap<{pathName.Item1}, int>> _{pathName.Item2}Ref;"))}
 
-{string.Join("\n", enumNames.Select(name =>
-    $"\tpublic ref BubleEnMap<{name}, int> {name} => ref _{name}Ref.Value;"))}
+{string.Join("\n", enumNames.Select(pathName =>
+    $"\tpublic ref BubleEnMap<{pathName.Item1}, int> {pathName.Item2} => ref _{pathName.Item2}Ref.Value;"))}
 }}
 
 public class EnumIndexAuthoring : MonoBehaviour {{
@@ -32,21 +33,23 @@ public class EnumIndexAuthoring : MonoBehaviour {{
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             var data   = new EnumIndexData();
 
-{string.Join("\n", enumNames.Select(name =>
-    $"\t\t\tCreateEnumIndex(out data._{name}Ref);"))}
+{string.Join("\n", enumNames.Select(pathName =>
+    $"\t\t\tCreateEnumIndex(out data._{pathName.Item2}Ref);"))}
 
             AddComponent(entity, data);
         }}
 
-        private void CreateEnumIndex<TKey>(
-            out BlobAssetReference<BubleEnMap<TKey, int>> result)
+        private void CreateEnumIndex<TKey>(out BlobAssetReference<BubleEnMap<TKey, int>> result)
             where TKey : unmanaged, Enum {{
-            var enumMap = new CovEnumMap<TKey, int>();
-            int                   curId   = -1;
-            foreach (var key in enumMap.Keys)
-                enumMap[key] = ++curId;
-            enumMap.CreateBlobAssetReferenceInBaker(out result, this, out _);
+            GetIndexMap<TKey>().CreateBlobAssetReferenceInBaker(out result, this, out _);
         }}
+    }}
+    public static CovEnumMap<TKey, int> GetIndexMap<TKey>() where TKey : unmanaged, Enum {{
+        var enumMap = new CovEnumMap<TKey, int>();
+        int curId   = -1;
+        foreach (var key in enumMap.Keys)
+            enumMap[key] = ++curId;
+        return enumMap;
     }}
 }}";
 
@@ -55,11 +58,17 @@ public class EnumIndexAuthoring : MonoBehaviour {{
         AssetHelper.SafeWriteToFile(path, content);
     }
 
-    private static List<string> GetAllEnumNames() => Assembly
-        .GetExecutingAssembly()
-        .GetTypes()
-        .Where(item => item.IsEnum && !item.IsNested)
-        .Select(item => item.Name)
-        .ToList();
+    private static List<(string, string)> GetAllEnumNames() => Assembly
+        .GetExecutingAssembly().GetTypes()
+        .Where(item => Attribute.IsDefined(item, typeof(GenerateIndexAttribute)))
+        .Select(item => {
+            var names = new List<string>();
+
+            do names.Add(item.Name);
+            while ((item = item.DeclaringType) != null);
+
+            names.Reverse();
+            return (string.Join('.', names), string.Join('_', names));
+        }).ToList();
 }
 #endif

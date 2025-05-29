@@ -2,6 +2,7 @@
 using System.Linq;
 using NGDtuanh.Collections;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -14,17 +15,22 @@ namespace NGDtuanh.BubleAsset {
         /// When you already have builder and constructed root of BlobHashMap. <br/>
         /// It just helps you allocate and then loops through source and set value to your root.
         /// </summary>
+        [BurstCompile]
         public static void SetMap<TKey, TValue>(
             this ref BlobBuilder           builder
           , ref      BlobMap<TKey, TValue> map
           , ref      BlobMap<TKey, TValue> source)
             where TKey : unmanaged, IEquatable<TKey>
             where TValue : struct, IBlobBuildableSelf<TValue> {
+            var sourceKeys = new NativeArray<TKey>(source.Count, Allocator.Temp);
 
-            var sourceKeys     = source.Select(item => item.Key).ToList();
+            for (int i = 0; i < source.Count; ++i) sourceKeys[i] = source.Keys[i];
+
             var hashMapBuilder = builder.Allocate(ref map, sourceKeys);
             foreach (var key in sourceKeys)
                 hashMapBuilder[key].BuildBlob(ref builder, ref source[key]);
+
+            sourceKeys.Dispose();
         }
 
         public static void SetMap<TKey, TValueResult, TValueSource>(

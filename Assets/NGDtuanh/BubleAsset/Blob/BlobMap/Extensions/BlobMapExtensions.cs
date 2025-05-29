@@ -29,7 +29,7 @@ namespace NGDtuanh.BubleAsset {
             for (int i = 0; i < bucketSize; ++i)
                 keyTable[i] = new NativeList<TKey>(Allocator.Temp);
             foreach (var key in keys)
-                keyTable[BlobMap<TKey, TValue>.GetHashedKey(key, bucketSize)].Add(key);
+                keyTable[BlobMapHasher<TKey>.GetHashedKey(key, bucketSize)].Add(key);
 
             // create firstKeyTable
             var firstKeyTable = new NativeArray<int>(bucketSize, Allocator.Temp);
@@ -44,7 +44,7 @@ namespace NGDtuanh.BubleAsset {
             
             // create key indexes
             foreach (var key in keys) {
-                var hashedKey = BlobMap<TKey, TValue>.GetHashedKey(key, bucketSize);
+                var hashedKey = BlobMapHasher<TKey>.GetHashedKey(key, bucketSize);
                 result._KeyIndexes[hashedKey] = new(firstKeyTable[hashedKey], keyTable[hashedKey].Length);
             }
 

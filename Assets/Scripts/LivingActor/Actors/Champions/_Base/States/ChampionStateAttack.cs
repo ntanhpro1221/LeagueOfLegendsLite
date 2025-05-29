@@ -59,7 +59,7 @@ public static partial class ChampionStateAttack {
                     // Need move to target and already perform attack yet
                     (attackData.ValueRO.isAttacked && aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
                     // Have move request
-                 || input.ValueRO.moveEvent.IsSet)
+                 || input.ValueRO.triggers.Event.Move.IsSet)
                     sharedState.SetMove();
 
                 // IDLE STATE

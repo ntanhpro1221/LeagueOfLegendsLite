@@ -28,7 +28,7 @@ namespace NGDtuanh.BubleAsset {
 
         public ref TValue this[in TKey key] {
             get {
-                var keyIndex = _KeyIndexes[BlobMap<TKey, TValue>.GetHashedKey(key, _Count)];
+                var keyIndex = _KeyIndexes[BlobMapHasher<TKey>.GetHashedKey(key, _Count)];
                 for (int i = keyIndex.first, end = keyIndex.GetLast(); i <= end; ++i)
                     if (_Keys[i].Equals(key))
                         return ref _Values[i];

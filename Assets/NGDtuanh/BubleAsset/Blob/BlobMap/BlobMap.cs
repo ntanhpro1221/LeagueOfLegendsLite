@@ -31,8 +31,7 @@ namespace NGDtuanh.BubleAsset {
             try {
                 value = this[key];
                 return true;
-            }
-            catch {
+            } catch {
                 value = default;
                 return false;
             }
@@ -54,10 +53,6 @@ namespace NGDtuanh.BubleAsset {
             return GetEnumerator();
         }
 
-        private int GetHashedKey(TKey key) => GetHashedKey(key, Count);
-
-        internal static int GetHashedKey(TKey key, int count) {
-            return (int)(((ulong)key.GetHashCode() * 11400714819323198485ul) >> 33) % count;
-        }
+        private int GetHashedKey(TKey key) => BlobMapHasher<TKey>.GetHashedKey(key, Count);
     }
 }

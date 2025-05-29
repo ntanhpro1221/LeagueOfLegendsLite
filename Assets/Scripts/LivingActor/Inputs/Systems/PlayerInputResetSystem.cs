@@ -21,7 +21,7 @@ public partial struct PlayerInputResetSystem : ISystem {
             inputData = new PlayerInputData();
 
             // set event to notify to server
-            inputData.doneResetEvent.Set();
+            inputData.triggers.Set(PlayerTrigger.Key.DoneReset);
 
             // set move pos
             inputData.moveLocTarget = locTrans.Position.Quantizate3();

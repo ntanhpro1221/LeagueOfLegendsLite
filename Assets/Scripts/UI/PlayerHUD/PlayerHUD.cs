@@ -7,12 +7,14 @@ public class PlayerHUD : SceneSingleton<PlayerHUD> {
 
     public DeadHandler_OwnChamp DeadHandler { get; private set; }
     public HealthBarUI          HealthBar   { get; private set; }
+    public PlayerSkillsUI       Skills      { get; private set; }
 
 
-    protected override void Awake() {
-        base.Awake();
+    protected override void OnTouched() {
+        base.OnTouched();
 
         DeadHandler = GetComponent<DeadHandler_OwnChamp>();
         HealthBar   = GetComponentInChildren<HealthBarUI>();
+        Skills      = GetComponentInChildren<PlayerSkillsUI>();
     }
 }

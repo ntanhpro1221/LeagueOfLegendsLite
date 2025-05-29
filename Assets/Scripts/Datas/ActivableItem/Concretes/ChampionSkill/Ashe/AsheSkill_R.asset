@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b909d4386039b0cab90302f9453ef9, type: 3}
+  m_Name: AsheSkill_R
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 21300000, guid: 578c430af21cd264785126266e686931, type: 3}
+  itemName: Enchanted Crystal Arrow
+  description: "<b>ACTIVE</b>: Ashe fires a massive arrow of ice in the target direction,
+    granting sight of the area it flies through each for 1 second. The arrow shatters
+    upon hitting an enemy champion, dealing them magic damage, stunning them for
+    1 \u2212 3.5 (based on distance traveled) seconds, and granting  sight of the
+    area around them for 1 second."
+  details: 'Magic damage: {{$magicDamage}} (+120% AP)
+
+    Reduced damage: {{$reducedDamage}}
+    (+60% AP)'
+  activationCondition:
+    pointToTarget: 0
+    pointToWalkable: 0
+  maxLevel: 3
+  leveledData_Common:
+  - cooldownTime:
+      value: 100000
+    cost:
+      mana:
+        value: 100000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 80000
+    cost:
+      mana:
+        value: 100000
+      health:
+        value: 0
+  - cooldownTime:
+      value: 60000
+    cost:
+      mana:
+        value: 100000
+      health:
+        value: 0
+  leveledData_Concrete:
+    _Keys: 0000000001000000
+    _Values:
+    - _Value:
+      - value: 200000
+      - value: 400000
+      - value: 600000
+    - _Value:
+      - value: 100000
+      - value: 200000
+      - value: 300000
+    _KeyNames:
+    - magicDamage
+    - reducedDamage
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1
+  prefab_Concrete:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 1166d2697f8720d50b93c4959dab5345
+    _KeySynced: 1

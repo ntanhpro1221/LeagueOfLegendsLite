@@ -1,36 +1,43 @@
-﻿using Unity.Entities;
+﻿using System;
+using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
+public struct PlayerInputPrevCode : IComponentData {
+    [GhostField] public PlayerTrigger.Item<int> Code;
+}
+
 public struct PlayerInputData : IInputComponentData {
-#region GENERAL
-
-    private static readonly InputEvent NullEvent = new();
-
-    public InputEvent doneResetEvent;
-
     public void ResetAllEvents() {
-        doneResetEvent  = NullEvent;
-        moveEvent       = NullEvent;
-        cancelMoveEvent = NullEvent;
+        triggers.Event = default;
     }
+
+#region TRIGGERS
+
+    [GhostField] public TickVersionForInput     tickVersion;
+    [GhostField] public PlayerTrigger.Full triggers;
+
+    public readonly bool GetFullWithTick(
+        PlayerTrigger.Key          key
+      , ref PlayerInputPrevCode prevCode
+      , in  NetworkTick                 curTick) =>
+        tickVersion.IsValid(curTick)
+        // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+     && triggers.GetFull(key, ref prevCode);
 
 #endregion
 
 #region MOVE
 
-    [GhostField] public float3_Q3  moveLocTarget;
-    [GhostField] public InputEvent moveEvent;
-    [GhostField] public InputEvent cancelMoveEvent;
+    [GhostField] public float3_Q3 moveLocTarget;
 
     public void SetMove(float3_Q3 _targetLocalPos) {
         moveLocTarget = _targetLocalPos;
-        moveEvent.Set();
+        triggers.Set(PlayerTrigger.Key.Move);
     }
 
     public void CancelMove() {
-        moveEvent = NullEvent;
-        cancelMoveEvent.Set();
+        triggers.Set(PlayerTrigger.Key.CancelMove);
     }
 
 #endregion
@@ -52,9 +59,11 @@ public struct PlayerInputResetting : IComponentData, IEnableableComponent { }
 [RequireComponent(typeof(MoveableAuthoring))]
 [RequireComponent(typeof(NormalAttackableAuthoring))]
 public class PlayerInputAuthoring : MonoBehaviour {
-    private class Baker : Baker<PlayerInputAuthoring> {
+    private class Baker : ExtendBaker<PlayerInputAuthoring> {
         public override void Bake(PlayerInputAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            GetDynamicEntity(out var entity);
+
+            AddComponent<PlayerInputPrevCode>(entity);
             AddComponent<PlayerInputData>(entity);
             AddComponent<PlayerInputResetting>(entity);
         }

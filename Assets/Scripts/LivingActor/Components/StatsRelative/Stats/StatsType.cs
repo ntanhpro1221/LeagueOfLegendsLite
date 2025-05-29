@@ -1,4 +1,5 @@
-﻿public enum StatsType {
+﻿[GenerateIndex]
+public enum StatsType {
     Health       = 0
   , Mana         = 1
   , MoveSpeed    = 2

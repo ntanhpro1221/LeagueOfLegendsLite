@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
@@ -9,11 +11,26 @@ public class ItemUI : MonoBehaviour {
     [SerializeField] private Image _MainImage;
 
     private DisablableUIRoot _DisablableUI;
-    private Tooltip_Skill    _Tooltip;
+    private Tooltip_Skill    _Tooltip; 
 
     private void Awake() {
         _DisablableUI = GetComponent<DisablableUIRoot>();
         _Tooltip      = GetComponentInChildren<Tooltip_Skill>(true);
+    }
+
+    public void InitAll(IActivableItemDataSO source) {
+        // Item's avatar
+        _MainImage.sprite = source.avatar;
+
+        // Item's tooltip window
+        var descriptionDict = new SerializedDictionary<string, List<float_Q3>>(source.GenerateConcreteData_StringKey());
+        _Tooltip.Window.Init(
+            avatar: source.avatar
+          , skillName: source.itemName
+          , mainText_Dynamic: new(source.description, descriptionDict)
+          , details_Dynamic: new(source.details, descriptionDict)
+          , leveledData_Common: source.leveledData_Common
+          , maxLevel: source.maxLevel);
     }
 
     private bool _IsCooldownVisible {

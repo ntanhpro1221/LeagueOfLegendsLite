@@ -5,7 +5,9 @@ using Unity.Transforms;
 
 [UpdateInGroup(typeof(InputLocalUpdateSystemGroup))]
 public partial struct PlayerInputUpdateSystem : ISystem {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<InputDirtyData>();
         state.RequireForUpdate<InputCastData>();
     }
@@ -15,6 +17,7 @@ public partial struct PlayerInputUpdateSystem : ISystem {
         state.Dependency = new Job {
             dirtyData = SystemAPI.GetSingleton<InputDirtyData>()
           , castData  = SystemAPI.GetSingleton<InputCastData>()
+          , curTick   = SystemAPI.GetSingleton<NetworkTime>().ServerTick
         }.Schedule(state.Dependency);
     }
 
@@ -23,12 +26,16 @@ public partial struct PlayerInputUpdateSystem : ISystem {
     public partial struct Job : IJobEntity {
         public InputDirtyData dirtyData;
         public InputCastData  castData;
+        public NetworkTick    curTick;
 
         [BurstCompile]
         public void Execute(ref PlayerInputData inputData, in LocalTransform locTrans) {
             // RESET EVENT
             inputData.ResetAllEvents();
-
+            
+            // UPDATE TICK VERSION
+            inputData.tickVersion.UpdateTick(curTick);
+            
             // CHECK MOVE
             if (CheckMoveEvent(dirtyData, castData)) {
                 inputData.SetMove(castData.walkableGroundPos);
@@ -36,16 +43,16 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             }
 
             // CHECK ATTACK
-            if (castData.isHitActor && dirtyData.leftMouse.WasPressedThisFrame()) {
+            if (castData.isHitActor && dirtyData.mouse_left.WasPressedThisFrame()) {
                 inputData.SetAttack(castData.actor);
                 inputData.CancelMove();
-            } else if (castData.isHitClosestEntityAtGroundHit && dirtyData.leftMouse.WasPressedThisFrame()) {
+            } else if (castData.isHitClosestEntityAtGroundHit && dirtyData.mouse_left.WasPressedThisFrame()) {
                 inputData.SetAttack(castData.closestEntityAtGroundHit);
                 inputData.CancelMove();
             }
 
             // CANCEL MOVE AND ATTACK
-            if (dirtyData.s_key.WasPressedThisFrame()) {
+            if (dirtyData.key_s.WasPressedThisFrame()) {
                 inputData.CancelMove();
                 inputData.CancelAttack();
             }
@@ -55,10 +62,10 @@ public partial struct PlayerInputUpdateSystem : ISystem {
     [BurstCompile]
     public static bool CheckMoveEvent(in InputDirtyData dirtyData, in InputCastData castData) =>
         castData.isHitWalkableGround
-     && dirtyData.rightMouse.WasPressedThisFrame();
+     && dirtyData.mouse_right.WasPressedThisFrame();
 
     [BurstCompile]
     public static bool CheckMoveAttackEvent(in InputDirtyData dirtyData, in InputCastData castData) =>
         castData.isHitWalkableGround
-     && dirtyData.leftMouse.WasPressedThisFrame();
+     && dirtyData.mouse_left.WasPressedThisFrame();
 }

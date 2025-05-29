@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MainTex: {fileID: 4834446994124328568}
+  _SOReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
   _AllyOutline: {r: 0.2520524, g: 0.21656394, b: 0.9706902, a: 1}
   _EnemyOutline: {r: 0.9811321, g: 0.24528302, b: 0.24528302, a: 1}
   _Outline: {fileID: 395462256940445280}

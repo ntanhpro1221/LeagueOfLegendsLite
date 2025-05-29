@@ -5,20 +5,17 @@ using Unity.NetCode;
 using UnityEngine;
 
 public class AllMonsterAuthoring : MonoBehaviour {
-    public NetCodeConfig    netConfig;
-    public AllMonsterDataSO MonstersSO;
+    public DataSOReader  soReader;
+    public NetCodeConfig netConfig;
 
     public class AllMonsterDataBaker : ExtendBaker<AllMonsterAuthoring> {
         public override void Bake(AllMonsterAuthoring authoring) {
-            if (authoring.MonstersSO == null
-             || authoring.netConfig  == null) return;
-
             GetDynamicEntity(out var entity);
 
             AllMonsterData data = new();
-            foreach (var sourceItem in authoring.MonstersSO.value.Values)
+            foreach (var sourceItem in authoring.soReader.Monster.Values)
                 sourceItem.staticTickRate = authoring.netConfig.ClientServerTickRate.SimulationTickRate;
-            authoring.MonstersSO.value.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
+            authoring.soReader.Monster.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
             AddComponent(entity, data);
         }
     }

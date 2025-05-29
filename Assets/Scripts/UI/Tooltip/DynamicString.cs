@@ -1,33 +1,47 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [Serializable]
 public class DynamicString {
     private const string OPEN_SIGN  = "{{";
     private const string CLOSE_SIGN = "}}";
 
-    [SerializeField] private string                                    _Source;
-    [SerializeField] private SerializedDictionary<string, List<string>> _Dict;
+    [SerializeField] private string                                       _Source;
+    [SerializeField] private SerializedDictionary<string, List<float_Q3>> _Dict;
 
+    public DynamicString(string source, SerializedDictionary<string, List<float_Q3>> dict) {
+        _Source = source;
+        _Dict   = dict;
+    }
+    
+    public string RawSource => _Source;
+    
     public string Generate(int index) {
         string result = "";
 
         try {
             for (int i = 0; i < _Source.Length;) {
                 int startLast = _Source.IndexOf(OPEN_SIGN, i, StringComparison.Ordinal) + OPEN_SIGN.Length;
-                int stopFirst = _Source.IndexOf(CLOSE_SIGN, startLast, StringComparison.Ordinal);
-
-                result += _Source[i..(startLast - OPEN_SIGN.Length)];
+                int stopFirst;
                 
-                if (_Source[startLast] == '$') {
-                    var    values  = _Dict[_Source[(startLast + 1)..stopFirst]];
-                    string oldItem = values[index];    
-                    values[index] =  "<b>" +  oldItem + "</b>";
-                    result        += $"[ {string.Join(" | ", values)} ]";
-                    values[index] =  oldItem;
-                } else result += _Dict[_Source[startLast..stopFirst]][index];
+                // There is no open sign left
+                if (startLast == OPEN_SIGN.Length - 1) {
+                    stopFirst = _Source.Length;
+                    
+                    result += _Source[i..];
+                } else {
+                    stopFirst = _Source.IndexOf(CLOSE_SIGN, startLast, StringComparison.Ordinal);
+
+                    result += _Source[i..(startLast - OPEN_SIGN.Length)];
+
+                    // Require full info
+                    if (_Source[startLast] == '$')
+                        result  += $"[ {string.Join(" | ", _Dict[_Source[(startLast + 1)..stopFirst]].Select((item, itemId) => itemId == index ? $"<b>{item.ToString()}</b>" : item.ToString()))} ]";
+                    else result += _Dict[_Source[startLast..stopFirst]][index];
+                }
 
                 i = stopFirst + CLOSE_SIGN.Length;
             }

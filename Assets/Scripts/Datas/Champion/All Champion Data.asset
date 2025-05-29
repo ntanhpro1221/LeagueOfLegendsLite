@@ -63,7 +63,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 616815520e44d423b248bacb759428eb
+            Hash: 0da8e9a207c7b7a211d8e8b700d84098
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -110,15 +110,11 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 616815520e44d423b248bacb759428eb
+            Hash: 0da8e9a207c7b7a211d8e8b700d84098
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
-        passiveAvatar: {fileID: 21300000, guid: 942cb98c73a2c48438e32a67af4433ec, type: 3}
-        skillAvatars:
-        - {fileID: 21300000, guid: f1be91c2e4e8675458d79cfb9bbfdbb0, type: 3}
-        - {fileID: 21300000, guid: 22c39c7478c8f81449462aae1460e6ba, type: 3}
-        - {fileID: 21300000, guid: f8510599f9e0e21408db4554ca6369fd, type: 3}
-        - {fileID: 21300000, guid: d3f56915773a9ce48800350d834612d2, type: 3}
+        passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
+        skills: []
     - _Value:
         name: Ashe
         description: "Cung b\u0103ng"
@@ -167,7 +163,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1aec07df4fface0db0c67de1b1cf3f78
+            Hash: e9bf7d8084bb65fa491e00c27da2ce2f
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -214,15 +210,15 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1aec07df4fface0db0c67de1b1cf3f78
+            Hash: e9bf7d8084bb65fa491e00c27da2ce2f
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
-        passiveAvatar: {fileID: 21300000, guid: 50470aaecefdd06429fa03276e067f48, type: 3}
-        skillAvatars:
-        - {fileID: 21300000, guid: 92bd6c43f47e9ca428158410f566bfc8, type: 3}
-        - {fileID: 21300000, guid: 06e0a87a94023b749b3f7f2ed76a258f, type: 3}
-        - {fileID: 21300000, guid: 06e0a87a94023b749b3f7f2ed76a258f, type: 3}
-        - {fileID: 21300000, guid: 06e0a87a94023b749b3f7f2ed76a258f, type: 3}
+        passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
+        skills:
+        - {fileID: 11400000, guid: cf6ee00927b12b399afe66ad4d3a8fc1, type: 2}
+        - {fileID: 11400000, guid: dcfd3c8c9eb89d9c3b4e4e9fa4dabb28, type: 2}
+        - {fileID: 11400000, guid: cfa797fb6d85bcfb1a4fde7ce51c781b, type: 2}
+        - {fileID: 11400000, guid: 8a0146413cfb8835682ce542f1b2ef8f, type: 2}
     - _Value:
         name: Garen
         description: "S\u1EE9c m\u1EA1nh c\u1EE7a Demacia"
@@ -271,7 +267,7 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 0da8e9a207c7b7a211d8e8b700d84098
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
@@ -318,20 +314,16 @@ MonoBehaviour:
           - UnitRadius
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 56122bfb0b4f7aa75f7665edf39ffa6a
+            Hash: 0da8e9a207c7b7a211d8e8b700d84098
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
-        passiveAvatar: {fileID: 21300000, guid: a4fe04ec817723847a4063154c313d95, type: 3}
-        skillAvatars:
-        - {fileID: 21300000, guid: 206082c467254ab4482e92c4c4080c7b, type: 3}
-        - {fileID: 21300000, guid: d959a819788ba9a4284289af0418c1d4, type: 3}
-        - {fileID: 21300000, guid: dfc4e48ca4601c94f9b71b6bcc922204, type: 3}
-        - {fileID: 21300000, guid: 5b668792d4bd8474aaaaaad2bba59cbf, type: 3}
+        passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
+        skills: []
     _KeyNames:
     - Yasuo
     - Ashe
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1aec07df4fface0db0c67de1b1cf3f78
+      Hash: 0da8e9a207c7b7a211d8e8b700d84098
     _KeySynced: 1

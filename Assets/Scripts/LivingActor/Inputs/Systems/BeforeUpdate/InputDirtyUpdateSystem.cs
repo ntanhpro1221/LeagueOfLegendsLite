@@ -7,7 +7,8 @@ using UnityEngine.InputSystem;
 public partial struct InputDirtyUpdateSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.EntityManager.CreateSingleton<InputDirtyData>();
+        state.RequireForUpdate<InputDirtyData>();
+        state.RequireForUpdate<InputDirtyData.PlayerActivableItemBuffer>();
     }
 
     public void OnUpdate(ref SystemState state) {
@@ -15,33 +16,31 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
         UpdateRay(ref state, ref inputData);
         UpdateMouseButtons(ref state, ref inputData);
-        UpdateKeyboardButtons(ref state, ref inputData);
+        UpdateKeyboardButtons(ref state, ref inputData
+          ,                              SystemAPI.GetSingletonBuffer<InputDirtyData.PlayerActivableItemBuffer>(isReadOnly: false));
     }
 
     private void UpdateRay(ref SystemState state, ref InputDirtyData inputData) {
         var ray = Camera.main!.ScreenPointToRay(Mouse.current.position.value);
-        
-        inputData.rayStart = ray.origin;
-        inputData.rayEnd   = ray.GetPoint(1e5f);
+
+        inputData.mouse_ray_start = ray.origin;
+        inputData.mouse_ray_end   = ray.GetPoint(1e5f);
     }
 
     private void UpdateMouseButtons(ref SystemState state, ref InputDirtyData inputData) {
         var mouse = Mouse.current;
 
-        inputData.leftMouse  = mouse.leftButton.GetButtonState();
-        inputData.rightMouse = mouse.rightButton.GetButtonState();
+        inputData.mouse_left  = mouse.leftButton.GetButtonState();
+        inputData.mouse_right = mouse.rightButton.GetButtonState();
     }
 
-    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData) {
+    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData, DynamicBuffer<InputDirtyData.PlayerActivableItemBuffer> inputBuffer) {
         var keyboard = Keyboard.current;
 
-        inputData.a_key = keyboard.aKey.GetButtonState();
-        inputData.s_key = keyboard.sKey.GetButtonState();
-        inputData.d_key = keyboard.dKey.GetButtonState();
-        inputData.f_key = keyboard.fKey.GetButtonState();
-        inputData.q_key = keyboard.qKey.GetButtonState();
-        inputData.w_key = keyboard.wKey.GetButtonState();
-        inputData.e_key = keyboard.eKey.GetButtonState();
-        inputData.r_key = keyboard.rKey.GetButtonState();
+        inputData.key_a = keyboard.aKey.GetButtonState();
+        inputData.key_s = keyboard.sKey.GetButtonState();
+
+        for (int i = 0; i < inputBuffer.Length; ++i)
+            inputBuffer.ElementAt(i).key = keyboard[((PlayerActivableItem)i).ToKey()].GetButtonState();
     }
 }
