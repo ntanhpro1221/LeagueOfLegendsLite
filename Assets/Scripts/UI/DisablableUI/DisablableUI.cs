@@ -12,7 +12,7 @@ public abstract class DisablableUI<TTarget, TProp> :
     protected abstract TProp PropSetter { set; }
 
     private void Awake() {
-        GetComponentInParent<DisablableUIRoot>()?.Register(
+        GetComponentInParent<DisablableUIRoot>(includeInactive: true).Register(
             ((IDisablableUI)this).OnEnable
           , ((IDisablableUI)this).OnDisable);
 

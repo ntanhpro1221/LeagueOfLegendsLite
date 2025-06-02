@@ -22,24 +22,29 @@ MonoBehaviour:
     instead they double Frost's slow strength to 40% \u2212 60% (based on level),
     decaying over the first second of the duration to its normal strength."
   details: 
-  activationCondition:
+  activeSettings:
+    isActivable: 0
+    isRequireNewState: 0
+  activeCondition:
     pointToTarget: 0
     pointToWalkable: 0
   maxLevel: 0
-  leveledData_Common: []
-  leveledData_Concrete:
+  cooldownTime: []
+  activeCost: []
+  concreteProp:
     _Keys: 
     _Values: []
     _KeyNames: []
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: b235e300328eb889fdeaffb14f13b50f
+      Hash: da270de03394a8d30f810dddff7d37ce
     _KeySynced: 1
-  prefab_Concrete:
+  concretePrefab:
     _Keys: 
     _Values: []
     _KeyNames: []
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: b235e300328eb889fdeaffb14f13b50f
+      Hash: da270de03394a8d30f810dddff7d37ce
     _KeySynced: 1
+  _PrevMaxLevel: 0

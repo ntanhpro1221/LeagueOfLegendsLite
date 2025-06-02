@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 public struct InputDirtyData : IComponentData {
-    public struct PlayerActivableItemBuffer : IBufferElementData {
+    public struct ActivableItemBuffer : IBufferElementData {
         public ButtonState key;
     }
 
@@ -33,8 +33,8 @@ public class InputDirtyAuthoring : MonoBehaviour {
             GetDynamicEntity(out var entity);
 
             AddComponent<InputDirtyData>(entity);
-            AddCleanBuffer<InputDirtyData.PlayerActivableItemBuffer>(entity
-              , Enum.GetValues(typeof(PlayerActivableItem)).Length);
+            AddCleanBuffer<InputDirtyData.ActivableItemBuffer>(entity
+              , Enum.GetValues(typeof(PlayerTrigger.Item)).Length);
         }
     }
 }

@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemSkillUI : MonoBehaviour {
-    public ItemUI ItemUI { get; private set; }
+    private ItemUI _ItemUI;
 
-    private void Awake() {
-        ItemUI           = GetComponentInChildren<ItemUI>();
-        _UpLevelDisabler = _UpLevelBtn.GetComponent<IDisablableUI>();
+    public ItemUI ItemUI {
+        get {
+            if (_ItemUI == null) _ItemUI = GetComponentInChildren<ItemUI>();
+            return _ItemUI;
+        }
     }
 
     public void InitAll(IActivableItemDataSO source) {
@@ -26,14 +28,21 @@ public class ItemSkillUI : MonoBehaviour {
 #region UP LEVEL BUTTON
 
     [SerializeField] private Button _UpLevelBtn;
-    
+
     private IDisablableUI _UpLevelDisabler;
+
+    private IDisablableUI UpLevelDisabler {
+        get {
+            if (_UpLevelDisabler == null) _UpLevelDisabler = _UpLevelBtn.GetComponent<IDisablableUI>();
+            return _UpLevelDisabler;
+        }
+    }
 
     private void UpdateUpLevelBtn(int availablePoint) {
         _UpLevelBtn.interactable = _CurLevel < _LevelPoints.Count;
         if (_UpLevelBtn.interactable)
-            _UpLevelDisabler.OnEnable();
-        else _UpLevelDisabler.OnDisable();
+            UpLevelDisabler.OnEnable();
+        else UpLevelDisabler.OnDisable();
 
         _UpLevelBtn.gameObject.SetActive(availablePoint > 0);
     }

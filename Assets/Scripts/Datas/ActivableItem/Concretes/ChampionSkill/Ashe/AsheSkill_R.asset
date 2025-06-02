@@ -23,33 +23,31 @@ MonoBehaviour:
 
     Reduced damage: {{$reducedDamage}}
     (+60% AP)'
-  activationCondition:
+  activeSettings:
+    isActivable: 1
+    isRequireNewState: 1
+  activeCondition:
     pointToTarget: 0
     pointToWalkable: 0
   maxLevel: 3
-  leveledData_Common:
-  - cooldownTime:
+  cooldownTime:
+  - value: 100000
+  - value: 80000
+  - value: 60000
+  activeCost:
+  - health:
+      value: 0
+    mana:
       value: 100000
-    cost:
-      mana:
-        value: 100000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 80000
-    cost:
-      mana:
-        value: 100000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 60000
-    cost:
-      mana:
-        value: 100000
-      health:
-        value: 0
-  leveledData_Concrete:
+  - health:
+      value: 0
+    mana:
+      value: 100000
+  - health:
+      value: 0
+    mana:
+      value: 100000
+  concreteProp:
     _Keys: 0000000001000000
     _Values:
     - _Value:
@@ -65,13 +63,16 @@ MonoBehaviour:
     - reducedDamage
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: 4ca29ca07d148e8ba43c2d4910e2ce4e
     _KeySynced: 1
-  prefab_Concrete:
-    _Keys: 
-    _Values: []
-    _KeyNames: []
+  concretePrefab:
+    _Keys: 00000000
+    _Values:
+    - _Value: {fileID: 2158595296973362309, guid: 7b77cda4dcc2b024f9d9e49062fdb40e, type: 3}
+    _KeyNames:
+    - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: 4ca29ca07d148e8ba43c2d4910e2ce4e
     _KeySynced: 1
+  _PrevMaxLevel: 3

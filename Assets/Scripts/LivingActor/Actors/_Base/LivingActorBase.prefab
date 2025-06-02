@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: -9146969485346626563}
   - component: {fileID: 1533971657701454682}
   - component: {fileID: 4909889527471281986}
-  - component: {fileID: 5392229273288189392}
   m_Layer: 7
   m_Name: LivingActorBase
   m_TagString: Untagged
@@ -351,8 +350,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _OverrideState:
-    _Keys: 000000000100000002000000030000000400000005000000
+    _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
     _Values:
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
     - _Value: 0
     - _Value: 0
     - _Value: 0
@@ -366,9 +369,13 @@ MonoBehaviour:
     - Move
     - Idle2Dead
     - Dead2Idle
+    - Skill_Q
+    - Skill_W
+    - Skill_E
+    - Skill_R
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d41363c285f166ab6faaa8efc7ed9629
+      Hash: 7cebc305895e73269667836d47fcddc5
     _KeySynced: 1
 --- !u!114 &8701208352754206243
 MonoBehaviour:
@@ -431,17 +438,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 393f391bf6054f5b94d9b409ae7d33a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5392229273288189392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2511344896651389580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50d44c35daac4f83820ba833a9560490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

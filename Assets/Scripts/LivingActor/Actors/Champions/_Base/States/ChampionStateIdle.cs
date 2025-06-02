@@ -44,23 +44,29 @@ public static partial class ChampionStateIdle {
                   , input
                   , aimedTarget
                   , sharedState
-                  , attackData)
+                  , attackData
+                  , itemRequest)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
-                  , RefRO<PlayerInputData>
+                  , PlayerInputAspectRO
                   , AimedTargetAspectRO
                   , ActorSharedStateAspect
-                  , RefRO<AttackStateData>>()) {
+                  , RefRO<AttackStateData>
+                  , RefRO<ItemActiveNewStateRequestData>>()) {
 
                 // DEAD STATE
                 if (health.IsDead) // RUN OUT OF HEALTH
                     sharedState.SetDead();
 
+                // ITEM ANALYZING STATE
+                else if (itemRequest.ValueRO.haveRequest)
+                    sharedState.SetItemActiveAnalyzing();
+
                 // MOVE STATE
                 else if (
                     // Have move request
-                    input.ValueRO.triggers.Event.Move.IsSet
+                    input.MoveEvent_WithData
                     // Need move to target
                  || aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
                     sharedState.SetMove();

@@ -32,47 +32,41 @@ MonoBehaviour:
 
     Damage per arrow: {{$damagePerArrow}}
     %'
-  activationCondition:
+  activeSettings:
+    isActivable: 0
+    isRequireNewState: 0
+  activeCondition:
     pointToTarget: 0
     pointToWalkable: 0
   maxLevel: 5
-  leveledData_Common:
-  - cooldownTime:
+  cooldownTime:
+  - value: 0
+  - value: 0
+  - value: 0
+  - value: 0
+  - value: 0
+  activeCost:
+  - mana:
+      value: 30000
+    health:
       value: 0
-    cost:
-      mana:
-        value: 30000
-      health:
-        value: 0
-  - cooldownTime:
+  - mana:
+      value: 30000
+    health:
       value: 0
-    cost:
-      mana:
-        value: 30000
-      health:
-        value: 0
-  - cooldownTime:
+  - mana:
+      value: 30000
+    health:
       value: 0
-    cost:
-      mana:
-        value: 30000
-      health:
-        value: 0
-  - cooldownTime:
+  - mana:
+      value: 30000
+    health:
       value: 0
-    cost:
-      mana:
-        value: 30000
-      health:
-        value: 0
-  - cooldownTime:
+  - mana:
+      value: 30000
+    health:
       value: 0
-    cost:
-      mana:
-        value: 30000
-      health:
-        value: 0
-  leveledData_Concrete:
+  concreteProp:
     _Keys: 0000000001000000
     _Values:
     - _Value:
@@ -92,13 +86,14 @@ MonoBehaviour:
     - damagePerArrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: da270de03394a8d30f810dddff7d37ce
     _KeySynced: 1
-  prefab_Concrete:
+  concretePrefab:
     _Keys: 
     _Values: []
     _KeyNames: []
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: da270de03394a8d30f810dddff7d37ce
     _KeySynced: 1
+  _PrevMaxLevel: 5

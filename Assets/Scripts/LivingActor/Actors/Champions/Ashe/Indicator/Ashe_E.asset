@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecce41e86d3f406db593a0649c7dbe02, type: 3}
+  m_Name: Ashe_E
+  m_EditorClassIdentifier: 
+  <_MainMate>k__BackingField: {fileID: 2100000, guid: c9f543f8b7fed0b4e8ae899c55117718, type: 2}
+  _Size: {x: 100, y: 1000}

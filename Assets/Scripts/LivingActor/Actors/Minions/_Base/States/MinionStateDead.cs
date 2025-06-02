@@ -56,14 +56,11 @@ public static partial class MinionStateDead {
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<ClientServerTickRate>();
             state.RequireForUpdate<NetworkTime>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
-
             foreach (var (_, data, select_highlight_healthBar, anim) in SystemAPI.Query<
                 StateFilterAspect
               , UpdateAspect
@@ -72,9 +69,8 @@ public static partial class MinionStateDead {
                 data.CurAnim = SharedAnimKey.Dead;
 
                 // Respawn here means disappear
-                data.RespawnAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithDeltaTime(
-                    anim.ValueRO.AnimLengths[SharedAnimKey.Dead]
-                  , tickRate);
+                data.RespawnAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithBonusTick(
+                    anim.ValueRO.AnimLengthTicks[SharedAnimKey.Dead]);
                 data.DisableMove();
                 select_highlight_healthBar.DisableAll();
             }

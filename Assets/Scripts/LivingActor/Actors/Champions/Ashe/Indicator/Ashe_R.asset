@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b745c3c3f7f448fa5079ad17e9bca9d, type: 3}
+  m_Name: Ashe_R
+  m_EditorClassIdentifier: 
+  <_MainMate>k__BackingField: {fileID: 2100000, guid: 2ba9aa29627c561a6a318fc939bbd740, type: 2}
+  _Size: {x: 128, y: 256}
+  _SplitStickyMate: {fileID: 2100000, guid: a959399924a6a2e6896d85d87e1c9134, type: 2}
+  _SplitStickySize: {x: 128, y: 192}
+  _DynamicMate: {fileID: 2100000, guid: 2ba9aa29627c561a6a318fc939bbd740, type: 2}
+  _DynamicSize: {x: 128, y: 192}
+  _SplitDistance: 192

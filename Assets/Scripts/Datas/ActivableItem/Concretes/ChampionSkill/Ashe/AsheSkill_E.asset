@@ -18,59 +18,56 @@ MonoBehaviour:
     granting  sight of the area along its path repeatedly for 0.5 seconds after every
     100 units traveled and at its destination for 5 seconds.'
   details: 
-  activationCondition:
+  activeSettings:
+    isActivable: 1
+    isRequireNewState: 1
+  activeCondition:
     pointToTarget: 0
     pointToWalkable: 0
   maxLevel: 5
-  leveledData_Common:
-  - cooldownTime:
-      value: 90000
-    cost:
-      mana:
-        value: 0
-      health:
-        value: 0
-  - cooldownTime:
-      value: 80000
-    cost:
-      mana:
-        value: 0
-      health:
-        value: 0
-  - cooldownTime:
-      value: 70000
-    cost:
-      mana:
-        value: 0
-      health:
-        value: 0
-  - cooldownTime:
-      value: 60000
-    cost:
-      mana:
-        value: 0
-      health:
-        value: 0
-  - cooldownTime:
-      value: 50000
-    cost:
-      mana:
-        value: 0
-      health:
-        value: 0
-  leveledData_Concrete:
+  cooldownTime:
+  - value: 90000
+  - value: 80000
+  - value: 70000
+  - value: 60000
+  - value: 50000
+  activeCost:
+  - health:
+      value: 0
+    mana:
+      value: 20000
+  - health:
+      value: 0
+    mana:
+      value: 20000
+  - health:
+      value: 0
+    mana:
+      value: 20000
+  - health:
+      value: 0
+    mana:
+      value: 20000
+  - health:
+      value: 0
+    mana:
+      value: 20000
+  concreteProp:
     _Keys: 
     _Values: []
     _KeyNames: []
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: ad677ad68dbc65fe1892bc9d48a25458
     _KeySynced: 1
-  prefab_Concrete:
-    _Keys: 
-    _Values: []
-    _KeyNames: []
+  concretePrefab:
+    _Keys: 00000000
+    _Values:
+    - _Value: {fileID: 2772788199892773176, guid: 07382090a6f798a6ebfb85c79dcbcdbf, type: 3}
+    _KeyNames:
+    - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: ad677ad68dbc65fe1892bc9d48a25458
     _KeySynced: 1
+  _PrevMaxLevel: 5

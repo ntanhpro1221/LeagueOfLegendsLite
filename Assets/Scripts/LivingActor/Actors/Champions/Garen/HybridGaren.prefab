@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6087118146641997451
+--- !u!1001 &2996547795715252198
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,47 +8,47 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3667448417500737526}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - target: {fileID: 919132149155446097, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       propertyPath: m_Name
       value: Garen
       objectReference: {fileID: 0}
@@ -56,28 +56,23 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 26094c92993051b44970586a7b680816, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4161102740767239135}
-  m_SourcePrefab: {fileID: 100100000, guid: 26094c92993051b44970586a7b680816, type: 3}
---- !u!4 &6049302734871677280 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 26094c92993051b44970586a7b680816, type: 3}
-  m_PrefabInstance: {fileID: 6087118146641997451}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6393036030737585114 stripped
+      addedObject: {fileID: 4314480230566767865}
+  m_SourcePrefab: {fileID: 100100000, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
+--- !u!1 &2689926102710444727 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 26094c92993051b44970586a7b680816, type: 3}
-  m_PrefabInstance: {fileID: 6087118146641997451}
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
+  m_PrefabInstance: {fileID: 2996547795715252198}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &4161102740767239135
+--- !u!95 &4314480230566767865
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393036030737585114}
+  m_GameObject: {fileID: 2689926102710444727}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 22100000, guid: fa70e1ffe3314d945aa13c0e80016bd8, type: 2}
@@ -92,6 +87,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &3323473067529418765 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53b0fe8d6c6994609ac0ab00eaa86947, type: 3}
+  m_PrefabInstance: {fileID: 2996547795715252198}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8428391351731280321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5049324223589905975, guid: 184eb01ce4690004caf8a9047e8d58ee, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6049302734871677280}
+      addedObject: {fileID: 3323473067529418765}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 184eb01ce4690004caf8a9047e8d58ee, type: 3}
 --- !u!4 &3667448417500737526 stripped

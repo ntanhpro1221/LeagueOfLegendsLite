@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ShowThreshold: 0
-  _HideThreshold: 0.2
+  _HideThreshold: 0
   _AnchorType: 0
   _MouseOffset: {x: 40, y: 40}
 --- !u!1 &6270816438585753843

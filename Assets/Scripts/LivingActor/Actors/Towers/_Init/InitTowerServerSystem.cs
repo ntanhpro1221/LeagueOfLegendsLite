@@ -46,6 +46,7 @@ public partial struct InitTowerServerSystem : ISystem {
           , in  DynamicBuffer<StatsBuffer> stats
           , ref HealthData                 health
           , ref LocalTransform             locTrans
+          , ref RotationData               rotation
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled) {
             // remove init request
@@ -56,10 +57,9 @@ public partial struct InitTowerServerSystem : ISystem {
             healthEnabled.ValueRW = true;
 
             // init position
-            locTrans = initTrans.Tower.Value[teamType.team]
-                [towerTag.id]
-                [laneType.laneType]
-                .ToLocTrans_Directly();
+            rotation.RotateTo((locTrans = initTrans.Tower.Value[teamType.team]
+                    [towerTag.id][laneType.laneType].ToLocTrans_Directly())
+                .Forward().Quantizate3().xz);
         }
     }
 }

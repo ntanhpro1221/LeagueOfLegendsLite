@@ -1,23 +1,30 @@
 using System;
+using System.Linq;
 using NGDtuanh.BubleAsset;
 using NGDtuanh.BubleAsset.ShortCut;
 using Unity.Entities;
 
-[Serializable]
 public struct ActivableItemData : IBlobBuildable<IActivableItemDataSO>, IBlobBuildableSelf<ActivableItemData> {
-    public ItemActivationCondition           activationCondition;
-    public BubleArray<ItemCommonLeveledData> leveledData_Common;
-    public Buble_Map_Array<int, float_Q3>    leveledData_Concrete;
+    public ItemActiveSettings             activeSettings;
+    public ItemActiveCondition            activeCondition;
+    public BubleArray<uint>               cooldownTick;
+    public BubleArray<ItemActiveCost>     activeCost;
+    public Buble_Map_Array<int, float_Q3> concreteProp;
 
     public void BuildBlob(ref BlobBuilder builder, IActivableItemDataSO source) {
-        activationCondition = source.activationCondition;
-        leveledData_Common.BuildBlob(ref builder, source.leveledData_Common);
-        leveledData_Concrete.BuildBlob(ref builder, source.GenerateConcreteData_IntKey());
+        activeSettings  = source.activeSettings;
+        activeCondition = source.activeCondition;
+        cooldownTick.BuildBlob(ref builder, source.cooldownTime.Select(time =>
+            TickHelpers.CountTick(time, GameSO.TickRate, TickHelpers.RoundMethod.Nearest)).ToList());
+        activeCost.BuildBlob(ref builder, source.activeCost);
+        concreteProp.BuildBlob(ref builder, source.GenerateConcreteData_IntKey());
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref ActivableItemData source) {
-        activationCondition = source.activationCondition;
-        leveledData_Common.BuildBlob(ref builder, ref source.leveledData_Common);
-        leveledData_Concrete.BuildBlob(ref builder, ref source.leveledData_Concrete);
+        activeSettings  = source.activeSettings;
+        activeCondition = source.activeCondition;
+        cooldownTick.BuildBlob(ref builder, ref source.cooldownTick);
+        activeCost.BuildBlob(ref builder, ref source.activeCost);
+        concreteProp.BuildBlob(ref builder, ref source.concreteProp);
     }
 }

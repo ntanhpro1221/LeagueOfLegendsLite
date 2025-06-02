@@ -52,16 +52,14 @@ public partial struct CommonRangedAttackSystem : ISystem {
 
                 ecb.SetComponent(projectile, new AimedTargetData { target = target.target });
                 ecb.SetComponent(projectile, new DamageTriggerSource(stats[damageId].value, entity));
-                ecb.SetComponent(projectile, LocalTransform.FromPositionRotationScale(
-                    // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+                ecb.SetComponent(projectile, LocalTransform.FromPositionRotation(
                     LocalTransform
                         .FromPositionRotation(locTrans.Position, rotationData.quaternion)
                         .TransformPoint(projSpawnPnt.point.position)
-                  , quaternion.identity
-                  , 35));
+                  , rotationData.quaternion));
             }
 
             attackTrigger.ValueRW = false;
         }
     }
-}
+} 

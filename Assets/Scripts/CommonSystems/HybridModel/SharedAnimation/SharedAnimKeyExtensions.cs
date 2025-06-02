@@ -6,13 +6,20 @@ public static class SharedAnimKeyExtensions {
     public const string SpeedVarPrefix = "Speed_";
 
     public static string KeyName(this SharedAnimKey key) => key switch {
-        SharedAnimKey.Attack    => nameof(SharedAnimKey.Attack)
-      , SharedAnimKey.Dead      => nameof(SharedAnimKey.Dead)
-      , SharedAnimKey.Idle      => nameof(SharedAnimKey.Idle)
-      , SharedAnimKey.Move      => nameof(SharedAnimKey.Move)
+        SharedAnimKey.Attack => nameof(SharedAnimKey.Attack)
+      , SharedAnimKey.Dead   => nameof(SharedAnimKey.Dead)
+      , SharedAnimKey.Idle   => nameof(SharedAnimKey.Idle)
+      , SharedAnimKey.Move   => nameof(SharedAnimKey.Move)
+
       , SharedAnimKey.Idle2Dead => nameof(SharedAnimKey.Idle2Dead)
       , SharedAnimKey.Dead2Idle => nameof(SharedAnimKey.Dead2Idle)
-      , _                       => throw new UnknownAnimKeyException()
+
+      , SharedAnimKey.Skill_Q => nameof(SharedAnimKey.Skill_Q)
+      , SharedAnimKey.Skill_W => nameof(SharedAnimKey.Skill_W)
+      , SharedAnimKey.Skill_E => nameof(SharedAnimKey.Skill_E)
+      , SharedAnimKey.Skill_R => nameof(SharedAnimKey.Skill_R)
+
+      , _ => throw new UnknownAnimKeyException()
     };
 
     public static string StateVarName(this SharedAnimKey key)

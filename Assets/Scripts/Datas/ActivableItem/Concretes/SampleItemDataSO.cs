@@ -13,7 +13,7 @@ public class SampleItemDataSO : ActivableItemDataSO_GenericBase<
     public enum ConcretePrefab { }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {
-        [GhostField] public Entity        entity;
+        public Entity        entity;
         Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
     }
 }

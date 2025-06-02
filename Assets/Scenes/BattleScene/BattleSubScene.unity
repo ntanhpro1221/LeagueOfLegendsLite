@@ -734,7 +734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f4566eaca84ff09bf9d7cf47da6cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
 --- !u!114 &129896056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2295,7 +2294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d565e341bd409098f172d1faa8c3df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
 --- !u!114 &591493904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5840,8 +5838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55021660e0c74a2885d72625bd2b3bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
-  netConfig: {fileID: 11400000, guid: 2639303ac9b6f414999e4057ccd555c6, type: 2}
 --- !u!114 &1328377573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6066,7 +6062,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2bcb156038490286afb0165b94a0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
 --- !u!114 &1361920518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9188,7 +9183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48da0721823343f78633d26535c4a431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
 --- !u!4 &2115561204
 Transform:
   m_ObjectHideFlags: 0
@@ -9464,7 +9458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5195527391809511057
 Transform:
   m_ObjectHideFlags: 0

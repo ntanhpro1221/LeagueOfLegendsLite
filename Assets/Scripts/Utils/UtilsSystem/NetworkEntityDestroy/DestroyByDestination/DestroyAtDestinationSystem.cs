@@ -5,6 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(BeforeDestroyNetworkEntitySystemGroup))]
 public partial struct DestroyAtDestinationSystem : ISystem {
@@ -24,8 +25,6 @@ public partial struct DestroyAtDestinationSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
-
         state.Dependency = new Job()
             .ScheduleParallel(state.Dependency);
     }
@@ -38,11 +37,17 @@ public partial struct DestroyAtDestinationSystem : ISystem {
         public void Execute(
             ref DestroyAtDestination           destroyDes
           , EnabledRefRW<DestroyAtDestination> destroyDesEnable
+          , in DestroyAtDesSettings            settings
           , EnabledRefRW<NetworkDestroyedTag>  networkDestroyEnable
           , in LocalTransform                  locTrans) {
-            if (DESTINATION_TOLERANCE_SQR
-              < math.distancesq(locTrans.Position, destroyDes.destination))
-                return;
+            switch (settings.useY) {
+                case true when DESTINATION_TOLERANCE_SQR
+                  < math.distancesq(locTrans.Position, destroyDes.destination):
+                case false when DESTINATION_TOLERANCE_SQR
+                  < GameHelpers.DistanceXZ_Sqr(locTrans.Position, destroyDes.destination):
+                    return;
+            }
+
             destroyDesEnable.ValueRW     = false;
             networkDestroyEnable.ValueRW = true;
         }

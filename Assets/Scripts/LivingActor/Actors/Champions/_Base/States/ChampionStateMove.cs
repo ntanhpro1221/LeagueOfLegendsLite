@@ -49,6 +49,10 @@ public static partial class ChampionStateMove {
                 if (data.health.IsDead) // RUN OUT OF HEALTH
                     data.sharedState.SetDead();
 
+                // ITEM ANALYZING STATE
+                else if (data.itemRequest.ValueRO.haveRequest)
+                    data.sharedState.SetItemActiveAnalyzing();
+
                 // ATTACK STATE
                 else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
                     data.sharedState.SetAttack();
@@ -57,8 +61,8 @@ public static partial class ChampionStateMove {
                 else if (
                     // Have cancel request
                     data.HaveCancelMoveRequest
-                    // Done move
-                 || data.moveRequester.IsMoveDone
+                    // Done move and not have move request from player
+                 || (data.moveRequester.IsMoveDone && !data.input.MoveEvent_WithData)
                     // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup)))
@@ -72,18 +76,19 @@ public static partial class ChampionStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO         health;
-            public readonly AimedTargetAspectRO    aimedTarget;
-            public readonly ActorSharedStateAspect sharedState;
-            public readonly RefRO<AttackStateData> attackData;
-            public readonly MoveRequesterAspect    moveRequester;
-            public readonly RefRO<PlayerInputData> input;
+            public readonly HealthAspectRO                       health;
+            public readonly AimedTargetAspectRO                  aimedTarget;
+            public readonly ActorSharedStateAspect               sharedState;
+            public readonly RefRO<AttackStateData>               attackData;
+            public readonly MoveRequesterAspect                  moveRequester;
+            public readonly PlayerInputAspectRO                  input;
+            public readonly RefRO<ItemActiveNewStateRequestData> itemRequest;
 
             private readonly RefRO<LocalTransform> localTrans;
 
             [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
 
-            public bool HaveCancelMoveRequest => input.ValueRO.triggers.Event.CancelMove.IsSet;
+            public bool HaveCancelMoveRequest => input.Input.GetEvent_Only(PlayerTrigger.Other.CancelMove);
 
             public void StopMove() {
                 moveRequester.SyncFromLocTrans(localTrans.ValueRO);
@@ -112,7 +117,6 @@ public static partial class ChampionStateMove {
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<NetworkTime>();
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -124,16 +128,13 @@ public static partial class ChampionStateMove {
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
 
-            var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-
             foreach (var (
                     _
                   , moveRequester
                   , aimedTarget
                   , autoFollowTarget
                   , locTrans
-                  , input
-                  , inputPrevCode)
+                  , input)
                 in SystemAPI
                     .Query<
                         StateFilterAspect
@@ -141,18 +142,16 @@ public static partial class ChampionStateMove {
                       , AimedTargetAspectRO
                       , EnabledRefRW<AutoFollowTarget>
                       , RefRO<LocalTransform>
-                      , RefRO<PlayerInputData>
-                      , RefRO<PlayerInputPrevCode>>()
+                      , PlayerInputAspectRO>()
                     .WithPresent<AutoFollowTarget>()) {
 
                 // Try move to aimed target
                 autoFollowTarget.ValueRW = aimedTarget.IsTargetExists(selectLookup);
 
-                var prevCode = inputPrevCode.ValueRO;
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO
-                 && input.ValueRO.GetFullWithTick(PlayerTrigger.Key.Move, ref prevCode, curTick))
-                    moveRequester.MoveSmartTo(input.ValueRO.moveLocTarget, locTrans.ValueRO);
+                 && input.MoveEvent_WithData)
+                    moveRequester.MoveSmartTo(input.Input.moveLocTarget, locTrans.ValueRO);
             }
         }
     }
@@ -205,4 +204,4 @@ public static partial class ChampionStateMove {
             RefRO<Simulate> IStateAspect<ChampionTag, MoveState>.   Simulate => _simulate;
         }
     }
-} 
+}

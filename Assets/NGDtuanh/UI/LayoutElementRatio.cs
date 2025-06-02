@@ -91,6 +91,8 @@ namespace NGDtuanh.UI {
 
 #endregion
 
+#if UNITY_EDITOR
+        
         protected override void Reset() {
             base.Reset();
 
@@ -101,6 +103,8 @@ namespace NGDtuanh.UI {
                     ? AspectMode.HeightControlsWidth
                     : AspectMode.WidthControlsHeight;
         }
+        
+#endif
 
         public override void CalculateLayoutInputHorizontal() {
             if (m_AspectMode == AspectMode.WidthControlsHeight) {

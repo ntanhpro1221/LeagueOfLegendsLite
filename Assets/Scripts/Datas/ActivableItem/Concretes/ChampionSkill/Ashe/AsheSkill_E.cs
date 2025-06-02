@@ -10,10 +10,12 @@ public class AsheSkill_E : ActivableItemDataSO_GenericBase<
     public enum ConcreteProperty { }
 
     [GenerateIndex]
-    public enum ConcretePrefab { }
+    public enum ConcretePrefab {
+        arrow
+    }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {
-        [GhostField] public Entity        entity;
+        public Entity        entity;
         Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
     }
 }

@@ -20,47 +20,41 @@ MonoBehaviour:
   details: 'Damage: {{$damage}} (+100% AD)
 
     Arrow amount: {{$arrowAmount}}'
-  activationCondition:
+  activeSettings:
+    isActivable: 1
+    isRequireNewState: 1
+  activeCondition:
     pointToTarget: 0
     pointToWalkable: 0
   maxLevel: 5
-  leveledData_Common:
-  - cooldownTime:
-      value: 18000
-    cost:
-      mana:
-        value: 75000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 14500
-    cost:
-      mana:
-        value: 70000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 11000
-    cost:
-      mana:
-        value: 65000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 7500
-    cost:
-      mana:
-        value: 60000
-      health:
-        value: 0
-  - cooldownTime:
-      value: 4000
-    cost:
-      mana:
-        value: 55000
-      health:
-        value: 0
-  leveledData_Concrete:
+  cooldownTime:
+  - value: 18000
+  - value: 14500
+  - value: 11000
+  - value: 7500
+  - value: 4000
+  activeCost:
+  - health:
+      value: 0
+    mana:
+      value: 75000
+  - health:
+      value: 0
+    mana:
+      value: 70000
+  - health:
+      value: 0
+    mana:
+      value: 65000
+  - health:
+      value: 0
+    mana:
+      value: 60000
+  - health:
+      value: 0
+    mana:
+      value: 55000
+  concreteProp:
     _Keys: 0000000001000000
     _Values:
     - _Value:
@@ -80,15 +74,16 @@ MonoBehaviour:
     - arrowAmount
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: 9ff61995f455f74338163e5f95f7ab7e
     _KeySynced: 1
-  prefab_Concrete:
+  concretePrefab:
     _Keys: 00000000
     _Values:
-    - _Value: {fileID: 5267929586778141670, guid: be58a3d89102f1c4488d52074278441d, type: 3}
+    - _Value: {fileID: 2158595296973362309, guid: b6510a5afa4152191878bf57e402cc00, type: 3}
     _KeyNames:
     - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1166d2697f8720d50b93c4959dab5345
+      Hash: 9ff61995f455f74338163e5f95f7ab7e
     _KeySynced: 1
+  _PrevMaxLevel: 5

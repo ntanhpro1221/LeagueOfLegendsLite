@@ -53,6 +53,7 @@ public partial struct InitMinionSystem : ISystem {
           , ref LocalTransform                       locTrans
           , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , ref MinionControlFactor                  controlFactor
+          , ref RotationData                         rotation
           , EnabledRefRW<NeedInitTag>                needInit
           , EnabledRefRW<HealthData>                 healthEnabled) {
 
@@ -66,7 +67,7 @@ public partial struct InitMinionSystem : ISystem {
             ref var pathSource = ref initTrans.Minion.Value[laneType.laneType][teamType.team];
 
             // init position
-            locTrans = pathSource[0].ToLocTrans_Directly();
+            rotation.RotateTo((locTrans = pathSource[0].ToLocTrans_Directly()).Forward().Quantizate3().xz);
 
             // init path
             pathBuffer.Resize(pathSource.Count, NativeArrayOptions.UninitializedMemory);

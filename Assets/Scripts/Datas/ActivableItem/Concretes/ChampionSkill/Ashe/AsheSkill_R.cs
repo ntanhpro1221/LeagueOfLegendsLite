@@ -13,10 +13,12 @@ public class AsheSkill_R : ActivableItemDataSO_GenericBase<
     }
 
     [GenerateIndex]
-    public enum ConcretePrefab { }
+    public enum ConcretePrefab {
+        arrow  
+    }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {
-        [GhostField] public Entity        entity;
+        public Entity        entity;
         Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
     }
 }

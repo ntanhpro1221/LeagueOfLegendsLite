@@ -11,8 +11,8 @@ public struct HybridModelData : ICleanupComponentData {
     public UnityObjectRef<Transform>            transformRef;
     public UnityObjectRef<SharedAnimController> animCtrlRef;
     public UnityObjectRef<Outline>              outlineRef;
-    public UnityObjectRef<SkillPreviewShower>   skillPreviewRef;
     public UnityObjectRef<RotationController>   rotateRef;
+    public UnityObjectRef<IndicatorShower>      indicator;
 
     public bool                          useFake;
     public UnityObjectRef<RectTransform> fakeTransRef;
@@ -25,8 +25,8 @@ public struct HybridModelData : ICleanupComponentData {
         transformRef    = model.transform;
         animCtrlRef     = model.GetComponentInChildren<SharedAnimController>();
         outlineRef      = model.GetComponentInChildren<Outline>();
-        skillPreviewRef = model.GetComponentInChildren<SkillPreviewShower>();
         rotateRef       = model.GetComponentInChildren<RotationController>();
+        indicator       = model.GetComponentInChildren<IndicatorShower>();
 
         // Set highlight color
         outlineRef.Value.OutlineColor = isAlly
@@ -60,9 +60,6 @@ public struct HybridModelData : ICleanupComponentData {
         bool isHighlighting = data.IsHighlighting;
         if (isHighlighting != outlineRef.Value.enabled)
             outlineRef.Value.enabled = isHighlighting;
-
-        // TRY SKILL PREVIEW DATA
-        if (data.PreviewData.IsValid) skillPreviewRef.Value.Sync(data.PreviewData.ValueRO);
     }
 
     public readonly void Destroy() {

@@ -36,7 +36,7 @@ public partial struct InitSkillUIForOwnChampClientSystem : ISystem {
             >().WithNone<
                 DummyTag
             >().WithEntityAccess()) {
-            PlayerHUD.Instance.Skills.InitAll(tag.id);
+            PlayerHUD.Instance.ActivableItems.InitAllSkills(tag.id);
             ecb.RemoveComponent<NeedInitSkillUI>(entity);
         }
     }

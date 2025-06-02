@@ -31,9 +31,9 @@ public partial struct InitChampionSystem : ISystem {
 
         state.Dependency = new Job {
             dummyLookup = dummyLookup
-          , initTrans = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId  = statsId[StatsType.Health]
-          , manaId    = statsId[StatsType.Mana]
+          , initTrans   = SystemAPI.GetSingleton<InitTransformData>()
+          , healthId    = statsId[StatsType.Health]
+          , manaId      = statsId[StatsType.Mana]
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -63,7 +63,7 @@ public partial struct InitChampionSystem : ISystem {
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled
           , EnabledRefRW<ManaData>         manaEnabled
-          , in Entity entity) {
+          , in Entity                      entity) {
             // remove init request
             needInit.ValueRW = false;
 
@@ -79,8 +79,7 @@ public partial struct InitChampionSystem : ISystem {
             // not init for dummy
             if (!dummyLookup.HasComponent(entity))
                 locTrans = initTrans.Champion.Value[teamType.team]
-                    [0]
-                    .ToLocTrans_Directly();
+                    [0].ToLocTrans_Directly();
             moveRequester.SyncFromLocTrans(locTrans);
         }
     }

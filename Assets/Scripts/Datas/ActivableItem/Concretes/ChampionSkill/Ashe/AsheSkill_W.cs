@@ -18,7 +18,7 @@ public class AsheSkill_W : ActivableItemDataSO_GenericBase<
     }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {
-        [GhostField] public Entity        entity;
+        public Entity        entity;
         Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
     }
 }

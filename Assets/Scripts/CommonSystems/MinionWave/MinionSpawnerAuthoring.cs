@@ -30,8 +30,6 @@ public struct MinionSpawnQueueData : IBufferElementData {
 public class MinionSpawnerAuthoring : MonoBehaviour {
     public GameObject targetInhibitor;
 
-    public NetCodeConfig netcodeConfig;
-
     [Min(0)]     public float firstWaveTime;
     [Min(10)]    public float waveInterval;
     [Min(0.05f)] public float minionInterval;
@@ -40,7 +38,7 @@ public class MinionSpawnerAuthoring : MonoBehaviour {
         public override void Bake(MinionSpawnerAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
-            int tickRate = authoring.netcodeConfig.ClientServerTickRate.SimulationTickRate;
+            int tickRate = GameSO.TickRate;
 
             var spawnerData = new MinionSpawnerData {
                 targetInhibitor = GetDynamicEntity(authoring.targetInhibitor)

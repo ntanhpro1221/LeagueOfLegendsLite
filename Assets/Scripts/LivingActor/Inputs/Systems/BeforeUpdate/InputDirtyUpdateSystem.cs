@@ -8,7 +8,7 @@ public partial struct InputDirtyUpdateSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InputDirtyData>();
-        state.RequireForUpdate<InputDirtyData.PlayerActivableItemBuffer>();
+        state.RequireForUpdate<InputDirtyData.ActivableItemBuffer>();
     }
 
     public void OnUpdate(ref SystemState state) {
@@ -17,7 +17,7 @@ public partial struct InputDirtyUpdateSystem : ISystem {
         UpdateRay(ref state, ref inputData);
         UpdateMouseButtons(ref state, ref inputData);
         UpdateKeyboardButtons(ref state, ref inputData
-          ,                              SystemAPI.GetSingletonBuffer<InputDirtyData.PlayerActivableItemBuffer>(isReadOnly: false));
+          ,                              SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: false));
     }
 
     private void UpdateRay(ref SystemState state, ref InputDirtyData inputData) {
@@ -34,13 +34,13 @@ public partial struct InputDirtyUpdateSystem : ISystem {
         inputData.mouse_right = mouse.rightButton.GetButtonState();
     }
 
-    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData, DynamicBuffer<InputDirtyData.PlayerActivableItemBuffer> inputBuffer) {
+    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData, DynamicBuffer<InputDirtyData.ActivableItemBuffer> inputBuffer) {
         var keyboard = Keyboard.current;
 
         inputData.key_a = keyboard.aKey.GetButtonState();
         inputData.key_s = keyboard.sKey.GetButtonState();
 
-        for (int i = 0; i < inputBuffer.Length; ++i)
-            inputBuffer.ElementAt(i).key = keyboard[((PlayerActivableItem)i).ToKey()].GetButtonState();
+        for (int i = 0; i < PlayerTrigger.ITEM_COUNT; ++i)
+            inputBuffer.ElementAt(i).key = keyboard[((PlayerTrigger.Item)i).ToKeyboard()].GetButtonState();
     }
 }

@@ -49,23 +49,19 @@ public static partial class InhibitorStateDead2Idle {
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<ClientServerTickRate>();
             state.RequireForUpdate<NetworkTime>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
-
             foreach (var (_, transition, anim) in SystemAPI.Query<
                 StateFilterAspect
               , TransitionStateAspectRW
               , RefRO<SharedAnimData>>()) {
                 transition.CurAnim = SharedAnimKey.Dead2Idle;
 
-                transition.DoneAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithDeltaTime(
-                    anim.ValueRO.AnimLengths[SharedAnimKey.Dead2Idle]
-                  , tickRate);
+                transition.DoneAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithBonusTick(
+                    anim.ValueRO.AnimLengthTicks[SharedAnimKey.Dead2Idle]);
             }
         }
     }

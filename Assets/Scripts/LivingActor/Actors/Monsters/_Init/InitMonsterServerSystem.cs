@@ -63,6 +63,7 @@ public partial struct InitMonsterServerSystem : ISystem {
           , ref HealthData                 health
           , ref LocalTransform             locTrans
           , ref MonsterControlFactor       controlFactor
+          , ref RotationData               rotation
           , EnabledRefRW<NeedInitTag>      needInit
           , EnabledRefRW<HealthData>       healthEnabled
           , in Entity                      entity) {
@@ -75,10 +76,12 @@ public partial struct InitMonsterServerSystem : ISystem {
             healthEnabled.ValueRW = true;
 
             // init position
-            if (!manualTransLookup.HasComponent(entity))
-                anchorData = MonsterLeashAnchor.FromLocTrans(
-                    locTrans = initTrans.Monster.Value[tag.id][teamType.team][0].ToLocTrans_Directly());
-            
+            if (!manualTransLookup.HasComponent(entity)) {
+                locTrans = initTrans.Monster.Value[tag.id][teamType.team][0].ToLocTrans_Directly();
+                rotation.RotateTo(locTrans.Forward().Quantizate3().xz);
+                anchorData = MonsterLeashAnchor.FromLocTrans(locTrans);
+            }
+
             // init control factor
             controlFactor.leashRangeSqr = allMonsterData.Monsters[tag.id].leashRange.Sqr();
             controlFactor.respawnCDTick = allMonsterData.Monsters[tag.id].respawnCDTick;

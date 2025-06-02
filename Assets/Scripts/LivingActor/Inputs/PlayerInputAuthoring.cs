@@ -3,29 +3,14 @@ using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
-public struct PlayerInputPrevCode : IComponentData {
-    [GhostField] public PlayerTrigger.Item<int> Code;
-}
-
 public struct PlayerInputData : IInputComponentData {
     public void ResetAllEvents() {
         triggers.Event = default;
     }
-
-#region TRIGGERS
-
-    [GhostField] public TickVersionForInput     tickVersion;
-    [GhostField] public PlayerTrigger.Full triggers;
-
-    public readonly bool GetFullWithTick(
-        PlayerTrigger.Key          key
-      , ref PlayerInputPrevCode prevCode
-      , in  NetworkTick                 curTick) =>
-        tickVersion.IsValid(curTick)
-        // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-     && triggers.GetFull(key, ref prevCode);
-
-#endregion
+    
+    [GhostField] public InputForActivableItemData inputForActivableItem;
+    [GhostField] public ItemActiveCondition       curCondition;
+    [GhostField] public PlayerTrigger.Full        triggers;
 
 #region MOVE
 
@@ -33,11 +18,11 @@ public struct PlayerInputData : IInputComponentData {
 
     public void SetMove(float3_Q3 _targetLocalPos) {
         moveLocTarget = _targetLocalPos;
-        triggers.Set(PlayerTrigger.Key.Move);
+        triggers.Set(PlayerTrigger.Other.Move);
     }
 
     public void CancelMove() {
-        triggers.Set(PlayerTrigger.Key.CancelMove);
+        triggers.Set(PlayerTrigger.Other.CancelMove);
     }
 
 #endregion
@@ -63,7 +48,7 @@ public class PlayerInputAuthoring : MonoBehaviour {
         public override void Bake(PlayerInputAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
-            AddComponent<PlayerInputPrevCode>(entity);
+            AddComponent<PlayerTrigger.PrevCode>(entity);
             AddComponent<PlayerInputData>(entity);
             AddComponent<PlayerInputResetting>(entity);
         }

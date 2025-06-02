@@ -41,25 +41,31 @@ public static partial class ChampionStateAttack {
                   , health
                   , aimedTarget
                   , attackData
-                  , input)
+                  , input
+                  , itemRequest)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
                   , HealthAspectRO
                   , AimedTargetAspectRO
                   , RefRW<AttackStateData>
-                  , RefRO<PlayerInputData>>()) {
+                  , PlayerInputAspectRO
+                  , RefRO<ItemActiveNewStateRequestData>>()) {
 
                 // DEAD STATE
                 if (health.IsDead) // Run out of health
                     sharedState.SetDead();
+
+                // ITEM ANALYZING STATE
+                else if (itemRequest.ValueRO.haveRequest)
+                    sharedState.SetItemActiveAnalyzing();
 
                 // MOVE STATE
                 else if (
                     // Need move to target and already perform attack yet
                     (attackData.ValueRO.isAttacked && aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
                     // Have move request
-                 || input.ValueRO.triggers.Event.Move.IsSet)
+                 || input.MoveEvent_WithData)
                     sharedState.SetMove();
 
                 // IDLE STATE

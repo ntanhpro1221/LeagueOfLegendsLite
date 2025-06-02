@@ -14,7 +14,6 @@ public struct MonsterSpawnerData : IComponentData, IEnableableComponent {
 [RequireComponent(
     typeof(FollowerEntityFixedPathAuthoring))]
 public class MonsterSpawnerAuthoring : MonoBehaviour {
-    public NetCodeConfig netConfig;
     public float         spawnTime;
 
     private class Baker : ExtendBaker<MonsterSpawnerAuthoring> {
@@ -24,7 +23,7 @@ public class MonsterSpawnerAuthoring : MonoBehaviour {
             AddComponent(entity, new MonsterSpawnerData {
                 spawnTick = TickHelpers.CalcStartTick(
                     authoring.spawnTime
-                  , authoring.netConfig.ClientServerTickRate.SimulationTickRate)
+                  , GameSO.TickRate)
             });
         }
     }

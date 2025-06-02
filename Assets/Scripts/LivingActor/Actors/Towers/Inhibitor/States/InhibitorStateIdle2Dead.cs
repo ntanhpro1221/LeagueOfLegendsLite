@@ -43,14 +43,11 @@ public static partial class InhibitorStateIdle2Dead {
     public partial struct Enter : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<ClientServerTickRate>();
             state.RequireForUpdate<NetworkTime>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
-
             foreach (var (
                 _
               , select_highlight_healthBar
@@ -62,9 +59,8 @@ public static partial class InhibitorStateIdle2Dead {
               , RefRO<SharedAnimData>>()) {
                 transition.CurAnim = SharedAnimKey.Idle2Dead;
 
-                transition.DoneAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithDeltaTime(
-                    anim.ValueRO.AnimLengths[SharedAnimKey.Idle2Dead]
-                  , tickRate);
+                transition.DoneAtTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick.WithBonusTick(
+                    anim.ValueRO.AnimLengthTicks[SharedAnimKey.Idle2Dead]);
 
                 select_highlight_healthBar.DisableAll();
             }

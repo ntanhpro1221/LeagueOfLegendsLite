@@ -8,29 +8,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1177921871742823023, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: prefabId
-      value: e738aa010959bef4488b777c60856c45
-      objectReference: {fileID: 0}
-    - target: {fileID: 1177921871742823023, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5746079826975427702, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
       propertyPath: enabled
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6059844326883121590, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6059844326883121590, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6059844326883121590, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6059844326883121590, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72,10 +52,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6059844326883121590, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7392278292554583566, guid: 160f19a658ac591498345ff3cd77e817, type: 3}
       propertyPath: m_Name
       value: NormalRangedAttackBase
@@ -103,7 +79,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716139915936838169}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300012, guid: 53f69c1877b428942a29947add82a631, type: 3}
 --- !u!23 &6401210305142516616
 MeshRenderer:
   m_ObjectHideFlags: 0

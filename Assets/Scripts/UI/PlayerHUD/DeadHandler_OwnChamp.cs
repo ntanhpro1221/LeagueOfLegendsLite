@@ -18,11 +18,15 @@ public class DeadHandler_OwnChamp : DeadHandler_Base {
         base.Dead(deadAtTick, respawnTick);
 
         _Saturation.value = _Saturation.min;
+
+        PlayerHUD.Instance.ActivableItems.StartDeadAllItems();
     }
 
     public override void Respawn() {
         base.Respawn();
-        
+
         _Saturation.value = 0;
+
+        PlayerHUD.Instance.ActivableItems.DoneDeadAllItems();
     }
 }

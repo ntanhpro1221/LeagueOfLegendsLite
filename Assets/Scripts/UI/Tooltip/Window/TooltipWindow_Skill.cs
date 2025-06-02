@@ -13,22 +13,26 @@ public class TooltipWindow_Skill : ITooltipWindow {
     [SerializeField] private TextMeshProUGUI _MoreInfoTip;
     [SerializeField] private TextMeshProUGUI _Details;
 
-    private DynamicString               _MainText_Dynamic;
-    private DynamicString               _Details_Dynamic;
-    private List<ItemCommonLeveledData> _LeveledData_Common;
+    private DynamicString        _MainText_Dynamic;
+    private DynamicString        _Details_Dynamic;
+    private List<float_Q3>       _CooldownTime;
+    private List<ItemActiveCost> _ActiveCost;
 
     private int           _MaxLevel;
     private bool          _InDetails;
     private ButtonControl _ShiftBtn;
 
-    private void Awake() {
-        _ShiftBtn = Keyboard.current.shiftKey;
+    private ButtonControl ShiftBtn {
+        get {
+            if (_ShiftBtn == null) _ShiftBtn = Keyboard.current.shiftKey;
+            return _ShiftBtn;
+        }
     }
 
     private void Update() {
         // Show details
-        if (_ShiftBtn.isPressed != _InDetails) {
-            _InDetails = _ShiftBtn.isPressed;
+        if (ShiftBtn.isPressed != _InDetails) {
+            _InDetails = ShiftBtn.isPressed;
 
             _MoreInfoTip.gameObject.SetActive(!_InDetails);
             _Details.gameObject.SetActive(_InDetails);
@@ -36,18 +40,20 @@ public class TooltipWindow_Skill : ITooltipWindow {
     }
 
     public void Init(
-        Sprite                      avatar
-      , string                      skillName
-      , DynamicString               mainText_Dynamic
-      , DynamicString               details_Dynamic
-      , List<ItemCommonLeveledData> leveledData_Common
-      , int                         maxLevel) {
-        _Avatar.sprite      = avatar;
-        _Name.text          = skillName;
-        _MainText_Dynamic   = mainText_Dynamic;
-        _Details_Dynamic    = details_Dynamic;
-        _LeveledData_Common = leveledData_Common;
-        _MaxLevel           = maxLevel;
+        Sprite               avatar
+      , string               skillName
+      , DynamicString        mainText_Dynamic
+      , DynamicString        details_Dynamic
+      , List<float_Q3>       cooldownTime
+      , List<ItemActiveCost> activeCost
+      , int                  maxLevel) {
+        _Avatar.sprite    = avatar;
+        _Name.text        = skillName;
+        _MainText_Dynamic = mainText_Dynamic;
+        _Details_Dynamic  = details_Dynamic;
+        _CooldownTime     = cooldownTime;
+        _ActiveCost       = activeCost;
+        _MaxLevel         = maxLevel;
 
         UpdateLevel(1);
     }
@@ -59,9 +65,9 @@ public class TooltipWindow_Skill : ITooltipWindow {
     public void UpdateLevel(int newLevel) {
         if (_MaxLevel == 0) {
             _MainText.text = _MainText_Dynamic.RawSource;
-            _Details.text = _Details_Dynamic.RawSource;
-            _Costs.text = "";
-            return; 
+            _Details.text  = _Details_Dynamic.RawSource;
+            _Costs.text    = "";
+            return;
         }
 
         --newLevel;
@@ -71,9 +77,8 @@ public class TooltipWindow_Skill : ITooltipWindow {
     }
 
     private void CostsUpdate(int newLevel) {
-        var data = _LeveledData_Common[newLevel];
         _Costs.text =
-            $"{data.cooldownTime}s Cooldown"
-          + $"\n{data.cost.mana} Mana";
+            $"{_CooldownTime[newLevel]}s Cooldown"
+          + $"\n{_ActiveCost[newLevel].mana} Mana";
     }
 }

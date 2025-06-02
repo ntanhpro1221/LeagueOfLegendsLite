@@ -46,6 +46,12 @@ public readonly partial struct MoveRequesterAspect : IAspect {
         _Waypoints.FrontRW().pos = targetLocPos;
     }
 
+    public static void MoveStraightTo(ref EntityCommandBuffer ecb, in Entity entity, float3_Q3 des) {
+        var buffer = ecb.SetBuffer<WaypointBuffer>(entity);
+        buffer.Resize(1, NativeArrayOptions.ClearMemory);
+        buffer.FrontRW().pos = des;
+    }
+
     /// <summary>
     /// This method is expensive because it has to run pathfinding algorithm.
     /// (Try to use it as sparingly as possible)
