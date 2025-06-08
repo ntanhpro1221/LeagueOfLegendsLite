@@ -4,22 +4,20 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 [UpdateBefore(typeof(SyncHybridModelClientSystem))]
 public partial struct UpdateSkillIndicatorClientSystem : ISystem {
     private const float MAX_WARNING_RATIO = 2;
+    private const int   RANGE_ID          = (int)StatsType.AttackRange;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<InputDirtyData>();
         state.RequireForUpdate<InputDirtyData.ActivableItemBuffer>();
     }
 
     public void OnUpdate(ref SystemState state) {
-        int  rangeId          = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackRange];
         bool showNormalAttack = SystemAPI.GetSingleton<InputDirtyData>().key_a.IsHolding();
         var  dirtyBuffer      = SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: true);
         var  itemKey          = default(PlayerTrigger.Item);
@@ -40,10 +38,10 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
             >().WithNone<
                 DummyTag
             >().WithEntityAccess()) {
-            UpdateForTurret(ref state, rangeId, entity, data.Pos, data.Team);
+            UpdateForTurret(ref state, entity, data.Pos, data.Team);
 
             var metadata = new IndicatorShower.Metadata();
-            metadata.WithNormalAttack(showNormalAttack, data.Stats[rangeId].value);
+            metadata.WithNormalAttack(showNormalAttack, data.Stats[RANGE_ID].value);
             if (itemKey == PlayerTrigger.Item.COUNT) metadata.WithoutActivableItem();
             else
                 metadata.WithActivableItem(itemKey, data.Level, data.ItemsDynamic[(int)itemKey].level
@@ -56,7 +54,7 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
         }
     }
 
-    private void UpdateForTurret(ref SystemState state, int rangeId, Entity ownChampEntity, float3 ownChampPos, TeamType ownChampTeam) {
+    private void UpdateForTurret(ref SystemState state, Entity ownChampEntity, float3 ownChampPos, TeamType ownChampTeam) {
         foreach (var (
             locTrans
           , target
@@ -78,8 +76,8 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
             var metadata = new IndicatorShower.Metadata();
             metadata
                 .WithNormalAttack(
-                    showNormalAttack: MAX_WARNING_RATIO > GameHelpers.DistanceXZ(locTrans.ValueRO.Position, ownChampPos) / stats[rangeId].value
-                  , attackRange: stats[rangeId].value)
+                    showNormalAttack: MAX_WARNING_RATIO > GameHelpers.DistanceXZ(locTrans.ValueRO.Position, ownChampPos) / stats[RANGE_ID].value
+                  , attackRange: stats[RANGE_ID].value)
                 .WithTurretData(
                     ownChampPos: ownChampPos.Quantizate3()
                   , ownChampIsTarget: target.ValueRO.target == ownChampEntity

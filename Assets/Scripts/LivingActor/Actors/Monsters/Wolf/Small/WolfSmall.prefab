@@ -8,6 +8,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._Keys.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 68118dd2169489d516bfb1ec07a8b576
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._Values.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[6]'
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[7]'
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[8]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[9]'
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._KeyNames.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[6]'
+      value: Skill_Q
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[7]'
+      value: Skill_W
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[8]'
+      value: Skill_E
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[9]'
+      value: Skill_R
+      objectReference: {fileID: 0}
     - target: {fileID: 32608205855955755, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
       propertyPath: m_Name
       value: WolfSmall

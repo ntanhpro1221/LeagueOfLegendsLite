@@ -20,7 +20,6 @@ public partial struct CommonRangedAttackSystem : ISystem {
 
         state.Dependency = new Job {
             ecb                            = ecb
-          , damageId                       = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.PhysicDamage]
           , isFirstTimeFullyPredictingTick = SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick
         }.Schedule(state.Dependency);
 
@@ -34,7 +33,6 @@ public partial struct CommonRangedAttackSystem : ISystem {
     [BurstCompile]
     public partial struct Job : IJobEntity {
         public EntityCommandBuffer ecb;
-        public int                 damageId;
         public bool                isFirstTimeFullyPredictingTick;
 
         [BurstCompile]
@@ -51,7 +49,7 @@ public partial struct CommonRangedAttackSystem : ISystem {
                 var projectile = ecb.Instantiate(attackData.projectile);
 
                 ecb.SetComponent(projectile, new AimedTargetData { target = target.target });
-                ecb.SetComponent(projectile, new DamageTriggerSource(stats[damageId].value, entity));
+                ecb.SetComponent(projectile, new DamageTriggerSource(stats[StatsId.PhysicDamage].value, entity));
                 ecb.SetComponent(projectile, LocalTransform.FromPositionRotation(
                     LocalTransform
                         .FromPositionRotation(locTrans.Position, rotationData.quaternion)
@@ -62,4 +60,4 @@ public partial struct CommonRangedAttackSystem : ISystem {
             attackTrigger.ValueRW = false;
         }
     }
-} 
+}

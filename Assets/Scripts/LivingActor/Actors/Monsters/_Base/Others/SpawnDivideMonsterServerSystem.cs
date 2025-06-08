@@ -11,18 +11,24 @@ using UnityEngine;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct SpawnDivideMonsterServerSystem : ISystem {
+    private EntityQuery mainQuery;
+    
     [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<MonsterPrefabBuffer>();
         state.RequireForUpdate<PrefabIdData>();
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
-            Simulate
-          , MonsterDivideTrigger>().Build());
+        
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+              , MonsterDivideTrigger
+            >().WithDisabled<
+                NeedInitTag
+            >().Build();
 
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
             isReadOnly: true);
@@ -30,6 +36,8 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+        
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
         selectLookup.Update(ref state);
@@ -40,7 +48,6 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
                 .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                 .CreateCommandBuffer(state.WorldUnmanaged)
                 .AsParallelWriter()
-          , radiusId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.UnitRadius]
           , monsterPrefabs = SystemAPI.GetSingletonBuffer<MonsterPrefabBuffer>(
                 isReadOnly: true)
           , monsterId = SystemAPI.GetSingleton<PrefabIdData>()._MonsterIdRef
@@ -48,16 +55,15 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
     }
 
     [WithAll(typeof(Simulate))]
+    [WithDisabled(typeof(NeedInitTag))]
     [WithPresent(typeof(MonsterLeashAnchor))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        [ReadOnly] public ComponentLookup<Selectable> selectLookup;
+        [ReadOnly] public ComponentLookup<Selectable>        selectLookup;
+        [ReadOnly] public DynamicBuffer<MonsterPrefabBuffer> monsterPrefabs;
 
-        public EntityCommandBuffer.ParallelWriter ecb;
-        public int                                radiusId;
-
-        [ReadOnly] public DynamicBuffer<MonsterPrefabBuffer>                     monsterPrefabs;
-        public            BlobAssetReference<BlobMap<EqualEnum<MonsterId>, int>> monsterId;
+        public EntityCommandBuffer.ParallelWriter                     ecb;
+        public BlobAssetReference<BlobMap<EqualEnum<MonsterId>, int>> monsterId;
 
         [BurstCompile]
         public void Execute(
@@ -73,7 +79,7 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
             // Mark spawn complete
             spawnTrigger.ValueRW = false;
             Entity root   = campRoot.RootUnsafe;
-            float  radius = stats[radiusId].value;
+            float  radius = stats[StatsId.UnitRadius].value;
             float  curRad = 0;
             float  delRad = math.PI2 / spawnBuffer.Length;
 

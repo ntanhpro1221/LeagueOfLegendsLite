@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7532512427967123564, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      propertyPath: haveLevel
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6638954478031481456, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: m_ImplicitTensor
       value: 0
@@ -284,7 +288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2ff032c4df4d13a94a1aed6ff7b79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soReader: {fileID: 11400000, guid: 4e414f94dcc8a64a38343fabdfa21af6, type: 2}
 --- !u!114 &-344990170314110392
 MonoBehaviour:
   m_ObjectHideFlags: 0

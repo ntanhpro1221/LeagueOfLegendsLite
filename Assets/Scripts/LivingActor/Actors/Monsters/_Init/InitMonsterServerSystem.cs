@@ -1,4 +1,5 @@
-﻿using Pathfinding.ECS;
+﻿using System;
+using NGDtuanh.BubleAsset.ShortCut;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -8,34 +9,35 @@ using UnityEngine;
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct InitMonsterServerSystem : ISystem {
-    private ComponentLookup<MonsterManualInitTransAndAnchorTag> manualTransLookup;
+    private EntityQuery mainQuery;
+
+    [ReadOnly] private ComponentLookup<MonsterManualInitTransAndAnchorTag> manualLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<AllMonsterData>();
         state.RequireForUpdate<InitTransformData>();
-        state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
+
+        mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 MonsterTag
               , Simulate
-              , NeedInitTag>()
-            .Build());
+              , NeedInitTag
+            >().Build();
 
-        manualTransLookup = SystemAPI.GetComponentLookup<MonsterManualInitTransAndAnchorTag>(
+        manualLookup = SystemAPI.GetComponentLookup<MonsterManualInitTransAndAnchorTag>(
             isReadOnly: true);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        manualTransLookup.Update(ref state);
-        ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        if (mainQuery.IsEmpty) return;
 
+        manualLookup.Update(ref state);
         state.Dependency = new Job {
-            initTrans         = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId          = statsId[StatsType.Health]
-          , allMonsterData    = SystemAPI.GetSingleton<AllMonsterData>()
-          , manualTransLookup = manualTransLookup
+            allMonster   = SystemAPI.GetSingleton<AllMonsterData>()
+          , initTrans    = SystemAPI.GetSingleton<InitTransformData>()._MonsterRef
+          , manualLookup = manualLookup
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -44,47 +46,60 @@ public partial struct InitMonsterServerSystem : ISystem {
       , typeof(MonsterTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(HealthData)
+        typeof(BountyBuffer)
+      , typeof(StatsBuffer_Raw)
       , typeof(MonsterLeashAnchor))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public InitTransformData initTrans;
-        public AllMonsterData    allMonsterData;
-        public int               healthId;
+        public AllMonsterData allMonster;
 
-        [ReadOnly] public ComponentLookup<MonsterManualInitTransAndAnchorTag> manualTransLookup;
+        public BlobAssetReference<Buble_EnMap_EnMap_Array<MonsterId, TeamType, InitTransform, Transform>> initTrans;
+
+        [ReadOnly] public ComponentLookup<MonsterManualInitTransAndAnchorTag> manualLookup;
 
         [BurstCompile]
         public void Execute(
-            in  MonsterTag                 tag
-          , in  JungleTeamTypeData         teamType
-          , in  DynamicBuffer<StatsBuffer> stats
-          , ref MonsterLeashAnchor         anchorData
-          , ref HealthData                 health
-          , ref LocalTransform             locTrans
-          , ref MonsterControlFactor       controlFactor
-          , ref RotationData               rotation
-          , EnabledRefRW<NeedInitTag>      needInit
-          , EnabledRefRW<HealthData>       healthEnabled
-          , in Entity                      entity) {
+            // Identity
+            in MonsterTag         tag
+          , in JungleTeamTypeData teamJungle
+          , in Entity             entity
 
-            // remove init request
-            needInit.ValueRW = false;
+            // Bounty
+          , ref DynamicBuffer<BountyBuffer> bounties
+          , EnabledRefRW<BountyBuffer>      bountyTrigger
 
-            // init health, enable it
-            health.value          = stats[healthId].value;
-            healthEnabled.ValueRW = true;
+            // Raw stats
+          , ref DynamicBuffer<StatsBuffer_Raw> statsRaw
+          , EnabledRefRW<StatsBuffer_Raw>      statsRawTrigger
 
-            // init position
-            if (!manualTransLookup.HasComponent(entity)) {
-                locTrans = initTrans.Monster.Value[tag.id][teamType.team][0].ToLocTrans_Directly();
+            // Position
+          , ref LocalTransform     locTrans
+          , ref RotationData       rotation
+          , ref MonsterLeashAnchor anchorData
+
+            // Control Factor
+          , ref MonsterControlFactor controlFactor) {
+            // CACHE
+            ref var actor = ref allMonster.Monsters[tag.id];
+
+            // BOUNTY
+            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
+
+            // RAW STATS
+            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
+              , source: ref actor.stats);
+
+            // POSITION
+            if (!manualLookup.HasComponent(entity)) {
+                locTrans = initTrans.Value.Value[tag.id][teamJungle.team][0].ToLocTrans_Directly();
                 rotation.RotateTo(locTrans.Forward().Quantizate3().xz);
                 anchorData = MonsterLeashAnchor.FromLocTrans(locTrans);
             }
 
-            // init control factor
-            controlFactor.leashRangeSqr = allMonsterData.Monsters[tag.id].leashRange.Sqr();
-            controlFactor.respawnCDTick = allMonsterData.Monsters[tag.id].respawnCDTick;
+            // CONTROL FACTOR
+            controlFactor.leashRangeSqr = actor.leashRange.Sqr();
+            controlFactor.respawnCDTick = actor.respawnCDTick;
         }
+
     }
 }

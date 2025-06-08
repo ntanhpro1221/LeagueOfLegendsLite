@@ -12,7 +12,6 @@ public class AsheSkill_R : ActivableItemDataSO_GenericBase<
       , reducedDamage
     }
 
-    [GenerateIndex]
     public enum ConcretePrefab {
         arrow  
     }

@@ -6,7 +6,6 @@ using UnityEngine;
 public partial struct UpdatePlayerHUDClientSystem : ISystem {
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<RequireExpData>();
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<NetworkTime>();
     }
 
@@ -14,7 +13,6 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
         var     playerHUD  = PlayerHUD.Instance;
         var     requireExp = SystemAPI.GetSingleton<RequireExpData>();
         var     curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-        ref var index      = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
 
         foreach (var (
             curDeadState
@@ -34,14 +32,11 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
                 DummyTag
             >().WithPresent<DeadState>()) {
             // STATS
-            playerHUD.Stats.Update(healthBarUpdateGenerator.Stats, ref index);
+            playerHUD.Stats.Update(healthBarUpdateGenerator.Stats);
             playerHUD.Stats.UpdateCDReduce(333); 
 
             // HEALTH BAR
-            playerHUD.HealthBar.UpdateUI(healthBarUpdateGenerator.GenerateUpdateData(
-                index[StatsType.Health]
-              , index[StatsType.Mana]
-              , requireExp));
+            playerHUD.HealthBar.UpdateUI(healthBarUpdateGenerator.GenerateUpdateData(requireExp));
 
             // DEAD EVENT
             deadTrigger.UpdateHandler(

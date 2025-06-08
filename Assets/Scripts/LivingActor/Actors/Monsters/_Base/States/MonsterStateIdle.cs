@@ -18,7 +18,6 @@ public static partial class MonsterStateIdle {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -36,10 +35,6 @@ public static partial class MonsterStateIdle {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
-
             foreach (var (
                     filter
                   , data)
@@ -49,7 +44,7 @@ public static partial class MonsterStateIdle {
                 bool targetExist  = data.AimedTarget.IsTargetExists(selectLookup);
                 bool attackCDDone = data.AttackData.IsCooldownDone(curTick);
                 bool targetOutOfRange = targetExist
-                    ? data.AimedTarget.IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup)
+                    ? data.AimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup)
                     : true;
 
                 // DEAD STATE
@@ -92,7 +87,7 @@ public static partial class MonsterStateIdle {
             public readonly ActorSharedStateAspect SharedState;
             public readonly AimedTargetAspectRO    AimedTarget;
 
-            private readonly RefRO<AttackStateData>  _AttackData;
+            private readonly RefRO<AttackStateData> _AttackData;
 
             [Optional] private readonly EnabledRefRO<MonsterLeashAnchor>    _LeashTrigger;
             [Optional] private readonly EnabledRefRO<MonsterLeashDisabling> _UnleashTrigger;

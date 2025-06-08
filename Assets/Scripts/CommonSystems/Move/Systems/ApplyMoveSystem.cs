@@ -3,7 +3,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(MoveSystemGroup))]
 public partial struct ApplyMoveSystem : ISystem {
@@ -86,7 +85,7 @@ public partial struct ApplyMoveSystem : ISystem {
                     } while (disToTarget_WithoutY <= disCanMove_WithoutY);
 
                     // No waypoint left => done move
-                    if (waypoints.Empty()) moveData.isMoveDone = true;
+                    if (waypoints.IsEmpty) moveData.isMoveDone = true;
                     // Move with the remain value of disCanMove_WithoutY
                     else
                         newPos = math.lerp(

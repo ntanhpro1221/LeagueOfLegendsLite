@@ -10,6 +10,8 @@ using UnityEngine;
 [UpdateInGroup(typeof(Between_CopyCommand_PredictedFixed_SystemGroup))]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct MonsterSpawnerServerSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InitTransformData>();
@@ -17,13 +19,17 @@ public partial struct MonsterSpawnerServerSystem : ISystem {
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
 
-        state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
-            Simulate
-          , MonsterSpawnerData>().Build());
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+              , MonsterSpawnerData
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+        
         var netTime = SystemAPI.GetSingleton<NetworkTime>();
         if (!netTime.IsFirstTimeFullyPredictingTick) return;
 

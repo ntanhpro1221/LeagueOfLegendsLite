@@ -8,13 +8,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._Keys.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._EditorSessionCode
+      value: 281b2e34edd5d70754607d3a0f0a429f
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._Values.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[6]'
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[7]'
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[8]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._Keys.Array.data[9]'
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: _OverrideState._KeyNames.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[6]'
+      value: Skill_Q
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[7]'
+      value: Skill_W
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[8]'
+      value: Skill_E
+      objectReference: {fileID: 0}
+    - target: {fileID: -7285912311421547507, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
+      propertyPath: '_OverrideState._KeyNames.Array.data[9]'
+      value: Skill_R
+      objectReference: {fileID: 0}
     - target: {fileID: 32608205855955755, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
       propertyPath: m_Name
       value: RaptorSmall
       objectReference: {fileID: 0}
     - target: {fileID: 163897537922118773, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
       propertyPath: prefabId
-      value: ebb39d24f34e5380bbc9979c098883c4
+      value: 2051b297beac3c5819ede2edf2d475d3
       objectReference: {fileID: 0}
     - target: {fileID: 174977803107476806, guid: 295077930e5efb12c878dbae5f17cbc2, type: 3}
       propertyPath: m_Height

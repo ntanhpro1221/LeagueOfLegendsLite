@@ -20,7 +20,6 @@ public static partial class MinionStateMove {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -38,16 +37,12 @@ public static partial class MinionStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
-
             foreach (var (filter, data, entity)
                 in SystemAPI.Query<
                         StateFilterAspect
                       , UpdateAspect>()
                     .WithEntityAccess()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
+                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
@@ -61,7 +56,7 @@ public static partial class MinionStateMove {
                 // IDLE STATE
                 else if (
                     // Don't have path left
-                    data.PathBuffer.Empty()
+                    data.PathBuffer.IsEmpty
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
@@ -170,9 +165,9 @@ public static partial class MinionStateMove {
                 anchorEnable.ValueRW         = false;
                 aimedTarget.targetIsChampion = false;
 
-                if (!detectedMinion.Empty()) aimedTarget.target     = detectedMinion.FrontRO().entity;
-                else if (!detectedTower.Empty()) aimedTarget.target = detectedTower.FrontRO().entity;
-                else if (!detectedChampion.Empty()
+                if (!detectedMinion.IsEmpty) aimedTarget.target     = detectedMinion.FrontRO().entity;
+                else if (!detectedTower.IsEmpty) aimedTarget.target = detectedTower.FrontRO().entity;
+                else if (!detectedChampion.IsEmpty
                  && !aggroDisable.ValueRO)
                     MinionControlSystem.AimToChamp(
                         detectedChampion.FrontRO().entity

@@ -12,7 +12,6 @@ public class AsheSkill_Q : ActivableItemDataSO_GenericBase<
       , damagePerArrow
     }
 
-    [GenerateIndex]
     public enum ConcretePrefab { }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {

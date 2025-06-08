@@ -1,29 +1,34 @@
-﻿using Unity.Burst;
+﻿using NGDtuanh.BubleAsset.ShortCut;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct InitTowerServerSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllTowerData>();
         state.RequireForUpdate<InitTransformData>();
-        state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
+
+        mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 TowerTag
               , Simulate
-              , NeedInitTag>()
-            .Build());
+              , NeedInitTag
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        if (mainQuery.IsEmpty) return;
 
         state.Dependency = new Job {
-            initTrans = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId  = statsId[StatsType.Health]
+            allTower  = SystemAPI.GetSingleton<AllTowerData>()
+          , initTrans = SystemAPI.GetSingleton<InitTransformData>()._TowerRef
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -32,34 +37,46 @@ public partial struct InitTowerServerSystem : ISystem {
       , typeof(TowerTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(HealthData))]
+        typeof(BountyBuffer)
+      , typeof(StatsBuffer_Raw))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public InitTransformData initTrans;
-        public int               healthId;
+        public AllTowerData allTower;
+
+        public BlobAssetReference<Buble_EnMap_EnMap_EnMap<TeamType, TowerId, LaneType, InitTransform, Transform>> initTrans;
 
         [BurstCompile]
         public void Execute(
-            in  TowerTag                   towerTag
-          , in  LaneTypeData               laneType
-          , in  TeamTypeData               teamType
-          , in  DynamicBuffer<StatsBuffer> stats
-          , ref HealthData                 health
-          , ref LocalTransform             locTrans
-          , ref RotationData               rotation
-          , EnabledRefRW<NeedInitTag>      needInit
-          , EnabledRefRW<HealthData>       healthEnabled) {
-            // remove init request
-            needInit.ValueRW = false;
+            // Identity
+            in TowerTag     tag
+          , in TeamTypeData team
+          , in LaneTypeData lane
 
-            // init health, enable it
-            health.value          = stats[healthId].value;
-            healthEnabled.ValueRW = true;
+            // Bounty
+          , ref DynamicBuffer<BountyBuffer> bounties
+          , EnabledRefRW<BountyBuffer>      bountyTrigger
 
-            // init position
-            rotation.RotateTo((locTrans = initTrans.Tower.Value[teamType.team]
-                    [towerTag.id][laneType.laneType].ToLocTrans_Directly())
-                .Forward().Quantizate3().xz);
+            // Raw stats
+          , ref DynamicBuffer<StatsBuffer_Raw> statsRaw
+          , EnabledRefRW<StatsBuffer_Raw>      statsRawTrigger
+
+            // Position
+          , ref LocalTransform locTrans
+          , ref RotationData   rotation) {
+            // CACHE
+            ref var actor = ref allTower.Towers[tag.id];
+
+            // BOUNTY
+            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
+
+            // RAW STATS
+            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
+              , source: ref actor.stats);
+
+            // POSITION
+            rotation.RotateTo((
+                locTrans = initTrans.Value.Value[team.team][tag.id][lane.laneType].ToLocTrans_Directly()
+            ).Forward().Quantizate3().xz);
         }
     }
 }

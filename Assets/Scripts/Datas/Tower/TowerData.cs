@@ -4,8 +4,8 @@ using Unity.Entities;
 
 [Serializable]
 public struct TowerData : IBlobBuildable<TowerDataManaged>, IBlobBuildableSelf<TowerData> {
-    public BubleEnMap<StatsType, float_Q3> stats;
-    public BubleEnMap<BountyType, int>     bounty;
+    public BubleEnMap<StatsType, float_Q3>  stats;
+    public BubleEnMap<BountyType, float_Q3> bounty;
 
     public void BuildBlob(ref BlobBuilder builder, TowerDataManaged source) {
         stats.BuildBlob(ref builder, source.stats);

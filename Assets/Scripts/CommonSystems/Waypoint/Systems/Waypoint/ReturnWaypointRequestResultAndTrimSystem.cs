@@ -6,16 +6,23 @@ using UnityEngine;
 [UpdateInGroup(typeof(UpdateWaypointSystemGroup))]
 [UpdateAfter(typeof(CompleteWaypointRequestSystem))]
 public partial struct ReturnWaypointRequestResultAndTrimSystem : ISystem {
+    private EntityQuery mainQuery;
+    
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<CachedPathData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
-            PathIsHandling
-          , Simulate>().Build());
+        
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+              , PathIsHandling
+            >().Build();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+        
         var curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         var cachedPath = SystemAPI.ManagedAPI.GetSingleton<CachedPathData>();
 

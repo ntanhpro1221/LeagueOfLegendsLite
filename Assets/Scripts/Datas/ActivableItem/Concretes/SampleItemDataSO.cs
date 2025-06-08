@@ -9,7 +9,6 @@ public class SampleItemDataSO : ActivableItemDataSO_GenericBase<
   , SampleItemDataSO.PrefabBuffer> {
     public enum ConcreteProperty { }
 
-    [GenerateIndex]
     public enum ConcretePrefab { }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {

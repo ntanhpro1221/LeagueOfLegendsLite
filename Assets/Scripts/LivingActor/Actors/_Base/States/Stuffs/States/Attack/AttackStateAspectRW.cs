@@ -9,13 +9,13 @@ public readonly partial struct AttackStateAspectRW : IAspect {
 
     public ref readonly AttackStateData Data => ref _AttackData.ValueRO;
 
-    public void RestartAttack(in NetworkTick curTick, int attackSpeedId, int tickRate) {
+    public void RestartAttack(in NetworkTick curTick, int tickRate) {
         _AttackData.ValueRW.cooldownDoneAtTick = curTick
-            .WithDeltaTime(1 / _Stats[attackSpeedId].value, tickRate);
+            .WithDeltaTime(1 / _Stats[StatsId.AttackSpeed].value, tickRate);
 
         // TODO: Add read attack normalize data of each target (0 -> 1) and apply true real attack tick
         _AttackData.ValueRW.realAttackAtTick = curTick
-            .WithDeltaTime(0.2f / _Stats[attackSpeedId].value, tickRate);
+            .WithDeltaTime(0.2f / _Stats[StatsId.AttackSpeed].value, tickRate);
 
         _AttackData.ValueRW.isAttacked = false;
     }

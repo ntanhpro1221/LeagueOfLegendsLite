@@ -34,9 +34,10 @@ public partial struct InputCastUpdateSystem : ISystem {
             .WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
-              , TeamTypeData>()
-            .WithNone<DummyTag>()
-            .Build());
+              , TeamTypeData
+            >().WithNone<
+                DummyTag
+            >().Build());
 
         castGroundActorResult = new NativeList<RaycastHit>(Allocator.Persistent);
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(

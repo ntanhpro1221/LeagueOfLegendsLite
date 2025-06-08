@@ -12,7 +12,6 @@ public class AsheSkill_W : ActivableItemDataSO_GenericBase<
       , arrowAmount
     }
 
-    [GenerateIndex]
     public enum ConcretePrefab {
         arrow
     }

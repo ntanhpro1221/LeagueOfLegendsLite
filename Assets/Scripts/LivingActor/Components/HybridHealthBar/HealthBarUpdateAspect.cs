@@ -11,11 +11,11 @@ public readonly partial struct HealthBarUpdateAspect : IAspect {
 
     public bool LevelValid => _Level.IsValid;
 
-    public HealthBarUI.UpdateData GenerateUpdateData(int healthId, int manaId, in RequireExpData requireExpData) => new() {
-        maxHealth              = Stats[healthId].value
+    public HealthBarUI.UpdateData GenerateUpdateData(in RequireExpData requireExpData) => new() {
+        maxHealth              = Stats[(int)StatsType.Health].value
       , curHealth              = _Health.ValueRO.value
       , curArmor               = 0
-      , maxMana                = _Mana.IsValid ? Stats[manaId].value : 0
+      , maxMana                = _Mana.IsValid ? Stats[(int)StatsType.Mana].value : 0
       , curMana                = _Mana.IsValid ? _Mana.ValueRO.value : 0
       , curLevel               = _Level.IsValid ? _Level.ValueRO.curLevel : 0
       , curExp                 = _Level.IsValid ? _Level.ValueRO.curExp : 0

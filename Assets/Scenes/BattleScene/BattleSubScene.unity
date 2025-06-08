@@ -3299,15 +3299,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2765044738886888119, guid: 359f538b87d751a47aeeb4cb69bd0552, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2471
+      value: 6547.876
       objectReference: {fileID: 0}
     - target: {fileID: 2765044738886888119, guid: 359f538b87d751a47aeeb4cb69bd0552, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -170.44348
       objectReference: {fileID: 0}
     - target: {fileID: 2765044738886888119, guid: 359f538b87d751a47aeeb4cb69bd0552, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6034
+      value: -2678.3032
       objectReference: {fileID: 0}
     - target: {fileID: 2765044738886888119, guid: 359f538b87d751a47aeeb4cb69bd0552, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3343,7 +3343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5552348712989367017, guid: 359f538b87d751a47aeeb4cb69bd0552, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5404,10 +5404,7 @@ MonoBehaviour:
           Value:
           - {fileID: 1991097294}
     - _Value:
-        _serializedList:
-        - Key: 0
-          Value:
-          - {fileID: 662377007}
+        _serializedList: []
     - _Value:
         _serializedList:
         - Key: 1
@@ -5417,17 +5414,7 @@ MonoBehaviour:
           Value:
           - {fileID: 1846969666}
     - _Value:
-        _serializedList:
-        - Key: 1
-          Value:
-          - {fileID: 1366522672}
-          - {fileID: 632249693}
-          - {fileID: 1998840014}
-        - Key: 2
-          Value:
-          - {fileID: 662338141}
-          - {fileID: 1664498953}
-          - {fileID: 263829721}
+        _serializedList: []
     - _Value:
         _serializedList:
         - Key: 1
@@ -5437,17 +5424,7 @@ MonoBehaviour:
           Value:
           - {fileID: 620116212}
     - _Value:
-        _serializedList:
-        - Key: 1
-          Value:
-          - {fileID: 1366522672}
-          - {fileID: 632249693}
-          - {fileID: 1998840014}
-        - Key: 2
-          Value:
-          - {fileID: 662338141}
-          - {fileID: 1664498953}
-          - {fileID: 263829721}
+        _serializedList: []
     - _Value:
         _serializedList:
         - Key: 1
@@ -5531,7 +5508,7 @@ MonoBehaviour:
     - DragonElder
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 2d71a2f209238eb84d3d59738f814366
+      Hash: 2c64eb94d048471756f6a0470d0ecd9a
     _KeySynced: 1
   champion:
     _serializedList:
@@ -9458,7 +9435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5195527391809511057
 Transform:
   m_ObjectHideFlags: 0

@@ -40,13 +40,14 @@ public class GameSO : ScriptableObject {
 
 #region ALL ACCESSORS
 
-    public static NetCodeConfig                               NetConfig => _CachedInstance._NetConfig;
-    public static int                                         TickRate  => NetConfig.ClientServerTickRate.SimulationTickRate;
-    public static CovEnumMap<ChampionId, ChampionDataManaged> Champ     => _CachedInstance._Champion.value;
-    public static CovEnumMap<MinionId, MinionDataManaged>     Minion    => _CachedInstance._Minion.value;
-    public static CovEnumMap<MonsterId, MonsterDataManaged>   Monster   => _CachedInstance._Monster.value;
-    public static CovEnumMap<ItemId, ItemDataManaged>         Item      => _CachedInstance._Item.value;
-    public static CovEnumMap<TowerId, TowerDataManaged>       Tower     => _CachedInstance._Tower.value;
-    
+    public static NetCodeConfig                               NetConfig             => _CachedInstance._NetConfig;
+    public static int                                         TickRate              => NetConfig.ClientServerTickRate.SimulationTickRate;
+    public static CovEnumMap<ChampionId, ChampionDataManaged> Champ                 => _CachedInstance._Champion.value;
+    public static CovEnumMap<BountyType, float_Q3>            ChampCommonInitBounty => _CachedInstance._Champion.commonInitBounty;
+    public static CovEnumMap<MinionId, MinionDataManaged>     Minion                => _CachedInstance._Minion.value;
+    public static CovEnumMap<MonsterId, MonsterDataManaged>   Monster               => _CachedInstance._Monster.value;
+    public static CovEnumMap<ItemId, ItemDataManaged>         Item                  => _CachedInstance._Item.value;
+    public static CovEnumMap<TowerId, TowerDataManaged>       Tower                 => _CachedInstance._Tower.value;
+
 #endregion
 }

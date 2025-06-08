@@ -1,33 +1,35 @@
-﻿using Pathfinding.ECS;
+﻿using NGDtuanh.BubleAsset.ShortCut;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct InitMinionSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<AllMinionData>();
         state.RequireForUpdate<InitTransformData>();
-        state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
+
+        mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 MinionTag
               , Simulate
-              , NeedInitTag>()
-            .Build());
+              , NeedInitTag
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
+        if (mainQuery.IsEmpty) return;
 
         state.Dependency = new Job {
-            initTrans     = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId      = statsId[StatsType.Health]
-          , allMinionData = SystemAPI.GetSingleton<AllMinionData>()
+            allMinion = SystemAPI.GetSingleton<AllMinionData>()
+          , initTrans = SystemAPI.GetSingleton<InitTransformData>()._MinionRef
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -36,46 +38,62 @@ public partial struct InitMinionSystem : ISystem {
       , typeof(MinionTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(HealthData))]
+        typeof(BountyBuffer)
+      , typeof(StatsBuffer_Raw))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public InitTransformData initTrans;
-        public AllMinionData     allMinionData;
-        public int               healthId;
+        public AllMinionData allMinion;
+
+        public BlobAssetReference<Buble_EnMap_EnMap_Array<LaneType, TeamType, InitTransform, Transform>> initTrans;
 
         [BurstCompile]
         public void Execute(
-            in  LaneTypeData                         laneType
-          , in  TeamTypeData                         teamType
-          , in  MinionTag                            tag
-          , in  DynamicBuffer<StatsBuffer>           stats
-          , ref HealthData                           health
-          , ref LocalTransform                       locTrans
-          , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer
-          , ref MinionControlFactor                  controlFactor
-          , ref RotationData                         rotation
-          , EnabledRefRW<NeedInitTag>                needInit
-          , EnabledRefRW<HealthData>                 healthEnabled) {
+            // Identity
+            in MinionTag    tag
+          , in TeamTypeData team
+          , in LaneTypeData lane
 
-            // remove init request
-            needInit.ValueRW = false;
+            // Bounty
+          , ref DynamicBuffer<BountyBuffer> bounties
+          , EnabledRefRW<BountyBuffer>      bountyTrigger
 
-            // init health, enable it
-            health.value          = stats[healthId].value;
-            healthEnabled.ValueRW = true;
+            // Raw stats
+          , ref DynamicBuffer<StatsBuffer_Raw> statsRaw
+          , EnabledRefRW<StatsBuffer_Raw>      statsRawTrigger
 
-            ref var pathSource = ref initTrans.Minion.Value[laneType.laneType][teamType.team];
+            // Position
+          , ref LocalTransform locTrans
+          , ref RotationData   rotation
 
-            // init position
-            rotation.RotateTo((locTrans = pathSource[0].ToLocTrans_Directly()).Forward().Quantizate3().xz);
+            // Control factor
+          , ref MinionControlFactor controlFactor
 
-            // init path
+            // Fixed Path
+          , ref DynamicBuffer<MinionFixedPathBuffer> pathBuffer) {
+
+            // CACHE
+            ref var actor     = ref allMinion.Minions[tag.id];
+            ref var pathSource = ref initTrans.Value.Value[lane.laneType][team.team];
+
+            // BOUNTY
+            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
+
+            // RAW STATS
+            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
+              , source: ref actor.stats);
+
+            // POSITION
+            rotation.RotateTo((
+                locTrans = pathSource[0].ToLocTrans_Directly()
+            ).Forward().Quantizate3().xz);
+
+            // CONTROL FACTOR
+            controlFactor.aggroRangeSqr = actor.aggroRange.Sqr();
+
+            // FIXED PATH
             pathBuffer.Resize(pathSource.Count, NativeArrayOptions.UninitializedMemory);
             for (int i = 0; i < pathBuffer.Length; i++)
                 pathBuffer[i] = new MinionFixedPathBuffer { pos = pathSource[i].position };
-
-            // init control factor
-            controlFactor.aggroRangeSqr = allMinionData.Minions[tag.id].aggroRange.Sqr();
         }
     }
 }

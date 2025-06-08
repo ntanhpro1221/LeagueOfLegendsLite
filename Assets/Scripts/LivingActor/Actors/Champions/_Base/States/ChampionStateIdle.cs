@@ -16,7 +16,6 @@ public static partial class ChampionStateIdle {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -33,10 +32,6 @@ public static partial class ChampionStateIdle {
             statsLookup.Update(ref state);
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
             foreach (var (
                     filter
@@ -68,7 +63,7 @@ public static partial class ChampionStateIdle {
                     // Have move request
                     input.MoveEvent_WithData
                     // Need move to target
-                 || aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup)) // HAVE VELOCITY
+                 || aimedTarget.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup)) // HAVE VELOCITY
                     sharedState.SetMove();
 
                 // ATTACK STATE

@@ -7,17 +7,6 @@ using Unity.Transforms;
 [UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
 public partial struct NotifyWhenIWasBeatenSystem : ISystem {
     [BurstCompile]
-    public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
-            .WithAll<
-                IncomingDamageBuffer
-              , HealthData
-              , Simulate>()
-            .WithPresent<BeBeaten>()
-            .Build());
-    }
-
-    [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.Dependency = new Job()
             .ScheduleParallel(state.Dependency);

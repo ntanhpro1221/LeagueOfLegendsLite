@@ -8,7 +8,7 @@ public class AllChampionAuthoring : MonoBehaviour {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
 
             AllChampionData data = new();
-            GameSO.Champ.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
+            data.CreateBlobAssetReferenceInBaker(this);
             AddComponent(entity, data);
         }
     }

@@ -1,70 +1,68 @@
-﻿using System;
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Entities;
-using Unity.NetCode;
-using UnityEngine;
 
-
-[UpdateInGroup(typeof(InitAndUpdateStatsSystemGroup))]
+[UpdateInGroup(typeof(HandleStatsSystemGroup))]
 public partial struct InitAndUpdateStatsSystem : ISystem {
     [BurstCompile]
-    public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<NetworkTime>();
-        state.RequireForUpdate<EnumIndexData>();
+    public void OnUpdate(ref SystemState state) {
+        state.Dependency = new EnableStatsJob()
+            .ScheduleParallel(state.Dependency);
+
+        state.Dependency = new GetRawValueJob()
+            .ScheduleParallel(state.Dependency);
+
+        state.Dependency = new GetRawPerLevelValueJob()
+            .ScheduleParallel(state.Dependency);
+
+        state.Dependency = new ApplyBuffJob()
+            .ScheduleParallel(state.Dependency);
     }
 
+    [WithAll(
+        typeof(Simulate)
+      , typeof(StatsBuffer_Raw))]
+    [WithDisabled(
+        typeof(StatsBuffer))]
     [BurstCompile]
-    public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
+    private partial struct EnableStatsJob : IJobEntity {
+        [BurstCompile]
+        public void Execute(EnabledRefRW<StatsBuffer> statsTrigger) {
+            statsTrigger.ValueRW = true;
+        }
+    }
 
-        ref var statsId  = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-        ref var statsKey = ref statsId.Value.Keys;
+    [WithAll(typeof(Simulate))]
+    [BurstCompile]
+    private partial struct GetRawValueJob : IJobEntity {
+        [BurstCompile]
+        public void Execute(
+            in  DynamicBuffer<StatsBuffer_Raw> statsRaw
+          , ref DynamicBuffer<StatsBuffer>     stats) {
+            for (int i = 0; i < EnumCount.Stats; ++i) stats[i] = statsRaw[i].value;
+        }
+    }
 
-        // Enable all stats
-        foreach (var statsEnable in SystemAPI
-            .Query<EnabledRefRW<StatsBuffer>>()
-            .WithDisabled<StatsBuffer>()
-            .WithAll<
-                RawStatsData
-              , Simulate>())
-            statsEnable.ValueRW = true;
+    [WithAll(typeof(Simulate))]
+    [BurstCompile]
+    private partial struct GetRawPerLevelValueJob : IJobEntity {
+        [BurstCompile]
+        public void Execute(
+            in  DynamicBuffer<StatsBuffer_RawPerLevel> statsRawPerLevel
+          , in  LevelData                              level
+          , ref DynamicBuffer<StatsBuffer>             stats) {
+            for (int i = 0; i < EnumCount.Stats; ++i)
+                stats[i] = stats[i].value + statsRawPerLevel[i].value * (level.curLevel - 1);
+        }
+    }
 
-        // Get raw value
-        foreach (var (
-                stats
-              , rawStats)
-            in SystemAPI.Query<
-                    DynamicBuffer<StatsBuffer>
-                  , RefRO<RawStatsData>>()
-                .WithAll<Simulate>())
-            for (int i = 0; i < statsKey.Length; ++i)
-                stats.ElementAt(statsId[statsKey[i]]).value
-                    = rawStats.ValueRO[statsKey[i]];
-
-        // Apply value (if level exists)
-        foreach (var (
-                stats
-              , rawStatsPerLevel
-              , levelData)
-            in SystemAPI.Query<
-                    DynamicBuffer<StatsBuffer>
-                  , RefRO<RawStatsPerLevelData>
-                  , RefRO<LevelData>>()
-                .WithAll<Simulate>())
-            for (int i = 0; i < statsKey.Length; ++i)
-                stats.ElementAt(statsId[statsKey[i]]).value
-                    += rawStatsPerLevel.ValueRO[statsKey[i]] * (levelData.ValueRO.curLevel - 1);
-
-        // Apply buff
-        foreach (var (
-                stats
-              , buffs)
-            in SystemAPI.Query<
-                    DynamicBuffer<StatsBuffer>
-                  , DynamicBuffer<BuffBuffer>>()
-                .WithAll<Simulate>())
-            for (int i = 0; i < statsKey.Length; ++i)
-                stats.ElementAt(i).value
-                    = (stats[i].value + buffs[i].add) * buffs[i].mul;
+    [WithAll(typeof(Simulate))]
+    [BurstCompile]
+    private partial struct ApplyBuffJob : IJobEntity {
+        [BurstCompile]
+        public void Execute(
+            in  DynamicBuffer<BuffBuffer>  buffs
+          , ref DynamicBuffer<StatsBuffer> stats) {
+            for (int i = 0; i < EnumCount.Stats; ++i) stats[i] = buffs[i].ApplyTo(stats[i]);
+        }
     }
 }

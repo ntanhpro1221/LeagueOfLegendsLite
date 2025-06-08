@@ -15,7 +15,6 @@ public partial struct MinionAggroTogglerSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         Debug.LogWarning("NGDtuanh TEST: tmp disable aggro cooldown time");
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<ClientServerTickRate>();
         state.RequireForUpdate<MinionCommonBehaviourConfigData>();
         state.RequireForUpdate<NetworkTime>();
@@ -43,12 +42,11 @@ public partial struct MinionAggroTogglerSystem : ISystem {
             locTransLookup = locTransLookup
           , statsLookup    = statsLookup
           , doneAtTick     = doneAtTick
-          , radiusId       = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.UnitRadius]
         }.ScheduleParallel(state.Dependency);
 
         state.Dependency = new EnableJob {
             champLookup = champLookup
-          , curTick = curTick
+          , curTick     = curTick
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -63,14 +61,13 @@ public partial struct MinionAggroTogglerSystem : ISystem {
         [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
 
         public NetworkTick doneAtTick;
-        public int         radiusId;
 
         [BurstCompile]
         public void Execute(
-            ref MinionAggroAnchor                         aggroAnchorData
-          , EnabledRefRW<MinionAggroAnchor>               aggroAnchorEnable
-          , ref MinionAggroDisabling                      aggroDisableData
-          , EnabledRefRW<MinionAggroDisabling>            aggroDisableTrigger
+            ref MinionAggroAnchor                   aggroAnchorData
+          , EnabledRefRW<MinionAggroAnchor>         aggroAnchorEnable
+          , ref MinionAggroDisabling                aggroDisableData
+          , EnabledRefRW<MinionAggroDisabling>      aggroDisableTrigger
           , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , in LocalTransform                       locTrans
           , in MinionControlFactor                  controlFactor
@@ -79,7 +76,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
                   , aggroAnchorData.anchor)
              || controlFactor.aggroRangeSqr < (
                     GameHelpers.DistanceXZ(locTrans.Position, locTransLookup[target.target].Position)
-                  - statsLookup[target.target][radiusId].value).Sqr()) {
+                  - statsLookup[target.target][StatsId.UnitRadius].value).Sqr()) {
 
                 aggroDisableData.doneAtTick           = doneAtTick;
                 aggroDisableData.pathLengthWhenDiable = pathBuffer.Length;
@@ -101,8 +98,8 @@ public partial struct MinionAggroTogglerSystem : ISystem {
 
         [BurstCompile]
         public void Execute(
-            ref MinionAggroDisabling                      disableData
-          , EnabledRefRW<MinionAggroDisabling>            disableTrigger
+            ref MinionAggroDisabling                disableData
+          , EnabledRefRW<MinionAggroDisabling>      disableTrigger
           , in DynamicBuffer<MinionFixedPathBuffer> pathBuffer
           , in AimedTargetData                      target) {
             if (

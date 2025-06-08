@@ -20,7 +20,6 @@ public static partial class MonsterStateMove {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -38,16 +37,12 @@ public static partial class MonsterStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
-
             foreach (var (filter, data, entity)
                 in SystemAPI.Query<
                         StateFilterAspect
                       , UpdateAspect>()
                     .WithEntityAccess()) {
-                bool haveTargetInRange = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
+                bool haveTargetInRange = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
                 bool attackCDDone      = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
@@ -69,7 +64,7 @@ public static partial class MonsterStateMove {
                     // Stay in leash anchor and not tracing anyone
                     data is {
                         IsLeashDisabling: false
-                      , IsLeashing: false
+                      , IsLeashing      : false
                     }
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -102,7 +97,7 @@ public static partial class MonsterStateMove {
             public void StopMove(in Entity entity) {
                 fixSetter.FixAt(locTrans.ValueRO.Position);
 
-                autoFollow.ValueRW            = false;
+                autoFollow.ValueRW = false;
             }
         }
     }
@@ -189,9 +184,9 @@ public static partial class MonsterStateMove {
         private partial struct UpdateRotationDataJob : IJobEntity {
             [BurstCompile]
             public void Execute(
-                StateFilterAspect   _
+                StateFilterAspect      _
               , in  MovementStatistics moveStats
-              , ref RotationData    rotationData) {
+              , ref RotationData       rotationData) {
                 if (math.abs(moveStats.estimatedVelocity.x)
                   + math.abs(moveStats.estimatedVelocity.z)
                   < 4) return;

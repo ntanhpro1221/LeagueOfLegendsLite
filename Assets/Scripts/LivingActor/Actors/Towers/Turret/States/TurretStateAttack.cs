@@ -9,12 +9,10 @@ public static partial class TurretStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct Exit : ISystem {
-        [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
+        [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<EnumIndexData>();
-
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
         }
@@ -22,7 +20,7 @@ public static partial class TurretStateAttack {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             selectLookup.Update(ref state);
-            
+
             foreach (var (
                     filter
                   , sharedState
@@ -60,15 +58,13 @@ public static partial class TurretStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<ClientServerTickRate>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             foreach (var (
                     _
@@ -80,7 +76,7 @@ public static partial class TurretStateAttack {
                   , AttackStateAspectRW>()) {
                 anim.SetAnim(SharedAnimKey.Attack);
 
-                attack.RestartAttack(curTick, attackSpeedId, tickRate);
+                attack.RestartAttack(curTick, tickRate);
             }
         }
     }
@@ -91,15 +87,13 @@ public static partial class TurretStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<ClientServerTickRate>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<NetworkTime>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             // DO RANGED ATTACK
             foreach (var (_, attackData, attackTrigger) in SystemAPI
@@ -121,7 +115,7 @@ public static partial class TurretStateAttack {
                   , RefRW<SharedAnimData>
                   , AttackStateAspectRW>())
                 if (attackAspect.Data.IsCooldownDone(curTick)) {
-                    attackAspect.RestartAttack(curTick, attackSpeedId, tickRate);
+                    attackAspect.RestartAttack(curTick, tickRate);
                     anim.ValueRW.MarkNeedRestart();
                 }
         }

@@ -13,10 +13,6 @@ public partial struct NotifyWhenAllyBeAttackSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
-            IncomingDamageBuffer
-          , HealthData
-          , Simulate>().Build());
         state.RequireForUpdate<PhysicsWorldSingleton>();
 
         champLookup = SystemAPI.GetComponentLookup<ChampionTag>(

@@ -11,7 +11,6 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<RequireExpData>();
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<NetworkTime>();
     }
 
@@ -21,12 +20,9 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
         var     cam            = Camera.main;
         var     requireExp     = SystemAPI.GetSingleton<RequireExpData>();
         var     curTick        = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-        ref var statsEnumIndex = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-        var     healthId       = statsEnumIndex[StatsType.Health];
-        var     manaId         = statsEnumIndex[StatsType.Mana];
 
         foreach (var data in SystemAPI.Query<UpdateAspect>()) {
-            var uiUpdateData = data.HealthBarUpdateAspect.GenerateUpdateData(healthId, manaId, requireExp);
+            var uiUpdateData = data.HealthBarUpdateAspect.GenerateUpdateData(requireExp);
 
             data.DynamicUI.Update(
                 uiUpdateData

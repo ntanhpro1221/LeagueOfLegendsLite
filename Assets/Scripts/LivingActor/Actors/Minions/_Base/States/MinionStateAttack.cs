@@ -1,11 +1,9 @@
 ﻿using NGDtuanh.Entities.StateMachine;
-using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class MinionStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -17,8 +15,6 @@ public static partial class MinionStateAttack {
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<EnumIndexData>();
-
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -32,10 +28,6 @@ public static partial class MinionStateAttack {
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
             statsLookup.Update(ref state);
-
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
             foreach (var (
                     filter
@@ -61,7 +53,7 @@ public static partial class MinionStateAttack {
                         // already perform attack
                         attackData.ValueRO.isAttacked
                         // and target is out of range now
-                     && aimedTarget.IsTargetOutOfRange(attackRangeId, unitRadiusId, locTransLookup, statsLookup)))
+                     && aimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup)))
                     sharedState.SetMove();
 
                 else continue;
@@ -81,14 +73,12 @@ public static partial class MinionStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<ClientServerTickRate>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
             var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             foreach (var (
@@ -101,7 +91,7 @@ public static partial class MinionStateAttack {
                   , AttackStateAspectRW>()) {
                 anim.SetAnim(SharedAnimKey.Attack);
 
-                attack.RestartAttack(curTick, attackSpeedId, tickRate);
+                attack.RestartAttack(curTick, tickRate);
             }
         }
     }
@@ -114,7 +104,6 @@ public static partial class MinionStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<ClientServerTickRate>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<NetworkTime>();
 
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -126,7 +115,6 @@ public static partial class MinionStateAttack {
             locTransLookup.Update(ref state);
 
             var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
             var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             // DO MELEE ATTACK
@@ -162,7 +150,7 @@ public static partial class MinionStateAttack {
                   , RefRW<SharedAnimData>
                   , AttackStateAspectRW>())
                 if (attackAspect.Data.IsCooldownDone(curTick)) {
-                    attackAspect.RestartAttack(curTick, attackSpeedId, tickRate);
+                    attackAspect.RestartAttack(curTick, tickRate);
                     anim.ValueRW.MarkNeedRestart();
                 }
 

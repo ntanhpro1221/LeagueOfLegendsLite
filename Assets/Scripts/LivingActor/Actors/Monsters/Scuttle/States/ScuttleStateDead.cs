@@ -15,7 +15,6 @@ public static partial class ScuttleStateDead {
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<InitTransformData>();
-            state.RequireForUpdate<EnumIndexData>();
         }
 
         [BurstCompile]
@@ -23,7 +22,6 @@ public static partial class ScuttleStateDead {
             state.CompleteDependency();
 
             var     curTick   = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var     healthId  = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health];
             ref var initTrans = ref SystemAPI.GetSingleton<InitTransformData>().Monster.Value;
 
             foreach (var (
@@ -39,14 +37,14 @@ public static partial class ScuttleStateDead {
 
                 // MOVE STATE
                 if (data.RespawnTick != NetworkTick.Invalid // Waiting for something
-                 && curTick.IsNewerThan(data.RespawnTick)) // It's time to respawn
+                 && curTick.IsNewerThan(data.RespawnTick))  // It's time to respawn
                     sharedState.SetMove();
                 else continue;
 
                 filter.MarkExitExecuted();
 
                 data.LocalTrans = initTrans[filter.Id][data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
-                data.CurHealth  = data.MaxHealth(healthId);                                     // Respawn with full health
+                data.CurHealth  = data.MaxHealth;                                               // Respawn with full health
                 data.EnableMove();                                                              // enable move
                 select_highlight_healthBar.EnableAll();                                         // enable select and highlight and health bar
             }
@@ -66,8 +64,8 @@ public static partial class ScuttleStateDead {
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
-            public void     EnableMove()            => _MoveSetting.ValueRW.isStopped = false;
+            public float_Q3 MaxHealth    => _Stats[StatsId.Health].value;
+            public void     EnableMove() => _MoveSetting.ValueRW.isStopped = false;
         }
     }
 
@@ -129,7 +127,7 @@ public static partial class ScuttleStateDead {
 
                 data.SetRespawnTick(curTick);
             }
-        } 
+        }
 
         private readonly partial struct UpdateAspect : IAspect {
             private readonly RefRW<DeadStateData>        _DeadData;

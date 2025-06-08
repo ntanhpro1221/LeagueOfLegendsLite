@@ -16,8 +16,6 @@ public partial struct TurretControlSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EnumIndexData>();
-
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
             isReadOnly: true);
         locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -30,8 +28,6 @@ public partial struct TurretControlSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ref var stateId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-
         selectLookup.Update(ref state);
         locTransLookup.Update(ref state);
         teamLookup.Update(ref state);
@@ -42,8 +38,6 @@ public partial struct TurretControlSystem : ISystem {
           , locTransLookup = locTransLookup
           , teamLookup     = teamLookup
           , statsLookup    = statsLookup
-          , attackRangeId  = stateId[StatsType.AttackRange]
-          , unitRadiusId   = stateId[StatsType.UnitRadius]
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -58,9 +52,6 @@ public partial struct TurretControlSystem : ISystem {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] public ComponentLookup<TeamTypeData>   teamLookup;
         [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
-
-        public int attackRangeId;
-        public int unitRadiusId;
 
         [BurstCompile]
         public void Execute(
@@ -83,8 +74,8 @@ public partial struct TurretControlSystem : ISystem {
                  && !GameHelpers.IsTargetOutOfRange(
                         locTransLookup[targetData.target].Position
                       , locTrans.Position
-                      , stats[attackRangeId].value
-                      , statsLookup[targetData.target][unitRadiusId].value))
+                      , stats[StatsId.AttackRange].value
+                      , statsLookup[targetData.target][StatsId.UnitRadius].value))
                     return;
 
                 targetData.target = Entity.Null;

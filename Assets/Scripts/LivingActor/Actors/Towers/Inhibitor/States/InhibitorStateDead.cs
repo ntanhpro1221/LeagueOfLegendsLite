@@ -7,43 +7,40 @@ using UnityEngine;
 
 public static partial class InhibitorStateDead {
     public const float RespawnTime = 10f;
-    
+
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
             state.CompleteDependency();
 
-            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var healthId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health];
+            var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
                     filter
                   , sharedState
-                    , transition
+                  , transition
                   , data)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , ActorSharedStateAspect
-                    , TransitionStateAspectRW
+                  , TransitionStateAspectRW
                   , UpdateAspect>()) {
 
                 // DEAD_2_IDLE STATE
                 if (curTick.IsNewerThan(data.RespawnTick)) { // It's tick to respawn
                     sharedState.SetDead2Idle();
                     transition.HardCutAnim = false;
-                }
-                else continue;
+                } else continue;
 
                 filter.MarkExitExecuted();
 
-                data.CurHealth = data.MaxHealth(healthId); // Respawn with full health
+                data.CurHealth = data.MaxHealth; // Respawn with full health
             }
         }
 
@@ -56,7 +53,7 @@ public static partial class InhibitorStateDead {
             public ref float_Q3    CurHealth   => ref _HealthData.ValueRW.value;
             public     NetworkTick RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
+            public float_Q3 MaxHealth => _Stats[StatsId.Health].value;
         }
     }
 

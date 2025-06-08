@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
- 
+
 public static partial class ChampionStateDead {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
@@ -12,7 +12,6 @@ public static partial class ChampionStateDead {
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<InitTransformData>();
-            state.RequireForUpdate<EnumIndexData>();
         }
 
         [BurstCompile]
@@ -20,7 +19,6 @@ public static partial class ChampionStateDead {
             state.CompleteDependency();
 
             var     curTick   = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var     healthId  = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health];
             ref var initTrans = ref SystemAPI.GetSingleton<InitTransformData>().Champion.Value;
 
             foreach (var (
@@ -43,7 +41,7 @@ public static partial class ChampionStateDead {
 
                 data.LocalTrans = initTrans[data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
                 data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                // Reset target pos at init pos
-                data.CurHealth = data.MaxHealth(healthId);                           // Respawn with full health
+                data.CurHealth = data.MaxHealth;                                     // Respawn with full health
                 data.EnableMove();                                                   // enable move
                 data.RequireInputReset();                                            // require input reset
                 select_highlight_healthBar.EnableAll();                              // enable select and highlight and health bar
@@ -63,14 +61,14 @@ public static partial class ChampionStateDead {
 
             public readonly MoveRequesterAspect MoveRequester;
 
-            public ref LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
-            public ref float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
-            public     TeamType       TeamType    => _TeamType.ValueRO.team;
-            public     NetworkTick    RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
+            public              float_Q3       MaxHealth   => _Stats[(int)StatsType.Health].value;
+            public ref          LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
+            public ref          float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
+            public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
+            public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
-            public void     EnableMove()            => _Moveable.ValueRW = true;
-            public void     RequireInputReset()     => _InputReset.ValueRW = true;
+            public void EnableMove()        => _Moveable.ValueRW = true;
+            public void RequireInputReset() => _InputReset.ValueRW = true;
         }
     }
 

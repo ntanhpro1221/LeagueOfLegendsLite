@@ -1,23 +1,27 @@
-﻿using Unity.Burst;
+﻿using NGDtuanh.BubleAsset.ShortCut;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(ActorGeneralInitSystemGroup))]
 public partial struct InitChampionSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [ReadOnly] private ComponentLookup<DummyTag> dummyLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<InitTransformData>();
-        state.RequireForUpdate<EnumIndexData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
+
+        mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 ChampionTag
               , Simulate
-              , NeedInitTag>()
-            .Build());
+              , NeedInitTag
+            >().Build();
 
         dummyLookup = SystemAPI.GetComponentLookup<DummyTag>(
             isReadOnly: true);
@@ -25,15 +29,13 @@ public partial struct InitChampionSystem : ISystem {
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+
         dummyLookup.Update(ref state);
-
-        ref var statsId = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-
         state.Dependency = new Job {
-            dummyLookup = dummyLookup
-          , initTrans   = SystemAPI.GetSingleton<InitTransformData>()
-          , healthId    = statsId[StatsType.Health]
-          , manaId      = statsId[StatsType.Mana]
+            allChamp    = SystemAPI.GetSingleton<AllChampionData>()
+          , initTrans   = SystemAPI.GetSingleton<InitTransformData>()._ChampionRef
+          , dummyLookup = dummyLookup
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -42,44 +44,52 @@ public partial struct InitChampionSystem : ISystem {
       , typeof(ChampionTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(HealthData)
-      , typeof(ManaData))]
+        typeof(BountyBuffer)
+      , typeof(StatsBuffer_Raw)
+      , typeof(StatsBuffer_RawPerLevel))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        [ReadOnly] public ComponentLookup<DummyTag> dummyLookup;
+        public AllChampionData allChamp;
 
-        public InitTransformData initTrans;
-        public int               healthId;
-        public int               manaId;
+        public BlobAssetReference<Buble_EnMap_Array<TeamType, InitTransform, Transform>> initTrans;
+
+        [ReadOnly] public ComponentLookup<DummyTag> dummyLookup;
 
         [BurstCompile]
         public void Execute(
-            in  TeamTypeData               teamType
-          , in  DynamicBuffer<StatsBuffer> stats
-          , ref HealthData                 health
-          , ref ManaData                   mana
-          , ref LocalTransform             locTrans
-          , MoveRequesterAspect            moveRequester
-          , EnabledRefRW<NeedInitTag>      needInit
-          , EnabledRefRW<HealthData>       healthEnabled
-          , EnabledRefRW<ManaData>         manaEnabled
-          , in Entity                      entity) {
-            // remove init request
-            needInit.ValueRW = false;
+            // Identity
+            in TeamTypeData team
+          , in ChampionTag  tag
+          , in Entity       entity
 
-            // init health, enable it
-            health.value          = stats[healthId].value;
-            healthEnabled.ValueRW = true;
+            // Bounty
+          , ref DynamicBuffer<BountyBuffer> bounties
+          , EnabledRefRW<BountyBuffer>      bountyTrigger
 
-            // init mana, enable it
-            mana.value          = stats[manaId].value;
-            manaEnabled.ValueRW = true;
+            // Raw stats
+          , ref DynamicBuffer<StatsBuffer_Raw>         statsRaw
+          , ref DynamicBuffer<StatsBuffer_RawPerLevel> statsRawPerLevel
+          , EnabledRefRW<StatsBuffer_Raw>              statsRawTrigger
+          , EnabledRefRW<StatsBuffer_RawPerLevel>      statsRawPerLevelTrigger
 
-            // init position, move target
-            // not init for dummy
+            // Position
+          , ref LocalTransform  locTrans
+          , MoveRequesterAspect moveRequester) {
+
+            // CACHE
+            ref var actor = ref allChamp.Champions[tag.id];
+
+            // BOUNTY
+            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref allChamp.CommonInitBounty);
+
+            // RAW STATS
+            InitHelpers.StatsRaw(ref statsRaw, ref statsRawPerLevel, ref statsRawTrigger, ref statsRawPerLevelTrigger
+              , source: ref actor.stats
+              , sourcePerLevel: ref actor.statsPerLevel);
+
+            // POSITION (not init for dummy)
             if (!dummyLookup.HasComponent(entity))
-                locTrans = initTrans.Champion.Value[teamType.team]
-                    [0].ToLocTrans_Directly();
+                locTrans = initTrans.Value.Value[team.team][0].ToLocTrans_Directly();
             moveRequester.SyncFromLocTrans(locTrans);
         }
     }

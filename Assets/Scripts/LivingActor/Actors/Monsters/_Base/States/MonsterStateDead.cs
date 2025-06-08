@@ -14,7 +14,6 @@ public static partial class MonsterStateDead {
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<InitTransformData>();
-            state.RequireForUpdate<EnumIndexData>();
         }
 
         [BurstCompile]
@@ -22,7 +21,6 @@ public static partial class MonsterStateDead {
             state.CompleteDependency();
 
             var     curTick   = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var     healthId  = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health];
             ref var initTrans = ref SystemAPI.GetSingleton<InitTransformData>().Monster.Value;
 
             foreach (var (
@@ -46,7 +44,7 @@ public static partial class MonsterStateDead {
                 filter.MarkExitExecuted();
                 if (data.CanRespawn) {
                     data.LocalTrans = initTrans[filter.Id][data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
-                    data.CurHealth  = data.MaxHealth(healthId);                                     // Respawn with full health
+                    data.CurHealth  = data.MaxHealth;                                               // Respawn with full health
                     data.EnableMove();                                                              // enable move
                     data.TrySpawnExtraMonster();                                                    // Try spawn extra monster
                     select_highlight_healthBar.EnableAll();                                         // enable select and highlight and health bar
@@ -75,9 +73,9 @@ public static partial class MonsterStateDead {
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth(int healthId) => _Stats[healthId].value;
-            public void     EnableMove()            => _FixSetter.Release();
-            public void     Destroy()               => _Destroyed.ValueRW = true;
+            public float_Q3 MaxHealth    => _Stats[StatsId.Health].value;
+            public void     EnableMove() => _FixSetter.Release();
+            public void     Destroy()    => _Destroyed.ValueRW = true;
 
             public void TrySpawnExtraMonster() {
                 if (_ExtraTrigger.IsValid) {
@@ -145,8 +143,8 @@ public static partial class MonsterStateDead {
 
             public void DisableMoveAndAvoidance() {
                 _FixSetter.FixAt(_LocTrans.ValueRO.Position, false);
-                
-                _AutoFollow.ValueRW            = false;
+
+                _AutoFollow.ValueRW = false;
             }
 
             public void ResetLeashState() {

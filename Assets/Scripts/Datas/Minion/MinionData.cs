@@ -4,9 +4,9 @@ using Unity.Entities;
 
 [Serializable]
 public struct MinionData : IBlobBuildable<MinionDataManaged>, IBlobBuildableSelf<MinionData> {
-    public BubleEnMap<StatsType, float_Q3> stats;
-    public BubleEnMap<BountyType, int>     bounty;
-    public int                             aggroRange;
+    public BubleEnMap<StatsType, float_Q3>  stats;
+    public BubleEnMap<BountyType, float_Q3> bounty;
+    public int                              aggroRange;
 
     public void BuildBlob(ref BlobBuilder builder, MinionDataManaged source) {
         stats.BuildBlob(ref builder, source.stats);

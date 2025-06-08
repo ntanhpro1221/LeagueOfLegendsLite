@@ -9,7 +9,6 @@ public class AsheSkill_E : ActivableItemDataSO_GenericBase<
   , AsheSkill_E.PrefabBuffer> {
     public enum ConcreteProperty { }
 
-    [GenerateIndex]
     public enum ConcretePrefab {
         arrow
     }

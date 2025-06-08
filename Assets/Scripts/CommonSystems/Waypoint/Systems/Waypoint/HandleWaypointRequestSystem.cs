@@ -9,6 +9,8 @@ using UnityEngine;
 
 [UpdateInGroup(typeof(UpdateWaypointSystemGroup))]
 public partial struct HandleWaypointRequestSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
@@ -16,20 +18,24 @@ public partial struct HandleWaypointRequestSystem : ISystem {
         state.RequireForUpdate<CachedPathData>();
         state.RequireForUpdate<CachedLineCastData>();
         state.RequireForUpdate<HandlingPathData>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
-            .WithAll<Simulate>()
-            .WithAny<
+
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+            >().WithAny<
                 PathIsHandling
-              , NeedHandleWaypointRequest>()
-            .Build());
+              , NeedHandleWaypointRequest
+            >().Build();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+
         var  cachedPath        = SystemAPI.ManagedAPI.GetSingleton<CachedPathData>();
         var  cachedLinecast    = SystemAPI.ManagedAPI.GetSingleton<CachedLineCastData>();
         var  handlingPath      = SystemAPI.ManagedAPI.GetSingleton<HandlingPathData>();
         bool isClient          = state.WorldUnmanaged.IsClient();
-        var  champGraph         = AstarPath.active.graphs[GraphIndexHelper.Champion] as NavmeshBase;
+        var  champGraph        = AstarPath.active.graphs[GraphIndexHelper.Champion] as NavmeshBase;
         var  modifier          = PathModifierHub.Raycast;
         var  config            = SystemAPI.GetSingleton<WaypointCalculateConfig>();
         var  fixablePathDisSqr = config.fixablePathDisSqr;
@@ -40,7 +46,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
             Debug.LogError("Fail to get champion graph");
             return;
         }
-        
+
         foreach (var (
             rawHandlingData
           , rawRequestData
@@ -57,7 +63,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                 PathIsHandling
               , NeedHandleWaypointRequest>()
             .WithAll<Simulate>()) {
-            
+
             var orgHandlingTrigger = handlingTrigger.ValueRO;
             var orgRequestTrigger  = requestTrigger.ValueRO;
 
@@ -120,12 +126,12 @@ public partial struct HandleWaypointRequestSystem : ISystem {
             if (TryFilterOutHandlingPath(orgPID
               , handlingPath, cachedLinecast, curTick, doneAtTick, waypoints, orgRequestTrigger, champGraph))
                 continue;
-            
+
             if (orgPID.code != newPID.code
-            && TryFilterOutHandlingPath(newPID
-              , handlingPath, cachedLinecast, curTick, doneAtTick, waypoints, orgRequestTrigger, champGraph))
+             && TryFilterOutHandlingPath(newPID
+                  , handlingPath, cachedLinecast, curTick, doneAtTick, waypoints, orgRequestTrigger, champGraph))
                 continue;
-            
+
             // There is no obstacle, so just go ahead
             if (!cachedLinecast.Linecast(curTick, champGraph, orgPID).haveObstacle) {
                 // Cache origin path
@@ -138,7 +144,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                 cachedOrgData.canReturnImmediately = true;
 
                 // Cache new path
-                if (orgPID.code != newPID.code)  {
+                if (orgPID.code != newPID.code) {
                     CachePathDirectly(
                         cachedPath
                       , newPID
@@ -219,7 +225,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
                     CachedLineCastData.TryGetExactlyEdgePnt(orgPID.start, champGraph, out _)
                   , CachedLineCastData.TryGetExactlyEdgePnt(orgPID.end,   champGraph, out _));
                 PathHolderForWaypoint.Claim(path);
-                
+
                 path.nnConstraint.distanceMetric = DistanceMetric.ClosestAsSeenFromAbove(math.up());
                 path.nnConstraint.graphMask      = GraphMask.FromGraphIndex(GraphIndexHelper.Champion);
 
@@ -243,25 +249,25 @@ public partial struct HandleWaypointRequestSystem : ISystem {
       , in  NetworkTick      curTick
       , ref NetworkTick      doneAtTick) {
         if (!cachedPath.ContainsCode(pid.code)) return false;
-        
+
         if (cachedPath.IsCanReturnImmediately(pid.code))
             doneAtTick = handlingData.doneAtTick = curTick;
 
         if (!cachedPath.ContainsTick(pid.code, doneAtTick))
             cachedPath.PushTick(pid.code, doneAtTick);
-            
+
         return true;
     }
 
     public static bool TryFilterOutHandlingPath(
-        in  PathId                        pid
-      , in  HandlingPathData              handlingPath
-      , in  CachedLineCastData            cachedLinecast
-      , in  NetworkTick                   curTick
+        in PathId                        pid
+      , in HandlingPathData              handlingPath
+      , in CachedLineCastData            cachedLinecast
+      , in NetworkTick                   curTick
       , in NetworkTick                   doneAtTick
-      , in  DynamicBuffer<WaypointBuffer> waypoints
-      , bool                              orgRequestTrigger
-      , in NavmeshBase                    champGraph) {
+      , in DynamicBuffer<WaypointBuffer> waypoints
+      , bool                             orgRequestTrigger
+      , in NavmeshBase                   champGraph) {
         if (!handlingPath.ContainsCode(pid.code)) return false;
 
         if (!handlingPath.ContainsTick(pid.code, doneAtTick))
@@ -287,7 +293,7 @@ public partial struct HandleWaypointRequestSystem : ISystem {
       , NavmeshBase                      graph) {
         // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
         waypoints.Clear();
-        
+
         // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
         waypoints.Add(new WaypointBuffer(
             cachedLinecast.Linecast(curTick, graph, pid)

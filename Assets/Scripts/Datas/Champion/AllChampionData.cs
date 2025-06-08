@@ -4,7 +4,14 @@ using Unity.Entities;
 
 [Serializable]
 public struct AllChampionData : IComponentData {
-    public BlobAssetReference<BubleEnMap<ChampionId, ChampionData, ChampionDataManaged>> _Ref;
+    public BlobAssetReference<BubleEnMap<ChampionId, ChampionData, ChampionDataManaged>> _ChampionsRef;
+    public BlobAssetReference<BubleEnMap<BountyType, float_Q3>>                          _CommonInitBountyRef;
 
-    public ref BubleEnMap<ChampionId, ChampionData, ChampionDataManaged> Champions => ref _Ref.Value;
+    public ref BubleEnMap<ChampionId, ChampionData, ChampionDataManaged> Champions        => ref _ChampionsRef.Value;
+    public ref BubleEnMap<BountyType, float_Q3>                          CommonInitBounty => ref _CommonInitBountyRef.Value;
+
+    public void CreateBlobAssetReferenceInBaker(IBaker baker) {
+        GameSO.Champ.CreateBlobAssetReferenceInBaker(out _ChampionsRef, baker, out _);
+        GameSO.ChampCommonInitBounty.CreateBlobAssetReferenceInBaker(out _CommonInitBountyRef, baker, out _);
+    }
 }

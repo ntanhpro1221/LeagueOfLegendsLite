@@ -16,7 +16,6 @@ public static partial class ChampionStateMove {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -34,15 +33,11 @@ public static partial class ChampionStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
-
             foreach (var (filter, data)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , UpdateAspect>()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup);
+                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
                 bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
@@ -65,7 +60,7 @@ public static partial class ChampionStateMove {
                  || (data.moveRequester.IsMoveDone && !data.input.MoveEvent_WithData)
                     // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, unitRadiusId, locTransLookup, statsLookup)))
+                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, locTransLookup, statsLookup)))
                     data.sharedState.SetIdle();
 
                 else continue;

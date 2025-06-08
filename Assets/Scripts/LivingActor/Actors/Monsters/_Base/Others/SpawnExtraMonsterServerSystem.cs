@@ -9,19 +9,28 @@ using UnityEngine;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct SpawnExtraMonsterServerSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<MonsterPrefabBuffer>();
         state.RequireForUpdate<PrefabIdData>();
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
-            Simulate
-          , MonsterExtraTrigger>().Build());
+
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+              , MonsterExtraTrigger
+            >().WithDisabled<
+                NeedInitTag
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
         state.Dependency = new Job {
@@ -29,19 +38,20 @@ public partial struct SpawnExtraMonsterServerSystem : ISystem {
                 .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                 .CreateCommandBuffer(state.WorldUnmanaged)
                 .AsParallelWriter()
+          , monsterId = SystemAPI.GetSingleton<PrefabIdData>()._MonsterIdRef
           , monsterPrefabs = SystemAPI.GetSingletonBuffer<MonsterPrefabBuffer>(
                 isReadOnly: true)
-          , monsterId = SystemAPI.GetSingleton<PrefabIdData>()._MonsterIdRef
         }.ScheduleParallel(state.Dependency);
     }
 
     [WithAll(typeof(Simulate))]
+    [WithDisabled(typeof(NeedInitTag))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public EntityCommandBuffer.ParallelWriter ecb;
+        public EntityCommandBuffer.ParallelWriter                     ecb;
+        public BlobAssetReference<BlobMap<EqualEnum<MonsterId>, int>> monsterId;
 
-        [ReadOnly] public DynamicBuffer<MonsterPrefabBuffer>                     monsterPrefabs;
-        public            BlobAssetReference<BlobMap<EqualEnum<MonsterId>, int>> monsterId;
+        [ReadOnly] public DynamicBuffer<MonsterPrefabBuffer> monsterPrefabs;
 
         [BurstCompile]
         public void Execute(

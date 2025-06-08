@@ -7,8 +7,6 @@ public partial struct CommonMeleeAttackSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EnumIndexData>();
-
         incomingDmgLookup = SystemAPI.GetBufferLookup<IncomingDamageBuffer>(
             isReadOnly: false);
     }
@@ -19,7 +17,6 @@ public partial struct CommonMeleeAttackSystem : ISystem {
 
         state.Dependency = new Job {
             incomingDmgLookup = incomingDmgLookup
-          , damageId          = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.PhysicDamage]
         }.Schedule(state.Dependency);
     }
 
@@ -27,16 +24,15 @@ public partial struct CommonMeleeAttackSystem : ISystem {
     [BurstCompile]
     public partial struct Job : IJobEntity {
         public BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
-        public int                                damageId;
 
         [BurstCompile]
         public void Execute(
             in AimedTargetData               target
           , in DynamicBuffer<StatsBuffer>    stats
           , EnabledRefRW<MeleeAttackTrigger> attackTrigger
-          , in Entity entity) {
+          , in Entity                        entity) {
 
-            incomingDmgLookup[target.target].Add(new IncomingDamageBuffer(stats[damageId].value, entity));
+            incomingDmgLookup[target.target].Add(new IncomingDamageBuffer(stats[StatsId.PhysicDamage].value, entity));
 
             attackTrigger.ValueRW = false;
         }

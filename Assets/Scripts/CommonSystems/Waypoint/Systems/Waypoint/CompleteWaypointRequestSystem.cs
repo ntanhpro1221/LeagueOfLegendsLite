@@ -7,14 +7,24 @@ using UnityEngine;
 [UpdateInGroup(typeof(UpdateWaypointSystemGroup))]
 [UpdateAfter(typeof(HandleWaypointRequestSystem))]
 public partial struct CompleteWaypointRequestSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<CachedPathData>();
         state.RequireForUpdate<HandlingPathData>();
+
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                Simulate
+              , PathIsHandling
+            >().Build();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+        
         var curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         var cachedPath = SystemAPI.ManagedAPI.GetSingleton<CachedPathData>();
 

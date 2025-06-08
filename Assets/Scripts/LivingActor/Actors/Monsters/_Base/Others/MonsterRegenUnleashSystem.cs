@@ -13,7 +13,6 @@ public partial struct MonsterRegenUnleashSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<NetworkTime>();
-        state.RequireForUpdate<EnumIndexData>();
         state.RequireForUpdate<MonsterCommonBehaviourConfigData>();
 
         state.RequireForUpdate(SystemAPI.QueryBuilder().WithAll<
@@ -32,7 +31,6 @@ public partial struct MonsterRegenUnleashSystem : ISystem {
             curTick          = curTick
           , newNextRegenTick = curTick.WithBonusTick(configData.hpRegenUnleash_IntervalTick)
           , regenPercent     = configData.hpRegenUnleash_Percent
-          , healthId         = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.Health]
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -48,7 +46,6 @@ public partial struct MonsterRegenUnleashSystem : ISystem {
         public NetworkTick curTick;
         public NetworkTick newNextRegenTick;
         public float       regenPercent;
-        public int         healthId;
 
         [BurstCompile]
         public void Execute(
@@ -58,7 +55,7 @@ public partial struct MonsterRegenUnleashSystem : ISystem {
             if (unleashData.nextRegenTick.IsNewerThan(curTick)) return;
 
             unleashData.nextRegenTick = newNextRegenTick;
-            float maxHP = stats[healthId].value;
+            float maxHP = stats[StatsId.Health].value;
             healthData.value = math.min(maxHP
               , healthData.value + (maxHP * regenPercent / 100f)
             ).Quantizate3();

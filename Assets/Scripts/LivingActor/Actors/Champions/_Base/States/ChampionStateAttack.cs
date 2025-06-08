@@ -15,8 +15,6 @@ public static partial class ChampionStateAttack {
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
-            state.RequireForUpdate<EnumIndexData>();
-
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -30,10 +28,6 @@ public static partial class ChampionStateAttack {
             selectLookup.Update(ref state);
             locTransLookup.Update(ref state);
             statsLookup.Update(ref state);
-
-            ref var statsId       = ref SystemAPI.GetSingleton<EnumIndexData>().StatsType;
-            var     attackRangeId = statsId[StatsType.AttackRange];
-            var     unitRadiusId  = statsId[StatsType.UnitRadius];
 
             foreach (var (
                     filter
@@ -63,7 +57,7 @@ public static partial class ChampionStateAttack {
                 // MOVE STATE
                 else if (
                     // Need move to target and already perform attack yet
-                    (attackData.ValueRO.isAttacked && aimedTarget.NeedMoveToTarget(selectLookup, attackRangeId, unitRadiusId, locTransLookup, statsLookup))
+                    (attackData.ValueRO.isAttacked && aimedTarget.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup))
                     // Have move request
                  || input.MoveEvent_WithData)
                     sharedState.SetMove();
@@ -87,15 +81,13 @@ public static partial class ChampionStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<ClientServerTickRate>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             foreach (var (
                     _
@@ -107,7 +99,7 @@ public static partial class ChampionStateAttack {
                   , AttackStateAspectRW>()) {
                 anim.SetAnim(SharedAnimKey.Attack);
 
-                attack.RestartAttack(curTick, attackSpeedId, tickRate);
+                attack.RestartAttack(curTick, tickRate);
             }
         }
     }
@@ -119,7 +111,6 @@ public static partial class ChampionStateAttack {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<ClientServerTickRate>();
-            state.RequireForUpdate<EnumIndexData>();
             state.RequireForUpdate<NetworkTime>();
 
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
@@ -130,9 +121,8 @@ public static partial class ChampionStateAttack {
         public void OnUpdate(ref SystemState state) {
             locTransLookup.Update(ref state);
 
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var attackSpeedId = SystemAPI.GetSingleton<EnumIndexData>().StatsType[StatsType.AttackSpeed];
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             // DO MELEE ATTACK
             foreach (var (_, attackData, attackTrigger) in SystemAPI
@@ -167,7 +157,7 @@ public static partial class ChampionStateAttack {
                   , RefRW<SharedAnimData>
                   , AttackStateAspectRW>())
                 if (attackAspect.Data.IsCooldownDone(curTick)) {
-                    attackAspect.RestartAttack(curTick, attackSpeedId, tickRate);
+                    attackAspect.RestartAttack(curTick, tickRate);
                     anim.ValueRW.MarkNeedRestart();
                 }
 
