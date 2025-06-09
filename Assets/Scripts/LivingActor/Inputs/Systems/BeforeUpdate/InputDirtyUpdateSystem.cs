@@ -1,6 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [UpdateInGroup(typeof(BeforeInputLocalUpdateSystemGroup))]
@@ -16,8 +17,10 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
         UpdateRay(ref state, ref inputData);
         UpdateMouseButtons(ref state, ref inputData);
-        UpdateKeyboardButtons(ref state, ref inputData
-          ,                              SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: false));
+        UpdateSkillRequest(ref state, ref inputData);
+        UpdateKeyboardButtons(ref state
+          , ref inputData, SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: false));
+        inputData.isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
     private void UpdateRay(ref SystemState state, ref InputDirtyData inputData) {
@@ -32,6 +35,11 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
         inputData.mouse_left  = mouse.leftButton.GetButtonState();
         inputData.mouse_right = mouse.rightButton.GetButtonState();
+    }
+
+    private void UpdateSkillRequest(ref SystemState state, ref InputDirtyData inputData) {
+        inputData.haveSkillUpgradeRequest = PlayerHUD.Instance.ActivableItems
+            .PopOutUpdateSkillRequest(out inputData.skillToUpgrade);
     }
 
     private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData, DynamicBuffer<InputDirtyData.ActivableItemBuffer> inputBuffer) {

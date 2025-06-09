@@ -17,12 +17,12 @@ public class ItemUI : MonoBehaviour {
             return _DisablableUI;
         }
     }
-    
-    private Tooltip_Skill    _Tooltip;
 
-    private Tooltip_Skill Tooltip {
+    private Tooltip_Skill _Tooltip;
+
+    public Tooltip_Skill Tooltip {
         get {
-            if (_Tooltip == null) _Tooltip     = GetComponentInChildren<Tooltip_Skill>(true);
+            if (_Tooltip == null) _Tooltip = GetComponentInChildren<Tooltip_Skill>(true);
             return _Tooltip;
         }
     }
@@ -44,21 +44,36 @@ public class ItemUI : MonoBehaviour {
     }
 
     private void UpdateInteractable() {
-        if (_IsInCooldown || _IsInDead) DisablableUI.DisableAll();
+        if (_ForceOffInteractable
+         || _IsInCooldown
+         || _IsInDead)
+            DisablableUI.DisableAll();
         else DisablableUI.EnableAll();
     }
-    
-    private void UpdateCooldownVisible() { 
+
+    private void UpdateCooldownVisible() {
         _CooldownImage.gameObject.SetActive(_IsInCooldown);
         _CooldownText.gameObject.SetActive(_IsInCooldown);
     }
 
+    private bool _ForceOffInteractable;
+
+    public bool ForceOffInteractable {
+        get => _ForceOffInteractable;
+        set {
+            _ForceOffInteractable = value;
+            
+            UpdateInteractable();
+        }
+    }
+
     private bool _IsInCooldown;
+
     public bool IsInCooldown {
         get => _IsInCooldown;
         private set {
             _IsInCooldown = value;
-            
+
             UpdateCooldownVisible();
             UpdateInteractable();
         }
@@ -69,12 +84,12 @@ public class ItemUI : MonoBehaviour {
     public bool IsInDead {
         get => _IsInDead;
         private set {
-            _IsInDead = value; 
-            
+            _IsInDead = value;
+
             UpdateInteractable();
         }
     }
-    
+
 #region COOLDOWN
 
     [SerializeField] private Image           _CooldownImage;
@@ -106,7 +121,7 @@ public class ItemUI : MonoBehaviour {
     public void DoneDead() => IsInDead = false;
 
 #endregion
-    
+
 #region STACK
 
     [SerializeField] private TextMeshProUGUI _StackText;

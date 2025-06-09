@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ItemSkillUI : MonoBehaviour {
@@ -10,6 +12,10 @@ public class ItemSkillUI : MonoBehaviour {
             if (_ItemUI == null) _ItemUI = GetComponentInChildren<ItemUI>();
             return _ItemUI;
         }
+    }
+
+    private void Start() {
+        ItemUI.ForceOffInteractable = true;
     }
 
     public void InitAll(IActivableItemDataSO source) {
@@ -29,22 +35,12 @@ public class ItemSkillUI : MonoBehaviour {
 
     [SerializeField] private Button _UpLevelBtn;
 
-    private IDisablableUI _UpLevelDisabler;
-
-    private IDisablableUI UpLevelDisabler {
-        get {
-            if (_UpLevelDisabler == null) _UpLevelDisabler = _UpLevelBtn.GetComponent<IDisablableUI>();
-            return _UpLevelDisabler;
-        }
+    private void UpdateUpLevelBtn(int availablePoint) {
+        _UpLevelBtn.gameObject.SetActive(availablePoint > 0 && _CurLevel < _LevelPoints.Count);
     }
 
-    private void UpdateUpLevelBtn(int availablePoint) {
-        _UpLevelBtn.interactable = _CurLevel < _LevelPoints.Count;
-        if (_UpLevelBtn.interactable)
-            UpLevelDisabler.OnEnable();
-        else UpLevelDisabler.OnDisable();
-
-        _UpLevelBtn.gameObject.SetActive(availablePoint > 0);
+    public void RegisterUpLevelListener(UnityAction callback) {
+        _UpLevelBtn.onClick.AddListener(callback);
     }
 
 #endregion
@@ -58,6 +54,8 @@ public class ItemSkillUI : MonoBehaviour {
     private List<IDisablableUI> _LevelPoints = new();
 
     private void UpdateLevelPoint(int newLevelPoints) {
+        if (_CurLevel != newLevelPoints) ItemUI.ForceOffInteractable = newLevelPoints == 0;
+
         if (_CurLevel < newLevelPoints)
             for (; _CurLevel < newLevelPoints; ++_CurLevel)
                 _LevelPoints[_CurLevel].OnEnable();

@@ -1,25 +1,29 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
 [UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
 public partial struct InitSkillUIForOwnChampClientSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
-        state.RequireForUpdate(SystemAPI.QueryBuilder()
+
+        mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 ChampionTag
               , NeedInitSkillUI
               , GhostOwnerIsLocal
             >().WithNone<
                 DummyTag
-            >().Build());
+            >().Build();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+        
         var ecb = SystemAPI
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);

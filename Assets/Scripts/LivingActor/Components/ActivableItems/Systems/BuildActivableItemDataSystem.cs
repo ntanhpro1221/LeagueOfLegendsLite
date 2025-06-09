@@ -6,7 +6,6 @@ using Unity.Entities;
 public partial struct BuildActivableItemDataSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<NeedBuildActivableItemData>();
     }

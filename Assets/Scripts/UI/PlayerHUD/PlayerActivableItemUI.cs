@@ -1,30 +1,56 @@
+using System;
 using NGDtuanh.Collections;
-using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 
 public class PlayerActivableItemUI : MonoBehaviour {
     public EnumMap<PlayerTrigger.Item, ItemUI> Items;
 
-    [HideInInspector] public ItemSkillUI Skill_Q;
-    [HideInInspector] public ItemSkillUI Skill_W;
-    [HideInInspector] public ItemSkillUI Skill_E;
-    [HideInInspector] public ItemSkillUI Skill_R;
+    /// <summary>
+    /// Just from Q to R (not have passive).
+    /// </summary>
+    private EnumMap<PlayerTrigger.Item, ItemSkillUI> _Skills;
+
+    /// <summary>
+    /// <inheritdoc cref="_Skills"/>
+    /// </summary>
+    public EnumMap<PlayerTrigger.Item, ItemSkillUI> Skills {
+        get {
+            if (_Skills == null) {
+                _Skills = new EnumMap<PlayerTrigger.Item, ItemSkillUI>();
+
+                for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey)
+                    _Skills[skillKey] = Items[skillKey].GetComponentInParent<ItemSkillUI>(includeInactive: true);
+            }
+
+            return _Skills;
+        }
+    }
+
+    private PlayerTrigger.Item? _CurUpdateSkillRequest;
 
     private void Awake() {
-        Skill_Q = Items[PlayerTrigger.Item.Skill_Q].GetComponentInParent<ItemSkillUI>();
-        Skill_W = Items[PlayerTrigger.Item.Skill_W].GetComponentInParent<ItemSkillUI>();
-        Skill_E = Items[PlayerTrigger.Item.Skill_E].GetComponentInParent<ItemSkillUI>();
-        Skill_R = Items[PlayerTrigger.Item.Skill_R].GetComponentInParent<ItemSkillUI>();
+        for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey) {
+            var l_SkillKey = skillKey;
+            Skills[skillKey].RegisterUpLevelListener(() => _CurUpdateSkillRequest = l_SkillKey);
+        }
+    }
+
+    public bool PopOutUpdateSkillRequest(out PlayerTrigger.Item request) {
+        bool haveRequest = _CurUpdateSkillRequest != null;
+        request = haveRequest
+            ? _CurUpdateSkillRequest.Value
+            : default;
+        _CurUpdateSkillRequest = null;
+        return haveRequest;
     }
 
     public void InitAllSkills(ChampionId id) {
         var champData = GameSO.Champ[id];
 
         Items[PlayerTrigger.Item.Skill_Passive].InitAll(champData.passive);
-        Items[PlayerTrigger.Item.Skill_Q].InitAll(champData.skills[0]);
-        Items[PlayerTrigger.Item.Skill_W].InitAll(champData.skills[1]);
-        Items[PlayerTrigger.Item.Skill_E].InitAll(champData.skills[2]);
-        Items[PlayerTrigger.Item.Skill_R].InitAll(champData.skills[3]);
+
+        for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey)
+            Skills[skillKey].InitAll(champData.skills[skillKey - PlayerTrigger.Item.Skill_Q]);
 
         // TODO: Init spell later
     }

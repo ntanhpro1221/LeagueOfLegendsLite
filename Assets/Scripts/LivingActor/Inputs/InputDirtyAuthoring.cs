@@ -18,7 +18,12 @@ public struct InputDirtyData : IComponentData {
 
     public ButtonState key_a;
     public ButtonState key_s;
-    
+
+    public bool               haveSkillUpgradeRequest;
+    public PlayerTrigger.Item skillToUpgrade;
+
+    public bool isPointerOverUI;
+
     public enum ButtonState {
         None = 0
       , Down = 1

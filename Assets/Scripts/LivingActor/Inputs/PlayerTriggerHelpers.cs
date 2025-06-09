@@ -50,9 +50,10 @@ public static class PlayerTriggerHelpers {
                 case (int)Item.Item_6: return ref source.Item_6;
                 case (int)Item.Item_7: return ref source.Item_7;
 
-                case ITEM_COUNT + (int)Other.DoneReset:  return ref source.DoneReset;
-                case ITEM_COUNT + (int)Other.Move:       return ref source.Move;
-                case ITEM_COUNT + (int)Other.CancelMove: return ref source.CancelMove;
+                case ITEM_COUNT + (int)Other.DoneReset:   return ref source.DoneReset;
+                case ITEM_COUNT + (int)Other.Move:        return ref source.Move;
+                case ITEM_COUNT + (int)Other.CancelMove:  return ref source.CancelMove;
+                case ITEM_COUNT + (int)Other.UpgradeSkill: return ref source.UpgradeSkill;
 
                 default: throw new Exception($"NGDtuanh: index {keyIndex} is not exist");
             }
@@ -78,9 +79,10 @@ public static class PlayerTriggerHelpers {
                 case (int)Item.Item_6: return ref source.Item_6;
                 case (int)Item.Item_7: return ref source.Item_7;
 
-                case ITEM_COUNT + (int)Other.DoneReset:  return ref source.DoneReset;
-                case ITEM_COUNT + (int)Other.Move:       return ref source.Move;
-                case ITEM_COUNT + (int)Other.CancelMove: return ref source.CancelMove;
+                case ITEM_COUNT + (int)Other.DoneReset:   return ref source.DoneReset;
+                case ITEM_COUNT + (int)Other.Move:        return ref source.Move;
+                case ITEM_COUNT + (int)Other.CancelMove:  return ref source.CancelMove;
+                case ITEM_COUNT + (int)Other.UpgradeSkill: return ref source.UpgradeSkill;
 
                 default: throw new Exception($"NGDtuanh: index {keyIndex} is not exist");
             }

@@ -38,9 +38,9 @@ public class DynamicString {
                     result += _Source[i..(startLast - OPEN_SIGN.Length)];
 
                     // Require full info
-                    if (_Source[startLast] == '$')
-                        result  += $"[ {string.Join(" | ", _Dict[_Source[(startLast + 1)..stopFirst]].Select((item, itemId) => itemId == index ? $"<b>{item.ToString()}</b>" : item.ToString()))} ]";
-                    else result += _Dict[_Source[startLast..stopFirst]][index];
+                    if (_Source[startLast] == '$') {
+                        result += $"[ {string.Join(" | ", _Dict[_Source[(startLast + 1)..stopFirst]].Select((item, itemId) => itemId == index ? $"<b>{item.ToString()}</b>" : item.ToString()))} ]";
+                    } else result += _Dict[_Source[startLast..stopFirst]][Mathf.Max(0, index)];
                 }
 
                 i = stopFirst + CLOSE_SIGN.Length;

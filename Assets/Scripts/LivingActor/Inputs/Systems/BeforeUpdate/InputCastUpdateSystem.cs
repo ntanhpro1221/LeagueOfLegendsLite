@@ -51,12 +51,15 @@ public partial struct InputCastUpdateSystem : ISystem {
         ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
         castData.Reset();
 
-        var rayData        = SystemAPI.GetSingleton<InputDirtyData>();
+        var dirtyData        = SystemAPI.GetSingleton<InputDirtyData>();
+
+        if (dirtyData.isPointerOverUI) return;
+        
         var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
         castGroundActorResult.Clear();
         if (!collisionWorld.CastRay(new RaycastInput {
-            Start  = rayData.mouse_ray_start
-          , End    = rayData.mouse_ray_end
+            Start  = dirtyData.mouse_ray_start
+          , End    = dirtyData.mouse_ray_end
           , Filter = filterGroundActor
         }, ref castGroundActorResult)) return;
 

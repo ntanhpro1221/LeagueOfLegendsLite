@@ -48,6 +48,9 @@ public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
 
                 // Check require new state type
                 if (!itemStatic.activeSettings.isRequireNewState) continue;
+                
+                // Check min level
+                if (itemStatic.maxLevel != 0 && itemDynamic.level == 0) continue;
 
                 // Check cooldown
                 if (itemDynamic.doneAtTick.IsValid

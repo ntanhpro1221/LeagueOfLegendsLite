@@ -1,4 +1,3 @@
-using System;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
@@ -29,11 +28,11 @@ public static class PlayerTrigger {
       , Item_5
       , Item_6
       , Item_7
-        
+
         // Count for this enum
       , COUNT
     }
-    
+
     /// <summary>
     /// Steps to add move event:<br/>
     /// - Add to this enum.<br/>
@@ -45,7 +44,8 @@ public static class PlayerTrigger {
         DoneReset
       , Move
       , CancelMove
-        
+      , UpgradeSkill
+
         // Count for this enum
       , COUNT
     }
@@ -71,10 +71,11 @@ public static class PlayerTrigger {
         public T Item_5;
         public T Item_6;
         public T Item_7;
-        
+
         public T DoneReset;
         public T Move;
         public T CancelMove;
+        public T UpgradeSkill;
     }
 
     /// <summary>

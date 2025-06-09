@@ -35,6 +35,10 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             // RESET EVENT
             inputData.ResetAllEvents();
 
+            // CHECK UPDATE SKILL
+            if (dirtyData.haveSkillUpgradeRequest)
+                inputData.SetUpdateSkill(dirtyData.skillToUpgrade);
+            
             // CHECK MOVE
             if (CheckMoveEvent(dirtyData, castData)) {
                 inputData.SetMove(castData.walkableGroundPos);

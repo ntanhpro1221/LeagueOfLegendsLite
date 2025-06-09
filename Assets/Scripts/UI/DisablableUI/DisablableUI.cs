@@ -4,7 +4,17 @@ public abstract class DisablableUI<TTarget, TProp> :
     MonoBehaviour
   , IDisablableUI
     where TTarget : MonoBehaviour {
-    protected TTarget _Target;
+    private TTarget _Target;
+
+    protected TTarget Target {
+        get {
+            if (_Target == null) {
+                _Target = GetComponent<TTarget>();
+            }
+
+            return _Target;
+        }
+    }
 
     [SerializeField] private TProp _Enable;
     [SerializeField] private TProp _Disable;
@@ -15,8 +25,6 @@ public abstract class DisablableUI<TTarget, TProp> :
         GetComponentInParent<DisablableUIRoot>(includeInactive: true).Register(
             ((IDisablableUI)this).OnEnable
           , ((IDisablableUI)this).OnDisable);
-
-        _Target = GetComponent<TTarget>();
     }
 
     void IDisablableUI.OnEnable() =>

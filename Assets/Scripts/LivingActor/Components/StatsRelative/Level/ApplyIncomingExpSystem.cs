@@ -37,6 +37,7 @@ public partial struct ApplyIncomingExpSystem : ISystem {
                 if (level.curExp < nextLevelExp) break;
                 level.curExp -= nextLevelExp;
                 level.curLevel++;
+                level.availableSkillPoint++;
             }
         }
     }

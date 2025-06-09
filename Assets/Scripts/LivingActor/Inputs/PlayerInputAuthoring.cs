@@ -12,6 +12,17 @@ public struct PlayerInputData : IInputComponentData {
     [GhostField] public ItemActiveCondition       curCondition;
     [GhostField] public PlayerTrigger.Full        triggers;
 
+#region UPDATE SKILL
+
+    [GhostField] public PlayerTrigger.Item skillToUpgrade;
+
+    public void SetUpdateSkill(PlayerTrigger.Item _skillToUpgrade) {
+        skillToUpgrade = _skillToUpgrade;
+        triggers.Set(PlayerTrigger.Other.UpgradeSkill);
+    }
+
+#endregion
+    
 #region MOVE
 
     [GhostField] public float3_Q3 moveLocTarget;

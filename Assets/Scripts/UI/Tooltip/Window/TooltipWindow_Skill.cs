@@ -77,6 +77,7 @@ public class TooltipWindow_Skill : ITooltipWindow {
     }
 
     private void CostsUpdate(int newLevel) {
+        newLevel = Mathf.Max(0, newLevel);
         _Costs.text =
             $"{_CooldownTime[newLevel]}s Cooldown"
           + $"\n{_ActiveCost[newLevel].mana} Mana";
