@@ -12,6 +12,20 @@ public struct IncomingDamageBuffer : IBufferElementData {
     }
 }
 
+public struct AssistBuffer : IBufferElementData {
+    [GhostField] public Entity entity;
+
+    public static implicit operator AssistBuffer(Entity entity) =>
+        new() { entity = entity };
+}
+
+[GhostEnabledBit]
+public struct AssistResetTrigger : IComponentData, IEnableableComponent { }
+
+public struct AssistResetData : IComponentData {
+    [GhostField] public NetworkTick resetAtTick;
+}
+
 public struct TakeDamageSpot : IComponentData {
     [GhostField] public float3_Q3 spot;
 }
@@ -20,10 +34,13 @@ public struct TakeDamageSpot : IComponentData {
 public class DamageableAuthoring : MonoBehaviour {
     public Transform TakeDamageSpot;
 
-    private class Baker : Baker<DamageableAuthoring> {
+    private class Baker : ExtendBaker<DamageableAuthoring> {
         public override void Bake(DamageableAuthoring authoring) {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddBuffer<IncomingDamageBuffer>(entity);
+            AddBuffer<AssistBuffer>(entity);
+            AddComponentDisabled<AssistResetTrigger>(entity);
+            AddComponent<AssistResetData>(entity);
             AddComponent(entity, new TakeDamageSpot {
                 spot = (authoring.TakeDamageSpot.position - authoring.transform.position).Quantizate3()
             });

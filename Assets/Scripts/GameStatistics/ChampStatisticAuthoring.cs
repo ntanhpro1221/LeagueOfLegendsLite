@@ -1,10 +1,11 @@
 using Unity.Entities;
+using Unity.NetCode;
 using UnityEngine;
 
 public struct KDAData : IComponentData {
-    public int kill;
-    public int dead;
-    public int assist;
+    [GhostField] public int kill;
+    [GhostField] public int dead;
+    [GhostField] public int assist;
 
     public readonly TextUpdater.KDA GenerateTextUpdater() => new() {
         kill   = kill
@@ -14,11 +15,15 @@ public struct KDAData : IComponentData {
 }
 
 public struct CreepScoreData : IComponentData {
-    public int creepScore;
+    [GhostField] public float_Q3 creepScore;
 
     public readonly TextUpdater.CreepScore GenerateTextUpdater() => new() {
-        creepScore = creepScore
+        creepScore = (int)creepScore
     };
+}
+
+public struct GoldData : IComponentData {
+    [GhostField] public float_Q3 gold;
 }
 
 public class ChampStatisticAuthoring : MonoBehaviour {
@@ -28,6 +33,7 @@ public class ChampStatisticAuthoring : MonoBehaviour {
 
             AddComponent<KDAData>(entity);
             AddComponent<CreepScoreData>(entity);
+            AddComponent<GoldData>(entity);
         }
     }
 }

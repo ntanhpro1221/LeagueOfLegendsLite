@@ -1,40 +1,42 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
+using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct ApplyIncomingExpSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<RequireExpData>();
-        state.RequireForUpdate<NetworkTime>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
+        state.Dependency = new Job {
+            requireExp = SystemAPI.GetSingleton<RequireExpData>()
+        }.ScheduleParallel(state.Dependency);
+    }
 
-        var requireExp = SystemAPI.GetSingleton<RequireExpData>();
+    [WithAll(
+        typeof(Simulate))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        public RequireExpData requireExp;
 
-        foreach (var (
-                levelData
-              , incomingExp)
-            in SystemAPI
-                .Query<
-                    RefRW<LevelData>
-                  , DynamicBuffer<IncomingExpBuffer>>()
-                .WithAll<Simulate>()) {
+        [BurstCompile]
+        public void Execute(
+            ref LevelData                        level
+          , ref DynamicBuffer<IncomingExpBuffer> expBuffer) {
             // add exp
-            foreach (var exp in incomingExp)
-                levelData.ValueRW.curExp += exp.exp;
-            incomingExp.Clear();
+            foreach (var exp in expBuffer) level.curExp += exp.exp;
+            expBuffer.Clear();
 
             // level up
-            while (levelData.ValueRO.curLevel < requireExp.MaxLevel) {
-                int nextLevelExp = requireExp.CalcRequireExpForNextLevel(levelData.ValueRO.curLevel);
-                if (levelData.ValueRO.curExp < nextLevelExp) break;
-                levelData.ValueRW.curExp -= nextLevelExp;
-                levelData.ValueRW.curLevel++;
+            while (level.curLevel < requireExp.MaxLevel) {
+                int nextLevelExp = requireExp.CalcRequireExpForNextLevel(level.curLevel);
+                if (level.curExp < nextLevelExp) break;
+                level.curExp -= nextLevelExp;
+                level.curLevel++;
             }
         }
     }

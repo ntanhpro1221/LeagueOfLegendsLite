@@ -1,4 +1,3 @@
-using System;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
@@ -13,12 +12,20 @@ public struct BountyBuffer : IBufferElementData, IEnableableComponent {
         new() { value = source };
 }
 
+public struct BountyTrigger : IComponentData, IEnableableComponent { }
+
+public struct BountyTriggerData : IComponentData {
+    [GhostField] public Entity lastHitEntity;
+}
+
 public class BountyAuthoring : MonoBehaviour {
     private class Baker : ExtendBaker<BountyAuthoring> {
         public override void Bake(BountyAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
             AddCleanBufferDisabled<BountyBuffer>(entity, EnumCount.Bounty);
+            AddComponentDisabled<BountyTrigger>(entity);
+            AddComponent<BountyTriggerData>(entity);
         }
     }
 }

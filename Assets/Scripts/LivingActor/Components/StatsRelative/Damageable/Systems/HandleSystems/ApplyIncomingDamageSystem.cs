@@ -1,16 +1,24 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.NetCode;
-using Unity.Physics;
-using Unity.Transforms;
 
 [UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
 public partial struct ApplyIncomingDamageSystem : ISystem {
+    [ReadOnly] private ComponentLookup<ChampionTag> champLookup;
+
+    [BurstCompile]
+    public void OnCreate(ref SystemState state) {
+        champLookup = SystemAPI.GetComponentLookup<ChampionTag>(
+            isReadOnly: true);
+    }
+
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        state.Dependency = new Job()
-            .ScheduleParallel(state.Dependency);
+        champLookup.Update(ref state);
+
+        state.Dependency = new Job {
+            champLookup = champLookup
+        }.ScheduleParallel(state.Dependency);
     }
 
     [WithAll(
@@ -18,14 +26,28 @@ public partial struct ApplyIncomingDamageSystem : ISystem {
       , typeof(HealthData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
+        [ReadOnly] public ComponentLookup<ChampionTag> champLookup;
+
         [BurstCompile]
         public void Execute(
             ref DynamicBuffer<IncomingDamageBuffer> incomingDamage
-          , ref HealthData                          healthData) {
+          , ref HealthData                          health
+          , BountyAspectRW                          bounty) {
+
             float_Q3 totalDamage = 0;
-            foreach (var damage in incomingDamage)
-                totalDamage += damage.damage;
-            healthData.value -= totalDamage;
+
+            foreach (var damage in incomingDamage) totalDamage += damage.damage;
+
+            var newHealth = health.value - totalDamage;
+
+            if (health.value > 0 && newHealth <= 0)
+                foreach (var damage in incomingDamage)
+                    if (champLookup.HasComponent(damage.source)) {
+                        bounty.TurnOn(damage.source);
+                        break;
+                    }
+
+            health.value = newHealth;
         }
     }
 }

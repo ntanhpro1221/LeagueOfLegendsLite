@@ -10,21 +10,23 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        var     playerHUD  = PlayerHUD.Instance;
-        var     requireExp = SystemAPI.GetSingleton<RequireExpData>();
-        var     curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+        var playerHUD  = PlayerHUD.Instance;
+        var requireExp = SystemAPI.GetSingleton<RequireExpData>();
+        var curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
         foreach (var (
             curDeadState
           , deadData
           , healthBarUpdateGenerator
           , deadTrigger
+          , gold
             ) in SystemAPI
             .Query<
                 EnabledRefRO<DeadState>
               , RefRO<DeadStateData>
               , HealthBarUpdateAspect
               , DeadTriggerForUIData
+              , RefRO<GoldData>
             >().WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
@@ -33,7 +35,7 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
             >().WithPresent<DeadState>()) {
             // STATS
             playerHUD.Stats.Update(healthBarUpdateGenerator.Stats);
-            playerHUD.Stats.UpdateCDReduce(333); 
+            playerHUD.Stats.UpdateCDReduce(333);
 
             // HEALTH BAR
             playerHUD.HealthBar.UpdateUI(healthBarUpdateGenerator.GenerateUpdateData(requireExp));
@@ -44,6 +46,12 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
               , curTick
               , deadData.ValueRO
               , curDeadState);
+
+            // GOLD
+            playerHUD.UpdateGold((int)gold.ValueRO.gold);
+
+            // EXP TOOLTIP
+            playerHUD.UpdateExp(healthBarUpdateGenerator.Level, requireExp);
         }
     }
 }

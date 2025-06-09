@@ -11,6 +11,8 @@ public readonly partial struct HealthBarUpdateAspect : IAspect {
 
     public bool LevelValid => _Level.IsValid;
 
+    public ref readonly LevelData Level => ref _Level.ValueRO;
+
     public HealthBarUI.UpdateData GenerateUpdateData(in RequireExpData requireExpData) => new() {
         maxHealth              = Stats[(int)StatsType.Health].value
       , curHealth              = _Health.ValueRO.value

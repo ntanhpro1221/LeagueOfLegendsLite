@@ -9,6 +9,9 @@ public struct LevelData : IComponentData {
 
 public struct IncomingExpBuffer : IBufferElementData {
     [GhostField] public int exp;
+
+    public static implicit operator IncomingExpBuffer(int source)
+        => new() { exp = source };
 }
 
 public class LevelAuthoring : MonoBehaviour {

@@ -15,6 +15,8 @@ public partial struct SyncHybridHealthBarClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        state.CompleteDependency();
+        
         using EntityCommandBuffer ecb = new(Allocator.Temp);
 
         var     cam            = Camera.main;
