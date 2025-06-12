@@ -14,7 +14,6 @@ public static partial class AsheStateSkill_E {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);

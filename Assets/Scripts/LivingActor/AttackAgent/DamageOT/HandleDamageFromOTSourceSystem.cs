@@ -55,7 +55,7 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
                     continue;
 
                 if (!SystemAPI.HasBuffer<IncomingDamageBuffer>(hit.Entity)) continue;
-                
+
                 var damageBuffer = SystemAPI.GetBuffer<IncomingDamageBuffer>(hit.Entity);
                 damageBuffer.Add(new IncomingDamageBuffer { damage = damageOTSource.ValueRO.tmpTotalDamage });
             }
@@ -77,24 +77,21 @@ public partial struct HandleDamageFromOTSourceSystem : ISystem {
     }
 
     private NativeList<ColliderCastHit> castResult;
-     
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<NetworkTime>();
         castResult = new NativeList<ColliderCastHit>(Allocator.Persistent);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
-        
         CalculateTotalDamage(ref state); // MUST BE RUN FIRST ⚠️⚠️⚠️⚠️
 
         ApplyAreaDamage(ref state);
-          
+
         ApplyTargetDamage(ref state);
     }
-     
+
     [BurstCompile]
     public void OnDestroy(ref SystemState state) {
         castResult.Dispose();

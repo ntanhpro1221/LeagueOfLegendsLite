@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: All Champion Data
   m_EditorClassIdentifier: 
   commonInitBounty:
-    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+    _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
     _Values:
     - _Value:
         value: 300000
@@ -35,8 +35,6 @@ MonoBehaviour:
         value: 0
     - _Value:
         value: 1000
-    - _Value:
-        value: 0
     _KeyNames:
     - Gold_Kill
     - Gold_Team
@@ -48,10 +46,9 @@ MonoBehaviour:
     - Exp_Near
     - CreepScore
     - KillScore
-    - _COUNT
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 2d67d462c1b7965951221c5342c6c7b3
+      Hash: 76525ee8426ba98f13d0e8787143472c
     _KeySynced: 1
   value:
     _Keys: 000000000100000002000000
@@ -60,7 +57,7 @@ MonoBehaviour:
         name: Yasuo
         description: "K\u1EBB b\u1EA5t dung th\u1EE9"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 590000
@@ -88,8 +85,6 @@ MonoBehaviour:
               value: 697
           - _Value:
               value: 65000
-          - _Value:
-              value: 65000
           _KeyNames:
           - Health
           - Mana
@@ -104,13 +99,12 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 98f5af241459ff1bed6812405e24f627
+            Hash: 9ea1f901ec79814ff9b959e7f9998b77
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 110000
@@ -138,8 +132,6 @@ MonoBehaviour:
               value: 3500
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -154,10 +146,9 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 98f5af241459ff1bed6812405e24f627
+            Hash: 9ea1f901ec79814ff9b959e7f9998b77
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -166,10 +157,10 @@ MonoBehaviour:
         name: Ashe
         description: "Cung b\u0103ng"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
-              value: 700000
+              value: 610000
           - _Value:
               value: 280000
           - _Value:
@@ -187,13 +178,11 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 200000
+              value: 20000
           - _Value:
               value: 0
           - _Value:
               value: 2000
-          - _Value:
-              value: 65000
           - _Value:
               value: 65000
           _KeyNames:
@@ -210,13 +199,12 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f946678d2061b82e7ab37aa35fc4a441
+            Hash: 76525ee8426ba98f13d0e8787143472c
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
           _Values:
           - _Value:
               value: 101000
@@ -244,8 +232,6 @@ MonoBehaviour:
               value: 3330
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -260,10 +246,9 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: f946678d2061b82e7ab37aa35fc4a441
+            Hash: 76525ee8426ba98f13d0e8787143472c
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -378,5 +363,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 2d67d462c1b7965951221c5342c6c7b3
+      Hash: 76525ee8426ba98f13d0e8787143472c
     _KeySynced: 1

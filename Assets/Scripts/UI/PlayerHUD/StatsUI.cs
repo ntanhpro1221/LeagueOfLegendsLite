@@ -18,13 +18,13 @@ public class StatsUI {
       , _CDReduce;
 
     private void UpdateSingle(
-        in DynamicBuffer<StatsBuffer> source
-      , TextMeshProUGUI               text
-      , StatsType                     type) {
-        text.text = ((int)source[(int)type].value).ToString();
+        in StatsData    source
+      , TextMeshProUGUI text
+      , StatsType       type) {
+        text.text = ((int)source.data[type]).ToString();
     }
 
-    public void Update(in DynamicBuffer<StatsBuffer> source) {
+    public void Update(in StatsData source) {
         UpdateSingle(source, _Physic,    StatsType.PhysicDamage);
         UpdateSingle(source, _Armor,     StatsType.Armor);
         UpdateSingle(source, _Magic,     StatsType.MagicDamage);
@@ -32,7 +32,7 @@ public class StatsUI {
         UpdateSingle(source, _MoveSpeed, StatsType.MoveSpeed);
         UpdateSingle(source, _Crit,      StatsType.Crit);
         _Crit.text     += '%';
-        _AtkSpeed.text =  Math.Round(source[StatsId.AttackSpeed].value, 2).ToString(CultureInfo.InvariantCulture);
+        _AtkSpeed.text =  Math.Round(source.data.AttackSpeed, 2).ToString(CultureInfo.InvariantCulture);
     }
 
     public void UpdateCDReduce(int value) {

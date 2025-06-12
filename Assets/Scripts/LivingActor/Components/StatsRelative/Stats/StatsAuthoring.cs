@@ -3,27 +3,18 @@ using Unity.NetCode;
 using UnityEngine;
 
 [GhostEnabledBit]
-public struct StatsBuffer : IBufferElementData, IEnableableComponent {
-    [GhostField] public float_Q3 value;
-
-    public static implicit operator StatsBuffer(float_Q3 source) =>
-        new() { value = source };
+public struct StatsData : IComponentData, IEnableableComponent {
+    [GhostField] public Strum.Stats.Fields<float_Q3> data;
 }
 
 [GhostEnabledBit]
-public struct StatsBuffer_Raw : IBufferElementData, IEnableableComponent {
-    [GhostField] public float_Q3 value;
-
-    public static implicit operator StatsBuffer_Raw(float_Q3 source) =>
-        new() { value = source };
+public struct StatsData_Raw : IComponentData, IEnableableComponent {
+    [GhostField] public Strum.Stats.Fields<float_Q3> data;
 }
 
 [GhostEnabledBit]
-public struct StatsBuffer_RawPerLevel : IBufferElementData, IEnableableComponent {
-    [GhostField] public float_Q3 value;
-
-    public static implicit operator StatsBuffer_RawPerLevel(float_Q3 source) =>
-        new() { value = source };
+public struct StatsData_RawPerLevel : IComponentData, IEnableableComponent {
+    [GhostField] public Strum.Stats.Fields<float_Q3> data;
 }
 
 public class StatsAuthoring : MonoBehaviour {
@@ -33,11 +24,11 @@ public class StatsAuthoring : MonoBehaviour {
         public override void Bake(StatsAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
-            AddCleanBufferDisabled<StatsBuffer>(entity, EnumCount.Stats);
-            AddCleanBufferDisabled<StatsBuffer_Raw>(entity, EnumCount.Stats);
+            AddComponentDisabled<StatsData>(entity);
+            AddComponentDisabled<StatsData_Raw>(entity);
 
             if (authoring.haveLevel)
-                AddCleanBufferDisabled<StatsBuffer_RawPerLevel>(entity, EnumCount.Stats);
+                AddComponentDisabled<StatsData_RawPerLevel>(entity);
         }
     }
 }

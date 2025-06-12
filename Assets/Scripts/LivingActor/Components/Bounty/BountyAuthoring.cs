@@ -5,11 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Index = (int)<see cref="BountyType"/>
 /// </summary>
-public struct BountyBuffer : IBufferElementData, IEnableableComponent {
-    [GhostField] public float_Q3 value;
-
-    public static implicit operator BountyBuffer(float_Q3 source) =>
-        new() { value = source };
+public struct BountyData : IComponentData, IEnableableComponent {
+    [GhostField] public Strum.Bounty.Fields<float_Q3> data;
 }
 
 public struct BountyTrigger : IComponentData, IEnableableComponent { }
@@ -23,7 +20,7 @@ public class BountyAuthoring : MonoBehaviour {
         public override void Bake(BountyAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
-            AddCleanBufferDisabled<BountyBuffer>(entity, EnumCount.Bounty);
+            AddComponentDisabled<BountyData>(entity);
             AddComponentDisabled<BountyTrigger>(entity);
             AddComponent<BountyTriggerData>(entity);
         }

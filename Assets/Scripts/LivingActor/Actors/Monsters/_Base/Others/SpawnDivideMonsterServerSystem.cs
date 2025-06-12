@@ -6,13 +6,12 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct SpawnDivideMonsterServerSystem : ISystem {
     private EntityQuery mainQuery;
-    
+
     [ReadOnly] private ComponentLookup<Selectable> selectLookup;
 
     [BurstCompile]
@@ -21,7 +20,7 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
         state.RequireForUpdate<PrefabIdData>();
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-        
+
         mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 Simulate
@@ -37,7 +36,7 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         if (mainQuery.IsEmpty) return;
-        
+
         if (!SystemAPI.GetSingleton<NetworkTime>().IsFirstTimeFullyPredictingTick) return;
 
         selectLookup.Update(ref state);
@@ -67,7 +66,7 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
 
         [BurstCompile]
         public void Execute(
-            in DynamicBuffer<StatsBuffer>         stats
+            in StatsData                          stats
           , in MonsterLeashAnchor                 anchor
           , in JungleTeamTypeData                 teamType
           , in LocalTransform                     locTrans
@@ -79,7 +78,7 @@ public partial struct SpawnDivideMonsterServerSystem : ISystem {
             // Mark spawn complete
             spawnTrigger.ValueRW = false;
             Entity root   = campRoot.RootUnsafe;
-            float  radius = stats[StatsId.UnitRadius].value;
+            float  radius = stats.data.UnitRadius;
             float  curRad = 0;
             float  delRad = math.PI2 / spawnBuffer.Length;
 

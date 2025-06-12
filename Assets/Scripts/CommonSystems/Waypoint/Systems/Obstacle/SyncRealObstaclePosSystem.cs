@@ -22,10 +22,10 @@ public partial struct SyncObstacleSystem : ISystem {
                 .Query<
                     RefRO<ActiveObstacle>
                   , RefRO<LocalTransform>
-                  , DynamicBuffer<StatsBuffer>>()) {
+                  , RefRO<StatsData>>()) {
             // Not use x and z directly without quantization because of precision :v (just to make sure)
             obstacle.ValueRO.Obstacle.transform.position = locTrans.ValueRO.Position;
-            obstacle.ValueRO.Obstacle.circleRadius       = stats[StatsId.UnitRadius].value + radiusBonus;
+            obstacle.ValueRO.Obstacle.circleRadius       = stats.ValueRO.data.UnitRadius + radiusBonus;
         }
     }
 }

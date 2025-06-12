@@ -15,8 +15,8 @@ public partial struct GetFollowerSpeed_FromStatsSystem : ISystem {
     [BurstCompile]
     public partial struct Job : IJobEntity {
         [BurstCompile]
-        public void Execute(ref MovementSettings moveData, in DynamicBuffer<StatsBuffer> stats) {
-            moveData.follower.speed = stats[StatsId.MoveSpeed].value;
+        public void Execute(ref MovementSettings moveData, in StatsData stats) {
+            moveData.follower.speed = stats.data.MoveSpeed;
         }
     }
 }

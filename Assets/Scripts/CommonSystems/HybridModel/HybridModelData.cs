@@ -1,6 +1,5 @@
 ﻿using Unity.Entities;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 [GhostComponent(PrefabType = GhostPrefabType.Client)]
@@ -13,6 +12,7 @@ public struct HybridModelData : ICleanupComponentData {
     public UnityObjectRef<Outline>              outlineRef;
     public UnityObjectRef<RotationController>   rotateRef;
     public UnityObjectRef<IndicatorShower>      indicator;
+    public UnityObjectRef<EffectBodyUI>         effectBody;
 
     public bool                          useFake;
     public UnityObjectRef<RectTransform> fakeTransRef;
@@ -22,11 +22,12 @@ public struct HybridModelData : ICleanupComponentData {
         var model = Object.Instantiate(data.SpawnRequest.ValueRO.prefabRef.Value);
 
         // Link model with HybridModelData
-        transformRef    = model.transform;
-        animCtrlRef     = model.GetComponentInChildren<SharedAnimController>();
-        outlineRef      = model.GetComponentInChildren<Outline>();
-        rotateRef       = model.GetComponentInChildren<RotationController>();
-        indicator       = model.GetComponentInChildren<IndicatorShower>();
+        transformRef = model.transform;
+        animCtrlRef  = model.GetComponentInChildren<SharedAnimController>();
+        outlineRef   = model.GetComponentInChildren<Outline>();
+        rotateRef    = model.GetComponentInChildren<RotationController>();
+        indicator    = model.GetComponentInChildren<IndicatorShower>();
+        effectBody   = model.GetComponentInChildren<EffectBodyUI>();
 
         // Set highlight color
         outlineRef.Value.OutlineColor = isAlly

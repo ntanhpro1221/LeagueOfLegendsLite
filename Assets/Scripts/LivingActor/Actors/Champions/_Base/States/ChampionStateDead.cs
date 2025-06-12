@@ -1,6 +1,5 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -53,15 +52,14 @@ public static partial class ChampionStateDead {
             private readonly RefRW<LocalTransform> _LocalTrans;
             private readonly RefRO<TeamTypeData>   _TeamType;
             private readonly RefRO<DeadStateData>  _DeadStateData;
-
-            [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+            private readonly RefRO<StatsData>      _Stats;
 
             [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
             [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
 
             public readonly MoveRequesterAspect MoveRequester;
 
-            public              float_Q3       MaxHealth   => _Stats[(int)StatsType.Health].value;
+            public              float_Q3       MaxHealth   => _Stats.ValueRO.data.Health;
             public ref          LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref          float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;

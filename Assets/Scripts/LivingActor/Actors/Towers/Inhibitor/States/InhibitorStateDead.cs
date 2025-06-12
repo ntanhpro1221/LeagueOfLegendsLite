@@ -1,9 +1,7 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 public static partial class InhibitorStateDead {
     public const float RespawnTime = 10f;
@@ -47,13 +45,12 @@ public static partial class InhibitorStateDead {
         private readonly partial struct UpdateAspect : IAspect {
             private readonly RefRW<HealthData>    _HealthData;
             private readonly RefRO<DeadStateData> _DeadStateData;
-
-            [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+            private readonly RefRO<StatsData>     _Stats;
 
             public ref float_Q3    CurHealth   => ref _HealthData.ValueRW.value;
             public     NetworkTick RespawnTick => _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth => _Stats[StatsId.Health].value;
+            public float_Q3 MaxHealth => _Stats.ValueRO.data.Health;
         }
     }
 

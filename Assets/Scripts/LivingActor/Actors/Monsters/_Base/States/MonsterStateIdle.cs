@@ -1,11 +1,9 @@
 ﻿using NGDtuanh.Entities.StateMachine;
-using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class MonsterStateIdle {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -13,7 +11,7 @@ public static partial class MonsterStateIdle {
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -23,7 +21,7 @@ public static partial class MonsterStateIdle {
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
-            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+            statsLookup = SystemAPI.GetComponentLookup<StatsData>(
                 isReadOnly: true);
         }
 

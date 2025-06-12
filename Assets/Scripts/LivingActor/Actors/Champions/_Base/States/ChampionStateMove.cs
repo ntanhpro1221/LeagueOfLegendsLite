@@ -4,14 +4,13 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class ChampionStateMove {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -21,7 +20,7 @@ public static partial class ChampionStateMove {
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
-            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+            statsLookup = SystemAPI.GetComponentLookup<StatsData>(
                 isReadOnly: true);
         }
 

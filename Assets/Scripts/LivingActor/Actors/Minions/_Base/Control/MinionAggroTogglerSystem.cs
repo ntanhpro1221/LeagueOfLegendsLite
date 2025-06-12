@@ -10,7 +10,7 @@ using UnityEngine;
 public partial struct MinionAggroTogglerSystem : ISystem {
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
     [ReadOnly] private ComponentLookup<ChampionTag>    champLookup;
-    [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+    [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -23,7 +23,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
             isReadOnly: true);
         champLookup = SystemAPI.GetComponentLookup<ChampionTag>(
             isReadOnly: true);
-        statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+        statsLookup = SystemAPI.GetComponentLookup<StatsData>(
             isReadOnly: true);
     }
 
@@ -58,7 +58,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
     [BurstCompile]
     private partial struct DisableJob : IJobEntity {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] public ComponentLookup<StatsData>      statsLookup;
 
         public NetworkTick doneAtTick;
 
@@ -76,7 +76,7 @@ public partial struct MinionAggroTogglerSystem : ISystem {
                   , aggroAnchorData.anchor)
              || controlFactor.aggroRangeSqr < (
                     GameHelpers.DistanceXZ(locTrans.Position, locTransLookup[target.target].Position)
-                  - statsLookup[target.target][StatsId.UnitRadius].value).Sqr()) {
+                  - statsLookup[target.target].data.UnitRadius).Sqr()) {
 
                 aggroDisableData.doneAtTick           = doneAtTick;
                 aggroDisableData.pathLengthWhenDiable = pathBuffer.Length;

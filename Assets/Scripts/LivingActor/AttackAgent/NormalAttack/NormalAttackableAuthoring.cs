@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
@@ -29,9 +30,14 @@ public class NormalAttackableAuthoring : MonoBehaviour {
     [Tooltip("Leave empty if this is a melee attack")]
     public GameObject projectile;
 
+    public List<DamageTriggerSource.EffectBuffer.Managed> onHitEffects;
+
     private class Baker : ExtendBaker<NormalAttackableAuthoring> {
         public override void Bake(NormalAttackableAuthoring authoring) {
             GetDynamicEntity(out var entity);
+
+            var onHitEffects = AddBuffer<DamageTriggerSource.EffectBuffer>(entity);
+            foreach (var effectManaged in authoring.onHitEffects) onHitEffects.Add(effectManaged.ToUnmanaged());
 
             switch (authoring.attackType) {
                 case AttackType.Melee:
@@ -39,8 +45,7 @@ public class NormalAttackableAuthoring : MonoBehaviour {
                     break;
                 case AttackType.Ranged:
                     AddComponentDisabled<RangedAttackTrigger>(entity);
-                    AddComponent(entity, new RangedAttackTriggerData(
-                        GetDynamicEntity(authoring.projectile)));
+                    AddComponent(entity, new RangedAttackTriggerData(GetDynamicEntity(authoring.projectile)));
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
@@ -57,10 +62,12 @@ public class NormalAttackableAuthoring : MonoBehaviour {
     private class AuthoringEditor : Editor {
         private SerializedProperty _AttackType;
         private SerializedProperty _Projectile;
+        private SerializedProperty _OnHitEffects;
 
         private void OnEnable() {
-            _AttackType = serializedObject.FindProperty(nameof(attackType));
-            _Projectile = serializedObject.FindProperty(nameof(projectile));
+            _AttackType   = serializedObject.FindProperty(nameof(attackType));
+            _Projectile   = serializedObject.FindProperty(nameof(projectile));
+            _OnHitEffects = serializedObject.FindProperty(nameof(onHitEffects));
         }
 
         public override void OnInspectorGUI() {
@@ -68,9 +75,9 @@ public class NormalAttackableAuthoring : MonoBehaviour {
             var authoring = (NormalAttackableAuthoring)target;
 
             EditorGUILayout.PropertyField(_AttackType);
-            if (authoring.attackType == AttackType.Ranged) {
+            if (authoring.attackType == AttackType.Ranged)
                 EditorGUILayout.PropertyField(_Projectile);
-            }
+            EditorGUILayout.PropertyField(_OnHitEffects);
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -2,7 +2,7 @@
 using Unity.Entities;
 using UnityEngine;
 
-public struct SetNameRequest : IComponentData {
+public struct SetNameRequest : IComponentData, IEnableableComponent {
     public FixedString64Bytes name;
 }
 

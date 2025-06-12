@@ -15,7 +15,6 @@ public static partial class AsheStateSKill_W {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
 
             selectLookup = SystemAPI.GetComponentLookup<Selectable>(
                 isReadOnly: true);
@@ -128,38 +127,28 @@ public static partial class AsheStateSKill_W {
             // DO MELEE ATTACK
             foreach (var (
                 _
-              , stateData
-              , itemData
-              , locTrans
-              , prefabBuffer
-              , projectileSpawnPoint
-              , teamData
+              , data
               , entity
                 ) in SystemAPI
                 .Query<
                     StateFilterAspect
-                  , RefRW<CommonItemActiveStateData>
-                  , ItemDataAspectRO
-                  , RefRO<LocalTransform>
-                  , DynamicBuffer<AsheSkill_W.PrefabBuffer>
-                  , RefRO<ProjectileSpawnPoint>
-                  , RefRO<TeamTypeData>
+                  , UpdateAspect
                 >().WithEntityAccess()) {
                 var netTime = SystemAPI.GetSingleton<NetworkTime>();
-                if (!stateData.ValueRO.performData.IsReadyToPerform(netTime.ServerTick)) continue;
-                stateData.ValueRW.performData.MarkPerformed();
+                if (!data.StateData.performData.IsReadyToPerform(netTime.ServerTick)) continue;
+                data.StateData.performData.MarkPerformed();
 
                 if (!netTime.IsFirstTimeFullyPredictingTick) continue;
-                ref var item  = ref itemData.Static[PlayerTrigger.Item.Skill_W];
-                var     level = itemData.Dynamic[(int)PlayerTrigger.Item.Skill_W].level;
+                ref var item  = ref data.ItemData.Static[PlayerTrigger.Item.Skill_W];
+                var     level = data.ItemData.Dynamic[(int)PlayerTrigger.Item.Skill_W].level;
 
-                var direction = quaternion.LookRotation(stateData.ValueRO.inputForActive.direction.Full, math.up());
-                var spawnPoint = LocalTransform.FromPositionRotation(locTrans.ValueRO.Position, direction)
-                    .TransformPoint(projectileSpawnPoint.ValueRO.point.position);
+                var direction = quaternion.LookRotation(data.StateData.inputForActive.direction.Full, math.up());
+                var spawnPoint = LocalTransform.FromPositionRotation(data.Position, direction)
+                    .TransformPoint(data.ProjectileSpawnPoint.position);
 
                 int      amount = (int)item.concreteProp.Value[(int)AsheSkill_W.ConcreteProperty.arrowAmount][level];
                 float_Q3 damage = item.concreteProp.Value[(int)AsheSkill_W.ConcreteProperty.damage][level];
-                Entity   prefab = prefabBuffer[(int)AsheSkill_W.ConcretePrefab.arrow].entity;
+                Entity   prefab = data.PrefabBuffer[(int)AsheSkill_W.ConcretePrefab.arrow].entity;
 
                 var curDelRad = ARROW_ANGLE_DIS_RAD * ((float)amount - 1) / 2;
                 for (int i = 0; i < amount; ++i, curDelRad -= ARROW_ANGLE_DIS_RAD) {
@@ -172,9 +161,14 @@ public static partial class AsheStateSKill_W {
 
                     ecb.SetComponent(arrow, new DestroyAtDestination { destination = destination });
 
-                    ecb.SetComponent(arrow, new DamageTriggerSource(damage, entity));
+                    ecb.SetComponent(arrow, new DamageTriggerSource {
+                        damage       = damage
+                      , source       = entity
+                      , sourcePos    = data.Position.Quantizate3()
+                      , sourceScaler = data.PersonalConstructor.Construct()
+                    });
 
-                    ecb.SetComponent(arrow, teamData.ValueRO);
+                    ecb.SetComponent(arrow, data.Team);
 
                     MoveRequesterAspect.MoveStraightTo(ref ecb, arrow, destination);
                 }
@@ -182,6 +176,24 @@ public static partial class AsheStateSKill_W {
 
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
+        }
+
+        private readonly partial struct UpdateAspect : IAspect {
+            private readonly RefRW<CommonItemActiveStateData> _StateData;
+            private readonly RefRO<LocalTransform>            _LocTrans;
+            private readonly RefRO<ProjectileSpawnPoint>      _ProjectileSpawnPoint;
+            private readonly RefRO<TeamTypeData>              _TeamData;
+
+            [ReadOnly] public readonly DynamicBuffer<AsheSkill_W.PrefabBuffer> PrefabBuffer;
+
+            public readonly ItemDataAspectRO              ItemData;
+            public readonly ScalerPersonalConstructAspect PersonalConstructor;
+
+            public ref CommonItemActiveStateData StateData => ref _StateData.ValueRW;
+
+            public ref readonly float3        Position             => ref _LocTrans.ValueRO.Position;
+            public ref readonly InitTransform ProjectileSpawnPoint => ref _ProjectileSpawnPoint.ValueRO.point;
+            public ref readonly TeamTypeData  Team                 => ref _TeamData.ValueRO;
         }
     }
 }

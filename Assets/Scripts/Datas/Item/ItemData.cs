@@ -4,13 +4,13 @@ using Unity.Entities;
 
 [Serializable]
 public struct ItemData : IBlobBuildable<ItemDataManaged>, IBlobBuildableSelf<ItemData> {
-    public BubleArray<IncomingBuffBuffer> buffs;
+    // public BubleArray<StatBuffs.Sender> statBuffs;
 
     public void BuildBlob(ref BlobBuilder builder, ItemDataManaged source) {
-        buffs.BuildBlob(ref builder, source.buffs);
+        // statBuffs.BuildBlob(ref builder, source.statBuffs);
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref ItemData source) {
-        buffs.BuildBlob(ref builder, ref source.buffs);
+        // statBuffs.BuildBlob(ref builder, ref source.statBuffs);
     }
 }

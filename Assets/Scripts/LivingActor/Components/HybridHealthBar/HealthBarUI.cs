@@ -1,12 +1,11 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using NGDtuanh.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(EffectIconUI))]
 public class HealthBarUI : MonoBehaviour {
     public struct UpdateData {
         public float maxHealth;

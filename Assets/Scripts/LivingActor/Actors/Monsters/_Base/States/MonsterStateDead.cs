@@ -1,11 +1,9 @@
 ﻿using NGDtuanh.Entities.StateMachine;
 using Pathfinding;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class MonsterStateDead {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -58,8 +56,7 @@ public static partial class MonsterStateDead {
             private readonly RefRO<JungleTeamTypeData> _TeamType;
             private readonly RefRO<DeadStateData>      _DeadStateData;
             private readonly FixablePosSetterAspect    _FixSetter;
-
-            [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+            private readonly RefRO<StatsData>          _Stats;
 
             [Optional] private readonly RefRW<MonsterLeaderData>          _LeaderData;
             [Optional] private readonly RefRO<MonsterExtraBufferCount>    _ExtraCount;
@@ -73,7 +70,7 @@ public static partial class MonsterStateDead {
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth    => _Stats[StatsId.Health].value;
+            public float_Q3 MaxHealth    => _Stats.ValueRO.data.Health;
             public void     EnableMove() => _FixSetter.Release();
             public void     Destroy()    => _Destroyed.ValueRW = true;
 

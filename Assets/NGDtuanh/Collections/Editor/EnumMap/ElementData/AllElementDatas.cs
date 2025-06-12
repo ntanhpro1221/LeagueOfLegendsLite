@@ -6,7 +6,7 @@ using NGDtuanh.Utils.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public class AllElementDatas {
         public readonly SerializedProperty Keys;
         public readonly SerializedProperty Values;

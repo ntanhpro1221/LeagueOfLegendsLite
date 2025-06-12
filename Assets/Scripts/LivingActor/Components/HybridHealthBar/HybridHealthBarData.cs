@@ -12,15 +12,17 @@ public struct HybridHealthBarData : ICleanupComponentData {
         public float                         deltaY;
         public UnityObjectRef<RectTransform> transRef;
         public UnityObjectRef<HealthBarUI>   uiRef;
+        public UnityObjectRef<EffectIconUI>  effectIconRef;
 
         public void Init(in HybridHealthBarInitRequest spawnRequest) {
             // spawn
             var healthBar = Object.Instantiate(spawnRequest.dynamicHealthBarPrefab.Value, MainCanvasRoot.Instance.HealthBarRoot);
 
             // Link healthBar with HybridHealthBarData
-            deltaY   = spawnRequest.deltaY;
-            transRef = healthBar.transform as RectTransform;
-            uiRef    = healthBar.GetComponent<HealthBarUI>();
+            deltaY        = spawnRequest.deltaY;
+            transRef      = healthBar.transform as RectTransform;
+            uiRef         = healthBar.GetComponent<HealthBarUI>();
+            effectIconRef = healthBar.GetComponent<EffectIconUI>();
         }
 
         public readonly void Update(

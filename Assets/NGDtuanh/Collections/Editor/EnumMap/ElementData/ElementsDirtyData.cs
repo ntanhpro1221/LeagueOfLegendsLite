@@ -4,7 +4,7 @@ using NGDtuanh.Utils;
 using NGDtuanh.Utils.Editor;
 using UnityEditor;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public class ElementsDirtyData {
         private readonly SerializedProperty       KeyNames_Serial;
         private readonly List<SerializedProperty> PrevKeyNames_Serial;

@@ -4,13 +4,13 @@ using UnityEditor;
 
 namespace NGDtuanh.Utils.Editor {
     public static class SerializedPropertyExtensions {
-        public static IEnumerable<SerializedProperty> GetRawChildren(this SerializedProperty property) {
-            var ite = property.GetEnumerator();
-            while (ite.MoveNext()) {
-                if (ite.Current is SerializedProperty child) {
-                    yield return child;
-                }
-            }
+        public static IEnumerable<SerializedProperty> DirectChildren(this SerializedProperty property) {
+            var iter = property.Copy();
+            if (!iter.NextVisible(true)) yield break;
+
+            var end = property.GetEndProperty();
+            do yield return iter.Copy();
+            while (iter.NextVisible(false) && !SerializedProperty.EqualContents(iter, end));
         }
 
         public static class GetSet {

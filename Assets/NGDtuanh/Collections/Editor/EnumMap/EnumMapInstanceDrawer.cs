@@ -7,8 +7,8 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace MyCustomPatterns.Collections.Editor {
-    public class EnumMapInstanceDrawer {
+namespace NGDtuanh.Collections.Editor {
+    public class EnumMapInstanceDrawer : IDrawerInstance {
         #region CONFIG VARS
 
         public const float FixFoldLabelXPos         = 8;
@@ -48,15 +48,14 @@ namespace MyCustomPatterns.Collections.Editor {
 
         #region MAIN VARS
 
-        internal readonly SerializedProperty  ThisProperty;
-        internal readonly AllElementDatas     AllElementDatas;
-        internal readonly ElementDatasManager ElementDatasManager;
-        internal readonly ReorderableList     ReorderableListNotExpand;
-        internal readonly ReorderableList     ReorderableListNotifyOnly;
-        internal readonly Type                KeyType;
-        internal readonly GenericMenu         GenericMenu;
-        
-        internal       GUIContent Label;
+        internal SerializedProperty  ThisProperty;
+        internal AllElementDatas     AllElementDatas;
+        internal ElementDatasManager ElementDatasManager;
+        internal ReorderableList     ReorderableListNotExpand;
+        internal ReorderableList     ReorderableListNotifyOnly;
+        internal Type                KeyType;
+        internal GenericMenu         GenericMenu;
+        internal GUIContent          Label;
 
         internal ReorderableList ReorderableList { get; private set; }
         internal string          SearchText      { get; private set; } = "";
@@ -67,7 +66,7 @@ namespace MyCustomPatterns.Collections.Editor {
         
         #endregion
 
-        public EnumMapInstanceDrawer(SerializedProperty property, FieldInfo fieldInfo) {
+        public override void Init(SerializedProperty property, FieldInfo fieldInfo) {
             var enumMapTypeFinder = new EnumMapTypeFinder(fieldInfo);
 
             ThisProperty              = property;
@@ -80,7 +79,7 @@ namespace MyCustomPatterns.Collections.Editor {
             GenericMenu = MakeGenericMenu();
         }
 
-        public float GetPropertyHeight() {
+        public override float GetPropertyHeight() {
             ElementDatasManager.EnsureEnumKeySynced(); // must sync first
             AllElementDatas.CollectionDuplicateFix();  // when remove all elements from a collection and then add again
             
@@ -99,7 +98,7 @@ namespace MyCustomPatterns.Collections.Editor {
             return height;
         }
 
-        public void OnGUI(Rect position, GUIContent label) {
+        public override void OnGUI(Rect position, GUIContent label) {
             position.xMin += EditorGUI.indentLevel * OneIndentWidth;
             
             if (Label == null) // not init in constructor because label from get height function is f**king wrong !!

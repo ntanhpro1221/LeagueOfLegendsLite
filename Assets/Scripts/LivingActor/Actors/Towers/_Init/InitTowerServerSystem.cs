@@ -37,8 +37,8 @@ public partial struct InitTowerServerSystem : ISystem {
       , typeof(TowerTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(BountyBuffer)
-      , typeof(StatsBuffer_Raw))]
+        typeof(BountyData)
+      , typeof(StatsData_Raw))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public AllTowerData allTower;
@@ -53,12 +53,12 @@ public partial struct InitTowerServerSystem : ISystem {
           , in LaneTypeData lane
 
             // Bounty
-          , ref DynamicBuffer<BountyBuffer> bounties
-          , EnabledRefRW<BountyBuffer>      bountyTrigger
+          , ref BountyData           bounties
+          , EnabledRefRW<BountyData> bountyTrigger
 
             // Raw stats
-          , ref DynamicBuffer<StatsBuffer_Raw> statsRaw
-          , EnabledRefRW<StatsBuffer_Raw>      statsRawTrigger
+          , ref StatsData_Raw           statsRaw
+          , EnabledRefRW<StatsData_Raw> statsRawTrigger
 
             // Position
           , ref LocalTransform locTrans
@@ -79,4 +79,4 @@ public partial struct InitTowerServerSystem : ISystem {
             ).Forward().Quantizate3().xz);
         }
     }
-}
+} 

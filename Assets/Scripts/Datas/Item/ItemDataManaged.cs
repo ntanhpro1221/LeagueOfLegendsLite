@@ -4,8 +4,8 @@ using UnityEngine;
 
 [Serializable]
 public class ItemDataManaged {
-    public string name;
-    public string description;
-    public Sprite avatar;
-    public List<IncomingBuffBuffer> buffs;
+    public string                 name;
+    public string                 description;
+    public Sprite                 avatar;
+    // public List<StatBuffs.Sender> statBuffs;
 }

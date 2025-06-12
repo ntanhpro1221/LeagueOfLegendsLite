@@ -11,7 +11,7 @@ public static partial class MinionStateAttack {
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -19,7 +19,7 @@ public static partial class MinionStateAttack {
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
-            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+            statsLookup = SystemAPI.GetComponentLookup<StatsData>(
                 isReadOnly: true);
         }
 
@@ -78,8 +78,8 @@ public static partial class MinionStateAttack {
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             foreach (var (
                     _
@@ -114,8 +114,8 @@ public static partial class MinionStateAttack {
         public void OnUpdate(ref SystemState state) {
             locTransLookup.Update(ref state);
 
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             // DO MELEE ATTACK
             foreach (var (_, attackData, attackTrigger) in SystemAPI

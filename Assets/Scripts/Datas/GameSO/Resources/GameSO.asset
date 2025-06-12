@@ -18,3 +18,4 @@ MonoBehaviour:
   _Monster: {fileID: 11400000, guid: 30601666e2bf9bb43b83e1bbb35dc33b, type: 2}
   _Item: {fileID: 11400000, guid: 033728f4df094c3428eb7cf06d751575, type: 2}
   _Tower: {fileID: 11400000, guid: ee67fbe9c941c864b841b3155aa20c4a, type: 2}
+  _Effect: {fileID: 11400000, guid: 419024d52d0d8828a97a3753058dda54, type: 2}

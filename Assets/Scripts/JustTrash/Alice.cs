@@ -1,7 +1,8 @@
+using System.Collections.Generic;
+using NGDtuanh.Collections;
 using UnityEngine;
 
 public class Alice : MonoBehaviour {
-    private void Update() {
-        Debug.Log(GetComponent<ItemUI>().ForceOffInteractable);
-    }
+    public EnumMap<ChampionId, List<DamageOverTime.Managed>> lmao;
+    public DamageOverTime.Managed                            burh;
 }

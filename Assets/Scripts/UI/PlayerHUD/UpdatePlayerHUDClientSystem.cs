@@ -1,6 +1,5 @@
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct UpdatePlayerHUDClientSystem : ISystem {

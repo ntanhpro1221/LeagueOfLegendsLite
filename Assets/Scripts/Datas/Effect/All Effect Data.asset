@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6b03bae3884199b651583a45d0cad2, type: 3}
+  m_Name: All Effect Data
+  m_EditorClassIdentifier: 
+  value:
+    _Keys: 0000000001000000
+    _Values:
+    - _Value:
+        name: Frost
+        barData:
+          <enable>k__BackingField: 1
+          avatar: {fileID: 21300000, guid: b8f34e16367e82dd5b9526d6df85be9c, type: 3}
+          outlineColor: {r: 0.6509804, g: 0.73333335, b: 1, a: 1}
+          showStack: 0
+          showTimer: 1
+        bodyData:
+          <enable>k__BackingField: 1
+          bodyId: 0
+        iconData:
+          <enable>k__BackingField: 1
+          icon: {fileID: 21300000, guid: 2db993d06c2a953beb86dcd750176dac, type: 3}
+        description: Slow target
+        stackingBehaviour:
+          maxStack: 1
+          createNewInstance: 0
+          resetTimer: 1
+          increaseStackCount: 0
+          stackAffectPower: 0
+          useStackForLifeTime: 0
+        damageOverTime:
+          <enable>k__BackingField: 0
+          damage:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+          periodTime: 0
+        statBuffs:
+          <enable>k__BackingField: 1
+          buffs:
+          - applyType: 1
+            value:
+              origin:
+                value: -300
+              scalers: []
+            statsType: 2
+        ccDisable:
+          <enable>k__BackingField: 0
+          flags:
+            Move: 1
+            Attack: 1
+            ActiveItem: 0
+        ccControl:
+          <enable>k__BackingField: 0
+          flag: 2
+        fixedLife:
+          <enable>k__BackingField: 1
+          lifeTime:
+            origin:
+              value: 10000
+            scalers: []
+    - _Value:
+        name: 
+        barData:
+          <enable>k__BackingField: 1
+          avatar: {fileID: 0}
+          outlineColor: {r: 0, g: 0, b: 0, a: 0}
+          showStack: 1
+          showTimer: 1
+        bodyData:
+          <enable>k__BackingField: 0
+          bodyId: 0
+        iconData:
+          <enable>k__BackingField: 0
+          icon: {fileID: 0}
+        description: 
+        stackingBehaviour:
+          maxStack: 1
+          createNewInstance: 0
+          resetTimer: 0
+          increaseStackCount: 0
+          stackAffectPower: 0
+          useStackForLifeTime: 0
+        damageOverTime:
+          <enable>k__BackingField: 1
+          damage:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+          periodTime: 0
+        statBuffs:
+          <enable>k__BackingField: 1
+          buffs:
+          - applyType: 0
+            value:
+              origin:
+                value: 0
+              scalers: []
+            statsType: 0
+        ccDisable:
+          <enable>k__BackingField: 0
+          flags:
+            Move: 1
+            Attack: 1
+            ActiveItem: 0
+        ccControl:
+          <enable>k__BackingField: 1
+          flag: 2
+        fixedLife:
+          <enable>k__BackingField: 0
+          lifeTime:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+    _KeyNames:
+    - Frost
+    - Stun
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 8a19755223f61c654c16a3b1874b5040
+    _KeySynced: 1

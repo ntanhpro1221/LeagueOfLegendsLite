@@ -1,5 +1,4 @@
-﻿using System;
-using NGDtuanh.BubleAsset.ShortCut;
+﻿using NGDtuanh.BubleAsset.ShortCut;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -46,8 +45,8 @@ public partial struct InitMonsterServerSystem : ISystem {
       , typeof(MonsterTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(BountyBuffer)
-      , typeof(StatsBuffer_Raw)
+        typeof(BountyData)
+      , typeof(StatsData_Raw)
       , typeof(MonsterLeashAnchor))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
@@ -65,12 +64,12 @@ public partial struct InitMonsterServerSystem : ISystem {
           , in Entity             entity
 
             // Bounty
-          , ref DynamicBuffer<BountyBuffer> bounties
-          , EnabledRefRW<BountyBuffer>      bountyTrigger
+          , ref BountyData           bounties
+          , EnabledRefRW<BountyData> bountyTrigger
 
             // Raw stats
-          , ref DynamicBuffer<StatsBuffer_Raw> statsRaw
-          , EnabledRefRW<StatsBuffer_Raw>      statsRawTrigger
+          , ref StatsData_Raw           statsRaw
+          , EnabledRefRW<StatsData_Raw> statsRawTrigger
 
             // Position
           , ref LocalTransform     locTrans

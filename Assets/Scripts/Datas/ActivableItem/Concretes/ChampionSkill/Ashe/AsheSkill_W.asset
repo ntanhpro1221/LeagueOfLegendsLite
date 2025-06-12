@@ -74,7 +74,7 @@ MonoBehaviour:
     - arrowAmount
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 9ff61995f455f74338163e5f95f7ab7e
+      Hash: 03e19a8a7613920334da608670147263
     _KeySynced: 1
   concretePrefab:
     _Keys: 00000000
@@ -84,6 +84,6 @@ MonoBehaviour:
     - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 9ff61995f455f74338163e5f95f7ab7e
+      Hash: 03e19a8a7613920334da608670147263
     _KeySynced: 1
   _PrevMaxLevel: 5

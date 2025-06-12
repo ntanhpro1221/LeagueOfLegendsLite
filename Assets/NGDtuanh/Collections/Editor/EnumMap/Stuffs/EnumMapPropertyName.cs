@@ -1,6 +1,6 @@
 ﻿using NGDtuanh.Collections;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public static class EnumMapPropertyName {
         private enum TmpEnum { }
 

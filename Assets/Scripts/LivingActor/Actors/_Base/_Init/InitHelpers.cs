@@ -1,48 +1,50 @@
-using System;
 using NGDtuanh.BubleAsset;
 using Unity.Entities;
-using UnityEngine;
 
 public static class InitHelpers {
     public static void Bounty(
-        ref DynamicBuffer<BountyBuffer>      bountyBuffer
-      , ref EnabledRefRW<BountyBuffer>       bountyTrigger
+        ref BountyData                       bounties
+      , ref EnabledRefRW<BountyData>         bountyTrigger
       , ref BubleEnMap<BountyType, float_Q3> source) {
         // Enable
         bountyTrigger.ValueRW = true;
 
         // Set value
-        for (int i = 0; i < EnumCount.Bounty; ++i)
-            bountyBuffer[i] = source[(BountyType)i];
+        ref var bountiesData = ref bounties.data;
+        foreach (var index in Strum.Bounty.Info.Indexes)
+            bountiesData[index] = source[index];
     }
 
     public static void StatsRaw(
-        ref DynamicBuffer<StatsBuffer_Raw>  statsRaw
-      , ref EnabledRefRW<StatsBuffer_Raw>   statsRawTrigger
+        ref StatsData_Raw                   statsRaw
+      , ref EnabledRefRW<StatsData_Raw>     statsRawTrigger
       , ref BubleEnMap<StatsType, float_Q3> source) {
         // Enable
         statsRawTrigger.ValueRW = true;
-        
+
         // Set value
-        for (int i = 0; i < EnumCount.Stats; ++i)
-            statsRaw[i] = source[(StatsType)i];
+        ref var statsRawData = ref statsRaw.data;
+        foreach (var index in Strum.Stats.Info.Indexes)
+            statsRawData[index] = source[index];
     }
 
     public static void StatsRaw(
-        ref DynamicBuffer<StatsBuffer_Raw>         statsRaw
-      , ref DynamicBuffer<StatsBuffer_RawPerLevel> statsRawPerLevel
-      , ref EnabledRefRW<StatsBuffer_Raw>          statsRawTrigger
-      , ref EnabledRefRW<StatsBuffer_RawPerLevel>  statsRawPerLevelTrigger
-      , ref BubleEnMap<StatsType, float_Q3>        source
-      , ref BubleEnMap<StatsType, float_Q3>        sourcePerLevel) {
+        ref StatsData_Raw                       statsRaw
+      , ref StatsData_RawPerLevel               statsRawPerLevel
+      , ref EnabledRefRW<StatsData_Raw>         statsRawTrigger
+      , ref EnabledRefRW<StatsData_RawPerLevel> statsRawPerLevelTrigger
+      , ref BubleEnMap<StatsType, float_Q3>     source
+      , ref BubleEnMap<StatsType, float_Q3>     sourcePerLevel) {
         // Enable
         statsRawTrigger.ValueRW         = true;
         statsRawPerLevelTrigger.ValueRW = true;
 
         // Set value
-        for (int i = 0; i < EnumCount.Stats; ++i) {
-            statsRaw[i]         = source[(StatsType)i];
-            statsRawPerLevel[i] = sourcePerLevel[(StatsType)i];
+        ref var statsRawData         = ref statsRaw.data;
+        ref var statsRawPerLevelData = ref statsRawPerLevel.data;
+        foreach (var index in Strum.Stats.Info.Indexes) {
+            statsRawData[index]         = source[index];
+            statsRawPerLevelData[index] = sourcePerLevel[index];
         }
     }
 }

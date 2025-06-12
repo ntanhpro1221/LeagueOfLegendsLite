@@ -4,7 +4,7 @@ using System.Linq;
 using NGDtuanh.BubleAsset;
 using NGDtuanh.Collections;
 using NGDtuanh.Utils;
-using NGDtuanh.Utils.Editors;
+using NGDtuanh.Utils.Editor;
 using Unity.Entities;
 using UnityEditor;
 

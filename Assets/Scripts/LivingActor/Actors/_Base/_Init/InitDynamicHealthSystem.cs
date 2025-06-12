@@ -10,7 +10,7 @@ public partial struct InitDynamicHealthSystem : ISystem {
         mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 Simulate
-              , StatsBuffer
+              , StatsData
             >().WithDisabled<
                 HealthData
             >().Build();
@@ -25,17 +25,18 @@ public partial struct InitDynamicHealthSystem : ISystem {
 
     [WithAll(
         typeof(Simulate)
-      , typeof(StatsBuffer))]
+      , typeof(StatsData))]
     [WithDisabled(
         typeof(HealthData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         [BurstCompile]
         public void Execute(
-            in  DynamicBuffer<StatsBuffer> stats
-          , ref HealthData                 health
-          , EnabledRefRW<HealthData>       healthTrigger) {
-            health.value          = stats[(int)StatsType.Health].value;
+            in  StatsData            stats
+          , ref HealthData           health
+          , in  Entity               entity
+          , EnabledRefRW<HealthData> healthTrigger) {
+            health.value          = stats.data.Health;
             healthTrigger.ValueRW = true;
         }
     }

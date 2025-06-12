@@ -3,7 +3,7 @@ using NGDtuanh.Utils;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public class ElementData {
         public readonly SerializedProperty Key;
         public readonly SerializedProperty Value;
@@ -39,11 +39,16 @@ namespace MyCustomPatterns.Collections.Editor {
             
             ++EditorGUI.indentLevel;
 
+            var pos = position.With_Padding(AllElementDatas.ElementPadding);
+            EditorGUI.BeginProperty(pos, Label, Value);
+            
             EditorGUI.PropertyField(
-                position.With_Padding(AllElementDatas.ElementPadding)
+                pos
               , Value
               , Label
               , true);
+            
+            EditorGUI.EndProperty();
             
             --EditorGUI.indentLevel;
         }

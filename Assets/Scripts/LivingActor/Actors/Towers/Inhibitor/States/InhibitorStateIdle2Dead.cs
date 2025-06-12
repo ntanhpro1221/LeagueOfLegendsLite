@@ -9,7 +9,6 @@ public static partial class InhibitorStateIdle2Dead {
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
             state.RequireForUpdate<NetworkTime>();
-            state.RequireForUpdate<EnumIndexData>();
         }
 
         [BurstCompile]

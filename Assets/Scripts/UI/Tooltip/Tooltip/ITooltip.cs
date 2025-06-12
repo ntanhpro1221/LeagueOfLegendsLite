@@ -10,21 +10,21 @@ public abstract class ITooltip : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private   bool           _IsHovering;
     private   bool           _IsShowing;
     private   float          _CurThreshold;
-    private   Camera         _Cam;
-    
+
     [Header("THRESHOLD")]
     [SerializeField] private float _ShowThreshold;
+
     [SerializeField] private float _HideThreshold;
 
     [Header("WINDOW ANCHOR")]
     [SerializeField] private AnchorType _AnchorType;
-    [SerializeField] private Vector2    _MouseOffset;
+
+    [SerializeField] private Vector2 _MouseOffset;
 
     private void Awake() {
         Window       = GetComponentInChildren<ITooltipWindow>(true);
         _WindowTrans = Window.transform as RectTransform;
         _MousePos    = Mouse.current.position;
-        _Cam         = Camera.main;
     }
 
     private void Update() {

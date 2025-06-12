@@ -1,22 +1,28 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 [UpdateInGroup(typeof(NormalAttackSystemGroup))]
 public partial struct CommonMeleeAttackSystem : ISystem {
     private BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
+    private BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         incomingDmgLookup = SystemAPI.GetBufferLookup<IncomingDamageBuffer>(
+            isReadOnly: false);
+        incomingEffectLookup = SystemAPI.GetBufferLookup<IncomingEffectBuffer>(
             isReadOnly: false);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         incomingDmgLookup.Update(ref state);
+        incomingEffectLookup.Update(ref state);
 
         state.Dependency = new Job {
-            incomingDmgLookup = incomingDmgLookup
+            incomingDmgLookup    = incomingDmgLookup
+          , incomingEffectLookup = incomingEffectLookup
         }.Schedule(state.Dependency);
     }
 
@@ -24,15 +30,38 @@ public partial struct CommonMeleeAttackSystem : ISystem {
     [BurstCompile]
     public partial struct Job : IJobEntity {
         public BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
+        public BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
         [BurstCompile]
         public void Execute(
-            in AimedTargetData               target
-          , in DynamicBuffer<StatsBuffer>    stats
-          , EnabledRefRW<MeleeAttackTrigger> attackTrigger
-          , in Entity                        entity) {
+            ScalerPersonalConstructAspect                      personalConstructor
+          , in DynamicBuffer<DamageTriggerSource.EffectBuffer> onHitEffects
+          , in AimedTargetData                                 target
+          , in LocalTransform                                  locTrans
+          , EnabledRefRW<MeleeAttackTrigger>                   attackTrigger
+          , in Entity                                          entity) {
 
-            incomingDmgLookup[target.target].Add(new IncomingDamageBuffer(stats[StatsId.PhysicDamage].value, entity));
+            // deal damage
+            incomingDmgLookup[target.target].Add(
+                new IncomingDamageBuffer(personalConstructor.Stats.PhysicDamage, entity));
+
+            // apply effect
+            if (!onHitEffects.IsEmpty) {
+                var incomingEffects = incomingEffectLookup[target.target];
+
+                var effectPattern = new IncomingEffectBuffer {
+                    id           = new EffectFullId { source = entity }
+                  , senderScaler = personalConstructor.Construct()
+                  , senderPos    = locTrans.Position.Quantizate3()
+                };
+
+                foreach (var effect in onHitEffects) {
+                    var newEffect = effectPattern;
+                    newEffect.id.id          = effect.id;
+                    newEffect.customLifeTick = effect.customLifeTick;
+                    incomingEffects.Add(newEffect);
+                }
+            }
 
             attackTrigger.ValueRW = false;
         }

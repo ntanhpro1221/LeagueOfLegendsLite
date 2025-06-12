@@ -10,11 +10,11 @@ using UnityEngine;
 
 [UpdateInGroup(typeof(PrepareMoveSystemGroup))]
 public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
-    public const  float MAX_DIR_DEGREE_ERROR = 45;
+    public const float MAX_DIR_DEGREE_ERROR = 45;
 
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
     [ReadOnly] private ComponentLookup<TakeDamageSpot> takeDamageSpotLookup;
-    [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+    [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -23,7 +23,7 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
             isReadOnly: true);
         takeDamageSpotLookup = SystemAPI.GetComponentLookup<TakeDamageSpot>(
             isReadOnly: true);
-        statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+        statsLookup = SystemAPI.GetComponentLookup<StatsData>(
             isReadOnly: true);
     }
 
@@ -51,7 +51,7 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
       , typeof(DestinationPoint))]
     public partial struct DirtyJob : IJobEntity {
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] public ComponentLookup<StatsData>      statsLookup;
 
         public void Execute(
             in  LocalTransform   locTrans
@@ -64,8 +64,8 @@ public partial struct GetMoveDataFrom_AutoFollowTargetSystem : ISystem {
             if (!locTransLookup.HasComponent(target.target)) return;
 
             float3 rawTargetPos = locTransLookup[target.target].Position;
-            autoFollow.tmpTargetRadius = statsLookup[target.target][StatsId.UnitRadius].value;
-            autoFollow.tmpYourRange    = statsLookup[entity][StatsId.AttackRange].value;
+            autoFollow.tmpTargetRadius = statsLookup[target.target].data.UnitRadius;
+            autoFollow.tmpYourRange    = statsLookup[entity].data.AttackRange;
             autoFollow.tmpReachableTargetPos = AstarPath.active.GetNearest(
                 math.lerp(
                     rawTargetPos      // Dont need .WithoutY()

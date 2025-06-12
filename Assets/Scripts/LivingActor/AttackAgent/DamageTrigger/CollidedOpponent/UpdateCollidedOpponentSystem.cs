@@ -1,10 +1,8 @@
 ﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.NetCode;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using UnityEngine;
 
 [UpdateInGroup(typeof(PhysicsSystemGroup))]
 [UpdateAfter(typeof(PhysicsSimulationGroup))]
@@ -24,8 +22,7 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         _UpdateCollidedJob.Update(ref state);
-        state.Dependency = 
-            _UpdateCollidedJob.Schedule(
+        state.Dependency = _UpdateCollidedJob.Schedule(
             SystemAPI.GetSingleton<SimulationSingleton>()
           , state.Dependency);
     }
@@ -60,7 +57,7 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
             Entity bob   = triggerEvent.EntityB;
 
             if (!IsOpponent(alice, bob)) return;
-            
+
             TryAppendToCollidedBuffer(alice, bob);
             TryAppendToCollidedBuffer(bob,   alice);
         }
@@ -81,9 +78,9 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
         [BurstCompile]
         private bool IsOpponent(
             in Entity alice
-          , in Entity bob)
-            => _TeamTypeLookup.HasComponent(alice)
-             && _TeamTypeLookup.HasComponent(bob)
-             && _TeamTypeLookup[alice].team != _TeamTypeLookup[bob].team;
+          , in Entity bob) =>
+            _TeamTypeLookup.HasComponent(alice)
+         && _TeamTypeLookup.HasComponent(bob)
+         && _TeamTypeLookup[alice].team != _TeamTypeLookup[bob].team;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using NGDtuanh.Entities.StateMachine;
-using Pathfinding.ECS;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -12,7 +11,7 @@ public static partial class MonsterStateAttack {
     public partial struct Exit : ISystem {
         [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
-        [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
@@ -20,7 +19,7 @@ public static partial class MonsterStateAttack {
                 isReadOnly: true);
             locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(
                 isReadOnly: true);
-            statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+            statsLookup = SystemAPI.GetComponentLookup<StatsData>(
                 isReadOnly: true);
         }
 

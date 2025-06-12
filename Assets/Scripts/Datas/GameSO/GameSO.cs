@@ -35,6 +35,7 @@ public class GameSO : ScriptableObject {
     [SerializeField] private AllMonsterDataSO  _Monster;
     [SerializeField] private AllItemDataSO     _Item;
     [SerializeField] private AllTowerDataSO    _Tower;
+    [SerializeField] private AllEffectDataSO   _Effect;
 
 #endregion
 
@@ -48,6 +49,7 @@ public class GameSO : ScriptableObject {
     public static CovEnumMap<MonsterId, MonsterDataManaged>   Monster               => _CachedInstance._Monster.value;
     public static CovEnumMap<ItemId, ItemDataManaged>         Item                  => _CachedInstance._Item.value;
     public static CovEnumMap<TowerId, TowerDataManaged>       Tower                 => _CachedInstance._Tower.value;
+    public static CovEnumMap<EffectId, EffectData.Managed>    Effect                => _CachedInstance._Effect.value;
 
 #endregion
 }

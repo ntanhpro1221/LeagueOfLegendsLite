@@ -2,7 +2,7 @@
 using NGDtuanh.Utils.Editor;
 using UnityEditor;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public class ElementDatasManager {
         private readonly EnumMapInstanceDrawer Drawer;
         private readonly SerializedProperty    EditorSessionCode;

@@ -131,7 +131,7 @@ public partial struct ApplyBountySystem : ISystem {
         [BurstCompile]
         public void Execute(
             in BountyTriggerData           bountyTriggerData
-          , in DynamicBuffer<BountyBuffer> bounties
+          , in BountyData                  bounties
           , in LocalTransform              locTrans
           , in DynamicBuffer<AssistBuffer> assists
           , in Entity                      entity) {
@@ -139,13 +139,13 @@ public partial struct ApplyBountySystem : ISystem {
             var sourceTeam = teamLookup[source].team == TeamType.Blue ? blueTeam : redTeam;
 
             // DIRECT KILL
-            goldLookup.GetRefRW(source).ValueRW.gold += bounties[BountyId.Gold_Kill].value;
-            expLookup[source].Add((int)bounties[BountyId.Exp_Kill].value);
+            goldLookup.GetRefRW(source).ValueRW.gold += bounties.data.Gold_Kill;
+            expLookup[source].Add((int)bounties.data.Exp_Kill);
 
             // ALL TEAM
             foreach (var teamate in sourceTeam) {
-                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties[BountyId.Gold_Team].value;
-                expLookup[teamate].Add((int)bounties[BountyId.Exp_Team].value);
+                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties.data.Gold_Team;
+                expLookup[teamate].Add((int)bounties.data.Exp_Team);
             }
 
             // ASSIST
@@ -154,10 +154,10 @@ public partial struct ApplyBountySystem : ISystem {
                  || !champLookup.HasComponent(assist.entity))
                     break;
 
-                goldLookup.GetRefRW(assist.entity).ValueRW.gold += bounties[BountyId.Gold_Assist].value;
-                expLookup[assist.entity].Add((int)bounties[BountyId.Exp_Assist].value);
+                goldLookup.GetRefRW(assist.entity).ValueRW.gold += bounties.data.Gold_Assist;
+                expLookup[assist.entity].Add((int)bounties.data.Exp_Assist);
 
-                kdaLookup.GetRefRW(assist.entity).ValueRW.assist += (int)bounties[BountyId.KillScore].value;
+                kdaLookup.GetRefRW(assist.entity).ValueRW.assist += (int)bounties.data.KillScore;
             }
 
             // NEAR
@@ -168,15 +168,15 @@ public partial struct ApplyBountySystem : ISystem {
                       , locTransLookup[teamate].Position))
                     continue;
 
-                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties[BountyId.Gold_Near].value;
-                expLookup[teamate].Add((int)bounties[BountyId.Exp_Near].value);
+                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties.data.Gold_Near;
+                expLookup[teamate].Add((int)bounties.data.Exp_Near);
             }
 
             // CREEP SCORE
-            creepLookup.GetRefRW(source).ValueRW.creepScore += bounties[BountyId.CreepScore].value;
+            creepLookup.GetRefRW(source).ValueRW.creepScore += bounties.data.CreepScore;
 
             // KDA
-            int bountyKill = (int)bounties[BountyId.KillScore].value;
+            int bountyKill = (int)bounties.data.KillScore;
             kdaLookup.GetRefRW(source).ValueRW.kill += bountyKill;
 
             // GLOBAL KDA

@@ -10,7 +10,7 @@ public partial struct InitDynamicManaSystem : ISystem {
         mainQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 Simulate
-              , StatsBuffer
+              , StatsData
             >().WithDisabled<
                 ManaData
             >().Build();
@@ -25,17 +25,17 @@ public partial struct InitDynamicManaSystem : ISystem {
 
     [WithAll(
         typeof(Simulate)
-      , typeof(StatsBuffer))]
+      , typeof(StatsData))]
     [WithDisabled(
         typeof(ManaData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         [BurstCompile]
         public void Execute(
-            in  DynamicBuffer<StatsBuffer> stats
-          , ref ManaData                   mana
-          , EnabledRefRW<ManaData>         manaTrigger) {
-            mana.value          = stats[(int)StatsType.Mana].value;
+            in  StatsData          stats
+          , ref ManaData           mana
+          , EnabledRefRW<ManaData> manaTrigger) {
+            mana.value          = stats.data.Mana;
             manaTrigger.ValueRW = true;
         }
     }

@@ -5,7 +5,7 @@ using NGDtuanh.Collections;
 using NGDtuanh.Utils;
 using UnityEngine;
 
-namespace MyCustomPatterns.Collections.Editor {
+namespace NGDtuanh.Collections.Editor {
     public class EnumMapTypeFinder {
         public readonly Type ThisType;
         public readonly Type KeyType;

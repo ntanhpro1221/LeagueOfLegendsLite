@@ -44,9 +44,9 @@ public partial struct InitChampionSystem : ISystem {
       , typeof(ChampionTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(BountyBuffer)
-      , typeof(StatsBuffer_Raw)
-      , typeof(StatsBuffer_RawPerLevel))]
+        typeof(BountyData)
+      , typeof(StatsData_Raw)
+      , typeof(StatsData_RawPerLevel))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public AllChampionData allChamp;
@@ -63,14 +63,14 @@ public partial struct InitChampionSystem : ISystem {
           , in Entity       entity
 
             // Bounty
-          , ref DynamicBuffer<BountyBuffer> bounties
-          , EnabledRefRW<BountyBuffer>      bountyTrigger
+          , ref BountyData           bounties
+          , EnabledRefRW<BountyData> bountyTrigger
 
             // Raw stats
-          , ref DynamicBuffer<StatsBuffer_Raw>         statsRaw
-          , ref DynamicBuffer<StatsBuffer_RawPerLevel> statsRawPerLevel
-          , EnabledRefRW<StatsBuffer_Raw>              statsRawTrigger
-          , EnabledRefRW<StatsBuffer_RawPerLevel>      statsRawPerLevelTrigger
+          , ref StatsData_Raw                   statsRaw
+          , ref StatsData_RawPerLevel           statsRawPerLevel
+          , EnabledRefRW<StatsData_Raw>         statsRawTrigger
+          , EnabledRefRW<StatsData_RawPerLevel> statsRawPerLevelTrigger
 
             // Position
           , ref LocalTransform  locTrans

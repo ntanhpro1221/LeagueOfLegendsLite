@@ -3,18 +3,33 @@ using Unity.Collections;
 using Unity.Entities;
 
 public partial struct HandleSetNameRequestSystem : ISystem {
+    private EntityQuery mainQuery;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<SetNameRequest>();
+        mainQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                SetNameRequest
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
+        if (mainQuery.IsEmpty) return;
+
         using var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-        foreach (var (setNameRequest, entity) in SystemAPI.Query<RefRO<SetNameRequest>>().WithEntityAccess()) {
-            ecb.SetName(entity, setNameRequest.ValueRO.name);
-            ecb.RemoveComponent<SetNameRequest>(entity);
+        foreach (var (
+            request
+          , requestTrigger
+          , entity
+            ) in SystemAPI
+            .Query<
+                RefRW<SetNameRequest>
+              , EnabledRefRW<SetNameRequest>
+            >().WithEntityAccess()) {
+            ecb.SetName(entity, request.ValueRO.name);
+            requestTrigger.ValueRW = false;
         }
 
         ecb.Playback(state.EntityManager);

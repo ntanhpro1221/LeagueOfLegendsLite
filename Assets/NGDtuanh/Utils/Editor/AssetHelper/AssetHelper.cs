@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEditor;
 
-namespace NGDtuanh.Utils.Editors {
+namespace NGDtuanh.Utils.Editor {
     public static class AssetHelper {
         /// <param name="fileName">File name without extensions</param>
         public static string GetScriptPath(string fileName) {

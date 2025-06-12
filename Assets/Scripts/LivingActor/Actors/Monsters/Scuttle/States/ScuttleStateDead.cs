@@ -1,12 +1,9 @@
 ﻿using NGDtuanh.Entities.StateMachine;
-using Pathfinding;
 using Pathfinding.ECS;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class ScuttleStateDead {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -56,15 +53,14 @@ public static partial class ScuttleStateDead {
             private readonly RefRO<JungleTeamTypeData> _TeamType;
             private readonly RefRO<DeadStateData>      _DeadStateData;
             private readonly RefRW<MovementSettings>   _MoveSetting;
-
-            [ReadOnly] private readonly DynamicBuffer<StatsBuffer> _Stats;
+            private readonly RefRO<StatsData>          _Stats;
 
             public ref          LocalTransform LocalTrans  => ref _LocalTrans.ValueRW;
             public ref          float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
 
-            public float_Q3 MaxHealth    => _Stats[StatsId.Health].value;
+            public float_Q3 MaxHealth    => _Stats.ValueRO.data.Health;
             public void     EnableMove() => _MoveSetting.ValueRW.isStopped = false;
         }
     }

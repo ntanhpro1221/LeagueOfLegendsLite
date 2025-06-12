@@ -14,8 +14,8 @@ public partial struct GetMoveDataFrom_StatsMoveSpeedSystem : ISystem {
     [BurstCompile]
     public partial struct Job : IJobEntity {
         [BurstCompile]
-        public void Execute(ref MoveData moveData, in DynamicBuffer<StatsBuffer> stats) {
-            moveData.moveSpeed = stats[StatsId.MoveSpeed].value;
+        public void Execute(ref MoveData moveData, in StatsData stats) {
+            moveData.moveSpeed = stats.data.MoveSpeed;
         }
     }
 }

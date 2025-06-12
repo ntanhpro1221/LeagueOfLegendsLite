@@ -14,19 +14,19 @@ public partial struct InitAndUpdateStatsSystem : ISystem {
         state.Dependency = new GetRawPerLevelValueJob()
             .ScheduleParallel(state.Dependency);
 
-        state.Dependency = new ApplyBuffJob()
+        state.Dependency = new ApplyStatBuffsJob()
             .ScheduleParallel(state.Dependency);
     }
 
     [WithAll(
         typeof(Simulate)
-      , typeof(StatsBuffer_Raw))]
+      , typeof(StatsData_Raw))]
     [WithDisabled(
-        typeof(StatsBuffer))]
+        typeof(StatsData))]
     [BurstCompile]
     private partial struct EnableStatsJob : IJobEntity {
         [BurstCompile]
-        public void Execute(EnabledRefRW<StatsBuffer> statsTrigger) {
+        public void Execute(EnabledRefRW<StatsData> statsTrigger) {
             statsTrigger.ValueRW = true;
         }
     }
@@ -36,9 +36,9 @@ public partial struct InitAndUpdateStatsSystem : ISystem {
     private partial struct GetRawValueJob : IJobEntity {
         [BurstCompile]
         public void Execute(
-            in  DynamicBuffer<StatsBuffer_Raw> statsRaw
-          , ref DynamicBuffer<StatsBuffer>     stats) {
-            for (int i = 0; i < EnumCount.Stats; ++i) stats[i] = statsRaw[i].value;
+            in  StatsData_Raw statsRaw
+          , ref StatsData     stats) {
+            stats.data = statsRaw.data;
         }
     }
 
@@ -47,22 +47,33 @@ public partial struct InitAndUpdateStatsSystem : ISystem {
     private partial struct GetRawPerLevelValueJob : IJobEntity {
         [BurstCompile]
         public void Execute(
-            in  DynamicBuffer<StatsBuffer_RawPerLevel> statsRawPerLevel
-          , in  LevelData                              level
-          , ref DynamicBuffer<StatsBuffer>             stats) {
-            for (int i = 0; i < EnumCount.Stats; ++i)
-                stats[i] = stats[i].value + statsRawPerLevel[i].value * (level.curLevel - 1);
+            in  StatsData_RawPerLevel statsRawPerLevel
+          , in  LevelData             level
+          , ref StatsData             stats) {
+
+            ref readonly var statsRawPerLevelData = ref statsRawPerLevel.data;
+
+            ref var statsData = ref stats.data;
+
+            foreach (var index in Strum.Stats.Info.Indexes)
+                statsData[index] += statsRawPerLevelData[index] * (level.curLevel - 1);
         }
     }
 
     [WithAll(typeof(Simulate))]
     [BurstCompile]
-    private partial struct ApplyBuffJob : IJobEntity {
+    private partial struct ApplyStatBuffsJob : IJobEntity {
         [BurstCompile]
         public void Execute(
-            in  DynamicBuffer<BuffBuffer>  buffs
-          , ref DynamicBuffer<StatsBuffer> stats) {
-            for (int i = 0; i < EnumCount.Stats; ++i) stats[i] = buffs[i].ApplyTo(stats[i]);
+            ref StatsData          stats
+          , in  StatBuffs.Receiver buffs) {
+
+            ref var statsData = ref stats.data;
+
+            ref readonly var buffsData = ref buffs.buffs;
+
+            foreach (var index in Strum.Stats.Info.Indexes)
+                buffsData[index].ApplyTo(ref statsData.ValueRW(index));
         }
     }
 }

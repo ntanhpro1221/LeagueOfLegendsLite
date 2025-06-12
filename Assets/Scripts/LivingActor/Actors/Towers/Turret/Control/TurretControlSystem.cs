@@ -2,7 +2,6 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateInGroup(typeof(ActorAIControlSystemGroup))]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
@@ -10,7 +9,7 @@ public partial struct TurretControlSystem : ISystem {
     [ReadOnly] private ComponentLookup<Selectable>     selectLookup;
     [ReadOnly] private ComponentLookup<LocalTransform> locTransLookup;
     [ReadOnly] private ComponentLookup<TeamTypeData>   teamLookup;
-    [ReadOnly] private BufferLookup<StatsBuffer>       statsLookup;
+    [ReadOnly] private ComponentLookup<StatsData>      statsLookup;
 
     private EntityQuery champQuery;
 
@@ -22,7 +21,7 @@ public partial struct TurretControlSystem : ISystem {
             isReadOnly: true);
         teamLookup = SystemAPI.GetComponentLookup<TeamTypeData>(
             isReadOnly: true);
-        statsLookup = SystemAPI.GetBufferLookup<StatsBuffer>(
+        statsLookup = SystemAPI.GetComponentLookup<StatsData>(
             isReadOnly: true);
     }
 
@@ -51,12 +50,12 @@ public partial struct TurretControlSystem : ISystem {
         [ReadOnly] public ComponentLookup<Selectable>     selectLookup;
         [ReadOnly] public ComponentLookup<LocalTransform> locTransLookup;
         [ReadOnly] public ComponentLookup<TeamTypeData>   teamLookup;
-        [ReadOnly] public BufferLookup<StatsBuffer>       statsLookup;
+        [ReadOnly] public ComponentLookup<StatsData>      statsLookup;
 
         [BurstCompile]
         public void Execute(
             ref AimedTargetData                       targetData
-          , in  DynamicBuffer<StatsBuffer>            stats
+          , in  StatsData                             stats
           , in  LocalTransform                        locTrans
           , in  TeamTypeData                          team
           , in  DynamicBuffer<DetectedChampionBuffer> detectedChamp
@@ -74,8 +73,8 @@ public partial struct TurretControlSystem : ISystem {
                  && !GameHelpers.IsTargetOutOfRange(
                         locTransLookup[targetData.target].Position
                       , locTrans.Position
-                      , stats[StatsId.AttackRange].value
-                      , statsLookup[targetData.target][StatsId.UnitRadius].value))
+                      , stats.data.AttackRange
+                      , statsLookup[targetData.target].data.UnitRadius))
                     return;
 
                 targetData.target = Entity.Null;

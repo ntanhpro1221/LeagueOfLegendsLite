@@ -2,7 +2,6 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
-using UnityEngine;
 
 /// <summary>
 /// Regenerate health when <see cref="MonsterLeashDisabling"/>> is on. <br/>
@@ -49,13 +48,13 @@ public partial struct MonsterRegenUnleashSystem : ISystem {
 
         [BurstCompile]
         public void Execute(
-            ref MonsterLeashDisabling      unleashData
-          , ref HealthData                 healthData
-          , in  DynamicBuffer<StatsBuffer> stats) {
+            ref MonsterLeashDisabling unleashData
+          , ref HealthData            healthData
+          , in  StatsData             stats) {
             if (unleashData.nextRegenTick.IsNewerThan(curTick)) return;
 
             unleashData.nextRegenTick = newNextRegenTick;
-            float maxHP = stats[StatsId.Health].value;
+            float maxHP = stats.data.Health;
             healthData.value = math.min(maxHP
               , healthData.value + (maxHP * regenPercent / 100f)
             ).Quantizate3();
