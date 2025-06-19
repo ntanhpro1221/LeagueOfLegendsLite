@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &54541357256200684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1800567453027229281}
+  - component: {fileID: 663976199116883886}
+  m_Layer: 0
+  m_Name: PoolEffectBody
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1800567453027229281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54541357256200684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &663976199116883886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54541357256200684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc986a95d684667b284721fb7ec345b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Prefabs:
+    _Keys: 000000000100000002000000
+    _Values:
+    - _Value: {fileID: 2932224193023539012, guid: 69eba9c390bd38ce1809c86825c2407d, type: 3}
+    - _Value: {fileID: 2579624445765852632, guid: b6067bf1dcc5276fe9c4e2dd0e697b56, type: 3}
+    - _Value: {fileID: 8065648282845491334, guid: 14bea19ba3ec999f5ab9af547aca0d79, type: 3}
+    _KeyNames:
+    - Frost
+    - Slow
+    - Burn
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: d620d38e64297cc9f47ce9dbc6d7cc31
+    _KeySynced: 1

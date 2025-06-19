@@ -25,7 +25,7 @@ MonoBehaviour:
           showTimer: 1
         bodyData:
           <enable>k__BackingField: 1
-          bodyId: 0
+          bodyId: 2
         iconData:
           <enable>k__BackingField: 1
           icon: {fileID: 21300000, guid: 2db993d06c2a953beb86dcd750176dac, type: 3}
@@ -141,5 +141,5 @@ MonoBehaviour:
     - Stun
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 8a19755223f61c654c16a3b1874b5040
+      Hash: d620d38e64297cc9f47ce9dbc6d7cc31
     _KeySynced: 1
