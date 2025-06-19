@@ -33,45 +33,48 @@ public static partial class ChampionStateIdle {
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
-                    filter
-                  , health
-                  , input
-                  , aimedTarget
-                  , sharedState
-                  , attackData
-                  , itemRequest)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , HealthAspectRO
-                  , PlayerInputAspectRO
-                  , AimedTargetAspectRO
-                  , ActorSharedStateAspect
-                  , RefRO<AttackStateData>
-                  , RefRO<ItemActiveNewStateRequestData>>()) {
+                filter
+              , common
+              , commonChamp
+              , attackData
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , CommonExitStateAspect_Champion
+              , RefRO<AttackStateData>>()) {
 
                 // DEAD STATE
-                if (health.IsDead) // RUN OUT OF HEALTH
-                    sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // ITEM ANALYZING STATE
-                else if (itemRequest.ValueRO.haveRequest)
-                    sharedState.SetItemActiveAnalyzing();
+                else if (
+                    // Not have disabling activate item CC.
+                    common.CC.Disable.ActiveItem == 0
+                    // Have request.
+                 && commonChamp.ItemRequest.haveRequest)
+                    common.State.SetItemActiveAnalyzing();
 
                 // MOVE STATE
                 else if (
-                    // Have move request
-                    input.MoveEvent_WithData
-                    // Need move to target
-                 || aimedTarget.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup)) // HAVE VELOCITY
-                    sharedState.SetMove();
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0 && (
+                        // Need move to target.
+                        common.Target.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup)
+                        // Have move request.
+                     || commonChamp.Input.MoveEvent_WithData))
+                    common.State.SetMove();
 
                 // ATTACK STATE
                 else if (
-                    // have target
-                    aimedTarget.IsTargetExists(selectLookup)
-                    // attack cool down done
+                    // Not have disabling move CC.
+                    common.CC.Disable.Attack == 0
+                    // Have target.
+                 && common.Target.IsTargetExists(selectLookup)
+                    // Attack cool down done.
                  && attackData.ValueRO.IsCooldownDone(curTick))
-                    sharedState.SetAttack();
+                    common.State.SetAttack();
+
                 else continue;
 
                 filter.MarkExitExecuted();

@@ -34,39 +34,43 @@ public static partial class MinionStateIdle {
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
-                    filter
-                  , health
-                  , aimedTarget
-                  , sharedState
-                  , attackData)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , HealthAspectRO
-                  , AimedTargetAspectRO
-                  , ActorSharedStateAspect
-                  , RefRO<AttackStateData>>()) {
-                bool targetExist  = aimedTarget.IsTargetExists(selectLookup);
+                filter
+              , common
+              , attackData
+              , fixedPath
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , RefRO<AttackStateData>
+              , DynamicBuffer<MinionFixedPathBuffer>>()) {
+                bool targetExist  = common.Target.IsTargetExists(selectLookup);
                 bool attackCDDone = attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
-                if (health.IsDead) // RUN OUT OF HEALTH
-                    sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // MOVE STATE
                 else if (
-                    // Target NOT exist
-                    !targetExist
-                    // Or target is out of range
-                 || aimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup))
-                    sharedState.SetMove();
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0 && (
+                        // Target NOT exist.
+                        !targetExist
+                        // Or target is out of range.
+                     || common.Target.IsTargetOutOfRange(locTransLookup, statsLookup)
+                        // Still have path.
+                     && !fixedPath.IsEmpty))
+                    common.State.SetMove();
 
                 // ATTACK STATE
                 else if (
-                    // have target
-                    targetExist
-                    // attack cool down done
+                    // Not have disabling attack CC.
+                    common.CC.Disable.Attack == 0
+                    // Have target.
+                 && targetExist
+                    // Attack cool down done.
                  && attackCDDone)
-                    sharedState.SetAttack();
+                    common.State.SetAttack();
 
                 else continue;
 

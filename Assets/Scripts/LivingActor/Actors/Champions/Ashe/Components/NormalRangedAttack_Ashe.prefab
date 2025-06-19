@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: effects.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3268283161565418548, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      propertyPath: effects.Array.data[1].id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268283161565418548, guid: e738aa010959bef4488b777c60856c45, type: 3}
+      propertyPath: effects.Array.data[1].customLifeTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6998172064886576760, guid: e738aa010959bef4488b777c60856c45, type: 3}
       propertyPath: prefabId
       value: be58a3d89102f1c4488d52074278441d

@@ -24,13 +24,13 @@ public static partial class MinionStateDead {
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
-                    _
-                  , sharedState
-                  , data)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , ActorSharedStateAspect
-                  , UpdateAspect>()) {
+                _
+              , sharedState
+              , data
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , ActorSharedStateAspect
+              , UpdateAspect>()) {
 
                 if (curTick.IsNewerThan(data.RespawnTick)) // It's tick to DISAPPEAR
                     sharedState.SetIdle();

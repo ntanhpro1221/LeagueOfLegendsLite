@@ -13,6 +13,7 @@ public struct HybridModelData : ICleanupComponentData {
     public UnityObjectRef<RotationController>   rotateRef;
     public UnityObjectRef<IndicatorShower>      indicator;
     public UnityObjectRef<EffectBodyUI>         effectBody;
+    public UnityObjectRef<KnockUpFaker>         knockUpFaker;
 
     public bool                          useFake;
     public UnityObjectRef<RectTransform> fakeTransRef;
@@ -28,6 +29,7 @@ public struct HybridModelData : ICleanupComponentData {
         rotateRef    = model.GetComponentInChildren<RotationController>();
         indicator    = model.GetComponentInChildren<IndicatorShower>();
         effectBody   = model.GetComponentInChildren<EffectBodyUI>();
+        knockUpFaker = model.GetComponentInChildren<KnockUpFaker>();
 
         // Set highlight color
         outlineRef.Value.OutlineColor = isAlly
@@ -41,7 +43,7 @@ public struct HybridModelData : ICleanupComponentData {
         }
     }
 
-    public readonly void UpdateModel(in SyncHybridModelClientSystem.UpdateModelAspect data) {
+    public readonly void UpdateModel(in SyncHybridModelClientSystem.UpdateModelAspect data, in NetworkTick curTick) {
         // POSITION
         if (!data.Pos.IsAnyNaN()) {
             transformRef.Value.position = data.Pos;
@@ -61,6 +63,12 @@ public struct HybridModelData : ICleanupComponentData {
         bool isHighlighting = data.IsHighlighting;
         if (isHighlighting != outlineRef.Value.enabled)
             outlineRef.Value.enabled = isHighlighting;
+
+        // KNOCK UP FAKE
+        if (data.KnockUpTrigger.ValueRO) {
+            data.KnockUpTrigger.ValueRW = false;
+            knockUpFaker.Value.PushKnockUp(curTick, data.KnockUpEnd);
+        }
     }
 
     public readonly void Destroy() {

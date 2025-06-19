@@ -32,35 +32,56 @@ public static partial class ChampionStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            foreach (var (filter, data)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , UpdateAspect>()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
-                bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
+            foreach (var (
+                filter
+              , common
+              , commonChamp
+              , attackData
+              , data
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , CommonExitStateAspect_Champion
+              , RefRO<AttackStateData>
+              , UpdateAspect>()) {
+                // , UpdateAspect>()) {
+                bool haveTargetInRange  = common.Target.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
+                bool attackCooldownDone = attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
-                if (data.health.IsDead) // RUN OUT OF HEALTH
-                    data.sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // ITEM ANALYZING STATE
-                else if (data.itemRequest.ValueRO.haveRequest)
-                    data.sharedState.SetItemActiveAnalyzing();
+                else if (
+                    // Not have disabling activate item CC.
+                    common.CC.Disable.ActiveItem == 0
+                    // Have request.
+                 && commonChamp.ItemRequest.haveRequest)
+                    common.State.SetItemActiveAnalyzing();
 
                 // ATTACK STATE
-                else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
-                    data.sharedState.SetAttack();
+                else if (
+                    // Not have disabling move CC.
+                    common.CC.Disable.Attack == 0
+                    // Have target.
+                 && haveTargetInRange
+                    // Attack cool down done.
+                 && attackCooldownDone)
+                    common.State.SetAttack();
 
                 // IDLE STATE
                 else if (
+                    // Have disabling move CC.
+                    common.CC.Disable.Move != 0
                     // Have cancel request
-                    data.HaveCancelMoveRequest
+                 || commonChamp.Input.Input.GetEvent_Only(PlayerTrigger.Other.CancelMove)
                     // Done move and not have move request from player
-                 || (data.moveRequester.IsMoveDone && !data.input.MoveEvent_WithData)
+                 || (data.MoveRequester.IsMoveDone && !commonChamp.Input.MoveEvent_WithData)
                     // have target within range and so close to target
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                 || (haveTargetInRange && data.aimedTarget.SoCloseToTarget(selectLookup, locTransLookup, statsLookup)))
-                    data.sharedState.SetIdle();
+                 || (haveTargetInRange && common.Target.SoCloseToTarget(selectLookup, locTransLookup, statsLookup)))
+                    common.State.SetIdle();
 
                 else continue;
 
@@ -70,24 +91,16 @@ public static partial class ChampionStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO                       health;
-            public readonly AimedTargetAspectRO                  aimedTarget;
-            public readonly ActorSharedStateAspect               sharedState;
-            public readonly RefRO<AttackStateData>               attackData;
-            public readonly MoveRequesterAspect                  moveRequester;
-            public readonly PlayerInputAspectRO                  input;
-            public readonly RefRO<ItemActiveNewStateRequestData> itemRequest;
+            public readonly MoveRequesterAspect MoveRequester;
 
-            private readonly RefRO<LocalTransform> localTrans;
+            private readonly RefRO<LocalTransform> _LocalTrans;
 
-            [Optional] private readonly EnabledRefRW<AutoFollowTarget> autoFollowTarget;
-
-            public bool HaveCancelMoveRequest => input.Input.GetEvent_Only(PlayerTrigger.Other.CancelMove);
+            [Optional] private readonly EnabledRefRW<AutoFollowTarget> _AutoFollowTarget;
 
             public void StopMove() {
-                moveRequester.SyncFromLocTrans(localTrans.ValueRO);
+                MoveRequester.SyncFromLocTrans(_LocalTrans.ValueRO);
 
-                autoFollowTarget.ValueRW = false;
+                _AutoFollowTarget.ValueRW = false;
             }
         }
     }

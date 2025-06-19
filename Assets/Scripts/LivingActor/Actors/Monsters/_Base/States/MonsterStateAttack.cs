@@ -30,45 +30,51 @@ public static partial class MonsterStateAttack {
             statsLookup.Update(ref state);
 
             foreach (var (
-                    filter
-                  , data)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , UpdateAspect>()) {
-
+                filter
+              , common
+              , data
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , UpdateAspect>()) {
+            
                 // DEAD STATE
-                if (data.Health.IsDead) // Run out of health
-                    data.SharedState.SetDead();
-
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
+            
                 // MOVE STATE
                 else if (
-                    // Target no longer exists or
-                    !data.AimedTarget.IsTargetExists(selectLookup)
-                    // In disable leash state or
-                 || data.IsLeashDisabling
-                 || ( // In tracing target but
-                        // already perform attack
-                        data.AttackData.isAttacked
-                        // and target is out of range now
-                     && data.AimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup)))
-                    data.SharedState.SetMove();
-
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0 && (
+                        // Target no longer exists or
+                        !common.Target.IsTargetExists(selectLookup)
+                        // In disable leash state or
+                     || data.IsLeashDisabling
+                     || ( // In tracing target but
+                            // already perform attack
+                            data.AttackData.isAttacked
+                            // and target is out of range now
+                         && common.Target.IsTargetOutOfRange(locTransLookup, statsLookup))))
+                    common.State.SetMove();
+            
+                // IDLE STATE
+                else if (
+                    // Have disabling attack CC.
+                    common.CC.Disable.Attack != 0)
+                    common.State.SetIdle();
+            
                 else continue;
-
+            
                 filter.MarkExitExecuted();
-
+            
                 // restart attack cooldown if not actually dealt damage yet
                 if (!data.AttackData.isAttacked)
                     data.AttackData.ResetCooldown();
             }
-        }
+        }  
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly ActorSharedStateAspect SharedState;
-            public readonly HealthAspectRO         Health;
-            public readonly AimedTargetAspectRO    AimedTarget;
-
-            private readonly RefRW<AttackStateData>  _AttackData;
+            private readonly RefRW<AttackStateData> _AttackData;
 
             [Optional] private readonly EnabledRefRO<MonsterLeashDisabling> _UnleashTrigger;
 
@@ -125,8 +131,8 @@ public static partial class MonsterStateAttack {
         public void OnUpdate(ref SystemState state) {
             locTransLookup.Update(ref state);
 
-            var curTick       = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-            var tickRate      = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
+            var curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+            var tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate;
 
             // DO MELEE ATTACK
             foreach (var (_, attackData, attackTrigger) in SystemAPI
@@ -172,10 +178,11 @@ public static partial class MonsterStateAttack {
                   , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                rotationData.ValueRW.RotateTo((
-                    locTransLookup[target.Target].Position
-                  - locTrans.ValueRO.Position
-                ).Quantizate3().xz);
+                if (locTransLookup.EntityExists(target.Target))
+                    rotationData.ValueRW.RotateTo((
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position
+                    ).Quantizate3().xz);
         }
     }
 }

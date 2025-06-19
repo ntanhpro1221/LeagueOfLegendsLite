@@ -7,6 +7,18 @@ public struct HybridModelInitRequest : IComponentData {
     public UnityObjectRef<GameObject> prefabRef;
 }
 
+/// <summary>
+/// This is not <see cref="GhostPrefabType.Client"/> because we query it in <see cref="HandleEffectIOSystem"/>
+/// </summary>
+public struct KnockUpFakeTriggerData : IComponentData {
+    public NetworkTick endAtTick;
+}
+
+/// <summary>
+/// <inheritdoc cref="KnockUpFakeTriggerData"/>
+/// </summary>
+public struct KnockUpFakeTrigger : IComponentData, IEnableableComponent { }
+
 [RequireComponent(
     typeof(SharedAnimAuthoring)
   , typeof(HighlightableAuthoring)
@@ -16,12 +28,13 @@ public struct HybridModelInitRequest : IComponentData {
 public class HybridModelInitAuthoring : MonoBehaviour {
     public GameObject modelPrefab;
 
-    private class Baker : Baker<HybridModelInitAuthoring> {
+    private class Baker : ExtendBaker<HybridModelInitAuthoring> {
         public override void Bake(HybridModelInitAuthoring authoring) {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new HybridModelInitRequest {
-                prefabRef = authoring.modelPrefab
-            });
+            GetDynamicEntity(out var entity);
+
+            AddComponent(entity, new HybridModelInitRequest { prefabRef = authoring.modelPrefab });
+            AddComponent<KnockUpFakeTriggerData>(entity);
+            AddComponentDisabled<KnockUpFakeTrigger>(entity);
         }
     }
 }

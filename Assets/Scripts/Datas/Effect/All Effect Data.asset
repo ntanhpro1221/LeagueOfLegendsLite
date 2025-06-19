@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: All Effect Data
   m_EditorClassIdentifier: 
   value:
-    _Keys: 0000000001000000
+    _Keys: 000000000100000002000000
     _Values:
     - _Value:
         name: Frost
@@ -62,7 +62,7 @@ MonoBehaviour:
           <enable>k__BackingField: 0
           flags:
             Move: 1
-            Attack: 1
+            Attack: 0
             ActiveItem: 0
         ccControl:
           <enable>k__BackingField: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
           <enable>k__BackingField: 1
           lifeTime:
             origin:
-              value: 10000
+              value: 4000
             scalers: []
     - _Value:
         name: 
@@ -136,10 +136,69 @@ MonoBehaviour:
               stat: 0
               ratio:
                 value: 0
+    - _Value:
+        name: Knock Up
+        barData:
+          <enable>k__BackingField: 0
+          avatar: {fileID: 0}
+          outlineColor: {r: 0, g: 0, b: 0, a: 0}
+          showStack: 1
+          showTimer: 1
+        bodyData:
+          <enable>k__BackingField: 0
+          bodyId: 0
+        iconData:
+          <enable>k__BackingField: 0
+          icon: {fileID: 0}
+        description: 
+        stackingBehaviour:
+          maxStack: 1
+          createNewInstance: 0
+          resetTimer: 1
+          increaseStackCount: 0
+          stackAffectPower: 0
+          useStackForLifeTime: 0
+        damageOverTime:
+          <enable>k__BackingField: 0
+          damage:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+          periodTime: 0
+        statBuffs:
+          <enable>k__BackingField: 0
+          buffs:
+          - applyType: 0
+            value:
+              origin:
+                value: 0
+              scalers: []
+            statsType: 0
+        ccDisable:
+          <enable>k__BackingField: 1
+          flags:
+            Move: 1
+            Attack: 1
+            ActiveItem: 1
+        ccControl:
+          <enable>k__BackingField: 0
+          flag: 2
+        fixedLife:
+          <enable>k__BackingField: 0
+          lifeTime:
+            origin:
+              value: 2000
+            scalers: []
     _KeyNames:
     - Frost
     - Stun
+    - KnockUp
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d620d38e64297cc9f47ce9dbc6d7cc31
+      Hash: f5a2fd7b638f38293da4a99fad576b8e
     _KeySynced: 1

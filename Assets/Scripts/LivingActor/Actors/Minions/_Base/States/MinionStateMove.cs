@@ -36,30 +36,46 @@ public static partial class MinionStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            foreach (var (filter, data, entity)
-                in SystemAPI.Query<
-                        StateFilterAspect
-                      , UpdateAspect>()
-                    .WithEntityAccess()) {
-                bool haveTargetInRange  = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
-                bool attackCooldownDone = data.attackData.ValueRO.IsCooldownDone(curTick);
+            foreach (var (
+                filter
+              , common
+              , attackData
+              , data
+              , entity
+                ) in SystemAPI
+                .Query<
+                    StateFilterAspect
+                  , CommonExitStateAspect
+                  , RefRO<AttackStateData>
+                  , UpdateAspect
+                >().WithEntityAccess()) {
+                bool haveTargetInRange  = common.Target.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
+                bool attackCooldownDone = attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
-                if (data.health.IsDead) // RUN OUT OF HEALTH
-                    data.sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // ATTACK STATE
-                else if (haveTargetInRange && attackCooldownDone) // have target within range and cooldown done
-                    data.sharedState.SetAttack();
+                else if (
+                    // Not have disabling move CC.
+                    common.CC.Disable.Attack == 0
+                    // Have target within range.
+                 && haveTargetInRange 
+                    // Cooldown done.
+                 && attackCooldownDone) // have target within range and cooldown done
+                    common.State.SetAttack();
 
                 // IDLE STATE
                 else if (
+                    // Have disabling move CC.
+                    common.CC.Disable.Move != 0
                     // Don't have path left
-                    data.PathBuffer.IsEmpty
+                 || data.PathBuffer.IsEmpty
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCooldownDone))
-                    data.sharedState.SetIdle();
+                    common.State.SetIdle();
 
                 else continue;
 
@@ -69,21 +85,17 @@ public static partial class MinionStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO         health;
-            public readonly AimedTargetAspectRO    aimedTarget;
-            public readonly ActorSharedStateAspect sharedState;
-            public readonly RefRO<AttackStateData> attackData;
-            public readonly RefRO<LocalTransform>  locTrans;
-            public readonly FixablePosSetterAspect fixSetter;
+            private readonly RefRO<LocalTransform>  _LocTrans;
+            private readonly FixablePosSetterAspect _FixSetter;
 
-            [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> autoFollow;
+            [Optional] private readonly EnabledRefRW<AutoFollowTarget_FollowerEntity> _AutoFollow;
 
             [ReadOnly] public readonly DynamicBuffer<MinionFixedPathBuffer> PathBuffer;
 
             public void StopMove(in Entity entity) {
-                fixSetter.FixAt(locTrans.ValueRO.Position);
+                _FixSetter.FixAt(_LocTrans.ValueRO.Position);
 
-                autoFollow.ValueRW = false;
+                _AutoFollow.ValueRW = false;
             }
         }
     }

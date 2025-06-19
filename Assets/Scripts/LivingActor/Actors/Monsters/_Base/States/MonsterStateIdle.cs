@@ -34,45 +34,51 @@ public static partial class MonsterStateIdle {
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
-                    filter
-                  , data)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , UpdateAspect>()) {
-                bool targetExist  = data.AimedTarget.IsTargetExists(selectLookup);
+                filter
+              , common
+              , data
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , UpdateAspect>()) {
+                bool targetExist  = common.Target.IsTargetExists(selectLookup);
                 bool attackCDDone = data.AttackData.IsCooldownDone(curTick);
                 bool targetOutOfRange = targetExist
-                    ? data.AimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup)
+                    ? common.Target.IsTargetOutOfRange(locTransLookup, statsLookup)
                     : true;
 
                 // DEAD STATE
-                if (data.Health.IsDead) // RUN OUT OF HEALTH
-                    data.SharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // MOVE STATE
                 else if (
-                    // In disabling leash state or
-                    data.IsLeashDisabling
-                 || ( // In Tracing target
-                        // Exist target
-                        targetExist
-                        // Leashing target
-                     && data.IsLeashing
-                        // Target is out of range
-                     && targetOutOfRange))
-                    data.SharedState.SetMove();
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0 && (
+                        // In disabling leash state or
+                        data.IsLeashDisabling
+                     || ( // In Tracing target
+                            // Exist target
+                            targetExist
+                            // Leashing target
+                         && data.IsLeashing
+                            // Target is out of range
+                         && targetOutOfRange)))
+                    common.State.SetMove();
 
                 // ATTACK STATE
                 else if (
+                    // Not have disabling attack CC.
+                    common.CC.Disable.Attack == 0
                     // Exist target
-                    targetExist
+                 && targetExist
                     // Leashing target
                  && data.IsLeashing
                     // Target in range
                  && !targetOutOfRange
                     // Attack cool down done
                  && attackCDDone)
-                    data.SharedState.SetAttack();
+                    common.State.SetAttack();
 
                 else continue;
 
@@ -81,10 +87,6 @@ public static partial class MonsterStateIdle {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO         Health;
-            public readonly ActorSharedStateAspect SharedState;
-            public readonly AimedTargetAspectRO    AimedTarget;
-
             private readonly RefRO<AttackStateData> _AttackData;
 
             [Optional] private readonly EnabledRefRO<MonsterLeashAnchor>    _LeashTrigger;

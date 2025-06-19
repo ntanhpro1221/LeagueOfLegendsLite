@@ -8,6 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(DisablableUIRoot))]
 public class ItemUI : MonoBehaviour {
     [SerializeField] private Image _MainImage;
+    [SerializeField] private Image _BlockImage;
 
     private DisablableUIRoot _DisablableUI;
 
@@ -46,7 +47,8 @@ public class ItemUI : MonoBehaviour {
     private void UpdateInteractable() {
         if (_ForceOffInteractable
          || _IsInCooldown
-         || _IsInDead)
+         || _IsInDead
+         || _IsBlocked)
             DisablableUI.DisableAll();
         else DisablableUI.EnableAll();
     }
@@ -56,13 +58,17 @@ public class ItemUI : MonoBehaviour {
         _CooldownText.gameObject.SetActive(_IsInCooldown);
     }
 
+    private void UpdateBlockVisible() {
+        _BlockImage.enabled = _IsBlocked;
+    }
+
     private bool _ForceOffInteractable;
 
     public bool ForceOffInteractable {
         get => _ForceOffInteractable;
         set {
             _ForceOffInteractable = value;
-            
+
             UpdateInteractable();
         }
     }
@@ -86,6 +92,18 @@ public class ItemUI : MonoBehaviour {
         private set {
             _IsInDead = value;
 
+            UpdateInteractable();
+        }
+    }
+
+    private bool _IsBlocked;
+
+    public bool IsBlocked {
+        get => _IsBlocked;
+        private set {
+            _IsBlocked = value;
+
+            UpdateBlockVisible();
             UpdateInteractable();
         }
     }
@@ -119,6 +137,14 @@ public class ItemUI : MonoBehaviour {
     public void StartDead() => IsInDead = true;
 
     public void DoneDead() => IsInDead = false;
+
+#endregion
+
+#region BLOCK
+
+    public void StartBlock() => IsBlocked = true;
+
+    public void DoneBlock() => IsBlocked = false;
 
 #endregion
 

@@ -19,6 +19,7 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
           , healthBarUpdateGenerator
           , deadTrigger
           , gold
+          , cc
             ) in SystemAPI
             .Query<
                 EnabledRefRO<DeadState>
@@ -26,12 +27,15 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
               , HealthBarUpdateAspect
               , DeadTriggerForUIData
               , RefRO<GoldData>
+              , CCAspectRO
             >().WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
             >().WithNone<
                 DummyTag
-            >().WithPresent<DeadState>()) {
+            >().WithPresent<
+                DeadState
+            >()) {
             // STATS
             playerHUD.Stats.Update(healthBarUpdateGenerator.Stats);
             playerHUD.Stats.UpdateCDReduce(333);
@@ -51,6 +55,13 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
 
             // EXP TOOLTIP
             playerHUD.UpdateExp(healthBarUpdateGenerator.Level, requireExp);
+            
+            // BLOCK ACTIVABLE ITEM
+            var blockItemsNow = cc.Disable.ActiveItem != 0;
+            if (playerHUD.ActivableItems.BlockedAllItems != blockItemsNow) {
+                if (blockItemsNow) playerHUD.ActivableItems.StartBlockAllItems();
+                else playerHUD.ActivableItems.DoneBlockAllItems();
+            }
         }
     }
 }

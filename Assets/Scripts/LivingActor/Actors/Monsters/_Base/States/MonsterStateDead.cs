@@ -22,15 +22,15 @@ public static partial class MonsterStateDead {
             ref var initTrans = ref SystemAPI.GetSingleton<InitTransformData>().Monster.Value;
 
             foreach (var (
-                    filter
-                  , sharedState
-                  , data
-                  , select_highlight_healthBar)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , ActorSharedStateAspect
-                  , UpdateAspect
-                  , Select_Highlight_HealthBarAspect>()) {
+                filter
+              , sharedState
+              , data
+              , select_highlight_healthBar
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , ActorSharedStateAspect
+              , UpdateAspect
+              , Select_Highlight_HealthBarAspect>()) {
 
                 // IDLE STATE
                 if (data.RespawnTick != NetworkTick.Invalid  // Not waiting for all camp dead

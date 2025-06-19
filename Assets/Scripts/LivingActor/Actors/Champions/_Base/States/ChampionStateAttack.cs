@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
-using UnityEngine;
 
 public static partial class ChampionStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]
@@ -30,41 +29,46 @@ public static partial class ChampionStateAttack {
             statsLookup.Update(ref state);
 
             foreach (var (
-                    filter
-                  , sharedState
-                  , health
-                  , aimedTarget
-                  , attackData
-                  , input
-                  , itemRequest)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , ActorSharedStateAspect
-                  , HealthAspectRO
-                  , AimedTargetAspectRO
-                  , RefRW<AttackStateData>
-                  , PlayerInputAspectRO
-                  , RefRO<ItemActiveNewStateRequestData>>()) {
+                filter
+              , common
+              , commonChamp
+              , attackData
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , CommonExitStateAspect_Champion
+              , RefRW<AttackStateData>>()) {
 
                 // DEAD STATE
-                if (health.IsDead) // Run out of health
-                    sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // ITEM ANALYZING STATE
-                else if (itemRequest.ValueRO.haveRequest)
-                    sharedState.SetItemActiveAnalyzing();
+                else if (
+                    // Not have disabling activate item CC.
+                    common.CC.Disable.ActiveItem == 0
+                    // Have request.
+                 && commonChamp.ItemRequest.haveRequest)
+                    common.State.SetItemActiveAnalyzing();
 
                 // MOVE STATE
                 else if (
-                    // Need move to target and already perform attack yet
-                    (attackData.ValueRO.isAttacked && aimedTarget.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup))
-                    // Have move request
-                 || input.MoveEvent_WithData)
-                    sharedState.SetMove();
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0 && (
+                        // Need move to target and already perform attack yet.
+                        (attackData.ValueRO.isAttacked && common.Target.NeedMoveToTarget(selectLookup, locTransLookup, statsLookup))
+                        // Have move request.
+                     || commonChamp.Input.MoveEvent_WithData))
+                    common.State.SetMove();
 
                 // IDLE STATE
-                else if (!aimedTarget.IsTargetExists(selectLookup)) // Lost target
-                    sharedState.SetIdle();
+                else if (
+                    // Have disabling attack CC.
+                    common.CC.Disable.Attack != 0
+                    // Lost target.
+                 || !common.Target.IsTargetExists(selectLookup))
+                    common.State.SetIdle();
+
                 else continue;
 
                 filter.MarkExitExecuted();
@@ -168,10 +172,11 @@ public static partial class ChampionStateAttack {
                   , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                rotationData.ValueRW.RotateTo((
-                    locTransLookup[target.Target].Position
-                  - locTrans.ValueRO.Position
-                ).Quantizate3().xz);
+                if (locTransLookup.EntityExists(target.Target))
+                    rotationData.ValueRW.RotateTo((
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position
+                    ).Quantizate3().xz);
         }
     }
 }

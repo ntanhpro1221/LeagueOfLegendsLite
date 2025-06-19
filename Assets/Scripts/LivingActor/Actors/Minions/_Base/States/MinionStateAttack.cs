@@ -30,31 +30,36 @@ public static partial class MinionStateAttack {
             statsLookup.Update(ref state);
 
             foreach (var (
-                    filter
-                  , sharedState
-                  , health
-                  , aimedTarget
-                  , attackData)
-                in SystemAPI.Query<
-                    StateFilterAspect
-                  , ActorSharedStateAspect
-                  , HealthAspectRO
-                  , AimedTargetAspectRO
-                  , RefRW<AttackStateData>>()) {
+                filter
+              , common
+              , attackData
+                ) in SystemAPI.Query<
+                StateFilterAspect
+              , CommonExitStateAspect
+              , RefRW<AttackStateData>>()) {
                 // DEAD STATE
-                if (health.IsDead) // Run out of health
-                    sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // MOVE STATE
                 else if (
-                    // Target no longer exists
-                    !aimedTarget.IsTargetExists(selectLookup)
-                 || ( // have target but
-                        // already perform attack
-                        attackData.ValueRO.isAttacked
-                        // and target is out of range now
-                     && aimedTarget.IsTargetOutOfRange(locTransLookup, statsLookup)))
-                    sharedState.SetMove();
+                    // Not have disabling move CC.
+                    common.CC.Disable.Move == 0
+                 && (
+                        // Target no longer exists
+                        !common.Target.IsTargetExists(selectLookup)
+                     || ( // Have target but.
+                            // Already perform attack.
+                            attackData.ValueRO.isAttacked
+                            // And target is out of range now.
+                         && common.Target.IsTargetOutOfRange(locTransLookup, statsLookup))))
+                    common.State.SetMove();
+
+                // IDLE STATE
+                else if (
+                    // Have disabling attack CC.
+                    common.CC.Disable.Attack != 0)
+                    common.State.SetIdle();
 
                 else continue;
 
@@ -161,10 +166,11 @@ public static partial class MinionStateAttack {
                   , RefRW<RotationData>
                   , AimedTargetAspectRO
                   , RefRO<LocalTransform>>())
-                rotationData.ValueRW.RotateTo((
-                    locTransLookup[target.Target].Position
-                  - locTrans.ValueRO.Position
-                ).Quantizate3().xz);
+                if (locTransLookup.EntityExists(target.Target))
+                    rotationData.ValueRW.RotateTo((
+                        locTransLookup[target.Target].Position
+                      - locTrans.ValueRO.Position
+                    ).Quantizate3().xz);
         }
     }
 }

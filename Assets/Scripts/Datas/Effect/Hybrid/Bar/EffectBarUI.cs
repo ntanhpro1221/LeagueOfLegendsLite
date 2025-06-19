@@ -30,7 +30,8 @@ public class EffectBarUI : MonoBehaviour {
 
     public void UpdateAllUI(in NetworkTick curTick, in DynamicBuffer<EffectBuffer> effectBuffer) {
         foreach (var effect in effectBuffer)
-            _Items[effect.id].UpdateUI(curTick, effect);
+            if (_Items.TryGetValue(effect.id, out var item))
+                item.UpdateUI(curTick, effect);
     }
 
     public void FixAllUI(in DynamicBuffer<EffectBuffer> effectBuffer, in ComponentLookup<SetNameRequest> nameLookup) {

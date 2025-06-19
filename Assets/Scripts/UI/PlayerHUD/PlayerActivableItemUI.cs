@@ -1,4 +1,3 @@
-using System;
 using NGDtuanh.Collections;
 using UnityEngine;
 
@@ -27,6 +26,8 @@ public class PlayerActivableItemUI : MonoBehaviour {
     }
 
     private PlayerTrigger.Item? _CurUpdateSkillRequest;
+
+    public bool BlockedAllItems { get; private set; }
 
     private void Awake() {
         for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey) {
@@ -63,5 +64,17 @@ public class PlayerActivableItemUI : MonoBehaviour {
     public void DoneDeadAllItems() {
         for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
             Items[key].DoneDead();
+    }
+
+    public void StartBlockAllItems() {
+        BlockedAllItems = true;
+        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
+            Items[key].StartBlock();
+    }
+
+    public void DoneBlockAllItems() {
+        BlockedAllItems = false;
+        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
+            Items[key].DoneBlock();
     }
 }

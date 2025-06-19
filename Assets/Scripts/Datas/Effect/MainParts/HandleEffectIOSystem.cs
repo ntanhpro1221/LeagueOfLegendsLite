@@ -36,6 +36,7 @@ public partial struct HandleEffectIOSystem : ISystem {
           , ref CC.Control.Receiver                 ccControlReceiver
           , ref StatBuffs.Receiver                  statBuffReceiver
           , in  LocalTransform                      locTrans
+          , KnockUpFakeAspect                       knockUp
           , ScalerPersonalConstructAspect           personalConstructor) {
             var receiverData = personalConstructor.Construct();
 
@@ -44,6 +45,10 @@ public partial struct HandleEffectIOSystem : ISystem {
                 ref var newEffectRaw = ref allEffects.Effects[incomingEffect.id.id];
 
                 var finalData = new EffectBuffer(ref newEffectRaw, incomingEffect, receiverData, curTick);
+
+                // Handle Knock up fake separately from the other effect parts
+                if (incomingEffect.id.id == EffectId.KnockUp)
+                    knockUp.PushKnockUp(finalData.endAtTick);
 
                 // Handle CC control effect separately from the other effect parts
                 ccControlReceiver.TryAdd(

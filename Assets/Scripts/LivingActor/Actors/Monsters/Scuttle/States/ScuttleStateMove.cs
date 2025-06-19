@@ -11,15 +11,27 @@ public static partial class ScuttleStateMove {
     public partial struct Exit : ISystem {
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            foreach (var (filter, data, entity)
-                in SystemAPI.Query<
-                        StateFilterAspect
-                      , UpdateAspect>()
-                    .WithEntityAccess()) {
+            foreach (var (
+                filter
+              , cc
+              , data
+              , entity
+                ) in SystemAPI
+                .Query<
+                    StateFilterAspect
+                  , CCAspectRO
+                  , UpdateAspect
+                >().WithEntityAccess()) {
 
                 // DEAD STATE
                 if (data.health.IsDead) // RUN OUT OF HEALTH
                     data.sharedState.SetDead();
+
+                // IDLE STATE
+                else if (
+                    // Have disabling move CC.
+                    cc.Disable.Move != 0)
+                    data.sharedState.SetIdle();
 
                 else continue;
 

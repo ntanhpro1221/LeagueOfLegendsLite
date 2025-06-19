@@ -36,39 +36,48 @@ public static partial class MonsterStateMove {
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
-            foreach (var (filter, data, entity)
-                in SystemAPI.Query<
-                        StateFilterAspect
-                      , UpdateAspect>()
-                    .WithEntityAccess()) {
-                bool haveTargetInRange = data.aimedTarget.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
+            foreach (var (
+                filter
+              , common
+              , data
+              , entity
+                ) in SystemAPI.Query<
+                    StateFilterAspect
+                  , CommonExitStateAspect
+                  , UpdateAspect>()
+                .WithEntityAccess()) {
+                bool haveTargetInRange = common.Target.HaveTargetInRange(selectLookup, locTransLookup, statsLookup);
                 bool attackCDDone      = data.attackData.ValueRO.IsCooldownDone(curTick);
 
                 // DEAD STATE
-                if (data.health.IsDead) // RUN OUT OF HEALTH
-                    data.sharedState.SetDead();
+                if (common.Health.IsDead) // Run out of health.
+                    common.State.SetDead();
 
                 // ATTACK STATE
                 else if (
+                    // Not have disabling attack CC.
+                    common.CC.Disable.Attack == 0
                     // Not in leash disabling state
-                    !data.IsLeashDisabling
+                 && !data.IsLeashDisabling
                     // Have target in range
                  && haveTargetInRange
                     // Attack CD done
                  && attackCDDone)
-                    data.sharedState.SetAttack();
+                    common.State.SetAttack();
 
                 // IDLE STATE
                 else if (
+                    // Have disabling move CC.
+                    common.CC.Disable.Move != 0
                     // Stay in leash anchor and not tracing anyone
-                    data is {
+                 || data is {
                         IsLeashDisabling: false
                       , IsLeashing      : false
                     }
                     // have target within range but cooldown not done
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                  || (haveTargetInRange && !attackCDDone))
-                    data.sharedState.SetIdle();
+                    common.State.SetIdle();
 
                 else continue;
 
@@ -78,9 +87,6 @@ public static partial class MonsterStateMove {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            public readonly HealthAspectRO         health;
-            public readonly AimedTargetAspectRO    aimedTarget;
-            public readonly ActorSharedStateAspect sharedState;
             public readonly RefRO<AttackStateData> attackData;
             public readonly RefRO<LocalTransform>  locTrans;
             public readonly FixablePosSetterAspect fixSetter;
