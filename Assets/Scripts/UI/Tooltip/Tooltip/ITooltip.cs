@@ -3,13 +3,31 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public abstract class ITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-    protected ITooltipWindow Window { get; private set; }
-    private   RectTransform  _WindowTrans;
-    private   Vector2Control _MousePos;
-    private   bool           _IsHovering;
-    private   bool           _IsShowing;
-    private   float          _CurThreshold;
+public abstract class ITooltip<TWindow> :
+    MonoBehaviour
+  , IPointerEnterHandler
+  , IPointerExitHandler
+    where TWindow : ITooltipWindow {
+    private bool    _HaveWindow;
+    private TWindow _Window;
+
+    public TWindow Window {
+        get {
+            if (!_HaveWindow) {
+                _HaveWindow = true;
+                _Window     = TooltipWindowHolder.Instance.GetWindow<TWindow>();
+                _Window.gameObject.SetActive(false);
+            }
+
+            return _Window;
+        }
+    }
+
+    private RectTransform  _WindowTrans;
+    private Vector2Control _MousePos;
+    private bool           _IsHovering;
+    private bool           _IsShowing;
+    private float          _CurThreshold;
 
     [Header("THRESHOLD")]
     [SerializeField] private float _ShowThreshold;
@@ -19,12 +37,15 @@ public abstract class ITooltip : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [Header("WINDOW ANCHOR")]
     [SerializeField] private AnchorType _AnchorType;
 
-    [SerializeField] private Vector2 _MouseOffset;
+    [Tooltip("Dynamic: offset with mouse | Static: offset with root")]
+    [SerializeField] private Vector2 _Offset;
 
     private void Awake() {
-        Window       = GetComponentInChildren<ITooltipWindow>(true);
-        _WindowTrans = Window.transform as RectTransform;
+        _WindowTrans = (RectTransform)Window.transform;
         _MousePos    = Mouse.current.position;
+
+        if (_AnchorType == AnchorType.Static) _WindowTrans.SetParent(transform);
+        _WindowTrans.anchoredPosition = _Offset;
     }
 
     private void Update() {
@@ -38,10 +59,10 @@ public abstract class ITooltip : MonoBehaviour, IPointerEnterHandler, IPointerEx
         } else ResetThreshold();
 
         if (_IsShowing && _AnchorType == AnchorType.FollowMouse) {
-            _WindowTrans.anchoredPosition -= _MouseOffset;
+            _WindowTrans.anchoredPosition -= _Offset;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _WindowTrans, _MousePos.value, null, out var targetPos);
-            _WindowTrans.anchoredPosition += targetPos + _MouseOffset;
+            _WindowTrans.anchoredPosition += targetPos + _Offset;
         }
     }
 
@@ -49,6 +70,12 @@ public abstract class ITooltip : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _CurThreshold = _IsShowing
             ? _HideThreshold
             : _ShowThreshold;
+    }
+
+    private void OnDisable() {
+        // Force hide window 
+        Window.gameObject.SetActive(_IsHovering = _IsShowing = false);
+        ResetThreshold();
     }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {

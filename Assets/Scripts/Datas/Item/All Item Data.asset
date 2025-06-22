@@ -13,46 +13,130 @@ MonoBehaviour:
   m_Name: All Item Data
   m_EditorClassIdentifier: 
   value:
-    _Keys: 000000000100000002000000
+    _Keys: 000000000100000002000000030000000400000005000000
     _Values:
     - _Value:
-        id: 0
-        name: "Gi\xE0y Th\u01B0\u1EDDng"
-        description: "T\u0103ng m\u1ED9t \xEDt t\u1ED1c \u0111\u1ED9 di chuy\u1EC3n"
-        avatar: {fileID: 21300000, guid: d6152a0baf99b6840a43113cabb0f113, type: 3}
+        common: {fileID: 11400000, guid: 149efddefcc37a47e935b41e126eba44, type: 2}
         buffs:
-        - durationType: 1
-          duration: 0
-          targetStat: 2
-          updateType: 0
-          value: 25
+        - applyType: 0
+          value:
+            value: 150000
+          statId: 0
+        recipe: 
+        indicator: {fileID: 0}
+        lifeTime: 0
+        settings:
+          triggerPoint: 0
+          followActivateDir: 0
+          cost:
+            value: 400000
+          sell:
+            value: 280000
     - _Value:
-        id: 0
-        name: "Gay B\xF9ng N\u1ED5"
-        description: "T\u0103ng kh\xE1 nhi\u1EC1u s\u1EE9c m\u1EA1nh ph\xE9p thu\u1EADt"
-        avatar: {fileID: 21300000, guid: 4151b0a331fac754bb6b01d98085197d, type: 3}
+        common: {fileID: 11400000, guid: bbe77be3f069132bf8e8773da7ded001, type: 2}
         buffs:
-        - durationType: 1
-          duration: 0
-          targetStat: 10
-          updateType: 0
-          value: 45
+        - applyType: 0
+          value:
+            value: 20000
+          statId: 10
+        recipe: 
+        indicator: {fileID: 0}
+        lifeTime: 0
+        settings:
+          triggerPoint: 0
+          followActivateDir: 0
+          cost:
+            value: 400000
+          sell:
+            value: 280000
     - _Value:
-        id: 0
-        name: "Ki\u1EBFm D\xE0i"
-        description: "T\u0103ng m\u1ED9t \xEDt s\u1EE9c m\u1EA1nh c\xF4ng k\xEDch"
-        avatar: {fileID: 21300000, guid: 8172044d6a371b64ab20e268462cd539, type: 3}
+        common: {fileID: 11400000, guid: 1d89e7fa555e0f061b951380e85b47b0, type: 2}
         buffs:
-        - durationType: 1
-          duration: 0
-          targetStat: 9
-          updateType: 0
-          value: 10
+        - applyType: 0
+          value:
+            value: 5000
+          statId: 13
+        recipe: 
+        indicator: {fileID: 0}
+        lifeTime: 0
+        settings:
+          triggerPoint: 0
+          followActivateDir: 0
+          cost:
+            value: 250000
+          sell:
+            value: 175000
+    - _Value:
+        common: {fileID: 11400000, guid: aa69fe74327f2eed18dd8314635f1c62, type: 2}
+        buffs:
+        - applyType: 0
+          value:
+            value: 45000
+          statId: 10
+        recipe: 0100000001000000
+        indicator: {fileID: 0}
+        lifeTime: 0
+        settings:
+          triggerPoint: 0
+          followActivateDir: 0
+          cost:
+            value: 1100000
+          sell:
+            value: 770000
+    - _Value:
+        common: {fileID: 11400000, guid: bde95ee04870aa38e9929f87124674be, type: 2}
+        buffs:
+        - applyType: 0
+          value:
+            value: 25000
+          statId: 10
+        - applyType: 0
+          value:
+            value: 10000
+          statId: 13
+        recipe: 0100000002000000
+        indicator: {fileID: 0}
+        lifeTime: 0
+        settings:
+          triggerPoint: 0
+          followActivateDir: 0
+          cost:
+            value: 850000
+          sell:
+            value: 595000
+    - _Value:
+        common: {fileID: 11400000, guid: 625689798c964fca9bec4132359b3fe9, type: 2}
+        buffs:
+        - applyType: 0
+          value:
+            value: 70000
+          statId: 10
+        - applyType: 0
+          value:
+            value: 20000
+          statId: 13
+        - applyType: 0
+          value:
+            value: 300000
+          statId: 0
+        recipe: 030000000400000000000000
+        indicator: {fileID: 11400000, guid: 5c8e9bba750579f3ea3851f6c30cbabf, type: 2}
+        lifeTime: 0.1
+        settings:
+          triggerPoint: 1
+          followActivateDir: 1
+          cost:
+            value: 2650000
+          sell:
+            value: 1855000
     _KeyNames:
-    - Giay
-    - GayBungNo
-    - KiemDai
+    - RubyCrystal
+    - AmplifyingTome
+    - GlowingMote
+    - HextechAlternator
+    - FiendishCodex
+    - HextechRocketbelt
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 7bdfbd478cc9779acd234ce2d8f8bacc
+      Hash: 7d9de3fd7d8ec197582c676f9eb8fbf4
     _KeySynced: 1

@@ -1,3 +1,1 @@
-public class Tooltip_EffectBar : ITooltip {
-    public new TooltipWindow_EffectBar Window => base.Window as TooltipWindow_EffectBar;
-}
+public class Tooltip_EffectBar : ITooltip<TooltipWindow_EffectBar> { }

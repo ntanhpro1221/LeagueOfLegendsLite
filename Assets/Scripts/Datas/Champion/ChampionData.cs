@@ -4,10 +4,10 @@ using Unity.Entities;
 
 [Serializable]
 public struct ChampionData : IBlobBuildable<ChampionDataManaged>, IBlobBuildableSelf<ChampionData> {
-    public BubleEnMap<StatsType, float_Q3>                     stats;
-    public BubleEnMap<StatsType, float_Q3>                     statsPerLevel;
-    public ActivableItemData                                   passive;
-    public BubleArray<ActivableItemData, IActivableItemDataSO> skills;
+    public BubleEnMap<StatId, float_Q3>                    stats;
+    public BubleEnMap<StatId, float_Q3>                    statsPerLevel;
+    public ActivableItemData                               passive;
+    public BubleArray<ActivableItemData, IActivableItemSO> skills;
 
     public void BuildBlob(ref BlobBuilder builder, ChampionDataManaged source) {
         stats

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 10952e44c144527b48d6616dc220b75f
+guid: 13111d4da8995d3c68b72386e0ffe44e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -93,17 +93,43 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: coin
+      name: ability_haste
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 32
-        height: 32
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,52 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10ba1f7e65b0777efb76b071844d4be4
-      internalID: 1333147368
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: IconSheet_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 9
-      pivot: {x: 0, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c37d7742f55450b7f91ed773c65638fd
-      internalID: 990380900
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: IconSheet_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 9
-      pivot: {x: 0, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 79787d54fcd19a41c91760cc5f5ca680
-      internalID: -814132835
+      spriteID: f0f111554cf60b300822205316149773
+      internalID: -1011170562
       vertices: []
       indices: 
       edges: []
@@ -166,10 +148,10 @@ TextureImporter:
       name: armor
       rect:
         serializedVersion: 2
-        x: 96
-        y: 32
-        width: 32
-        height: 32
+        x: 15
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,8 +160,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0501871f5dc236da4b622125e24090c0
-      internalID: -1594451681
+      spriteID: 6e9cd4ae425530a668e633e486c5cb3b
+      internalID: 1570350300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: armor_pen
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 30
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 001ba3736b860e74299727298a82c73c
+      internalID: -1566729196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_range
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 30
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6733c212d3a4dc56fb1127461bc49664
+      internalID: -339850679
       vertices: []
       indices: 
       edges: []
@@ -188,10 +214,10 @@ TextureImporter:
       name: attack_speed
       rect:
         serializedVersion: 2
-        x: 128
-        y: 32
-        width: 32
-        height: 32
+        x: 60
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,20 +226,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6f62cd3689e3798a9b559a42de09fe0
-      internalID: -569970067
+      spriteID: 9807e9605ce4d0902bb540df72c8401f
+      internalID: -840312963
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cooldown_reduce
+      name: cooldown
       rect:
         serializedVersion: 2
-        x: 160
-        y: 32
-        width: 32
-        height: 32
+        x: 75
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -222,20 +248,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 571ae60272347463eb58ce6df2e85a01
-      internalID: -242931633
+      spriteID: 6b0bbe4088da3f76f81b7f8b2c7774d6
+      internalID: 1495470527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crit
+      name: crit_damage
       rect:
         serializedVersion: 2
-        x: 192
-        y: 32
-        width: 32
-        height: 32
+        x: 90
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,20 +270,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 740e59549adc7c94a9074bbf5fd4c57c
-      internalID: -1226316891
+      spriteID: cd410743730651ec3bdcd6bcbba42cd9
+      internalID: -951139129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IconSheet_7
+      name: crit_chance
       rect:
         serializedVersion: 2
-        x: 224
-        y: 32
-        width: 32
-        height: 32
+        x: 105
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -266,20 +292,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18a112d29003cfa5cada2920eeb74872
-      internalID: 478697302
+      spriteID: b2b70a920f2b1dc4c88e279eb40fa666
+      internalID: 1337901976
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IconSheet_8
+      name: heal_shield_power
       rect:
         serializedVersion: 2
-        x: 256
-        y: 32
-        width: 32
-        height: 32
+        x: 120
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,20 +314,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d88945206bc9399b5a9bbfe2fdce4aa2
-      internalID: 162234849
+      spriteID: e86a93c4bcbdebd88b270f3f52c2922c
+      internalID: -1099355192
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: magic
+      name: health_mana_regen
       rect:
         serializedVersion: 2
-        x: 288
-        y: 32
-        width: 32
-        height: 32
+        x: 135
+        y: 30
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,8 +336,118 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f9829c8ef2c1c9a2b2760a593fa9c75
-      internalID: 142438067
+      spriteID: 83fe5a344040eb83994dba84d219863c
+      internalID: -1748247652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: health_regen
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75a78dfac85de8768bec3917e98d5f6f
+      internalID: -1201083847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: health
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5de039a9eba80ab8cb57fa46f9066cc3
+      internalID: 1457380748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: life_steal
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 474212e347cab51b6bd264ea9b26b81a
+      internalID: -1234548457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: magic_damage
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 870feb697d6daeaf1a9785569d14c3f9
+      internalID: -233578781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: magic_pen
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67f506ef3027092518a95a4f58f3ae98
+      internalID: -1744881539
       vertices: []
       indices: 
       edges: []
@@ -320,10 +456,10 @@ TextureImporter:
       name: magic_res
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 75
+        y: 15
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -332,8 +468,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f014c0f422cad78edb0c78183170d2b9
-      internalID: -852742269
+      spriteID: 12a5d8579fe3c54a1afc3fc7da1cd34a
+      internalID: -650869492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: magic_vamp
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95bde7bb931909efd87ccfc161d56865
+      internalID: -1667313893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mana
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c80ef6b1183ac016280c63b9f105c3ff
+      internalID: 1468339744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mana_regen
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 15
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f4a33b98bc072f9e8df832befff99fa
+      internalID: -836478268
       vertices: []
       indices: 
       edges: []
@@ -342,10 +544,10 @@ TextureImporter:
       name: move_speed
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
+        x: 135
+        y: 15
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -354,20 +556,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0492406be1f9d13b8a5262c002ea0cff
-      internalID: 1957941686
+      spriteID: dfafb89a8b16e6e06bd3bcb7e7b5dcb1
+      internalID: 615596129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: physic
+      name: omnivamp
       rect:
         serializedVersion: 2
-        x: 64
+        x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -376,20 +578,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b6d91863c153a73abd319a06a32ad0f
-      internalID: 710435530
+      spriteID: 8e6176ded59c97099a27f72b3b9d813c
+      internalID: -1462680597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IconSheet_13
+      name: physic_damage
       rect:
         serializedVersion: 2
-        x: 96
+        x: 15
         y: 0
-        width: 32
-        height: 32
+        width: 15
+        height: 15
       alignment: 9
       pivot: {x: 0, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -398,8 +600,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25fc0d65201a0db7fa93928ff52ffc9d
-      internalID: 46759076
+      spriteID: e674d1611d750784c8a87d1040e17040
+      internalID: -904590801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tenacity
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 0
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddf0dd8f8c109d235bc65ef8374be23b
+      internalID: -476031589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: activable_item
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 0
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17f0e6fb69be5fd31bc21c4cd86869f1
+      internalID: -793515637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coin
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d727554db867bc9b982934573bb5dc9c
+      internalID: -711662220
       vertices: []
       indices: 
       edges: []
@@ -408,7 +676,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a504c21d4b87ee8399b4f465649ff6d6
+    spriteID: e0e0713ff48265dbeb22b64bee9fca4d
     internalID: 0
     vertices: []
     indices: 
@@ -418,22 +686,33 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.20000000298023225},"autoSlicingMethod":0,"spriteAlignment":9,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":15.0,"y":15.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.20000000298023225},"autoSlicingMethod":0,"spriteAlignment":9,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      IconSheet_1: 990380900
-      IconSheet_13: 46759076
-      IconSheet_2: -814132835
-      IconSheet_7: 478697302
-      IconSheet_8: 162234849
-      armor: -1594451681
-      attack_speed: -569970067
-      coin: 1333147368
-      cooldown_reduce: -242931633
-      crit: -1226316891
-      magic: 142438067
-      magic_res: -852742269
-      move_speed: 1957941686
-      physic: 710435530
+      ability_haste: -1011170562
+      activable_item: -793515637
+      armor: 1570350300
+      armor_pen: -1566729196
+      attack_range: -339850679
+      attack_speed: -840312963
+      coin: -711662220
+      cooldown: 1495470527
+      crit_chance: 1337901976
+      crit_damage: -951139129
+      heal_shield_power: -1099355192
+      health: 1457380748
+      health_mana_regen: -1748247652
+      health_regen: -1201083847
+      life_steal: -1234548457
+      magic_damage: -233578781
+      magic_pen: -1744881539
+      magic_res: -650869492
+      magic_vamp: -1667313893
+      mana: 1468339744
+      mana_regen: -836478268
+      move_speed: 615596129
+      omnivamp: -1462680597
+      physic_damage: -904590801
+      tenacity: -476031589
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

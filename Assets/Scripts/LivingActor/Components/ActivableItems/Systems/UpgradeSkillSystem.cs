@@ -5,28 +5,27 @@ using Unity.Entities;
 public partial struct UpgradeSkillSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        foreach (var (
-            input
-          , level
-          , itemsStatic
-          , itemsDynamic
-            ) in SystemAPI
-            .Query<
-                PlayerInputAspectRO
-              , RefRW<LevelData>
-              , AllActivableItemData
-              , DynamicBuffer<ActivableItemBonusBuffer>
-            >().WithAll<
-                Simulate
-            >()) {
-            if (!input.GetEvent_WithData(PlayerTrigger.Other.UpgradeSkill)) continue;
-            ref var availableSkillPoint = ref level.ValueRW.availableSkillPoint;
+        state.Dependency = new Job()
+            .ScheduleParallel(state.Dependency);
+    }
 
-            if (availableSkillPoint <= 0) continue;
-            var     skillToUpgrade = input.Input.skillToUpgrade;
-            ref var curSkillLevel  = ref itemsDynamic.ElementAt((int)skillToUpgrade).level;
+    [WithAll(typeof(Simulate))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        [BurstCompile]
+        public void Execute(
+            PlayerInputAspectRO input
+          , ref LevelData       level
+          , in  SkillsData      skills
+          , ref ItemSlotsData   slots) {
+            if (!input.GetEvent_WithData(InputRequestId.UpgradeSkill)) return;
+            ref var availableSkillPoint = ref level.availableSkillPoint;
 
-            if (itemsStatic[skillToUpgrade].maxLevel <= curSkillLevel) continue;
+            if (availableSkillPoint <= 0) return;
+            var     skillToUpgrade = input.Input.requestData.skillToUpgrade;
+            ref var curSkillLevel  = ref slots.data.ValueRW(skillToUpgrade).level;
+
+            if (skills[skillToUpgrade].maxLevel <= curSkillLevel) return;
 
             ++curSkillLevel;
             --availableSkillPoint;

@@ -11,7 +11,6 @@ public partial struct InitTowerServerSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<AllTowerData>();
         state.RequireForUpdate<InitTransformData>();
 
         mainQuery = SystemAPI.QueryBuilder()
@@ -27,8 +26,7 @@ public partial struct InitTowerServerSystem : ISystem {
         if (mainQuery.IsEmpty) return;
 
         state.Dependency = new Job {
-            allTower  = SystemAPI.GetSingleton<AllTowerData>()
-          , initTrans = SystemAPI.GetSingleton<InitTransformData>()._TowerRef
+            initTrans = SystemAPI.GetSingleton<InitTransformData>()._TowerRef
         }.ScheduleParallel(state.Dependency);
     }
 
@@ -36,13 +34,8 @@ public partial struct InitTowerServerSystem : ISystem {
         typeof(Simulate)
       , typeof(TowerTag)
       , typeof(NeedInitTag))]
-    [WithPresent(
-        typeof(BountyData)
-      , typeof(StatsData_Raw))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public AllTowerData allTower;
-
         public BlobAssetReference<Buble_EnMap_EnMap_EnMap<TeamType, TowerId, LaneType, InitTransform, Transform>> initTrans;
 
         [BurstCompile]
@@ -52,26 +45,9 @@ public partial struct InitTowerServerSystem : ISystem {
           , in TeamTypeData team
           , in LaneTypeData lane
 
-            // Bounty
-          , ref BountyData           bounties
-          , EnabledRefRW<BountyData> bountyTrigger
-
-            // Raw stats
-          , ref StatsData_Raw           statsRaw
-          , EnabledRefRW<StatsData_Raw> statsRawTrigger
-
             // Position
           , ref LocalTransform locTrans
           , ref RotationData   rotation) {
-            // CACHE
-            ref var actor = ref allTower.Towers[tag.id];
-
-            // BOUNTY
-            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
-
-            // RAW STATS
-            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
-              , source: ref actor.stats);
 
             // POSITION
             rotation.RotateTo((

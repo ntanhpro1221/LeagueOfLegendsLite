@@ -37,8 +37,7 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
                 DeadState
             >()) {
             // STATS
-            playerHUD.Stats.Update(healthBarUpdateGenerator.Stats);
-            playerHUD.Stats.UpdateCDReduce(333);
+            playerHUD.Stats.UpdateUI(healthBarUpdateGenerator.Stats);
 
             // HEALTH BAR
             playerHUD.HealthBar.UpdateUI(healthBarUpdateGenerator.GenerateUpdateData(requireExp));

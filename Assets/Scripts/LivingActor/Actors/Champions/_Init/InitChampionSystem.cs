@@ -13,7 +13,6 @@ public partial struct InitChampionSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<AllChampionData>();
         state.RequireForUpdate<InitTransformData>();
 
         mainQuery = SystemAPI.QueryBuilder()
@@ -33,8 +32,7 @@ public partial struct InitChampionSystem : ISystem {
 
         dummyLookup.Update(ref state);
         state.Dependency = new Job {
-            allChamp    = SystemAPI.GetSingleton<AllChampionData>()
-          , initTrans   = SystemAPI.GetSingleton<InitTransformData>()._ChampionRef
+            initTrans   = SystemAPI.GetSingleton<InitTransformData>()._ChampionRef
           , dummyLookup = dummyLookup
         }.ScheduleParallel(state.Dependency);
     }
@@ -43,14 +41,8 @@ public partial struct InitChampionSystem : ISystem {
         typeof(Simulate)
       , typeof(ChampionTag)
       , typeof(NeedInitTag))]
-    [WithPresent(
-        typeof(BountyData)
-      , typeof(StatsData_Raw)
-      , typeof(StatsData_RawPerLevel))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        public AllChampionData allChamp;
-
         public BlobAssetReference<Buble_EnMap_Array<TeamType, InitTransform, Transform>> initTrans;
 
         [ReadOnly] public ComponentLookup<DummyTag> dummyLookup;
@@ -59,33 +51,11 @@ public partial struct InitChampionSystem : ISystem {
         public void Execute(
             // Identity
             in TeamTypeData team
-          , in ChampionTag  tag
           , in Entity       entity
-
-            // Bounty
-          , ref BountyData           bounties
-          , EnabledRefRW<BountyData> bountyTrigger
-
-            // Raw stats
-          , ref StatsData_Raw                   statsRaw
-          , ref StatsData_RawPerLevel           statsRawPerLevel
-          , EnabledRefRW<StatsData_Raw>         statsRawTrigger
-          , EnabledRefRW<StatsData_RawPerLevel> statsRawPerLevelTrigger
 
             // Position
           , ref LocalTransform  locTrans
           , MoveRequesterAspect moveRequester) {
-
-            // CACHE
-            ref var actor = ref allChamp.Champions[tag.id];
-
-            // BOUNTY
-            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref allChamp.CommonInitBounty);
-
-            // RAW STATS
-            InitHelpers.StatsRaw(ref statsRaw, ref statsRawPerLevel, ref statsRawTrigger, ref statsRawPerLevelTrigger
-              , source: ref actor.stats
-              , sourcePerLevel: ref actor.statsPerLevel);
 
             // POSITION (not init for dummy)
             if (!dummyLookup.HasComponent(entity))

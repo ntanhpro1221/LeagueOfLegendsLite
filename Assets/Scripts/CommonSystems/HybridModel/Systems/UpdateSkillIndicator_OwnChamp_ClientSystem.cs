@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
@@ -12,17 +11,14 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllItemData>();
         state.RequireForUpdate<InputDirtyData>();
-        state.RequireForUpdate<InputDirtyData.ActivableItemBuffer>();
     }
 
     public void OnUpdate(ref SystemState state) {
-        bool showNormalAttack = SystemAPI.GetSingleton<InputDirtyData>().key_a.IsHolding();
-        var  dirtyBuffer      = SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: true);
-        var  itemKey          = default(PlayerTrigger.Item);
-        for (; itemKey < PlayerTrigger.Item.COUNT; ++itemKey)
-            if (dirtyBuffer[(int)itemKey].key is InputDirtyData.ButtonState.Down or InputDirtyData.ButtonState.Hold)
-                break;
+        var  allItem          = SystemAPI.GetSingleton<AllItemData>();
+        var  inputData        = SystemAPI.GetSingleton<InputDirtyData>();
+        bool showNormalAttack = inputData.key_a.IsHolding();
 
         // Still loop through all own champions (it should just exist one)
         foreach (var (
@@ -41,15 +37,22 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
 
             var metadata = new IndicatorShower.Metadata();
             metadata.WithNormalAttack(showNormalAttack, data.Stats.data.AttackRange);
-            if (itemKey == PlayerTrigger.Item.COUNT) metadata.WithoutActivableItem();
+
+            var requestItem = Strum.SlotItem.First;
+            for (; requestItem <= Strum.SlotItem.Last; ++requestItem)
+                if ( // Is holding button
+                    inputData.activableItem[requestItem].IsHolding()
+                    // This item is available and activable
+                 && data.ItemSlots.IsActivable(requestItem, allItem))
+                    break;
+
+            if (requestItem > Strum.SlotItem.Last) metadata.WithoutActivableItem();
             else
-                metadata.WithActivableItem(itemKey, data.Level, data.ItemsDynamic[(int)itemKey].level
+                metadata.WithActivableItem(requestItem, data.Level, data.ItemSlots.Slots[requestItem].level
                   , data.Input.inputForActivableItem, data.Input.curCondition);
 
-            data.Indicator.UpdateShower(metadata, ref data.ItemsStatic[
-                itemKey == PlayerTrigger.Item.COUNT
-                    ? PlayerTrigger.Item.Skill_Passive
-                    : itemKey]);
+            if (metadata.IsWithoutItem()) data.Indicator.UpdateShower(metadata);
+            else data.Indicator.UpdateShower(metadata, ref data.ItemSlots.GetItemDataUnsafe(requestItem, allItem));
         }
     }
 
@@ -87,15 +90,14 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
     }
 
     private readonly partial struct OwnChampAspect : IAspect {
-        private readonly RefRO<HybridModelData>      _Model;
-        private readonly RefRO<LevelData>            _Level;
-        private readonly RefRO<PlayerInputData>      _Input;
-        private readonly RefRO<AllActivableItemData> _ItemsStatic;
-        private readonly RefRO<LocalTransform>       _LocTrans;
-        private readonly RefRO<TeamTypeData>         _Team;
-        private readonly RefRO<StatsData>            _Stats;
+        private readonly RefRO<HybridModelData> _Model;
+        private readonly RefRO<LevelData>       _Level;
+        private readonly RefRO<PlayerInputData> _Input;
+        private readonly RefRO<LocalTransform>  _LocTrans;
+        private readonly RefRO<TeamTypeData>    _Team;
+        private readonly RefRO<StatsData>       _Stats;
 
-        [ReadOnly] public readonly DynamicBuffer<ActivableItemBonusBuffer> ItemsDynamic;
+        public readonly ItemSlotsAspectRO ItemSlots;
 
         public ref readonly StatsData Stats => ref _Stats.ValueRO;
 
@@ -103,9 +105,8 @@ public partial struct UpdateSkillIndicatorClientSystem : ISystem {
 
         public IndicatorShower Indicator => _Model.ValueRO.indicator.Value;
 
-        public ref readonly PlayerInputData      Input       => ref _Input.ValueRO;
-        public ref readonly AllActivableItemData ItemsStatic => ref _ItemsStatic.ValueRO;
-        public ref readonly float3               Pos         => ref _LocTrans.ValueRO.Position;
-        public ref readonly TeamType             Team        => ref _Team.ValueRO.team;
+        public ref readonly PlayerInputData Input => ref _Input.ValueRO;
+        public ref readonly float3          Pos   => ref _LocTrans.ValueRO.Position;
+        public ref readonly TeamType        Team  => ref _Team.ValueRO.team;
     }
 }

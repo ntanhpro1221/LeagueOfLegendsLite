@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using System;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -21,10 +22,10 @@ public partial struct PlayerInputResetSystem : ISystem {
             inputData = new PlayerInputData();
 
             // set event to notify to server
-            inputData.triggers.Set(PlayerTrigger.Other.DoneReset);
+            inputData.triggers.Set(InputRequestId.DoneReset);
 
             // set move pos
-            inputData.moveLocTarget = locTrans.Position.Quantizate3();
+            inputData.requestData.moveLocTarget = locTrans.Position.Quantizate3();
         }
     }
 }

@@ -48,7 +48,7 @@ MonoBehaviour:
     - KillScore
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 76525ee8426ba98f13d0e8787143472c
+      Hash: 9ba594e714b97a5c300b085b4dcfa7f2
     _KeySynced: 1
   value:
     _Keys: 000000000100000002000000
@@ -57,7 +57,7 @@ MonoBehaviour:
         name: Yasuo
         description: "K\u1EBB b\u1EA5t dung th\u1EE9"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 590000
@@ -85,6 +85,20 @@ MonoBehaviour:
               value: 697
           - _Value:
               value: 65000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -99,12 +113,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 9ea1f901ec79814ff9b959e7f9998b77
+            Hash: 09c9f4dc5ca06904bfb2befac58f520b
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 110000
@@ -132,6 +153,20 @@ MonoBehaviour:
               value: 3500
           - _Value:
               value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -146,9 +181,16 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 9ea1f901ec79814ff9b959e7f9998b77
+            Hash: 09c9f4dc5ca06904bfb2befac58f520b
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -157,7 +199,7 @@ MonoBehaviour:
         name: Ashe
         description: "Cung b\u0103ng"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 610000
@@ -185,26 +227,47 @@ MonoBehaviour:
               value: 2000
           - _Value:
               value: 65000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 76525ee8426ba98f13d0e8787143472c
+            Hash: 9ba594e714b97a5c300b085b4dcfa7f2
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 101000
@@ -232,23 +295,44 @@ MonoBehaviour:
               value: 3330
           - _Value:
               value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 76525ee8426ba98f13d0e8787143472c
+            Hash: 9ba594e714b97a5c300b085b4dcfa7f2
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -261,7 +345,7 @@ MonoBehaviour:
         name: Garen
         description: "S\u1EE9c m\u1EA1nh c\u1EE7a Demacia"
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 690000
@@ -289,6 +373,20 @@ MonoBehaviour:
               value: 625
           - _Value:
               value: 65000
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -303,12 +401,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 78e1a8a6ee86b73f56a058be4d599148
+            Hash: 09c9f4dc5ca06904bfb2befac58f520b
           _KeySynced: 1
         statsPerLevel:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 98000
@@ -336,6 +441,20 @@ MonoBehaviour:
               value: 3650
           - _Value:
               value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -350,9 +469,16 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 78e1a8a6ee86b73f56a058be4d599148
+            Hash: 09c9f4dc5ca06904bfb2befac58f520b
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -363,5 +489,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 76525ee8426ba98f13d0e8787143472c
+      Hash: 9ba594e714b97a5c300b085b4dcfa7f2
     _KeySynced: 1

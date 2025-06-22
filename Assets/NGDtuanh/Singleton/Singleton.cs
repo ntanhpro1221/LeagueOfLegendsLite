@@ -2,17 +2,17 @@
 using UnityEngine;
 
 namespace NGDtuanh.Singleton {
-    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
-        private static T _Instance;
+    public class Singleton<TSelf> : MonoBehaviour where TSelf : MonoBehaviour {
+        private static TSelf _Instance;
 
-        public static T Instance {
+        public static TSelf Instance {
             get {
                 if (_Instance != null) return _Instance;
 
-                _Instance ??= FindFirstObjectByType<T>();
+                _Instance ??= FindFirstObjectByType<TSelf>(FindObjectsInactive.Include);
                 if (_Instance == null) return _Instance;
 
-                typeof(T)
+                typeof(TSelf)
                     .GetMethod("OnTouched", BindingFlags.NonPublic | BindingFlags.Instance)
                     ?.Invoke(Instance, null);
 
@@ -23,7 +23,7 @@ namespace NGDtuanh.Singleton {
         protected virtual void OnTouched() { }
 
         protected virtual void Awake() => DontDestroyOnLoad(gameObject);
-        
+
         protected virtual void OnDestroy() { }
     }
 }

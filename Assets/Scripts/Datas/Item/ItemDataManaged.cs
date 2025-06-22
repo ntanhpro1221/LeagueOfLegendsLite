@@ -4,8 +4,10 @@ using UnityEngine;
 
 [Serializable]
 public class ItemDataManaged {
-    public string                 name;
-    public string                 description;
-    public Sprite                 avatar;
-    // public List<StatBuffs.Sender> statBuffs;
+    public IActivableItemSO                  common;
+    public List<StatBuffs.ElementUnscalable> buffs;
+    public List<ItemId>                      recipe;
+    public IndicatorConcreteBase             indicator;
+    public float                             lifeTime;
+    public ItemData.Settings                 settings;
 }

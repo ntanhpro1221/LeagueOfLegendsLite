@@ -23,7 +23,7 @@ public static partial class TowerStateIdle {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -56,11 +56,8 @@ public static partial class TowerStateIdle {
             RefRO<TowerTag> IStateAspect<TowerTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<TowerTag, IdleState>.Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<TowerTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<TowerTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
-
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
 
             private readonly RefRO<InheritTag>                                   _inheritTag;
             RefRO<InheritTag> IStateInheritable<TowerTag, IdleState, InheritTag>.InheritTag => _inheritTag;

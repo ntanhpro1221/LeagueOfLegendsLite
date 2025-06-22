@@ -21,7 +21,7 @@ public static class IndicatorExtensions {
 
     public static ref IndicatorShower.Metadata WithActivableItem(
         this ref IndicatorShower.Metadata metadata
-      , PlayerTrigger.Item                itemKey
+      , SlotItemId                        itemKey
       , int                               ownerLevel
       , int                               selfLevel
       , in InputForActivableItemData      input
@@ -35,7 +35,10 @@ public static class IndicatorExtensions {
     }
 
     public static ref IndicatorShower.Metadata WithoutActivableItem(this ref IndicatorShower.Metadata metadata) {
-        metadata.itemKey = PlayerTrigger.Item.COUNT;
+        metadata.itemKey = (SlotItemId)Strum.SlotItem.Count;
         return ref metadata;
     }
+
+    public static bool IsWithoutItem(this in IndicatorShower.Metadata metadata) =>
+        metadata.itemKey == (SlotItemId)Strum.SlotItem.Count;
 }

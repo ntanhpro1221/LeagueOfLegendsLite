@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "G+gPQSlwkTE=",
+  "success": true,
+  "projectFilePath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Sample/StrumGenerator.Sample.csproj",
+  "expectedPackageFiles": [
+    "/home/ngdtuanh/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.4/microsoft.aspnetcore.app.ref.9.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}

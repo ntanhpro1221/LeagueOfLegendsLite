@@ -51,7 +51,7 @@ public static partial class TurretStateIdle {
                     sharedState.SetAttack();
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -82,10 +82,8 @@ public static partial class TurretStateIdle {
             RefRO<TurretTag> IStateAspect<TurretTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<TurretTag, IdleState>. Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<TurretTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<TurretTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

@@ -6,8 +6,11 @@ public struct ChampionTag : IComponentData {
     public ChampionId id;
 }
 
-public class ChampionTagAuthoring : MonoBehaviour {
+public class ChampionTagAuthoring : MonoBehaviour, IRaceTag {
     public ChampionId id;
+
+    public int    TagInt => (int)id;
+    public RaceId Race   => RaceId.Champ;
 
     private class Baker : Baker<ChampionTagAuthoring> {
         public override void Bake(ChampionTagAuthoring authoring) {

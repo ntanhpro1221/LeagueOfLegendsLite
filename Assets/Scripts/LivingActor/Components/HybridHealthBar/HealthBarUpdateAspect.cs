@@ -15,9 +15,11 @@ public readonly partial struct HealthBarUpdateAspect : IAspect {
     public HealthBarUI.UpdateData GenerateUpdateData(in RequireExpData requireExpData) => new() {
         maxHealth              = Stats.data.Health
       , curHealth              = _Health.ValueRO.value
+      , healthRegen            = Stats.data.HealthRegen
       , curArmor               = 0
       , maxMana                = _Mana.IsValid ? Stats.data.Mana : 0
       , curMana                = _Mana.IsValid ? _Mana.ValueRO.value : 0
+      , manaRegen              = _Mana.IsValid ? Stats.data.ManaRegen : 0
       , curLevel               = _Level.IsValid ? _Level.ValueRO.curLevel : 0
       , curExp                 = _Level.IsValid ? _Level.ValueRO.curExp : 0
       , requiredExp            = _Level.IsValid ? requireExpData.CalcRequireExpForNextLevel(_Level.ValueRO.curLevel) : 0

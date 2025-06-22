@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NGDtuanh.BubleAsset;
-using NGDtuanh.Strum;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
@@ -34,43 +33,44 @@ public struct StatBuffs : IBlobBuildable<StatBuffs.Managed>, IBlobBuildableSelf<
         Strum.Stats.Fields<Strum.StatBuff.Fields<float_Q3>> result = default;
         for (int i = 0; i < buffs.Count; ++i) {
             ref var buff = ref buffs[i];
-            result.ValueRW(buff.statsType).ValueRW(buff.applyType)
+            result.ValueRW(buff.statId).ValueRW(buff.applyType)
                 += buff.value.GetScaledValue(metadata);
         }
 
         return result;
     }
 
-    [Strum("StatBuff")]
-    public enum ApplyType {
-        Add
-      , Mul
-    }
-
     public struct Element : IBlobBuildable<Element.Managed>, IBlobBuildableSelf<Element> {
-        public ApplyType     applyType;
+        public StatBuffId    applyType;
         public ScalableFloat value;
-        public StatsType     statsType;
+        public StatId        statId;
 
         public void BuildBlob(ref BlobBuilder builder, Managed source) {
             applyType = source.applyType;
             value.BuildBlob(ref builder, source.value);
-            statsType = source.statsType;
+            statId = source.statId;
         }
 
         public void BuildBlob(ref BlobBuilder builder, ref Element source) {
             applyType = source.applyType;
             value.BuildBlob(ref builder, ref source.value);
-            statsType = source.statsType;
+            statId = source.statId;
         }
 
         [Serializable]
         // ReSharper disable once MemberHidesStaticFromOuterClass
         public class Managed {
-            public ApplyType             applyType;
+            public StatBuffId            applyType;
             public ScalableFloat.Managed value;
-            public StatsType             statsType;
+            public StatId                statId;
         }
+    }
+
+    [Serializable]
+    public struct ElementUnscalable {
+        public StatBuffId applyType;
+        public float_Q3   value;
+        public StatId     statId;
     }
 
     public struct Final {
@@ -101,10 +101,18 @@ public struct StatBuffs : IBlobBuildable<StatBuffs.Managed>, IBlobBuildableSelf<
             final.buffs.ApplyTo(ref buffs, 1);
         }
 
+        public void Add(ref BubleArray<ElementUnscalable> source) {
+            source.ApplyTo(ref buffs, 1);
+        }
+
         public void Remove(in Final final) {
             if (!final.enable) return;
 
             final.buffs.ApplyTo(ref buffs, -1);
+        }
+
+        public void Remove(ref BubleArray<ElementUnscalable> source) {
+            source.ApplyTo(ref buffs, -1);
         }
     }
 
@@ -124,11 +132,19 @@ public static class StatBuffExtensions {
         this in Strum.Stats.Fields<Strum.StatBuff.Fields<float_Q3>> buffs
       , ref     Strum.Stats.Fields<Strum.StatBuff.Fields<float_Q3>> targets
       , float_Q3                                                    mul) {
-        foreach (var statId in Strum.Stats.Info.Indexes) {
+        foreach (var statId in Strum.Stats.Indexes) {
             ref readonly var buff   = ref buffs.ValueRO(statId);
             ref var          target = ref targets.ValueRW(statId);
-            foreach (var applyId in Strum.StatBuff.Info.Indexes)
+            foreach (var applyId in Strum.StatBuff.Indexes)
                 target[applyId] += buff[applyId] * mul;
         }
+    }
+
+    public static void ApplyTo(
+        this ref BubleArray<StatBuffs.ElementUnscalable>             source
+      , ref      Strum.Stats.Fields<Strum.StatBuff.Fields<float_Q3>> targets
+      , float_Q3                                                     mul) {
+        for (int i = 0; i < source.Count; ++i)
+            targets.ValueRW(source[i].statId).ValueRW(source[i].applyType) += source[i].value * mul;
     }
 }

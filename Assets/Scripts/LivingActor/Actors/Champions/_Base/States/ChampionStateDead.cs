@@ -37,7 +37,7 @@ public static partial class ChampionStateDead {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<DeadState>.MarkExitExecuted(filter);
 
                 data.LocalTrans = initTrans[data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
                 data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                // Reset target pos at init pos
@@ -127,10 +127,8 @@ public static partial class ChampionStateDead {
             RefRO<ChampionTag> IStateAspect<ChampionTag, DeadState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ChampionTag, DeadState>.   Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ChampionTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<DeadState> IStateExitAspect<ChampionTag, DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<DeadState> IStateExitFunc<DeadState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

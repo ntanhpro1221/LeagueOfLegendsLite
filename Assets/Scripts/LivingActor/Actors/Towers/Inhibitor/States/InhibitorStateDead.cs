@@ -36,7 +36,7 @@ public static partial class InhibitorStateDead {
                     transition.HardCutAnim = false;
                 } else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<DeadState>.MarkExitExecuted(filter);
 
                 data.CurHealth = data.MaxHealth; // Respawn with full health
             }
@@ -96,10 +96,8 @@ public static partial class InhibitorStateDead {
             RefRO<InhibitorTag> IStateAspect<InhibitorTag, DeadState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<InhibitorTag, DeadState>.    Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<InhibitorTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<DeadState> IStateExitAspect<InhibitorTag, DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<DeadState> IStateExitFunc<DeadState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

@@ -75,7 +75,7 @@ public static partial class ChampionStateMove {
                     // Have disabling move CC.
                     common.CC.Disable.Move != 0
                     // Have cancel request
-                 || commonChamp.Input.Input.GetEvent_Only(PlayerTrigger.Other.CancelMove)
+                 || commonChamp.Input.Input.GetEvent_Only(InputRequestId.CancelMove)
                     // Done move and not have move request from player
                  || (data.MoveRequester.IsMoveDone && !commonChamp.Input.MoveEvent_WithData)
                     // have target within range and so close to target
@@ -85,7 +85,8 @@ public static partial class ChampionStateMove {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<MoveState>.MarkExitExecuted(filter);
+                    
                 data.StopMove();
             }
         }
@@ -158,7 +159,7 @@ public static partial class ChampionStateMove {
                 // If not aiming to any target => move to input of user
                 if (!autoFollowTarget.ValueRO
                  && input.MoveEvent_WithData)
-                    moveRequester.MoveSmartTo(input.Input.moveLocTarget, locTrans.ValueRO);
+                    moveRequester.MoveSmartTo(input.Input.requestData.moveLocTarget, locTrans.ValueRO);
             }
         }
     }
@@ -176,11 +177,8 @@ public static partial class ChampionStateMove {
             RefRO<ChampionTag> IStateAspect<ChampionTag, MoveState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ChampionTag, MoveState>.   Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ChampionTag, MoveState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<MoveState> IStateExitAspect<ChampionTag, MoveState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
-
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<MoveState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<MoveState> IStateExitFunc<MoveState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

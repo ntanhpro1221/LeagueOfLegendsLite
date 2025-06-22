@@ -24,7 +24,7 @@ public static partial class MinionStateDead {
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
 
             foreach (var (
-                _
+                filter
               , sharedState
               , data
                 ) in SystemAPI.Query<
@@ -34,7 +34,10 @@ public static partial class MinionStateDead {
 
                 if (curTick.IsNewerThan(data.RespawnTick)) // It's tick to DISAPPEAR
                     sharedState.SetIdle();
+                
                 else continue;
+                
+                IStateExitFunc<DeadState>.MarkExitExecuted(filter);
 
                 data.Destroy();
             }
@@ -106,10 +109,8 @@ public static partial class MinionStateDead {
             RefRO<MinionTag> IStateAspect<MinionTag, DeadState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<MinionTag, DeadState>. Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MinionTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<DeadState> IStateExitAspect<MinionTag, DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<DeadState> IStateExitFunc<DeadState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

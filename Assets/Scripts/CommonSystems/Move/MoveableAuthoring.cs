@@ -1,7 +1,5 @@
 ﻿using Unity.Entities;
-using Unity.Mathematics;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 public struct MoveData : IComponentData {
@@ -12,6 +10,13 @@ public struct MoveData : IComponentData {
     [GhostField] public float3_Q3  fixedPos;
 
     public void FixToPos(float3_Q3 pos) => (isFixedPos, fixedPos) = (true, pos);
+}
+
+[GhostEnabledBit]
+public struct MoveSpeedOverride : IComponentData, IEnableableComponent { }
+
+public struct MoveSpeedOverrideData : IComponentData {
+    [GhostField] public float_Q3 speed;
 }
 
 [GhostEnabledBit]
@@ -76,6 +81,8 @@ public class MoveableAuthoring : MonoBehaviour {
                 controlYAxis = authoring.controlYAxis
               , moveSpeed    = authoring.moveSpeed.Quantizate3()
             });
+            AddComponentDisabled<MoveSpeedOverride>(entity);
+            AddComponent<MoveSpeedOverrideData>(entity);
             AddComponent<MoveableTag>(entity);
             SetComponentEnabled<MoveableTag>(entity, authoring.enabled);
 

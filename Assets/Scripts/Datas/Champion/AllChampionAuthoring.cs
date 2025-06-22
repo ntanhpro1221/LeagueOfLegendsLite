@@ -1,5 +1,4 @@
-﻿using NGDtuanh.BubleAsset;
-using Unity.Entities;
+﻿using Unity.Entities;
 using UnityEngine;
 
 public class AllChampionAuthoring : MonoBehaviour {

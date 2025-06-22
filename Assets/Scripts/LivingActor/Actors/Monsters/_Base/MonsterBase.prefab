@@ -103,6 +103,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5392229273288189392, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
     - {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    - {fileID: -1706978723694032335, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -220,8 +221,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _OverrideState:
-    _Keys: 000000000100000002000000030000000400000005000000
+    _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
     _Values:
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
     - _Value: 0
     - _Value: 0
     - _Value: 0
@@ -235,9 +240,13 @@ MonoBehaviour:
     - Move
     - Idle2Dead
     - Dead2Idle
+    - Skill_Q
+    - Skill_W
+    - Skill_E
+    - Skill_R
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: d08128fcea10a01afdae2086bca44bfc
+      Hash: 8fd22b5322b487439b14f08aa06297f3
     _KeySynced: 1
 --- !u!114 &3147447124551771451
 MonoBehaviour:

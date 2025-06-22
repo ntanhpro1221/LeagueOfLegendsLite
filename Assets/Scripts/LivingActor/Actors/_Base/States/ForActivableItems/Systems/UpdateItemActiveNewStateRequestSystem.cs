@@ -6,65 +6,64 @@ using Unity.NetCode;
 public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
+        state.RequireForUpdate<AllItemData>();
         state.RequireForUpdate<NetworkTime>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
+        state.Dependency = new Job {
+            allItem = SystemAPI.GetSingleton<AllItemData>()
+          , curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick
+        }.ScheduleParallel(state.Dependency);
+    }
 
-        foreach (var (
-            request
-          , input
-          , prevCode
-          , itemsStatic
-          , itemsDynamic
-          , costSource
-            ) in SystemAPI
-            .Query<
-                RefRW<ItemActiveNewStateRequestData>
-              , RefRO<PlayerInputData>
-              , RefRO<PlayerTrigger.PrevCode>
-              , RefRO<AllActivableItemData>
-              , DynamicBuffer<ActivableItemBonusBuffer>
-              , ActiveItemCostSourceAspect
-            >().WithAll<
-                Simulate
-            >()) {
+    [WithAll(typeof(Simulate))]
+    [BurstCompile]
+    private partial struct Job : IJobEntity {
+        public AllItemData allItem;
+        public NetworkTick curTick;
+
+        [BurstCompile]
+        public void Execute(
+            ref ItemActiveNewStateRequestData request
+          , PlayerInputAspectRO               input
+          , ItemSlotsAspectRO                 itemSlots
+          , ActiveItemCostSourceAspect        costSource) {
             // First: reset request
-            request.ValueRW.Reset();
+            request.Reset();
 
             // Second: check all activable item that requires new state
-            for (int i = 0; i < PlayerTrigger.ITEM_COUNT; ++i) {
-                var key = (PlayerTrigger.Item)i;
-
+            foreach (var slot in Strum.SlotItem.Indexes) {
                 // Check input
-                if (!input.ValueRO.GetEvent_WithData(prevCode.ValueRO, key)) continue;
+                if (!input.GetEvent_WithData(slot)) continue;
 
                 // Check exist and activable type
-                if (!itemsStatic.ValueRO.IsActivable(key)) continue;
-                ref var itemStatic  = ref itemsStatic.ValueRO[key];
-                var     itemDynamic = itemsDynamic[i];
+                if (!itemSlots.IsActivable(slot, allItem)) continue;
+                ref var itemStatic  = ref itemSlots.GetItemDataUnsafe(slot, allItem);
+                var     itemDynamic = itemSlots.Slots[slot];
 
                 // Check require new state type
                 if (!itemStatic.activeSettings.isRequireNewState) continue;
-                
+
                 // Check min level
-                if (itemStatic.maxLevel != 0 && itemDynamic.level == 0) continue;
+                if (itemStatic.haveLevel && itemDynamic.level == 0) continue;
+                int levelIndex = itemStatic.CalcLevelIndex(itemDynamic.level);
 
                 // Check cooldown
-                if (itemDynamic.doneAtTick.IsValid
-                 && itemDynamic.doneAtTick.IsNewerThan(curTick)) continue;
+                if (itemDynamic.common.doneAtTick.IsValid
+                 && itemDynamic.common.doneAtTick.IsNewerThan(curTick)) continue;
 
                 // Check activation cost
-                if (!itemStatic.activeCost[itemDynamic.level].IsEnough(costSource)) continue;
+                if (!itemStatic.activeCost[levelIndex].IsEnough(costSource)) continue;
 
                 // Check activation condition 
-                if (!itemStatic.activeCondition.CheckOK(input.ValueRO.curCondition)) continue;
+                if (!itemStatic.activeCondition.CheckOK(input.Input.curCondition)) continue;
 
-                request.ValueRW.PushRequest(key
-                  , itemStatic.cooldownTick[itemDynamic.level]
-                  , itemStatic.activeCost[itemDynamic.level]);
+                request.PushRequest(slot
+                  , itemStatic.cooldownTick[levelIndex]
+                  , itemStatic.activeCost[levelIndex]);
+
                 break;
             }
         }

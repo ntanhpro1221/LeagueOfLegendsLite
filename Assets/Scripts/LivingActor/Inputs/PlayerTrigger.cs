@@ -1,95 +1,105 @@
-using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 
-[BurstCompile]
 public static class PlayerTrigger {
-    public const int ITEM_COUNT = (int)Item.COUNT;
-
-    /// <summary>
-    /// <inheritdoc cref="Other"/>
-    /// - Add to <see cref="PlayerTriggerHelpers.ToKeyboard"/>.<br/>
-    /// </summary>
-    public enum Item {
-        Spell_D
-      , Spell_F
-      , Spell_B
-
-      , Skill_Passive
-      , Skill_Q
-      , Skill_W
-      , Skill_E
-      , Skill_R
-
-      , Item_1
-      , Item_2
-      , Item_3
-      , Item_4
-      , Item_5
-      , Item_6
-      , Item_7
-
-        // Count for this enum
-      , COUNT
-    }
-
-    /// <summary>
-    /// Steps to add move event:<br/>
-    /// - Add to this enum.<br/>
-    /// - Add to <see cref="Holder{T}"/>.<br/>
-    /// - Add to <see cref="PlayerTriggerHelpers.InternalCore.ValueRW{T}"/>.<br/>
-    /// - Add to <see cref="PlayerTriggerHelpers.InternalCore.ValueRO{T}"/>.<br/>
-    /// </summary>
-    public enum Other {
-        DoneReset
-      , Move
-      , CancelMove
-      , UpgradeSkill
-
-        // Count for this enum
-      , COUNT
-    }
-
-    /// <summary>
-    /// All trigger from <see cref="Item"/> and <see cref="Other"/>
-    /// </summary>
-    public struct Holder<T> {
-        public T Spell_D;
-        public T Spell_F;
-        public T Spell_B;
-
-        public T Skill_Passive;
-        public T Skill_Q;
-        public T Skill_W;
-        public T Skill_E;
-        public T Skill_R;
-
-        public T Item_1;
-        public T Item_2;
-        public T Item_3;
-        public T Item_4;
-        public T Item_5;
-        public T Item_6;
-        public T Item_7;
-
-        public T DoneReset;
-        public T Move;
-        public T CancelMove;
-        public T UpgradeSkill;
-    }
-
     /// <summary>
     /// Put this <b>INSIDE</b> <see cref="PlayerInputData"/>.
     /// </summary>
     public struct Full {
-        public Holder<InputEvent> Event;
-        public Holder<int>        Code;
+        public Strum.PlayerTrigger.Fields<InputEvent> Event;
+        public Strum.PlayerTrigger.Fields<int>        Code;
     }
 
     /// <summary>
     /// Put this <b>OUTSIDE</b> <see cref="PlayerInputData"/>.
     /// </summary>
     public struct PrevCode : IComponentData {
-        [GhostField] public Holder<int> Code;
+        [GhostField] public Strum.PlayerTrigger.Fields<int> Code;
     }
+}
+
+public static class PlayerTriggerHelpers {
+    private static class InternalCore {
+        /// <summary>
+        /// Turn on correspond trigger.<br/>
+        /// </summary>
+        public static void Set(ref PlayerTrigger.Full source, int keyIndex) {
+            source.Event.ValueRW(keyIndex).Set();
+            source.Code.ValueRW(keyIndex)++;
+        }
+
+        /// <summary>
+        /// - Check is correspond trigger is on or off.<br/>
+        /// - This ensures that event will be trigger with correct tick in both client and server.<br/>
+        /// <br/><b>NOTE:</b> this just care about trigger, not the data comes with it. So if you need both of them,
+        /// consider <see cref="GetEvent_WithData"/>.<br/>
+        /// </summary>
+        public static bool GetEvent_Only(in PlayerInputData input, int keyIndex) =>
+            input.triggers.Event.ValueRO(keyIndex).IsSet;
+
+        /// <summary>
+        /// - Check is correspond trigger is on or off.<br/>
+        /// - This ensures that an event will be executed in both client and server with <b>correct input data</b>.<br/>
+        /// <br/><b>NOTE:</b> execute tick may not be the same in both client and server. So if you don't care
+        /// about input data for this trigger, just use <see cref="GetEvent_Only"/>.<br/>
+        /// </summary>
+        public static bool GetEvent_WithData(in PlayerInputData input, in PlayerTrigger.PrevCode prevCode, int keyIndex) =>
+            input.triggers.Code.ValueRO(keyIndex) != prevCode.Code.ValueRO(keyIndex);
+    }
+
+    #region SET TRIGGER
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.Set"/>
+    /// </summary>
+    public static void Set(this ref PlayerTrigger.Full full, SlotItemId key) =>
+        InternalCore.Set(ref full, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.Set"/>
+    /// </summary>
+    public static void Set(this ref PlayerTrigger.Full full, InputRequestId key) =>
+        InternalCore.Set(ref full, Strum.PlayerTrigger.IndexOf(key));
+
+    #endregion
+
+    #region GET TRIGGER STATE
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_Only"/>
+    /// </summary>
+    public static bool GetEvent_Only(this in PlayerInputData input, SlotItemId key) =>
+        InternalCore.GetEvent_Only(input, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_Only"/>
+    /// </summary>
+    public static bool GetEvent_Only(this in PlayerInputData input, InputRequestId key) =>
+        InternalCore.GetEvent_Only(input, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_WithData"/>
+    /// </summary>
+    public static bool GetEvent_WithData(this in PlayerInputData input, in PlayerTrigger.PrevCode prevCode, SlotItemId key) =>
+        InternalCore.GetEvent_WithData(input, prevCode, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_WithData"/>
+    /// </summary>
+    public static bool GetEvent_WithData(this in PlayerInputData input, in PlayerTrigger.PrevCode prevCode, InputRequestId key) =>
+        InternalCore.GetEvent_WithData(input, prevCode, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_WithData"/>
+    /// </summary>
+    public static bool GetEvent_WithData(this in PlayerInputAspectRO input, SlotItemId key) =>
+        InternalCore.GetEvent_WithData(input.Input, input.PrevCode, Strum.PlayerTrigger.IndexOf(key));
+
+    /// <summary>
+    /// <inheritdoc cref="InternalCore.GetEvent_WithData"/>
+    /// </summary>
+    public static bool GetEvent_WithData(this in PlayerInputAspectRO input, InputRequestId key) =>
+        InternalCore.GetEvent_WithData(input.Input, input.PrevCode, Strum.PlayerTrigger.IndexOf(key));
+
+    #endregion
 }

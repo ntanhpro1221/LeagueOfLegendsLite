@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 4909889527471281986}
   - component: {fileID: -1418313679708227011}
   - component: {fileID: 4723961063207495812}
+  - component: {fileID: -1706978723694032335}
   m_Layer: 7
   m_Name: LivingActorBase
   m_TagString: Untagged
@@ -311,7 +312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316927658dfc4da0ae250ab6acf35b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  haveLevel: 0
 --- !u!114 &-5603839034160965786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   projectile: {fileID: 0}
+  onHitEffects: []
 --- !u!114 &2907014209381040497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,5 +466,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fea4cd47cad5495eb431780331b9eaef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1706978723694032335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511344896651389580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab055df622c44a58367dd63f367422e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

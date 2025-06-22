@@ -81,7 +81,8 @@ public static partial class MonsterStateMove {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<MoveState>.MarkExitExecuted(filter);
+                
                 data.StopMove(entity);
             }
         }
@@ -217,11 +218,8 @@ public static partial class MonsterStateMove {
             RefRO<Simulate> IStateAspect<MonsterTag, MoveState>.                   Simulate   => _simulate;
             RefRO<InheritTag> IStateInheritable<MonsterTag, MoveState, InheritTag>.InheritTag => _inheritTag;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MonsterTag, MoveState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<MoveState> IStateExitAspect<MonsterTag, MoveState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
-
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<MoveState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<MoveState> IStateExitFunc<MoveState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

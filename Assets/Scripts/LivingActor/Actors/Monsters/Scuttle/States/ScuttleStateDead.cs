@@ -38,7 +38,7 @@ public static partial class ScuttleStateDead {
                     sharedState.SetMove();
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<DeadState>.MarkExitExecuted(filter);
 
                 data.LocalTrans = initTrans[filter.Id][data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
                 data.CurHealth  = data.MaxHealth;                                               // Respawn with full health
@@ -151,10 +151,8 @@ public static partial class ScuttleStateDead {
             RefRO<ScuttleTag> IStateAspect<ScuttleTag, DeadState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ScuttleTag, DeadState>.  Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ScuttleTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<DeadState> IStateExitAspect<ScuttleTag, DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<DeadState> IStateExitFunc<DeadState>.        CurStateEnable    => _curStateEnable;
 
             public MonsterId Id => MonsterId.Scuttle;
         }

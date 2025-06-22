@@ -30,7 +30,7 @@ public static partial class ScuttleStateIdle {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -61,10 +61,8 @@ public static partial class ScuttleStateIdle {
             RefRO<ScuttleTag> IStateAspect<ScuttleTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ScuttleTag, IdleState>.  Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ScuttleTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<ScuttleTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

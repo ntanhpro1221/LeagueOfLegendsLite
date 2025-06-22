@@ -2,79 +2,69 @@ using NGDtuanh.Collections;
 using UnityEngine;
 
 public class PlayerActivableItemUI : MonoBehaviour {
-    public EnumMap<PlayerTrigger.Item, ItemUI> Items;
+    [field: SerializeField] public EnumMap<SlotItemId, IItemUIWrapper> Items { get; private set; }
 
-    /// <summary>
-    /// Just from Q to R (not have passive).
-    /// </summary>
-    private EnumMap<PlayerTrigger.Item, ItemSkillUI> _Skills;
-
-    /// <summary>
-    /// <inheritdoc cref="_Skills"/>
-    /// </summary>
-    public EnumMap<PlayerTrigger.Item, ItemSkillUI> Skills {
-        get {
-            if (_Skills == null) {
-                _Skills = new EnumMap<PlayerTrigger.Item, ItemSkillUI>();
-
-                for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey)
-                    _Skills[skillKey] = Items[skillKey].GetComponentInParent<ItemSkillUI>(includeInactive: true);
-            }
-
-            return _Skills;
+    private void Awake_SkillRequestListener() {
+        for (var skillKey = Strum.SlotItem.First_SkillNotPassive
+             ; skillKey <= Strum.SlotItem.Last_Skill
+             ; ++skillKey) {
+            var l_SkillKey = skillKey;
+            ((ItemSkillUI)Items[skillKey]).RegisterUpLevelListener(() => PlayerRequestHub.Instance.SetUpdateSkill(l_SkillKey));
         }
     }
 
-    private PlayerTrigger.Item? _CurUpdateSkillRequest;
-
-    public bool BlockedAllItems { get; private set; }
+    private void Awake_ItemSlotId() {
+        for (var slotKey = Strum.SlotItem.First_Item
+             ; slotKey <= Strum.SlotItem.Last_Item
+             ; ++slotKey)
+            ((ItemUI)Items[slotKey]).SetSlot(slotKey);
+    }
 
     private void Awake() {
-        for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey) {
-            var l_SkillKey = skillKey;
-            Skills[skillKey].RegisterUpLevelListener(() => _CurUpdateSkillRequest = l_SkillKey);
-        }
-    }
-
-    public bool PopOutUpdateSkillRequest(out PlayerTrigger.Item request) {
-        bool haveRequest = _CurUpdateSkillRequest != null;
-        request = haveRequest
-            ? _CurUpdateSkillRequest.Value
-            : default;
-        _CurUpdateSkillRequest = null;
-        return haveRequest;
+        Awake_SkillRequestListener();
+        Awake_ItemSlotId();
     }
 
     public void InitAllSkills(ChampionId id) {
         var champData = GameSO.Champ[id];
 
-        Items[PlayerTrigger.Item.Skill_Passive].InitAll(champData.passive);
+        ((ItemSkillUI)Items[SlotItemId.Skill_Passive]).InitAll(champData.passive);
 
-        for (var skillKey = PlayerTrigger.Item.Skill_Q; skillKey <= PlayerTrigger.Item.Skill_R; ++skillKey)
-            Skills[skillKey].InitAll(champData.skills[skillKey - PlayerTrigger.Item.Skill_Q]);
+        for (var skillKey = SlotItemId.Skill_Q; skillKey <= SlotItemId.Skill_R; ++skillKey)
+            ((ItemSkillUI)Items[skillKey]).InitAll(champData.skills[skillKey - SlotItemId.Skill_Q]);
 
         // TODO: Init spell later
     }
 
+    #region DEAD
+
     public void StartDeadAllItems() {
-        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
-            Items[key].StartDead();
+        foreach (var key in Strum.SlotItem.Indexes)
+            Items[key].Core.StartDead();
     }
 
     public void DoneDeadAllItems() {
-        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
-            Items[key].DoneDead();
+        foreach (var key in Strum.SlotItem.Indexes)
+            Items[key].Core.DoneDead();
     }
+
+    #endregion
+
+    #region BLOCK ITEM ACTIVATION
+
+    public bool BlockedAllItems { get; private set; }
 
     public void StartBlockAllItems() {
         BlockedAllItems = true;
-        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
-            Items[key].StartBlock();
+        foreach (var key in Strum.SlotItem.Indexes)
+            Items[key].Core.StartBlock();
     }
 
     public void DoneBlockAllItems() {
         BlockedAllItems = false;
-        for (PlayerTrigger.Item key = default; key < PlayerTrigger.Item.COUNT; ++key)
-            Items[key].DoneBlock();
+        foreach (var key in Strum.SlotItem.Indexes)
+            Items[key].Core.DoneBlock();
     }
+
+    #endregion
 }

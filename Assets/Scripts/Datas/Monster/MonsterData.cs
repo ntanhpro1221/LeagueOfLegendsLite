@@ -4,10 +4,10 @@ using Unity.Entities;
 
 [Serializable]
 public struct MonsterData : IBlobBuildable<MonsterDataManaged>, IBlobBuildableSelf<MonsterData> {
-    public BubleEnMap<StatsType, float_Q3>  stats;
-    public BubleEnMap<BountyType, float_Q3> bounty;
-    public int                              leashRange;
-    public uint                             respawnCDTick;
+    public BubleEnMap<StatId, float_Q3>   stats;
+    public BubleEnMap<BountyId, float_Q3> bounty;
+    public int                            leashRange;
+    public uint                           respawnCDTick;
 
     public void BuildBlob(ref BlobBuilder builder, MonsterDataManaged source) {
         stats.BuildBlob(ref builder, source.stats);
@@ -16,10 +16,7 @@ public struct MonsterData : IBlobBuildable<MonsterDataManaged>, IBlobBuildableSe
 
         leashRange = source.leashRange;
 
-        respawnCDTick = TickHelpers.CountTick(
-            source.respawnCDTime
-          , source.staticTickRate
-          , TickHelpers.RoundMethod.Nearest);
+        respawnCDTick = TickHelpers.CountTick(source.respawnCDTime, GameSO.TickRate, TickHelpers.RoundMethod.Nearest);
     }
 
     public void BuildBlob(ref BlobBuilder builder, ref MonsterData source) {

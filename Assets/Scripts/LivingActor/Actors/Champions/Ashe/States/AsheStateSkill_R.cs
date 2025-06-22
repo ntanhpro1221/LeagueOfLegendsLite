@@ -24,51 +24,20 @@ public static partial class AsheStateSkill_R {
             selectLookup.Update(ref state);
 
             var curTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
-
+            
             foreach (var (
                     filter
-                  , sharedState
-                  , health
-                  , aimedTarget
-                  , stateData
-                  , input
-                  , itemRequest)
+                  , common
+                  , commonChamp
+                  , stateData)
                 in SystemAPI.Query<
                     StateFilterAspect
-                  , ActorSharedStateAspect
-                  , HealthAspectRO
-                  , AimedTargetAspectRO
-                  , RefRO<CommonItemActiveStateData>
-                  , PlayerInputAspectRO
-                  , RefRO<ItemActiveNewStateRequestData>>()) {
-
-                // DEAD STATE
-                if (health.IsDead) // Run out of health
-                    sharedState.SetDead();
-
-                // BLOCK ALL OTHER STATE WHEN HASN'T PERFORMED YET
-                else if (!stateData.ValueRO.performData.isPerformed)
-                    continue;
-
-                // ITEM ANALYZING STATE
-                else if (itemRequest.ValueRO.haveRequest)
-                    sharedState.SetItemActiveAnalyzing();
-
-                // MOVE STATE
-                else if (input.MoveEvent_WithData) // Have move request
-                    sharedState.SetMove();
-
-                // ATTACK STATE
-                else if (aimedTarget.IsTargetExists(selectLookup)) // Have target
-                    sharedState.SetAttack();
-
-                // IDLE STATE
-                else if (curTick.IsNewerThan(stateData.ValueRO.performData.doneTick)) // Completely done skill
-                    sharedState.SetIdle();
-                else continue;
-
-                filter.MarkExitExecuted();
-            }
+                  , CommonExitStateAspect
+                  , CommonExitStateAspect_Champion
+                  , RefRW<ItemCommonStateData>>())
+                if (SMHelpers.TryExit<Skill_R_State>.ItemCommon(filter, common, commonChamp, stateData.ValueRO, selectLookup, curTick)) {
+                    // Do something when exit here
+                }
         }
     }
 
@@ -92,17 +61,15 @@ public static partial class AsheStateSkill_R {
                 ) in SystemAPI.Query<
                 StateFilterAspect
               , SharedAnimAspect
-              , RefRW<CommonItemActiveStateData>
+              , RefRW<ItemCommonStateData>
               , RefRO<SharedAnimData>
               , RefRW<RotationData>>()) {
                 anim.SetAnim(SharedAnimKey.Skill_R);
 
                 var animTick = animData.ValueRO.AnimLengthTicks[SharedAnimKey.Skill_R];
-                stateData.ValueRW.performData.Enter(
-                    _performTick: curTick.WithBonusTick((uint)(animTick * 0.2))
-                  , _doneTick: curTick.WithBonusTick(animTick));
+                stateData.ValueRW.performData.Enter(curTick, animTick, 0.2f);
 
-                rotation.ValueRW.RotateTo(stateData.ValueRO.inputForActive.direction);
+                rotation.ValueRW.RotateTo(stateData.ValueRO.input.direction);
             }
         }
     }
@@ -115,14 +82,15 @@ public static partial class AsheStateSkill_R {
 
         [BurstCompile]
         public void OnCreate(ref SystemState state) {
+            state.RequireForUpdate<AllItemData>();
             state.RequireForUpdate<NetworkTime>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state) {
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var allItem = SystemAPI.GetSingleton<AllItemData>();
+            var ecb     = new EntityCommandBuffer(Allocator.Temp);
 
-            // DO MELEE ATTACK
             foreach (var (
                 _
               , data
@@ -137,10 +105,10 @@ public static partial class AsheStateSkill_R {
                 data.StateData.performData.MarkPerformed();
 
                 if (!netTime.IsFirstTimeFullyPredictingTick) continue;
-                ref var item  = ref data.ItemData.Static[PlayerTrigger.Item.Skill_R];
-                var     level = data.ItemData.Dynamic[(int)PlayerTrigger.Item.Skill_R].level;
+                ref var item  = ref data.ItemSlots.GetItemDataUnsafe(SlotItemId.Skill_R, allItem);
+                var     level = data.ItemSlots.Slots.Skill_R.level;
 
-                var direction = quaternion.LookRotation(data.StateData.inputForActive.direction.Full, math.up());
+                var direction = quaternion.LookRotation(data.StateData.input.direction.Full, math.up());
                 var spawnPoint = LocalTransform.FromPositionRotation(data.Position, direction)
                     .TransformPoint(data.ProjectileSpawnPoint.position);
 
@@ -173,17 +141,17 @@ public static partial class AsheStateSkill_R {
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<CommonItemActiveStateData> _StateData;
+            private readonly RefRW<ItemCommonStateData> _StateData;
             private readonly RefRO<LocalTransform>            _LocTrans;
             private readonly RefRO<ProjectileSpawnPoint>      _ProjectileSpawnPoint;
             private readonly RefRO<TeamTypeData>              _TeamData;
 
             [ReadOnly] public readonly DynamicBuffer<AsheSkill_R.PrefabBuffer> PrefabBuffer;
 
-            public readonly ItemDataAspectRO              ItemData;
+            public readonly ItemSlotsAspectRO              ItemSlots;
             public readonly ScalerPersonalConstructAspect PersonalConstructor;
 
-            public ref CommonItemActiveStateData StateData => ref _StateData.ValueRW;
+            public ref ItemCommonStateData StateData => ref _StateData.ValueRW;
 
             public ref readonly float3        Position             => ref _LocTrans.ValueRO.Position;
             public ref readonly InitTransform ProjectileSpawnPoint => ref _ProjectileSpawnPoint.ValueRO.point;
@@ -203,10 +171,8 @@ public static partial class AsheStateSkill_R {
             RefRO<AsheTag> IStateAspect<AsheTag, Skill_R_State>. Identity => _identity;
             RefRO<Simulate> IStateAspect<AsheTag, Skill_R_State>.Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<AsheTag, Skill_R_State>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<Skill_R_State> IStateExitAspect<AsheTag, Skill_R_State>.    CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<Skill_R_State>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<Skill_R_State> IStateExitFunc<Skill_R_State>.    CurStateEnable    => _curStateEnable;
         }
     }
 

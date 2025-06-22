@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64366a5b3a8e422e85db2a118594d2c6, type: 3}
+  m_Name: Stats
+  m_EditorClassIdentifier: 
+  <Lib>k__BackingField:
+    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+    _Values:
+    - _Value: {r: 0.38431373, g: 0.8745098, b: 0.5529412, a: 1}
+    - _Value: {r: 0, g: 0.6, b: 0.8, a: 1}
+    - _Value: {r: 0.9411765, g: 0.9019608, b: 0.8235294, a: 1}
+    - _Value: {r: 0.9490196, g: 0.7294118, b: 0.34117648, a: 1}
+    - _Value: {r: 0.31764707, g: 0.87058824, b: 0.99607843, a: 1}
+    - _Value: {r: 0.9411765, g: 0.9019608, b: 0.8235294, a: 1}
+    - _Value: {r: 0.12941177, g: 0.6039216, b: 0.36862746, a: 1}
+    - _Value: {r: 0, g: 0.59607846, b: 0.7921569, a: 1}
+    - _Value: {r: 0.9137255, g: 0.20392157, b: 0.105882354, a: 1}
+    - _Value: {r: 0.90588236, g: 0.5254902, b: 0.19215687, a: 1}
+    - _Value: {r: 0.47058824, g: 0.42352942, b: 1, a: 1}
+    - _Value: {r: 1, g: 0.90588236, b: 0.54901963, a: 1}
+    - _Value: {r: 1, g: 1, b: 1, a: 1}
+    - _Value: {r: 0.9372549, g: 0.8980392, b: 0.81960785, a: 1}
+    - _Value: {r: 0.8392157, g: 0.1254902, b: 0.25882354, a: 1}
+    - _Value: {r: 0.8862745, g: 0.12941177, b: 0.25882354, a: 1}
+    - _Value: {r: 0.6431373, g: 0.3529412, b: 0.8, a: 1}
+    - _Value: {r: 0.88235295, g: 0.36078432, b: 0.30980393, a: 1}
+    - _Value: {r: 0.5254902, g: 0.4, b: 1, a: 1}
+    - _Value: {r: 0.38431373, g: 0.8745098, b: 0.5529412, a: 1}
+    _KeyNames:
+    - Health
+    - Mana
+    - MoveSpeed
+    - Armor
+    - MagicRes
+    - AttackRange
+    - HealthRegen
+    - ManaRegen
+    - CritChance
+    - PhysicDamage
+    - MagicDamage
+    - AttackSpeed
+    - UnitRadius
+    - AbilityHaste
+    - LifeSteal
+    - Omnivamp
+    - MagicPen
+    - ArmorPen
+    - Tenacity
+    - HealShieldPower
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 69c94fa5ef0b0634f5986c054cc11b42
+    _KeySynced: 1

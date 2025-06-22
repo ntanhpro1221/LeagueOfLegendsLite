@@ -1,0 +1,175 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Tests/StrumGenerator.Tests.csproj": {}
+  },
+  "projects": {
+    "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Tests/StrumGenerator.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Tests/StrumGenerator.Tests.csproj",
+        "projectName": "StrumGenerator.Tests",
+        "projectPath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Tests/StrumGenerator.Tests.csproj",
+        "packagesPath": "/home/ngdtuanh/.nuget/packages/",
+        "outputPath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ngdtuanh/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/StrumGenerator.csproj": {
+                "projectPath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/StrumGenerator.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit": {
+              "target": "Package",
+              "version": "[1.1.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.6.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.4, 9.0.4]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.105/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/StrumGenerator.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/StrumGenerator.csproj",
+        "projectName": "StrumGenerator",
+        "projectPath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/StrumGenerator.csproj",
+        "packagesPath": "/home/ngdtuanh/.nuget/packages/",
+        "outputPath": "/home/ngdtuanh/Unity/Projects/TestInterpolation/Assets/SourceGenerator/Source~/StrumGenerator/StrumGenerator/StrumGenerator/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ngdtuanh/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.Analyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.3.4, )"
+            },
+            "Microsoft.CodeAnalysis.CSharp": {
+              "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "Microsoft.CodeAnalysis.CSharp.Workspaces": {
+              "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.105/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

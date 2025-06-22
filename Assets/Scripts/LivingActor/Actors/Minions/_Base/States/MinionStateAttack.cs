@@ -63,7 +63,7 @@ public static partial class MinionStateAttack {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<AttackState>.MarkExitExecuted(filter);
 
                 // restart attack cooldown if not actually dealt damage yet
                 if (!attackData.ValueRO.isAttacked)
@@ -186,10 +186,8 @@ public static partial class MinionStateAttack {
             RefRO<MinionTag> IStateAspect<MinionTag, AttackState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<MinionTag, AttackState>. Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MinionTag, AttackState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<AttackState> IStateExitAspect<MinionTag, AttackState>.      CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<AttackState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<AttackState> IStateExitFunc<AttackState>.      CurStateEnable    => _curStateEnable;
         }
     }
 

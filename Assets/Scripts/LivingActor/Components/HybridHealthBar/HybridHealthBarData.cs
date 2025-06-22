@@ -16,7 +16,7 @@ public struct HybridHealthBarData : ICleanupComponentData {
 
         public void Init(in HybridHealthBarInitRequest spawnRequest) {
             // spawn
-            var healthBar = Object.Instantiate(spawnRequest.dynamicHealthBarPrefab.Value, MainCanvasRoot.Instance.HealthBarRoot);
+            var healthBar = Object.Instantiate(spawnRequest.dynamicHealthBarPrefab.Value, CanvasInspector.Instance.HealthBarRoot);
 
             // Link healthBar with HybridHealthBarData
             deltaY        = spawnRequest.deltaY;

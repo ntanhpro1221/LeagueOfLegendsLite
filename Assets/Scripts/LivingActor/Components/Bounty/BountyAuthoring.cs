@@ -1,11 +1,14 @@
+using System;
+using NGDtuanh.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
-/// <summary>
-/// Index = (int)<see cref="BountyType"/>
-/// </summary>
-public struct BountyData : IComponentData, IEnableableComponent {
+public interface IHaveBountyManaged {
+    CovEnumMap<BountyId, float_Q3> Bounty { get; }
+}
+
+public struct BountyData : IComponentData {
     [GhostField] public Strum.Bounty.Fields<float_Q3> data;
 }
 
@@ -15,14 +18,25 @@ public struct BountyTriggerData : IComponentData {
     [GhostField] public Entity lastHitEntity;
 }
 
+[RequireComponent(typeof(IRaceTag))]
 public class BountyAuthoring : MonoBehaviour {
     private class Baker : ExtendBaker<BountyAuthoring> {
         public override void Bake(BountyAuthoring authoring) {
+            if (ActorAuthoringHelpers.IsBaseRace(authoring)) return;
+            
             GetDynamicEntity(out var entity);
 
-            AddComponentDisabled<BountyData>(entity);
             AddComponentDisabled<BountyTrigger>(entity);
             AddComponent<BountyTriggerData>(entity);
+
+            var source = ActorAuthoringHelpers.ExtractDataFromTag(authoring);
+            if (source is not IHaveBountyManaged bountySource)
+                throw new Exception(
+                    $"NGDtuanh: {authoring.name}'s data must have bounty");
+            BountyData bountyData = default;
+            foreach (var index in Strum.Bounty.Indexes)
+                bountyData.data[index] = bountySource.Bounty[index];
+            AddComponent(entity, bountyData);
         }
     }
 }

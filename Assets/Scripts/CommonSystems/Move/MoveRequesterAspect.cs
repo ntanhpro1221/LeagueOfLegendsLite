@@ -1,6 +1,5 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
 
 public readonly partial struct MoveRequesterAspect : IAspect {
@@ -9,9 +8,11 @@ public readonly partial struct MoveRequesterAspect : IAspect {
     private readonly RefRW<WaypointRequestData>    _RequestData;
     private readonly RefRW<PathHandlingData>       _HandlingData;
     private readonly RefRW<RotationData>           _RotationData;
+    private readonly RefRW<MoveSpeedOverrideData>  _SpeedOverrideData;
 
     [Optional] private readonly EnabledRefRW<NeedHandleWaypointRequest> _RequestTrigger;
     [Optional] private readonly EnabledRefRW<PathIsHandling>            _HandlingTrigger;
+    [Optional] private readonly EnabledRefRW<MoveSpeedOverride>         _SpeedOverrideTrigger;
 
     public bool IsMoveDone =>
         _MoveData.ValueRO.isMoveDone
@@ -27,12 +28,6 @@ public readonly partial struct MoveRequesterAspect : IAspect {
         ? _HandlingData.ValueRO.newPID.end
         : _Waypoints[0].pos;
 
-    public bool NeedRecalculatePath(float3 newDes) =>
-        // Not have waypoint or
-        WaypointIsEmpty
-        // Des of waypoint if too far to expected des
-     || GameHelpers.DistanceXZ_Sqr(WaypointDestination, newDes) > 1;
-
     /// <summary>
     /// This method is high-performance
     /// </summary>
@@ -45,6 +40,13 @@ public readonly partial struct MoveRequesterAspect : IAspect {
         _Waypoints.Resize(1, NativeArrayOptions.ClearMemory);
         _Waypoints.FrontRW().pos = targetLocPos;
     }
+
+    public void OverrideSpeed(float_Q3 speed) {
+        _SpeedOverrideTrigger.ValueRW    = true;
+        _SpeedOverrideData.ValueRW.speed = speed;
+    }
+
+    public void DisableOverrideSpeed() => _SpeedOverrideTrigger.ValueRW = false;
 
     public static void MoveStraightTo(ref EntityCommandBuffer ecb, in Entity entity, float3_Q3 des) {
         var buffer = ecb.SetBuffer<WaypointBuffer>(entity);

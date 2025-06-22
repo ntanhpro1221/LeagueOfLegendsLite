@@ -6,8 +6,11 @@ public struct MonsterTag : IComponentData {
 }
 
 [RequireComponent(typeof(JungleTeamTypeAuthoring))]
-public class MonsterTagAuthoring : MonoBehaviour {
+public class MonsterTagAuthoring : MonoBehaviour, IRaceTag {
     public MonsterId id;
+
+    public int    TagInt => (int)id;
+    public RaceId Race   => RaceId.Monster;
 
     private class Baker : Baker<MonsterTagAuthoring> {
         public override void Bake(MonsterTagAuthoring authoring) {

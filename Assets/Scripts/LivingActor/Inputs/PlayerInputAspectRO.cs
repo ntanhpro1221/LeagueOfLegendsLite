@@ -7,5 +7,5 @@ public readonly partial struct PlayerInputAspectRO : IAspect {
     public ref readonly PlayerInputData        Input    => ref _Input.ValueRO;
     public ref readonly PlayerTrigger.PrevCode PrevCode => ref _PrevCode.ValueRO;
 
-    public bool MoveEvent_WithData => this.GetEvent_WithData(PlayerTrigger.Other.Move);
+    public bool MoveEvent_WithData => this.GetEvent_WithData(InputRequestId.Move);
 }

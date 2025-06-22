@@ -2,10 +2,10 @@ using System;
 
 [Serializable]
 public struct Scaler {
-    public Factor    factor;
-    public Source    source;
-    public StatsType stat;
-    public float_Q3  ratio;
+    public Factor   factor;
+    public Source   source;
+    public StatId   stat;
+    public float_Q3 ratio;
 
     public readonly void Apply(ref float_Q3 origin, in Metadata metadata) =>
         origin += metadata.GetFactor(source, factor, stat) * ratio;
@@ -67,7 +67,7 @@ public static class ScalerExtensions {
         this in Scaler.Metadata metadata
       , Scaler.Source           source
       , Scaler.Factor           factor
-      , StatsType               stat) {
+      , StatId                  stat) {
         ref readonly var personal = ref metadata.GetSource(source);
         return factor switch {
             Scaler.Factor.Stat   => personal.stats[stat]

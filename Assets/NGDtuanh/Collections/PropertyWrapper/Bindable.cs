@@ -8,19 +8,31 @@ namespace NGDtuanh.Collections {
     /// </summary>
     [Serializable]
     public class Bindable<TValue> : WrapperBase<TValue> {
-        [SerializeField] private UnityEvent<TValue> _OnChanged = new();
+        public delegate void OnValueChangedDel(in TValue oldVal, in TValue newVal);
+
+        public event OnValueChangedDel OnBeforeChanged;
 
         public override TValue Value {
-            get => _Value;
-            set {
-                if (!Equals(value)) _OnChanged.Invoke(_Value = value);
-            }
+            set => ChangeValue(value);
         }
 
-        public Bindable(in TValue                               value) : base(value) { }
+        /// <returns>True when value is changed.</returns>
+        public bool ChangeValue(in TValue newVal) {
+            if (Equals(newVal)) return false;
+
+            ForceAssignAndUpdate(newVal);
+            return true;
+        }
+
+        public Bindable() { }
+        public Bindable(in TValue         value) : base(value) { }
+        public Bindable(OnValueChangedDel onChanged) => OnBeforeChanged += onChanged;
+
         public static implicit operator Bindable<TValue>(TValue value) => new(value);
 
-        public void AddListener(UnityAction<TValue>    callback) => _OnChanged.AddListener(callback);
-        public void RemoveListener(UnityAction<TValue> callback) => _OnChanged.RemoveListener(callback);
+        public void ForceAssignAndUpdate(in TValue newValue) {
+            OnBeforeChanged?.Invoke(oldVal: _Value, newVal: newValue);
+            _Value = newValue;
+        }
     }
 }

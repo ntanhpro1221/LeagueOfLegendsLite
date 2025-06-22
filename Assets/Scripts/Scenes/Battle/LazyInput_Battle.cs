@@ -1,0 +1,1 @@
+public class LazyInput_Battle : ILazyInput<GlobalInputAction> { }

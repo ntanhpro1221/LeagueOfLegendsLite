@@ -5,29 +5,32 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(EffectIconUI))]
 public class HealthBarUI : MonoBehaviour {
     public struct UpdateData {
-        public float maxHealth;
-        public float curHealth;
-        public float curArmor;
-        public float maxMana;
-        public float curMana;
-        public int   curLevel;
-        public float curExp;
-        public float requiredExp;
-        public bool  ignoreLostHealthEffect;
+        public float_Q3 maxHealth;
+        public float_Q3 curHealth;
+        public float_Q3 healthRegen;
+        public float_Q3 curArmor;
+        public float_Q3 maxMana;
+        public float_Q3 curMana;
+        public float_Q3 manaRegen;
+        public int      curLevel;
+        public float_Q3 curExp;
+        public float_Q3 requiredExp;
+        public bool     ignoreLostHealthEffect;
     }
 
     public void UpdateUI(in UpdateData updateData) {
         SetHealth(
-            updateData.maxHealth
-          , updateData.curHealth
-          , updateData.curArmor
-          , updateData.ignoreLostHealthEffect);
+            maxHealth: updateData.maxHealth
+          , curHealth: updateData.curHealth
+          , healthRegen: updateData.healthRegen
+          , curArmor: updateData.curArmor
+          , ignoreLostHealthEffect: updateData.ignoreLostHealthEffect);
         SetMana(
-            updateData.maxMana
-          , updateData.curMana);
+            maxMana: updateData.maxMana
+          , curMana: updateData.curMana
+          , manaRegen: updateData.manaRegen);
         SetLevel(
             updateData.curLevel
           , updateData.curExp
@@ -51,16 +54,18 @@ public class HealthBarUI : MonoBehaviour {
     [SerializeField] private Image           LostHealth;
     [SerializeField] private float           LostHealthDuration;
     [SerializeField] private TextMeshProUGUI HealthText;
+    [SerializeField] private TextMeshProUGUI HealthRegenText;
 
     private float prevMaxHealthArmorFill;
 
     private TweenerCore<float, float, FloatOptions> LostHealthTween;
 
     private void SetHealth(
-        float maxHealth
-      , float curHealth
-      , float curArmor
-      , bool  ignoreLostHealthEffect) {
+        float_Q3 maxHealth
+      , float_Q3 curHealth
+      , float_Q3 healthRegen
+      , float_Q3 curArmor
+      , bool     ignoreLostHealthEffect) {
 
         float maxHealthWithArmor    = Mathf.Max(maxHealth, curHealth + curArmor);
         float curMaxHealthArmorFill = 0;
@@ -77,7 +82,8 @@ public class HealthBarUI : MonoBehaviour {
                 LostHealthTween.ChangeValues(prevMaxHealthArmorFill, curMaxHealthArmorFill).Restart();
         }
 
-        if (HealthText != null) HealthText.text = $"{(int)curHealth} / {(int)maxHealth}";
+        if (HealthText      != null) HealthText.text      = $"{curHealth:int} / {maxHealth:int}";
+        if (HealthRegenText != null) HealthRegenText.text = $"+{healthRegen:int}";
 
         prevMaxHealthArmorFill = curMaxHealthArmorFill;
     }
@@ -91,10 +97,15 @@ public class HealthBarUI : MonoBehaviour {
     [SerializeField] private Image Mana;
 
     [SerializeField] private TextMeshProUGUI ManaText;
+    [SerializeField] private TextMeshProUGUI ManaRegenText;
 
-    private void SetMana(float maxMana, float curMana) {
-        if (Mana     != null) Mana.fillAmount = curMana / Mathf.Max(1, maxMana);
-        if (ManaText != null) ManaText.text   = $"{(int)curMana} / {(int)maxMana}";
+    private void SetMana(
+        float_Q3 maxMana
+      , float_Q3 curMana
+      , float_Q3 manaRegen) {
+        if (Mana          != null) Mana.fillAmount    = curMana / Mathf.Max(1, maxMana);
+        if (ManaText      != null) ManaText.text      = $"{curMana:int} / {maxMana:int}";
+        if (ManaRegenText != null) ManaRegenText.text = $"+{manaRegen:int}";
     }
 
 #endregion
@@ -109,7 +120,10 @@ public class HealthBarUI : MonoBehaviour {
     [SerializeField] private float MinScale = 0;
     [SerializeField] private float MaxScale = 1;
 
-    private void SetLevel(int level, float curExp, float requiredExp) {
+    private void SetLevel(
+        int      level
+      , float_Q3 curExp
+      , float_Q3 requiredExp) {
         if (Level != null) Level.text     = level.ToString();
         if (Exp   != null) Exp.fillAmount = Mathf.Lerp(MinScale, MaxScale, curExp / requiredExp);
     }

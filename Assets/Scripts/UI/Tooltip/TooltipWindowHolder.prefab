@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6198009472658864448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7460531882702233586}
+  - component: {fileID: 8591932656436336356}
+  m_Layer: 5
+  m_Name: TooltipWindowHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7460531882702233586
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198009472658864448}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8591932656436336356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198009472658864448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141e992d386f7b021bac825673d51ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Prefabs:
+    _Keys: 00000000010000000200000003000000
+    _Values:
+    - _Value: {fileID: 1377865066363939930, guid: 495479292bfe1fac0a3d3ac15acfe7dc, type: 3}
+    - _Value: {fileID: 5667935257210702105, guid: dd5b59475680bffe9a3671ae8ee80079, type: 3}
+    - _Value: {fileID: 712375912895414852, guid: 7a9128e912655be5993f61cfb1d2d7bb, type: 3}
+    - _Value: {fileID: 2664337461142200180, guid: e6f670900c8a73f148bf0e19fa15328a, type: 3}
+    _KeyNames:
+    - EffectBar
+    - Item
+    - Simple
+    - Skill
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 2140e0bafb541d65333cd6e0f4128d1f
+    _KeySynced: 1

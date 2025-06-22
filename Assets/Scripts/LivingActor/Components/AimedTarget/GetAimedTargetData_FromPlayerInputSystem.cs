@@ -22,7 +22,7 @@ public partial struct GetAimedTargetData_FromPlayerInputSystem : ISystem {
     public partial struct Job : IJobEntity {
         [BurstCompile]
         public void Execute(ref AimedTargetData target, in PlayerInputData inputData) {
-            target.target = inputData.attackTarget;
+            target.target = inputData.requestData.attackTarget;
         }
     }
 }

@@ -33,7 +33,7 @@ public static partial class InhibitorStateIdle2Dead {
                 }
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<Idle2DeadState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -79,10 +79,8 @@ public static partial class InhibitorStateIdle2Dead {
             RefRO<InhibitorTag> IStateAspect<InhibitorTag, Idle2DeadState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<InhibitorTag, Idle2DeadState>.    Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<InhibitorTag, Idle2DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<Idle2DeadState> IStateExitAspect<InhibitorTag, Idle2DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<Idle2DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<Idle2DeadState> IStateExitFunc<Idle2DeadState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

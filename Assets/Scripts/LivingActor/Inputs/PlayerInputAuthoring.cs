@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
@@ -7,46 +6,42 @@ public struct PlayerInputData : IInputComponentData {
     public void ResetAllEvents() {
         triggers.Event = default;
     }
-    
+
     [GhostField] public InputForActivableItemData inputForActivableItem;
     [GhostField] public ItemActiveCondition       curCondition;
     [GhostField] public PlayerTrigger.Full        triggers;
+    [GhostField] public RequestData               requestData;
 
-#region UPDATE SKILL
-
-    [GhostField] public PlayerTrigger.Item skillToUpgrade;
-
-    public void SetUpdateSkill(PlayerTrigger.Item _skillToUpgrade) {
-        skillToUpgrade = _skillToUpgrade;
-        triggers.Set(PlayerTrigger.Other.UpgradeSkill);
-    }
-
-#endregion
-    
-#region MOVE
-
-    [GhostField] public float3_Q3 moveLocTarget;
+    #region MOVE
 
     public void SetMove(float3_Q3 _targetLocalPos) {
-        moveLocTarget = _targetLocalPos;
-        triggers.Set(PlayerTrigger.Other.Move);
+        requestData.moveLocTarget = _targetLocalPos;
+        triggers.Set(InputRequestId.Move);
     }
 
     public void CancelMove() {
-        triggers.Set(PlayerTrigger.Other.CancelMove);
+        triggers.Set(InputRequestId.CancelMove);
     }
 
-#endregion
+    #endregion
 
-#region ATTACK
+    #region ATTACK
 
-    [GhostField] public Entity attackTarget;
+    public void SetAttack(Entity target) => requestData.attackTarget = target;
 
-    public void SetAttack(Entity target) => attackTarget = target;
+    public void CancelAttack() => requestData.attackTarget = Entity.Null;
 
-    public void CancelAttack() => attackTarget = Entity.Null;
+    #endregion
 
-#endregion
+    public struct RequestData {
+        public ItemId     itemToBuy;
+        public SlotItemId itemSlotToSell;
+        public SlotItemId itemSlotToMove;
+        public SlotItemId itemSlotMoveTarget;
+        public SlotItemId skillToUpgrade;
+        public float3_Q3  moveLocTarget;
+        public Entity     attackTarget;
+    }
 }
 
 [GhostEnabledBit]

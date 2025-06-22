@@ -9,7 +9,6 @@ public partial struct InputDirtyUpdateSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<InputDirtyData>();
-        state.RequireForUpdate<InputDirtyData.ActivableItemBuffer>();
     }
 
     public void OnUpdate(ref SystemState state) {
@@ -17,9 +16,8 @@ public partial struct InputDirtyUpdateSystem : ISystem {
 
         UpdateRay(ref state, ref inputData);
         UpdateMouseButtons(ref state, ref inputData);
-        UpdateSkillRequest(ref state, ref inputData);
-        UpdateKeyboardButtons(ref state
-          , ref inputData, SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: false));
+        UpdatePlayerRequest(ref state, ref inputData);
+        UpdateKeyboardButtons(ref state, ref inputData);
         inputData.isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
@@ -37,18 +35,22 @@ public partial struct InputDirtyUpdateSystem : ISystem {
         inputData.mouse_right = mouse.rightButton.GetButtonState();
     }
 
-    private void UpdateSkillRequest(ref SystemState state, ref InputDirtyData inputData) {
-        inputData.haveSkillUpgradeRequest = PlayerHUD.Instance.ActivableItems
-            .PopOutUpdateSkillRequest(out inputData.skillToUpgrade);
+    private void UpdatePlayerRequest(ref SystemState state, ref InputDirtyData inputData) {
+        var requestHub = PlayerRequestHub.Instance;
+
+        foreach (var request in Strum.InputRequest.Indexes)
+            inputData.requestTrigger[request] = requestHub.PopEvent(request);
+
+        inputData.requestData = requestHub.Data;
     }
 
-    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData, DynamicBuffer<InputDirtyData.ActivableItemBuffer> inputBuffer) {
+    private void UpdateKeyboardButtons(ref SystemState state, ref InputDirtyData inputData) {
         var keyboard = Keyboard.current;
 
         inputData.key_a = keyboard.aKey.GetButtonState();
         inputData.key_s = keyboard.sKey.GetButtonState();
 
-        for (int i = 0; i < PlayerTrigger.ITEM_COUNT; ++i)
-            inputBuffer.ElementAt(i).key = keyboard[((PlayerTrigger.Item)i).ToKeyboard()].GetButtonState();
+        foreach (var key in Strum.SlotItem.Indexes)
+            inputData.activableItem[key] = keyboard[key.ToKeyboard()].GetButtonState();
     }
 }

@@ -1,0 +1,1 @@
+public class Tooltip_Item : ITooltip<TooltipWindow_Item> { }

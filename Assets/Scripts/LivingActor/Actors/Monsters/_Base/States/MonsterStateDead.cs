@@ -39,7 +39,8 @@ public static partial class MonsterStateDead {
                     else data.Destroy();
                 } else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<DeadState>.MarkExitExecuted(filter);
+                
                 if (data.CanRespawn) {
                     data.LocalTrans = initTrans[filter.Id][data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
                     data.CurHealth  = data.MaxHealth;                                               // Respawn with full health
@@ -244,10 +245,8 @@ public static partial class MonsterStateDead {
             RefRO<Simulate> IStateAspect<MonsterTag, DeadState>.                                 Simulate   => _simulate;
             RefRO<Update.InheritTag> IStateInheritable<MonsterTag, DeadState, Update.InheritTag>.InheritTag => _inheritTag;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MonsterTag, DeadState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<DeadState> IStateExitAspect<MonsterTag, DeadState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<DeadState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<DeadState> IStateExitFunc<DeadState>.        CurStateEnable    => _curStateEnable;
 
             public MonsterId Id => _identity.ValueRO.id;
         }

@@ -10,22 +10,21 @@ public static partial class InhibitorStateIdle {
             foreach (var (
                     filter
                   , health
-                    , transition
+                  , transition
                   , sharedState)
                 in SystemAPI.Query<
                     StateFilterAspect
                   , HealthAspectRO
-                    , TransitionStateAspectRW
+                  , TransitionStateAspectRW
                   , ActorSharedStateAspect>()) {
 
                 // IDLE_2_DEAD STATE
                 if (health.IsDead) { // RUN OUT OF HEALTH
                     sharedState.SetIdle2Dead();
                     transition.HardCutAnim = true;
-                }
-                else continue;
+                } else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -43,10 +42,8 @@ public static partial class InhibitorStateIdle {
             RefRO<InhibitorTag> IStateAspect<InhibitorTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<InhibitorTag, IdleState>.    Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<InhibitorTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<InhibitorTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 }

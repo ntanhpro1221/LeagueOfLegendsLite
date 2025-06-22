@@ -18,6 +18,7 @@ public class TooltipWindow_Skill : ITooltipWindow {
     private List<float_Q3>       _CooldownTime;
     private List<ItemActiveCost> _ActiveCost;
 
+    private int           _CachedCurrentLevel = -1;
     private int           _MaxLevel;
     private bool          _InDetails;
     private ButtonControl _ShiftBtn;
@@ -58,11 +59,11 @@ public class TooltipWindow_Skill : ITooltipWindow {
         UpdateLevel(1);
     }
 
-    public void UpdateCooldown(float cooldown) =>
-        _Costs.text = cooldown.ToString(CultureInfo.InvariantCulture);
-
     /// <param name="newLevel">Start from 1</param>
     public void UpdateLevel(int newLevel) {
+        if (newLevel == _CachedCurrentLevel) return;
+        _CachedCurrentLevel = newLevel;
+
         if (_MaxLevel == 0) {
             _MainText.text = _MainText_Dynamic.RawSource;
             _Details.text  = _Details_Dynamic.RawSource;
@@ -70,16 +71,11 @@ public class TooltipWindow_Skill : ITooltipWindow {
             return;
         }
 
-        --newLevel;
-        _MainText.text = _MainText_Dynamic.Generate(newLevel);
-        _Details.text  = _Details_Dynamic.Generate(newLevel);
-        CostsUpdate(newLevel);
-    }
-
-    private void CostsUpdate(int newLevel) {
-        newLevel = Mathf.Max(0, newLevel);
+        int levelIndex = Mathf.Max(0, newLevel - 1);
+        _MainText.text = _MainText_Dynamic.Generate(levelIndex);
+        _Details.text  = _Details_Dynamic.Generate(levelIndex);
         _Costs.text =
-            $"{_CooldownTime[newLevel]}s Cooldown"
-          + $"\n{_ActiveCost[newLevel].mana} Mana";
+            $"{_CooldownTime[levelIndex]:int}s Cooldown <sprite name=cooldown>"
+          + $"\n{_ActiveCost[levelIndex].mana:int} Mana <sprite name=mana>";
     }
 }

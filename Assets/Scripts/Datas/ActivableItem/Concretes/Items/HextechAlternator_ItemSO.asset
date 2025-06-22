@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ade6d781bb34c078430dcc122124873, type: 3}
+  m_Name: HextechAlternator_ItemSO
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 21300000, guid: ea5b5c8508cebea41971d8fa4dfbfaac, type: 3}
+  itemName: Hextech Alternator
+  description: '<sprite name=magic_damage> <b>45</b> Magic Damage
+
+
+    <b>Revved</b>
+    <sprite name=cooldown> (40s)
+
+    Damaging an enemy champion deals <sprite name=magic_damage>
+    <color=#786CFF>65 bonus magic damage</color>.'
+  details: 
+  activeSettings:
+    isActivable: 0
+    isRequireNewState: 0
+  activeCondition:
+    pointToTarget: 0
+    pointToWalkable: 0
+  maxLevel: 0
+  cooldownTime: []
+  activeCost: []
+  concreteProp:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 099241517edbb1b0e831b8722e52a78f
+    _KeySynced: 1
+  concretePrefab:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 099241517edbb1b0e831b8722e52a78f
+    _KeySynced: 1
+  _PrevMaxLevel: 0

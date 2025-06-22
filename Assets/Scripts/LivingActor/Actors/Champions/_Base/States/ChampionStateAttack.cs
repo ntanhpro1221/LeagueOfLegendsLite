@@ -71,7 +71,7 @@ public static partial class ChampionStateAttack {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<AttackState>.MarkExitExecuted(filter);
 
                 // restart attack cooldown if not actually dealt damage yet
                 if (!attackData.ValueRO.isAttacked)
@@ -192,10 +192,8 @@ public static partial class ChampionStateAttack {
             RefRO<ChampionTag> IStateAspect<ChampionTag, AttackState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ChampionTag, AttackState>.   Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ChampionTag, AttackState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<AttackState> IStateExitAspect<ChampionTag, AttackState>.      CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<AttackState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<AttackState> IStateExitFunc<AttackState>.      CurStateEnable    => _curStateEnable;
         }
     }
 

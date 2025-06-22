@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-public struct float_Q3 : IEquatable<float_Q3> {
+public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
     public const float MULTIPLIER = 1000;
     public const float EPSILON    = 10f / MULTIPLIER;
 
@@ -19,10 +19,16 @@ public struct float_Q3 : IEquatable<float_Q3> {
         this.value = value * (int)MULTIPLIER;
     }
 
-    public bool Equals(float_Q3 other) =>
-        value == other.value;
-
     public override string ToString() => ((float)this).ToString(CultureInfo.CurrentCulture);
+
+    public string ToString(string format, IFormatProvider formatProvider) => format switch {
+        "percent"  => $"{(int)(this * 100)}%"
+      , "int"      => $"{(int)this}"
+      , "float2"   => $"{(float)this:F2}"
+      , null or "" => ToString()
+
+      , _ => throw new ArgumentOutOfRangeException(nameof(format), format, $"Float_Q3 format error: Founded: '{format}'")
+    };
 
 #region CAST
 
@@ -69,6 +75,24 @@ public struct float_Q3 : IEquatable<float_Q3> {
     public static float_Q3 operator /(float_Q3 a, float div) => new() {
         value = Mathf.RoundToInt(a.value / div)
     };
+    
+    public static bool operator <(float_Q3 a, float_Q3 b) => a.value < b.value;
+    
+    public static bool operator >(float_Q3 a, float_Q3 b) => a.value > b.value;
+    
+    public static bool operator <=(float_Q3 a, float_Q3 b) => a.value <= b.value;
+    
+    public static bool operator >=(float_Q3 a, float_Q3 b) => a.value >= b.value;
+    
+    public static bool operator ==(float_Q3 a, float_Q3 b) => a.value == b.value;
+    
+    public static bool operator !=(float_Q3 a, float_Q3 b) => a.value != b.value;
+    
+    public override bool Equals(object obj) => obj is float_Q3 other && Equals(other);
+    
+    public override int GetHashCode() => value.GetHashCode();
+
+    public bool Equals(float_Q3 other) => value == other.value;
 
 #endregion
 

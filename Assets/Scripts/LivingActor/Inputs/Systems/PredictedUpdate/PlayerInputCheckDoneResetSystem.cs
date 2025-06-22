@@ -12,7 +12,7 @@ public partial struct PlayerInputCheckDoneResetSystem : ISystem {
     public partial struct Job : IJobEntity {
         [BurstCompile]
         public void Execute(ref PlayerInputData inputData, EnabledRefRW<PlayerInputResetting> resettingTag) {
-            if (inputData.GetEvent_Only(PlayerTrigger.Other.DoneReset))
+            if (inputData.GetEvent_Only(InputRequestId.DoneReset))
                 resettingTag.ValueRW = false;
         }
     }

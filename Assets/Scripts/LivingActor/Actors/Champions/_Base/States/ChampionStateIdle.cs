@@ -77,7 +77,7 @@ public static partial class ChampionStateIdle {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -140,10 +140,8 @@ public static partial class ChampionStateIdle {
             RefRO<ChampionTag> IStateAspect<ChampionTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<ChampionTag, IdleState>.   Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<ChampionTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<ChampionTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

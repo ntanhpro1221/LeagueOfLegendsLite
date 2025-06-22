@@ -82,7 +82,7 @@ public static partial class MonsterStateIdle {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
 
@@ -170,10 +170,8 @@ public static partial class MonsterStateIdle {
             RefRO<MonsterTag> IStateAspect<MonsterTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<MonsterTag, IdleState>.  Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MonsterTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<MonsterTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

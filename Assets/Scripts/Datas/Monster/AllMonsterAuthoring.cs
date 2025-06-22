@@ -10,8 +10,6 @@ public class AllMonsterAuthoring : MonoBehaviour {
             GetDynamicEntity(out var entity);
 
             AllMonsterData data = new();
-            foreach (var sourceItem in GameSO.Monster.Values)
-                sourceItem.staticTickRate = GameSO.TickRate;
             GameSO.Monster.CreateBlobAssetReferenceInBaker(out data._Ref, this, out _);
             AddComponent(entity, data);
         }

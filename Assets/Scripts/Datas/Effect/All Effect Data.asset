@@ -57,7 +57,7 @@ MonoBehaviour:
               origin:
                 value: -300
               scalers: []
-            statsType: 2
+            statId: 2
         ccDisable:
           <enable>k__BackingField: 0
           flags:
@@ -108,14 +108,8 @@ MonoBehaviour:
                 value: 0
           periodTime: 0
         statBuffs:
-          <enable>k__BackingField: 1
-          buffs:
-          - applyType: 0
-            value:
-              origin:
-                value: 0
-              scalers: []
-            statsType: 0
+          <enable>k__BackingField: 0
+          buffs: []
         ccDisable:
           <enable>k__BackingField: 0
           flags:
@@ -178,7 +172,7 @@ MonoBehaviour:
               origin:
                 value: 0
               scalers: []
-            statsType: 0
+            statId: 0
         ccDisable:
           <enable>k__BackingField: 1
           flags:
@@ -200,5 +194,5 @@ MonoBehaviour:
     - KnockUp
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: f5a2fd7b638f38293da4a99fad576b8e
+      Hash: 8d25d86dd8a6433c10c7be39fb677cad
     _KeySynced: 1

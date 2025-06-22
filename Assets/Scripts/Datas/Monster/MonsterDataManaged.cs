@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class MonsterDataManaged {
-    public CovEnumMap<StatsType, float_Q3>  stats;
-    public CovEnumMap<BountyType, float_Q3> bounty;
+public class MonsterDataManaged : IHaveStatsManaged, IHaveBountyManaged {
+    public CovEnumMap<StatId, float_Q3>     stats;
+    public CovEnumMap<BountyId, float_Q3> bounty;
     public int                              leashRange;
     public float                            respawnCDTime;
 
-    [FormerlySerializedAs("constTickRate")] [HideInInspector]
-    public int staticTickRate;
+    public CovEnumMap<StatId, float_Q3>     Stats  => stats;
+    public CovEnumMap<BountyId, float_Q3> Bounty => bounty;
 }

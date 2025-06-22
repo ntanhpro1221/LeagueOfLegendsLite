@@ -17,7 +17,7 @@ MonoBehaviour:
     _Values:
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 2300000
@@ -46,7 +46,19 @@ MonoBehaviour:
           - _Value:
               value: 120000
           - _Value:
-              value: 120000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -61,13 +73,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 90000
@@ -89,8 +107,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -102,17 +118,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 2300000
@@ -141,7 +156,19 @@ MonoBehaviour:
           - _Value:
               value: 120000
           - _Value:
-              value: 120000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -156,13 +183,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 90000
@@ -184,8 +217,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -197,17 +228,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 2050000
@@ -236,7 +266,19 @@ MonoBehaviour:
           - _Value:
               value: 120000
           - _Value:
-              value: 120000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -251,13 +293,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 90000
@@ -279,8 +327,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -292,17 +338,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 450
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 1600000
@@ -331,7 +376,19 @@ MonoBehaviour:
           - _Value:
               value: 80000
           - _Value:
-              value: 80000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -346,13 +403,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 55000
@@ -374,8 +437,6 @@ MonoBehaviour:
               value: 2000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -387,17 +448,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 630000
@@ -426,7 +486,19 @@ MonoBehaviour:
           - _Value:
               value: 50000
           - _Value:
-              value: 50000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -441,13 +513,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 13000
@@ -469,8 +547,6 @@ MonoBehaviour:
               value: 1000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -482,17 +558,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 1100000
@@ -521,7 +596,19 @@ MonoBehaviour:
           - _Value:
               value: 75000
           - _Value:
-              value: 75000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -536,13 +623,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 35000
@@ -564,8 +657,6 @@ MonoBehaviour:
               value: 2000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -577,17 +668,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 500000
@@ -616,7 +706,19 @@ MonoBehaviour:
           - _Value:
               value: 50000
           - _Value:
-              value: 50000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -631,13 +733,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 8000
@@ -659,8 +767,6 @@ MonoBehaviour:
               value: 400
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -672,17 +778,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 1350000
@@ -711,7 +816,19 @@ MonoBehaviour:
           - _Value:
               value: 100000
           - _Value:
-              value: 100000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -726,13 +843,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 15000
@@ -754,8 +877,6 @@ MonoBehaviour:
               value: 2000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -767,17 +888,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 650000
@@ -806,7 +926,19 @@ MonoBehaviour:
           - _Value:
               value: 50000
           - _Value:
-              value: 50000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -821,13 +953,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 10000
@@ -849,8 +987,6 @@ MonoBehaviour:
               value: 500
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -862,17 +998,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 60000
@@ -901,7 +1036,19 @@ MonoBehaviour:
           - _Value:
               value: 25000
           - _Value:
-              value: 25000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -916,13 +1063,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 14000
@@ -944,8 +1097,6 @@ MonoBehaviour:
               value: 250
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -957,17 +1108,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 650
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 1550000
@@ -996,7 +1146,19 @@ MonoBehaviour:
           - _Value:
               value: 50000
           - _Value:
-              value: 50000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -1011,13 +1173,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 55000
@@ -1039,8 +1207,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -1052,17 +1218,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 0
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 11400000
@@ -1091,7 +1256,19 @@ MonoBehaviour:
           - _Value:
               value: 105000
           - _Value:
-              value: 105000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -1106,13 +1283,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 25000
@@ -1134,8 +1317,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -1147,17 +1328,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 0
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 7125000
@@ -1186,7 +1366,19 @@ MonoBehaviour:
           - _Value:
               value: 110000
           - _Value:
-              value: 110000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -1201,13 +1393,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 100000
@@ -1229,8 +1427,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -1242,17 +1438,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 1200
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 5730000
@@ -1281,7 +1476,19 @@ MonoBehaviour:
           - _Value:
               value: 80000
           - _Value:
-              value: 80000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -1296,13 +1503,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 25000
@@ -1324,8 +1537,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -1337,17 +1548,16 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 1200
         respawnCDTime: 10
         staticTickRate: 60
     - _Value:
         stats:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
               value: 6400000
@@ -1376,7 +1586,19 @@ MonoBehaviour:
           - _Value:
               value: 125000
           - _Value:
-              value: 125000
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
+          - _Value:
+              value: 0
           _KeyNames:
           - Health
           - Mana
@@ -1391,13 +1613,19 @@ MonoBehaviour:
           - MagicDamage
           - AttackSpeed
           - UnitRadius
-          - _COUNT
+          - AbilityHaste
+          - LifeSteal
+          - Omnivamp
+          - MagicPen
+          - ArmorPen
+          - Tenacity
+          - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         bounty:
-          _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+          _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
           _Values:
           - _Value:
               value: 100000
@@ -1419,8 +1647,6 @@ MonoBehaviour:
               value: 4000
           - _Value:
               value: 0
-          - _Value:
-              value: 0
           _KeyNames:
           - Gold_Kill
           - Gold_Team
@@ -1432,10 +1658,9 @@ MonoBehaviour:
           - Exp_Near
           - CreepScore
           - KillScore
-          - _COUNT
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 0f0ff19315b82e6ae11fa89027b2322f
+            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
           _KeySynced: 1
         leashRange: 1200
         respawnCDTime: 10
@@ -1458,5 +1683,5 @@ MonoBehaviour:
     - DragonElder
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 0f0ff19315b82e6ae11fa89027b2322f
+      Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
     _KeySynced: 1

@@ -1,5 +1,4 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -15,17 +14,14 @@ public partial struct PlayerInputUpdateSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.Dependency = new Job {
-            dirtyBuffer = SystemAPI.GetSingletonBuffer<InputDirtyData.ActivableItemBuffer>(isReadOnly: true)
-          , dirtyData   = SystemAPI.GetSingleton<InputDirtyData>()
-          , castData    = SystemAPI.GetSingleton<InputCastData>()
+            dirtyData = SystemAPI.GetSingleton<InputDirtyData>()
+          , castData  = SystemAPI.GetSingleton<InputCastData>()
         }.Schedule(state.Dependency);
     }
 
     [WithAll(typeof(GhostOwnerIsLocal))]
     [BurstCompile]
     public partial struct Job : IJobEntity {
-        [ReadOnly] public DynamicBuffer<InputDirtyData.ActivableItemBuffer> dirtyBuffer;
-
         public InputDirtyData dirtyData;
         public InputCastData  castData;
 
@@ -34,9 +30,11 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             // RESET EVENT
             inputData.ResetAllEvents();
 
-            // CHECK UPDATE SKILL
-            if (dirtyData.haveSkillUpgradeRequest)
-                inputData.SetUpdateSkill(dirtyData.skillToUpgrade);
+            // FIRST OF ALL: CHECK COMMON REQUEST
+            foreach (var request in Strum.InputRequest.Indexes)
+                if (dirtyData.requestTrigger[request])
+                    inputData.triggers.Set(request);
+            inputData.requestData = dirtyData.requestData;
 
             // CHECK MOVE
             if (CheckMoveEvent(dirtyData, castData)) {
@@ -59,13 +57,14 @@ public partial struct PlayerInputUpdateSystem : ISystem {
                 inputData.CancelAttack();
             }
 
+            // ACTIVE ITEM
             inputData.inputForActivableItem.UpdateAll(castData, dirtyData, locTrans);
 
             inputData.curCondition.UpdateAll(castData);
 
-            for (int i = 0; i < PlayerTrigger.ITEM_COUNT; ++i)
-                if (dirtyBuffer[i].key.WasReleasedThisFrame())
-                    inputData.triggers.Set((PlayerTrigger.Item)i);
+            foreach (var key in Strum.SlotItem.Indexes)
+                if (dirtyData.activableItem[key].WasReleasedThisFrame())
+                    inputData.triggers.Set(key);
         }
     }
 

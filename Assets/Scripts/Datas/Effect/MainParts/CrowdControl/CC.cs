@@ -1,6 +1,5 @@
 using System;
 using NGDtuanh.BubleAsset;
-using NGDtuanh.Strum;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
@@ -33,13 +32,6 @@ public static class CC {
             };
         }
 
-        [Strum("CC_Disable")]
-        public enum Key {
-            Move
-          , Attack
-          , ActiveItem
-        }
-
         public struct Final {
             public bool enable;
 
@@ -66,7 +58,7 @@ public static class CC {
             public void Add(in Final final) {
                 if (!final.enable) return;
                 
-                foreach (var index in Strum.CC_Disable.Info.Indexes)
+                foreach (var index in Strum.CC_Disable.Indexes)
                     if (final.flags[index])
                         ++flags[index];
             }
@@ -74,7 +66,7 @@ public static class CC {
             public void Remove(in Final final) {
                 if (!final.enable) return;
                 
-                foreach (var index in Strum.CC_Disable.Info.Indexes)
+                foreach (var index in Strum.CC_Disable.Indexes)
                     if (final.flags[index])
                         --flags[index];
             }
@@ -95,7 +87,7 @@ public static class CC {
     public struct Control : IBlobBuildable<Control.Managed>, IBlobBuildableSelf<Control> {
         public bool enable;
 
-        public Key flag;
+        public CC_ControlId flag;
 
         public void BuildBlob(ref BlobBuilder builder, Managed source) {
             enable = source.enable;
@@ -107,18 +99,11 @@ public static class CC {
             flag   = source.flag;
         }
 
-        [Strum("CC_Control")]
-        public enum Key {
-            RunAway
-          , Follow
-          , Attack
-        }
-
         public struct Receiver : IComponentData {
             [GhostField] public EffectFullId id;
             [GhostField] public NetworkTick  endAtTick;
 
-            [GhostField] public Key flag;
+            [GhostField] public CC_ControlId flag;
             
             [GhostField] public floatXZ_Q3 runAwayDir;
 
@@ -146,14 +131,7 @@ public static class CC {
         public class Managed : IEnableable {
             [field: SerializeField] public override bool enable { get; set; }
 
-            public Key flag;
+            public CC_ControlId flag;
         }
-    }
-}
-
-public static partial class Strum {
-    public static partial class CC_Disable {
-        [Serializable]
-        public partial struct Fields<T> { }
     }
 }

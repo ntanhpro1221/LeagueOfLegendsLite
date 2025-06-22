@@ -1082,9 +1082,9 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
             ""id"": ""ad835f2c-6ce1-4e88-97ea-4bbf72f672ec"",
             ""actions"": [
                 {
-                    ""name"": ""Click"",
+                    ""name"": ""ToggleShop"",
                     ""type"": ""Button"",
-                    ""id"": ""ef16ddb9-3efd-4f2b-a83e-d48d89964d4a"",
+                    ""id"": ""478ca186-da48-417f-a481-ce1afe428439"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1094,12 +1094,12 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""fe4fa5a8-ed86-4eb1-9901-4d32a7ee02b3"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""cf690c98-b970-4473-b563-0d0cb9a2bc60"",
+                    ""path"": ""<Keyboard>/#(P)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Click"",
+                    ""action"": ""ToggleShop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1194,7 +1194,7 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         // InGame
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
-        m_InGame_Click = m_InGame.FindAction("Click", throwIfNotFound: true);
+        m_InGame_ToggleShop = m_InGame.FindAction("ToggleShop", throwIfNotFound: true);
     }
 
     ~@GlobalInputAction()
@@ -1656,7 +1656,7 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
     // InGame
     private readonly InputActionMap m_InGame;
     private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
-    private readonly InputAction m_InGame_Click;
+    private readonly InputAction m_InGame_ToggleShop;
     /// <summary>
     /// Provides access to input actions defined in input action map "InGame".
     /// </summary>
@@ -1669,9 +1669,9 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
         /// </summary>
         public InGameActions(@GlobalInputAction wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "InGame/Click".
+        /// Provides access to the underlying input action "InGame/ToggleShop".
         /// </summary>
-        public InputAction @Click => m_Wrapper.m_InGame_Click;
+        public InputAction @ToggleShop => m_Wrapper.m_InGame_ToggleShop;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1698,9 +1698,9 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InGameActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InGameActionsCallbackInterfaces.Add(instance);
-            @Click.started += instance.OnClick;
-            @Click.performed += instance.OnClick;
-            @Click.canceled += instance.OnClick;
+            @ToggleShop.started += instance.OnToggleShop;
+            @ToggleShop.performed += instance.OnToggleShop;
+            @ToggleShop.canceled += instance.OnToggleShop;
         }
 
         /// <summary>
@@ -1712,9 +1712,9 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="InGameActions" />
         private void UnregisterCallbacks(IInGameActions instance)
         {
-            @Click.started -= instance.OnClick;
-            @Click.performed -= instance.OnClick;
-            @Click.canceled -= instance.OnClick;
+            @ToggleShop.started -= instance.OnToggleShop;
+            @ToggleShop.performed -= instance.OnToggleShop;
+            @ToggleShop.canceled -= instance.OnToggleShop;
         }
 
         /// <summary>
@@ -1970,11 +1970,11 @@ public partial class @GlobalInputAction: IInputActionCollection2, IDisposable
     public interface IInGameActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ToggleShop" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnClick(InputAction.CallbackContext context);
+        void OnToggleShop(InputAction.CallbackContext context);
     }
 }

@@ -37,9 +37,6 @@ public partial struct InitMinionSystem : ISystem {
         typeof(Simulate)
       , typeof(MinionTag)
       , typeof(NeedInitTag))]
-    [WithPresent(
-        typeof(BountyData)
-      , typeof(StatsData_Raw))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public AllMinionData allMinion;
@@ -52,14 +49,6 @@ public partial struct InitMinionSystem : ISystem {
             in MinionTag    tag
           , in TeamTypeData team
           , in LaneTypeData lane
-
-            // Bounty
-          , ref BountyData           bounties
-          , EnabledRefRW<BountyData> bountyTrigger
-
-            // Raw stats
-          , ref StatsData_Raw           statsRaw
-          , EnabledRefRW<StatsData_Raw> statsRawTrigger
 
             // Position
           , ref LocalTransform locTrans
@@ -74,13 +63,6 @@ public partial struct InitMinionSystem : ISystem {
             // CACHE
             ref var actor      = ref allMinion.Minions[tag.id];
             ref var pathSource = ref initTrans.Value.Value[lane.laneType][team.team];
-
-            // BOUNTY
-            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
-
-            // RAW STATS
-            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
-              , source: ref actor.stats);
 
             // POSITION
             rotation.RotateTo((

@@ -37,7 +37,7 @@ public static partial class InhibitorStateDead2Idle {
                 }
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<Dead2IdleState>.MarkExitExecuted(filter);
 
                 select_highlight_healthBar.EnableAll();
             }
@@ -78,10 +78,8 @@ public static partial class InhibitorStateDead2Idle {
             RefRO<InhibitorTag> IStateAspect<InhibitorTag, Dead2IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<InhibitorTag, Dead2IdleState>.    Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<InhibitorTag, Dead2IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<Dead2IdleState> IStateExitAspect<InhibitorTag, Dead2IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<Dead2IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<Dead2IdleState> IStateExitFunc<Dead2IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 

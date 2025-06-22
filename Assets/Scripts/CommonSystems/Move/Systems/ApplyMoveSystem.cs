@@ -96,9 +96,7 @@ public partial struct ApplyMoveSystem : ISystem {
 
                     // fix to new position
                     moveData.FixToPos(newPos);
-                }
-                // Move by Unity physics
-                else {
+                } else { // Move by Unity physics
                     // Yes, this is correct: here I use disToTarget_WithoutY
                     // Because velocity is only exactly for X and Z
                     newLinear = moveData.moveSpeed / disToTarget_WithoutY * moveVector;

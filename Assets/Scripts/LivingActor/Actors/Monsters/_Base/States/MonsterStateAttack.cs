@@ -65,7 +65,7 @@ public static partial class MonsterStateAttack {
             
                 else continue;
             
-                filter.MarkExitExecuted();
+                IStateExitFunc<AttackState>.MarkExitExecuted(filter);
             
                 // restart attack cooldown if not actually dealt damage yet
                 if (!data.AttackData.isAttacked)
@@ -198,10 +198,8 @@ public static partial class MonsterStateAttack {
             RefRO<MonsterTag> IStateAspect<MonsterTag, AttackState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<MonsterTag, AttackState>.  Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MonsterTag, AttackState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<AttackState> IStateExitAspect<MonsterTag, AttackState>.      CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<AttackState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<AttackState> IStateExitFunc<AttackState>.      CurStateEnable    => _curStateEnable;
         }
     }
 

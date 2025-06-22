@@ -1,0 +1,22 @@
+using Unity.Entities;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "AsheSkill_R", menuName = ASSET_PATH + "Ashe/AsheSkill_R")]
+public class AsheSkill_R : ActivableItemSO_Generic<
+    AsheSkill_R.ConcreteProperty
+  , AsheSkill_R.ConcretePrefab
+  , AsheSkill_R.PrefabBuffer> {
+    public enum ConcreteProperty {
+        magicDamage
+      , reducedDamage
+    }
+
+    public enum ConcretePrefab {
+        arrow  
+    }
+
+    public struct PrefabBuffer : IActivableItemPrefabBuffer {
+        public Entity        entity;
+        Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
+    }
+}

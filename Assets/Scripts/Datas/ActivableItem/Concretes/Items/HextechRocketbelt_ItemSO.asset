@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9712a9cca29241b7a80f556e9939afbc, type: 3}
+  m_Name: HextechRocketbelt_ItemSO
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 21300000, guid: 2b848150aa992074eb9f55b0091ec190, type: 3}
+  itemName: Hextech Rocketbelt
+  description: '<sprite name=magic_damage> <b>70</b> Magic Damage
+
+    <sprite name=ability_haste>
+    <b>20</b> Ability Haste
+
+    <sprite name=health> <b>300</b> Health
+
+
+    <sprite
+    name=activable_item> <b>Supersonic</b> <sprite name=cooldown> (40s)
+
+    Dash
+    125 to 275 units in the target direction, though not through terrain, unleashing
+    an arc of 7 rockets in the same direction that deal <sprite name=magic_damage>
+    <color=#786CFF>100 (+ 10% AP) magic damage</color> to enemies hit.'
+  details: 
+  activeSettings:
+    isActivable: 1
+    isRequireNewState: 1
+  activeCondition:
+    pointToTarget: 0
+    pointToWalkable: 0
+  haveLevel: 0
+  maxLevel: 1
+  cooldownTime:
+  - value: 40000
+  activeCost:
+  - health:
+      value: 0
+    mana:
+      value: 0
+  concreteProp:
+    _Keys: 
+    _Values: []
+    _KeyNames: []
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 0faaa6096c802b6ce36dbbb5f8396f58
+    _KeySynced: 1
+  concretePrefab:
+    _Keys: 00000000
+    _Values:
+    - _Value: {fileID: 2158595296973362309, guid: b6510a5afa4152191878bf57e402cc00, type: 3}
+    _KeyNames:
+    - Bullet
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 0faaa6096c802b6ce36dbbb5f8396f58
+    _KeySynced: 1
+  _PrevMaxLevel: 1

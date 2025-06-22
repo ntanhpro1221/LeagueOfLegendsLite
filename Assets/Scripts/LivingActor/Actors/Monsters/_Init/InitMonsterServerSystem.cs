@@ -45,9 +45,7 @@ public partial struct InitMonsterServerSystem : ISystem {
       , typeof(MonsterTag)
       , typeof(NeedInitTag))]
     [WithPresent(
-        typeof(BountyData)
-      , typeof(StatsData_Raw)
-      , typeof(MonsterLeashAnchor))]
+        typeof(MonsterLeashAnchor))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public AllMonsterData allMonster;
@@ -63,14 +61,6 @@ public partial struct InitMonsterServerSystem : ISystem {
           , in JungleTeamTypeData teamJungle
           , in Entity             entity
 
-            // Bounty
-          , ref BountyData           bounties
-          , EnabledRefRW<BountyData> bountyTrigger
-
-            // Raw stats
-          , ref StatsData_Raw           statsRaw
-          , EnabledRefRW<StatsData_Raw> statsRawTrigger
-
             // Position
           , ref LocalTransform     locTrans
           , ref RotationData       rotation
@@ -80,13 +70,6 @@ public partial struct InitMonsterServerSystem : ISystem {
           , ref MonsterControlFactor controlFactor) {
             // CACHE
             ref var actor = ref allMonster.Monsters[tag.id];
-
-            // BOUNTY
-            InitHelpers.Bounty(ref bounties, ref bountyTrigger, ref actor.bounty);
-
-            // RAW STATS
-            InitHelpers.StatsRaw(ref statsRaw, ref statsRawTrigger
-              , source: ref actor.stats);
 
             // POSITION
             if (!manualLookup.HasComponent(entity)) {
@@ -99,6 +82,5 @@ public partial struct InitMonsterServerSystem : ISystem {
             controlFactor.leashRangeSqr = actor.leashRange.Sqr();
             controlFactor.respawnCDTick = actor.respawnCDTick;
         }
-
     }
 }

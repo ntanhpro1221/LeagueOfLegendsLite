@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NGDtuanh.Collections;
 using UnityEngine;
@@ -7,7 +6,7 @@ public class IndicatorShower : MonoBehaviour {
     [Header("CONCRETES")]
     [SerializeField] private IndicatorConcreteBase _IndicatorNormalAttack;
 
-    [SerializeField] private EnumMap<PlayerTrigger.Item, IndicatorConcreteBase> _IndicatorConcretes;
+    [SerializeField] private EnumMap<SlotItemId, IndicatorConcreteBase> _IndicatorConcretes;
 
     [field: Space]
     [Header("COMPONENTS")]
@@ -30,15 +29,20 @@ public class IndicatorShower : MonoBehaviour {
             MultiIndicator.Add(IndicatorProvider.Instance.SpawnNewIndicator(MultiIndicatorRoot));
     }
 
+    public void UpdateIndicatorAt(SlotItemId slot, IndicatorConcreteBase indicator) =>
+        _IndicatorConcretes[slot] = indicator;
+    
     public void UpdateShower(in Metadata metadata) =>
         UpdateShower(metadata, ref _NullItemData);
 
     public void UpdateShower(
         in  Metadata          metadata
       , ref ActivableItemData itemData) {
-        if (_IndicatorConcretes[metadata.itemKey] != _CurConcrete) {
+        var newConcrete = metadata.IsWithoutItem() ? null : _IndicatorConcretes[metadata.itemKey];
+
+        if (newConcrete != _CurConcrete) {
             if (_CurConcrete != null) _CurConcrete.Disable(this);
-            _CurConcrete = _IndicatorConcretes[metadata.itemKey];
+            _CurConcrete = newConcrete;
             if (_CurConcrete != null) _CurConcrete.Enable(this);
         }
 
@@ -56,7 +60,7 @@ public class IndicatorShower : MonoBehaviour {
     }
 
     public struct Metadata {
-        public PlayerTrigger.Item itemKey;
+        public SlotItemId itemKey;
 
         public int ownerLevel;
         public int selfLevel;

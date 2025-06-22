@@ -74,7 +74,7 @@ public static partial class MinionStateIdle {
 
                 else continue;
 
-                filter.MarkExitExecuted();
+                IStateExitFunc<IdleState>.MarkExitExecuted(filter);
             }
         }
     }
@@ -139,10 +139,8 @@ public static partial class MinionStateIdle {
             RefRO<MinionTag> IStateAspect<MinionTag, IdleState>.Identity => _identity;
             RefRO<Simulate> IStateAspect<MinionTag, IdleState>. Simulate => _simulate;
 
-            EnabledRefRW<StateNotExitedYet> IStateExitAspect<MinionTag, IdleState>.StateNotExitedYet => _stateNotExitedYet;
-            EnabledRefRW<IdleState> IStateExitAspect<MinionTag, IdleState>.        CurStateEnable    => _curStateEnable;
-
-            public void MarkExitExecuted() => _stateNotExitedYet.ValueRW = _curStateEnable.ValueRW = false;
+            EnabledRefRW<StateNotExitedYet> IStateExitFunc<IdleState>.StateNotExitedYet => _stateNotExitedYet;
+            EnabledRefRW<IdleState> IStateExitFunc<IdleState>.        CurStateEnable    => _curStateEnable;
         }
     }
 
