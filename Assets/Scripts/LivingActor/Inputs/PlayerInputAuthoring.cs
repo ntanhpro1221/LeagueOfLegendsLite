@@ -27,9 +27,15 @@ public struct PlayerInputData : IInputComponentData {
 
     #region ATTACK
 
-    public void SetAttack(Entity target) => requestData.attackTarget = target;
+    /// <summary>
+    /// - Not in <see cref="RequestData"/> because this is not considered as request data, this is continuous value.<br/>
+    /// - There is no request key for this in <see cref="InputRequestId"/>.<br/>
+    /// </summary>
+    public Entity attackTarget;
 
-    public void CancelAttack() => requestData.attackTarget = Entity.Null;
+    public void SetAttack(Entity target) => attackTarget = target;
+
+    public void CancelAttack() => attackTarget = Entity.Null;
 
     #endregion
 
@@ -40,7 +46,6 @@ public struct PlayerInputData : IInputComponentData {
         public SlotItemId itemSlotMoveTarget;
         public SlotItemId skillToUpgrade;
         public float3_Q3  moveLocTarget;
-        public Entity     attackTarget;
     }
 }
 
