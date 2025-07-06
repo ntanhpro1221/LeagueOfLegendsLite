@@ -54,12 +54,13 @@ public partial struct InitChampionSystem : ISystem {
           , in Entity       entity
 
             // Position
-          , ref LocalTransform  locTrans
-          , MoveRequesterAspect moveRequester) {
+          , ref LocalTransform      locTrans
+          , in  ChampionOrderInTeam orderData
+          , MoveRequesterAspect     moveRequester) {
 
             // POSITION (not init for dummy)
             if (!dummyLookup.HasComponent(entity))
-                locTrans = initTrans.Value.Value[team.team][0].ToLocTrans_Directly();
+                locTrans = initTrans.Value.Value[team.team][orderData.order].ToLocTrans_Directly();
             moveRequester.SyncFromLocTrans(locTrans);
         }
     }

@@ -1,0 +1,319 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 10
+  m_Fog: 0
+  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.01
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 1
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 1
+    m_PVRFilteringGaussRadiusAO: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 3
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &2061999297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061999300}
+  - component: {fileID: 2061999299}
+  - component: {fileID: 2061999298}
+  m_Layer: 0
+  m_Name: PrefabHub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2061999298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8500c3ad24f49198df5b6428ef022ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uselessPrefabs:
+  - {fileID: 1658374736219437641, guid: 4272d3dfcec34a38ba5a5ec788667868, type: 3}
+  - {fileID: 7639546614719757829, guid: 9d360bc73f02e03b293477d46bfbbd41, type: 3}
+  championPrefabs:
+    _Keys: 000000000100000002000000
+    _Values:
+    - _Value: {fileID: 5552348712989367017, guid: b33b289eb5e220d4798090fa85740eb1, type: 3}
+    - _Value: {fileID: 5552348712989367017, guid: 337d8b81bc4a4a84a95d70e5967a0020, type: 3}
+    - _Value: {fileID: 5552348712989367017, guid: b33b289eb5e220d4798090fa85740eb1, type: 3}
+    _KeyNames:
+    - Yasuo
+    - Ashe
+    - Garen
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 40f00b59d3c933c78a3f3891681ff160
+    _KeySynced: 1
+  minionPrefabs:
+    _serializedList:
+    - Key: 1
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 592936608898618137, guid: bfc00af10602cae47b04571661572fac, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: ba3b7ba7d28aad841b399ca07b7ef3b6, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: db7bffd94a8aec64089877628019e1f1, type: 3}
+        - _Value: {fileID: 592936608898618137, guid: 7ca3e25d376a1cc40b7523e6723bf26c, type: 3}
+        _KeyNames:
+        - Melee
+        - Ranged
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 08cfaf6c6fe1653ec850c494a32651ac
+        _KeySynced: 1
+    - Key: 2
+      Value:
+        _Keys: 00000000010000000200000003000000
+        _Values:
+        - _Value: {fileID: 4403615691025025997, guid: cc6e84c5f109f3a4b8e188c0c04aaa85, type: 3}
+        - _Value: {fileID: 7653175153121926443, guid: d876141df0787ee4f96187b60407af09, type: 3}
+        - _Value: {fileID: 6934329527957958456, guid: f5dc0ab9d3dc9bf44b7b31c95b578aae, type: 3}
+        - _Value: {fileID: 1892266474963374816, guid: 4c1f4c5151bf05043ba2b96dd04083a5, type: 3}
+        _KeyNames:
+        - Melee
+        - Ranged
+        - Siege
+        - Super
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 08cfaf6c6fe1653ec850c494a32651ac
+        _KeySynced: 1
+  monsterPrefabs:
+    _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
+    _Values:
+    - _Value: {fileID: 1247247932440477325, guid: 8bb10b7524963a3dbb363d098e13fe2d, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 1aa66dda4bbf408d48685faa62d6a293, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 2d386bb99bc5b841bbcd533fb7eec576, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 22eaf56eaa5e2165990f83b01fc43f45, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: ebb39d24f34e5380bbc9979c098883c4, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 28cc5fc1569caf78d95588f26bb5138a, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 2051b297beac3c5819ede2edf2d475d3, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: cf3f267329a00f501af62b5f00ac6013, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 5280baafdd7be17ca970c809c5b2a259, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 69e4f0dc355397b63b9531e9f8cade9b, type: 3}
+    - _Value: {fileID: 1247247932440477325, guid: 902369347d7fae93a96cf8fe593492b6, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    - _Value: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    _KeyNames:
+    - RedBrambleback
+    - BlueSentinel
+    - Gromp
+    - Wolf
+    - WolfSmall
+    - Raptor
+    - RaptorSmall
+    - Krug
+    - KrugSmall
+    - KrugTiny
+    - Scuttle
+    - Baron
+    - RiftHerald
+    - DragonMaterial
+    - DragonElder
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: 40f00b59d3c933c78a3f3891681ff160
+    _KeySynced: 1
+  towerPrefabs:
+    _serializedList:
+    - Key: 1
+      Value:
+        _Keys: 000000000100000002000000030000000400000005000000
+        _Values:
+        - _Value: {fileID: 9205246100901177164, guid: bc4ccce4c53c8734db5e2e7250719b7d, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 38022ebedaf07634991c1c8074afbc2b, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        - _Value: {fileID: 9205246100901177164, guid: 4fc2007dd53bea64f8c73a6836188d49, type: 3}
+        _KeyNames:
+        - Nexus
+        - Inhibitor
+        - Turret_Nexus
+        - Turret_Inhibitor
+        - Turret_Inner
+        - Turret_Outer
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 08cfaf6c6fe1653ec850c494a32651ac
+        _KeySynced: 1
+    - Key: 2
+      Value:
+        _Keys: 000000000100000002000000030000000400000005000000
+        _Values:
+        - _Value: {fileID: 5067106817271708551, guid: 7644038df1bf4fe4ba7e5976a07f2cbf, type: 3}
+        - _Value: {fileID: 5724632152328863135, guid: 7d97ee9ca696fe642b06858007c46228, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        - _Value: {fileID: 3141444152498715566, guid: 1911b7b47b86b2447a4a15ca29c6d3e5, type: 3}
+        _KeyNames:
+        - Nexus
+        - Inhibitor
+        - Turret_Nexus
+        - Turret_Inhibitor
+        - Turret_Inner
+        - Turret_Outer
+        _EditorSessionCode:
+          serializedVersion: 2
+          Hash: 08cfaf6c6fe1653ec850c494a32651ac
+        _KeySynced: 1
+--- !u!114 &2061999299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc865b50ebe409b8876ef87ad8ecaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: 
+--- !u!4 &2061999300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061999297}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 2061999300}

@@ -1,6 +1,5 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
 
 [UpdateInGroup(typeof(UpdateObstacleSystemGroup))]
 [UpdateAfter(typeof(PrepareObstacleDataSystem))]
@@ -12,6 +11,7 @@ public partial struct ProvideRealObstacleSystem : ISystem {
 
     public void OnUpdate(ref SystemState state) {
         var provider = ObstacleProvider.Instance;
+        if (provider == null) return;
 
         provider.ReleaseAllCutter();
 

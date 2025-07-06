@@ -9,12 +9,12 @@ namespace NGDtuanh.Singleton {
             get {
                 if (_Instance != null) return _Instance;
 
-                _Instance ??= FindFirstObjectByType<TSelf>(FindObjectsInactive.Include);
+                _Instance = FindFirstObjectByType<TSelf>(FindObjectsInactive.Include);
                 if (_Instance == null) return _Instance;
 
                 typeof(TSelf)
                     .GetMethod("OnTouched", BindingFlags.NonPublic | BindingFlags.Instance)
-                    ?.Invoke(Instance, null);
+                    ?.Invoke(_Instance, null);
 
                 return _Instance;
             }
@@ -22,7 +22,15 @@ namespace NGDtuanh.Singleton {
 
         protected virtual void OnTouched() { }
 
-        protected virtual void Awake() => DontDestroyOnLoad(gameObject);
+        protected virtual void Awake() {
+            DontDestroyOnLoad(gameObject);
+            if (_Instance == null) {
+                _Instance = this as TSelf;
+                OnTouched();
+            } else if (_Instance != this) {
+                Debug.LogError("NGDtuanh singleton: duplicate singleton");
+            }
+        }
 
         protected virtual void OnDestroy() { }
     }

@@ -10,17 +10,19 @@ using UnityEngine;
 public partial struct InitHybridHealthBarClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<BattleInitData>();
+        state.RequireForUpdate<BattleClientData>();
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<HybridHealthBarInitRequest>();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (BattleSceneLife.Instance == null) return;
+        
         var ecb = SystemAPI
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        TeamType localTeam = SystemAPI.GetSingleton<BattleInitData>().teamType;
+        TeamType localTeam = SystemAPI.GetSingleton<BattleClientData>().teamType;
 
         foreach (var (
             data

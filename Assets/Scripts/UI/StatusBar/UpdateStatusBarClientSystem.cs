@@ -11,7 +11,7 @@ public partial struct UpdateStatusBarClientSystem : ISystem {
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<ClientServerTickRate>();
         state.RequireForUpdate<NetworkTime>();
-        state.RequireForUpdate<BattleInitData>();
+        state.RequireForUpdate<BattleClientData>();
         state.RequireForUpdate<GlobalKDAData>();
         state.RequireForUpdate(_ownChampQuery = SystemAPI.QueryBuilder()
             .WithAll<

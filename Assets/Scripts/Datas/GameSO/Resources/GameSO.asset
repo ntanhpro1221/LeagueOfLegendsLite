@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameSO
   m_EditorClassIdentifier: 
   _NetConfig: {fileID: 11400000, guid: 2639303ac9b6f414999e4057ccd555c6, type: 2}
+  _RoomConnectionConfig: {fileID: 11400000, guid: deb7a5e995e839a098b15d28c81d53f0, type: 2}
   _Champion: {fileID: 11400000, guid: aab24384f13366c4286347355c9d698e, type: 2}
   _Minion: {fileID: 11400000, guid: b7ba8a6005bf1d44780eaf922a37fe16, type: 2}
   _Monster: {fileID: 11400000, guid: 30601666e2bf9bb43b83e1bbb35dc33b, type: 2}

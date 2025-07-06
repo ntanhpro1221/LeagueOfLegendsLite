@@ -11,6 +11,8 @@ public partial struct SyncObstacleSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (BattleSceneLife.Instance == null) return;
+        
         int radiusBonus = SystemAPI.GetSingleton<ObstacleConfigData>().radiusBonus;
 
         // Not only simulating entity, we must update for all of them

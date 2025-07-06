@@ -6,6 +6,10 @@ public struct ChampionTag : IComponentData {
     public ChampionId id;
 }
 
+public struct ChampionOrderInTeam : IComponentData {
+    [GhostField] public int order;
+}
+
 public class ChampionTagAuthoring : MonoBehaviour, IRaceTag {
     public ChampionId id;
 
@@ -18,6 +22,7 @@ public class ChampionTagAuthoring : MonoBehaviour, IRaceTag {
             AddComponent(entity, new ChampionTag {
                 id = authoring.id
             });
+            AddComponent<ChampionOrderInTeam>(entity);
         }
     }
 }

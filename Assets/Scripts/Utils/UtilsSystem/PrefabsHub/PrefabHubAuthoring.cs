@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using NGDtuanh.BubleAsset;
@@ -15,9 +16,10 @@ using UnityEngine;
 /// - Author prefab data by using <see cref="PrefabHubAuthoring.Baker.CreatePrefabData{TKey, TPrefabBuffer}"/>
 /// </summary>
 public class PrefabHubAuthoring : MonoBehaviour {
-    [Header("Common Prefabs")]
+    [Header("-------------USELESS PREFABS--------------")]
+    public List<GameObject> uselessPrefabs;
 
-    [Header("     Prefab Collections")]
+    [Header("     ------------PREFAB COLLECTIONS---------")]
     public CovEnumMap<ChampionId, GameObject> championPrefabs;
 
     public CovSerializedDictionary<TeamType, CovEnumMap<MinionId, GameObject>> minionPrefabs;
@@ -28,8 +30,8 @@ public class PrefabHubAuthoring : MonoBehaviour {
         public override void Bake(PrefabHubAuthoring authoring) {
             GetDynamicEntity(out var entity);
 
-            // CREATE COMMON PREFAB DATA
-            AddComponent(entity, new CommonPrefabData { });
+            // CREATE COMMON PREFAB REFERENCE
+            foreach (var obj in authoring.uselessPrefabs) GetEntity(obj, TransformUsageFlags.Dynamic);
 
             // CREATE PREFAB COLLECTION DATA
             var prefabIdData = new PrefabIdData();

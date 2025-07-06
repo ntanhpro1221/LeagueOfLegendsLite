@@ -39,21 +39,22 @@ public static partial class ChampionStateDead {
 
                 IStateExitFunc<DeadState>.MarkExitExecuted(filter);
 
-                data.LocalTrans = initTrans[data.TeamType][0].ToLocTrans_Directly(); // Respawn at init pos
-                data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                // Reset target pos at init pos
-                data.CurHealth = data.MaxHealth;                                     // Respawn with full health
-                data.EnableMove();                                                   // enable move
-                data.RequireInputReset();                                            // require input reset
-                select_highlight_healthBar.EnableAll();                              // enable select and highlight and health bar
+                data.LocalTrans = initTrans[data.TeamType][data.OrderInTeam].ToLocTrans_Directly(); // Respawn at init pos
+                data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                               // Reset target pos at init pos
+                data.CurHealth = data.MaxHealth;                                                    // Respawn with full health
+                data.EnableMove();                                                                  // enable move
+                data.RequireInputReset();                                                           // require input reset
+                select_highlight_healthBar.EnableAll();                                             // enable select and highlight and health bar
             }
         }
 
         private readonly partial struct UpdateAspect : IAspect {
-            private readonly RefRW<HealthData>     _HealthData;
-            private readonly RefRW<LocalTransform> _LocalTrans;
-            private readonly RefRO<TeamTypeData>   _TeamType;
-            private readonly RefRO<DeadStateData>  _DeadStateData;
-            private readonly RefRO<StatsData>      _Stats;
+            private readonly RefRW<HealthData>          _HealthData;
+            private readonly RefRW<LocalTransform>      _LocalTrans;
+            private readonly RefRO<TeamTypeData>        _TeamType;
+            private readonly RefRO<DeadStateData>       _DeadStateData;
+            private readonly RefRO<StatsData>           _Stats;
+            private readonly RefRO<ChampionOrderInTeam> _OrderData;
 
             [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
             [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
@@ -65,6 +66,7 @@ public static partial class ChampionStateDead {
             public ref          float_Q3       CurHealth   => ref _HealthData.ValueRW.value;
             public ref readonly TeamType       TeamType    => ref _TeamType.ValueRO.team;
             public ref readonly NetworkTick    RespawnTick => ref _DeadStateData.ValueRO.respawnAtTick;
+            public ref readonly int            OrderInTeam => ref _OrderData.ValueRO.order;
 
             public void EnableMove()        => _Moveable.ValueRW = true;
             public void RequireInputReset() => _InputReset.ValueRW = true;

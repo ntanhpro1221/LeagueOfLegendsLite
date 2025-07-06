@@ -1,7 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
@@ -10,16 +9,18 @@ public partial struct InitHybridModelClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-        state.RequireForUpdate<BattleInitData>();
+        state.RequireForUpdate<BattleClientData>();
         state.RequireForUpdate<HybridModelInitRequest>();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (BattleSceneLife.Instance == null) return;
+
         var ecb = SystemAPI
             .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        var myTeam = SystemAPI.GetSingleton<BattleInitData>().teamType;
+        var myTeam = SystemAPI.GetSingleton<BattleClientData>().teamType;
 
         foreach (var (
             data
