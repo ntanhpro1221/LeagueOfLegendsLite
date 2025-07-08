@@ -29,6 +29,8 @@ MonoBehaviour:
     InterpolationTimeMS: 0
     MaxExtrapolationTimeSimTicks: 20
     MaxPredictAheadTimeMS: 500
+    NumAdditionalClientPredictedGhostLifetimeTicks: 0
+    DefaultClassificationAllowableTickPeriod: 5
     TargetCommandSlack: 2
     NumAdditionalCommandsToSend: 2
     MaxPredictionStepBatchSizeRepeatedTick: 0
@@ -43,7 +45,7 @@ MonoBehaviour:
     PredictionTimeScaleMin: 0.9
     PredictionTimeScaleMax: 1.1
   GhostSendSystemData:
-    DefaultSnapshotPacketSize: 0
+    DefaultSnapshotPacketSize: 4200
     MinSendImportance: 0
     MinDistanceScaledSendImportance: 0
     MaxIterateChunks: 0
@@ -63,8 +65,8 @@ MonoBehaviour:
   DisconnectTimeoutMS: 30000
   HeartbeatTimeoutMS: 500
   ReconnectionTimeoutMS: 2000
-  ClientSendQueueCapacity: 64
-  ClientReceiveQueueCapacity: 64
-  ServerSendQueueCapacity: 512
-  ServerReceiveQueueCapacity: 512
+  ClientSendQueueCapacity: 128
+  ClientReceiveQueueCapacity: 128
+  ServerSendQueueCapacity: 1024
+  ServerReceiveQueueCapacity: 1024
   MaxMessageSize: 1400

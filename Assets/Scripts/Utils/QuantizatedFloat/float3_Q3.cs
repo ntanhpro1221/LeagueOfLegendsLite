@@ -34,9 +34,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     };
 
     public float3_Q3(float x, float y, float z) {
-        this.x = Mathf.RoundToInt(x * MULTIPLIER);
-        this.y = Mathf.RoundToInt(y * MULTIPLIER);
-        this.z = Mathf.RoundToInt(z * MULTIPLIER);
+        this.x = (int)math.round(x * MULTIPLIER);
+        this.y = (int)math.round(y * MULTIPLIER);
+        this.z = (int)math.round(z * MULTIPLIER);
     }
 
     public float3_Q3(float xyz) : this(xyz, xyz, xyz) { }
@@ -59,10 +59,10 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     public override int GetHashCode() => HashCode.Combine(x, y, z);
 
     public int GetHashCodeXZ_Q1() => HashCode.Combine(
-        Mathf.RoundToInt(x / 100f)
-      , Mathf.RoundToInt(z / 100f));
+        (int)math.round(x / 100f)
+      , (int)math.round(z / 100f));
 
-#region CAST
+    #region CAST
 
     public static explicit operator float3_Q3(float3 source) => new(
         source.x
@@ -84,9 +84,9 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
       , source.y / MULTIPLIER
       , source.z / MULTIPLIER);
 
-#endregion
+    #endregion
 
-#region OPERATOR
+    #region OPERATOR
 
     public static float3_Q3 operator +(float3_Q3 a, float3_Q3 b) => new() {
         x = a.x + b.x
@@ -113,24 +113,24 @@ public struct float3_Q3 : IEquatable<float3_Q3> {
     };
 
     public static float3_Q3 operator *(float3_Q3 a, float mul) => new() {
-        x = Mathf.RoundToInt(a.x * mul)
-      , y = Mathf.RoundToInt(a.y * mul)
-      , z = Mathf.RoundToInt(a.z * mul)
+        x = (int)math.round(a.x * mul)
+      , y = (int)math.round(a.y * mul)
+      , z = (int)math.round(a.z * mul)
     };
 
     public static float3_Q3 operator /(float3_Q3 a, int div) => new() {
-        x = Mathf.RoundToInt(a.x / (float)div)
-      , y = Mathf.RoundToInt(a.y / (float)div)
-      , z = Mathf.RoundToInt(a.z / (float)div)
+        x = (int)math.round(a.x / (float)div)
+      , y = (int)math.round(a.y / (float)div)
+      , z = (int)math.round(a.z / (float)div)
     };
 
     public static float3_Q3 operator /(float3_Q3 a, float div) => new() {
-        x = Mathf.RoundToInt(a.x / div)
-      , y = Mathf.RoundToInt(a.y / div)
-      , z = Mathf.RoundToInt(a.z / div)
+        x = (int)math.round(a.x / div)
+      , y = (int)math.round(a.y / div)
+      , z = (int)math.round(a.z / div)
     };
 
-#endregion
+    #endregion
 
     #if UNITY_EDITOR
 

@@ -1,8 +1,6 @@
-﻿using Pathfinding;
+﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.NetCode;
 using Unity.Physics;
 
 /// <summary>
@@ -12,14 +10,13 @@ using Unity.Physics;
 [UpdateAfter(typeof(InputCastNearestWalkableGroundSystem))]
 public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
     public const float MAX_CAST_RADIUS = 160;
-    
-    private static readonly CollisionFilter filterActor = new() {
-        BelongsTo    = PhysicsLayerHelper.All
-      , CollidesWith = PhysicsLayerHelper.Actor
-    };
+
+    private static readonly CollisionFilter filterActor = PhysicsLayerHelpers.GetFilter(
+        PhysicsLayerHelpers.Actor);
 
     private NativeList<DistanceHit> castActorResult;
 
+    [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<PhysicsWorldSingleton>();
         state.RequireForUpdate<InputDirtyData>();
@@ -27,11 +24,12 @@ public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
         castActorResult = new NativeList<DistanceHit>(Allocator.Persistent);
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state) {
-        ref var castData       = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
-        var     collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
-
+        ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
         if (!castData.isHitWalkableGround) return;
+
+        var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
 
         castActorResult.Clear();
         if (collisionWorld.OverlapCapsule(
@@ -46,9 +44,10 @@ public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
                     curClosest = actorHit.Distance;
                     castData.SetClosestEntityAtGroundHit(actorHit.Entity);
                 }
-        } 
+        }
     }
 
+    [BurstCompile]
     public void OnDestroy(ref SystemState state) {
         castActorResult.Dispose();
     }

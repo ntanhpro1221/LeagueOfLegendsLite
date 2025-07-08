@@ -3,9 +3,7 @@ using Unity.NetCode;
 using UnityEngine;
 
 public struct PlayerInputData : IInputComponentData {
-    public void ResetAllEvents() {
-        triggers.Event = default;
-    }
+    public void ResetAllEvents() => triggers.Event = default;
 
     [GhostField] public InputForActivableItemData inputForActivableItem;
     [GhostField] public ItemActiveCondition       curCondition;
@@ -31,7 +29,7 @@ public struct PlayerInputData : IInputComponentData {
     /// - Not in <see cref="RequestData"/> because this is not considered as request data, this is continuous value.<br/>
     /// - There is no request key for this in <see cref="InputRequestId"/>.<br/>
     /// </summary>
-    public Entity attackTarget;
+    [GhostField] public Entity attackTarget;
 
     public void SetAttack(Entity target) => attackTarget = target;
 
@@ -49,9 +47,6 @@ public struct PlayerInputData : IInputComponentData {
     }
 }
 
-[GhostEnabledBit]
-public struct PlayerInputResetting : IComponentData, IEnableableComponent { }
-
 [RequireComponent(typeof(MoveableAuthoring))]
 [RequireComponent(typeof(NormalAttackableAuthoring))]
 public class PlayerInputAuthoring : MonoBehaviour {
@@ -61,7 +56,6 @@ public class PlayerInputAuthoring : MonoBehaviour {
 
             AddComponent<PlayerTrigger.PrevCode>(entity);
             AddComponent<PlayerInputData>(entity);
-            AddComponent<PlayerInputResetting>(entity);
         }
     }
 }

@@ -1,4 +1,6 @@
-public static class PhysicsLayerHelper {
+using Unity.Physics;
+
+public static class PhysicsLayerHelpers {
     public const uint All           = ~0u;
     public const uint Default       = 1u << 0;
     public const uint TransparentFX = 1u << 1;
@@ -9,4 +11,9 @@ public static class PhysicsLayerHelper {
     public const uint Actor         = 1u << 7;
     public const uint Wall          = 1u << 8;
     public const uint ActorDetector = 1u << 9;
+
+    public static CollisionFilter GetFilter(uint layers) => new() {
+        BelongsTo    = All
+      , CollidesWith = layers
+    };
 }

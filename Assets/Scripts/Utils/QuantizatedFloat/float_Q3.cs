@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
     public int value;
 
     public float_Q3(float value) {
-        this.value = Mathf.RoundToInt(value * MULTIPLIER);
+        this.value = (int)math.round(value * MULTIPLIER);
     }
 
     public float_Q3(int value) {
@@ -30,7 +31,7 @@ public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
       , _ => throw new ArgumentOutOfRangeException(nameof(format), format, $"Float_Q3 format error: Founded: '{format}'")
     };
 
-#region CAST
+    #region CAST
 
     public static explicit operator float_Q3(float source) =>
         new(source);
@@ -42,11 +43,11 @@ public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
         new(source);
 
     public static explicit operator int(float_Q3 source) =>
-        Mathf.RoundToInt(source.value / MULTIPLIER);
+        (int)math.round(source.value / MULTIPLIER);
 
-#endregion
+    #endregion
 
-#region OPERATOR
+    #region OPERATOR
 
     public static float_Q3 operator +(float_Q3 a, float_Q3 b) => new() {
         value = a.value + b.value
@@ -65,36 +66,36 @@ public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
     };
 
     public static float_Q3 operator *(float_Q3 a, float mul) => new() {
-        value = Mathf.RoundToInt(a.value * mul)
+        value = (int)math.round(a.value * mul)
     };
 
     public static float_Q3 operator /(float_Q3 a, int div) => new() {
-        value = Mathf.RoundToInt(a.value / (float)div)
+        value = (int)math.round(a.value / (float)div)
     };
 
     public static float_Q3 operator /(float_Q3 a, float div) => new() {
-        value = Mathf.RoundToInt(a.value / div)
+        value = (int)math.round(a.value / div)
     };
-    
+
     public static bool operator <(float_Q3 a, float_Q3 b) => a.value < b.value;
-    
+
     public static bool operator >(float_Q3 a, float_Q3 b) => a.value > b.value;
-    
+
     public static bool operator <=(float_Q3 a, float_Q3 b) => a.value <= b.value;
-    
+
     public static bool operator >=(float_Q3 a, float_Q3 b) => a.value >= b.value;
-    
+
     public static bool operator ==(float_Q3 a, float_Q3 b) => a.value == b.value;
-    
+
     public static bool operator !=(float_Q3 a, float_Q3 b) => a.value != b.value;
-    
+
     public override bool Equals(object obj) => obj is float_Q3 other && Equals(other);
-    
+
     public override int GetHashCode() => value.GetHashCode();
 
     public bool Equals(float_Q3 other) => value == other.value;
 
-#endregion
+    #endregion
 
     #if UNITY_EDITOR
 
@@ -112,7 +113,7 @@ public struct float_Q3 : IEquatable<float_Q3>, IFormattable {
             var drawer = Properties[path];
 
             position.height = EditorGUIUtility.singleLineHeight;
-            drawer.intValue = Mathf.RoundToInt(
+            drawer.intValue = (int)math.round(
                 MULTIPLIER
               * EditorGUI.FloatField(
                     position

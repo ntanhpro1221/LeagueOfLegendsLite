@@ -27,6 +27,8 @@ public partial struct HandleDisconnectedServer_ClientSystem : ISystem {
     [BurstDiscard]
     private void ReturnToHomeScene() {
         SceneManager.LoadSceneAsync(SceneNameHelper.HomeScene);
-        WorldHelpers.DestroyWorldsOfType(WorldFlags.Game);
+        
+        // Consider use another method to dispose this world
+        // WorldHelpers.DestroyWorldsOfType(WorldFlags.Game);
     }
 }

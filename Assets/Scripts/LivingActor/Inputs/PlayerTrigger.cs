@@ -7,14 +7,14 @@ public static class PlayerTrigger {
     /// </summary>
     public struct Full {
         public Strum.PlayerTrigger.Fields<InputEvent> Event;
-        public Strum.PlayerTrigger.Fields<int>        Code;
+        public Strum.PlayerTrigger.Fields<byte>        Code;
     }
 
     /// <summary>
     /// Put this <b>OUTSIDE</b> <see cref="PlayerInputData"/>.
     /// </summary>
     public struct PrevCode : IComponentData {
-        [GhostField] public Strum.PlayerTrigger.Fields<int> Code;
+        [GhostField] public Strum.PlayerTrigger.Fields<byte> Code;
     }
 }
 

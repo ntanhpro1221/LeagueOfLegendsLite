@@ -26,45 +26,45 @@ public partial struct PlayerInputUpdateSystem : ISystem {
         public InputCastData  castData;
 
         [BurstCompile]
-        public void Execute(ref PlayerInputData inputData, in LocalTransform locTrans) {
+        public void Execute(ref PlayerInputData input, in LocalTransform locTrans) {
             // RESET EVENT
-            inputData.ResetAllEvents();
+            input.ResetAllEvents();
 
             // FIRST OF ALL: CHECK COMMON REQUEST
             foreach (var request in Strum.InputRequest.Indexes)
                 if (dirtyData.requestTrigger[request])
-                    inputData.triggers.Set(request);
-            inputData.requestData = dirtyData.requestData;
+                    input.triggers.Set(request);
+            input.requestData = dirtyData.requestData;
 
             // CHECK MOVE
             if (CheckMoveEvent(dirtyData, castData)) {
-                inputData.SetMove(castData.walkableGroundPos);
-                inputData.CancelAttack();
+                input.SetMove(castData.walkableGroundPos);
+                input.CancelAttack();
             }
 
             // CHECK ATTACK
             if (castData.isHitActor && dirtyData.mouse_left.WasPressedThisFrame()) {
-                inputData.SetAttack(castData.actor);
-                inputData.CancelMove();
+                input.SetAttack(castData.actor);
+                input.CancelMove();
             } else if (castData.isHitClosestEntityAtGroundHit && dirtyData.mouse_left.WasPressedThisFrame()) {
-                inputData.SetAttack(castData.closestEntityAtGroundHit);
-                inputData.CancelMove();
+                input.SetAttack(castData.closestEntityAtGroundHit);
+                input.CancelMove();
             }
 
             // CANCEL MOVE AND ATTACK
             if (dirtyData.key_s.WasPressedThisFrame()) {
-                inputData.CancelMove();
-                inputData.CancelAttack();
+                input.CancelMove();
+                input.CancelAttack();
             }
 
             // ACTIVE ITEM
-            inputData.inputForActivableItem.UpdateAll(castData, dirtyData, locTrans);
+            input.inputForActivableItem.UpdateAll(castData, dirtyData, locTrans);
 
-            inputData.curCondition.UpdateAll(castData);
+            input.curCondition.UpdateAll(castData);
 
             foreach (var key in Strum.SlotItem.Indexes)
                 if (dirtyData.activableItem[key].WasReleasedThisFrame())
-                    inputData.triggers.Set(key);
+                    input.triggers.Set(key);
         }
     }
 

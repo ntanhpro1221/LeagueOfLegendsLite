@@ -43,7 +43,6 @@ public static partial class ChampionStateDead {
                 data.MoveRequester.SyncFromLocTrans(data.LocalTrans);                               // Reset target pos at init pos
                 data.CurHealth = data.MaxHealth;                                                    // Respawn with full health
                 data.EnableMove();                                                                  // enable move
-                data.RequireInputReset();                                                           // require input reset
                 select_highlight_healthBar.EnableAll();                                             // enable select and highlight and health bar
             }
         }
@@ -57,7 +56,6 @@ public static partial class ChampionStateDead {
             private readonly RefRO<ChampionOrderInTeam> _OrderData;
 
             [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
-            [Optional] private readonly EnabledRefRW<PlayerInputResetting> _InputReset;
 
             public readonly MoveRequesterAspect MoveRequester;
 
@@ -69,7 +67,6 @@ public static partial class ChampionStateDead {
             public ref readonly int            OrderInTeam => ref _OrderData.ValueRO.order;
 
             public void EnableMove()        => _Moveable.ValueRW = true;
-            public void RequireInputReset() => _InputReset.ValueRW = true;
         }
     }
 

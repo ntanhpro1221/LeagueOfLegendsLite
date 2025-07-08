@@ -4,8 +4,7 @@ public static partial class Strum {
 }
 
 public enum InputRequestId {
-    DoneReset
-  , Move
+    Move
   , CancelMove
   , UpgradeSkill
   , BuyItem

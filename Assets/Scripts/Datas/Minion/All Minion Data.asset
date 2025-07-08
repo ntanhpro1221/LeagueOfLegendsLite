@@ -20,13 +20,13 @@ MonoBehaviour:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
-              value: 477000
+              value: 4770000
           - _Value:
               value: 0
           - _Value:
-              value: 700000
+              value: 1500000
           - _Value:
-              value: 1000
+              value: 0
           - _Value:
               value: 0
           - _Value:
@@ -64,11 +64,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -82,7 +82,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
+            Hash: 929abce4dd715be7b93c6e186b668b11
           _KeySynced: 1
         bounty:
           _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
@@ -120,7 +120,7 @@ MonoBehaviour:
           - KillScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
+            Hash: 929abce4dd715be7b93c6e186b668b11
           _KeySynced: 1
         aggroRange: 500
     - _Value:
@@ -128,11 +128,11 @@ MonoBehaviour:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
           _Values:
           - _Value:
-              value: 296000
+              value: 2960000
           - _Value:
               value: 0
           - _Value:
-              value: 700000
+              value: 1500000
           - _Value:
               value: 0
           - _Value:
@@ -172,11 +172,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -190,7 +190,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
+            Hash: 929abce4dd715be7b93c6e186b668b11
           _KeySynced: 1
         bounty:
           _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
@@ -228,7 +228,7 @@ MonoBehaviour:
           - KillScore
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
+            Hash: 929abce4dd715be7b93c6e186b668b11
           _KeySynced: 1
         aggroRange: 1000
     - _Value:
@@ -454,5 +454,5 @@ MonoBehaviour:
     - Super
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 1f6ed70dac44e3c80c0099a9d11b6f3b
+      Hash: 929abce4dd715be7b93c6e186b668b11
     _KeySynced: 1

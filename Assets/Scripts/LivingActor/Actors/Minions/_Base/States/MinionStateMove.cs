@@ -218,8 +218,11 @@ public static partial class MinionStateMove {
                 if (pathBuffer.IsEmpty) return;
 
                 if (reachPathDisToleranceSqr
-                  > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos))
+                  > GameHelpers.DistanceXZ_Sqr(locTrans.Position, pathBuffer.FrontRO().pos)) {
                     pathBuffer.PopFront();
+                    if (pathBuffer.IsEmpty) return;
+                }
+
                 desSetter.destination = pathBuffer[0].pos;
             }
         }

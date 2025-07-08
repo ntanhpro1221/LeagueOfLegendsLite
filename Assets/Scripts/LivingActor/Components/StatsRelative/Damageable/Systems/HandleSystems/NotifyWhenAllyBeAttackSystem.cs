@@ -54,8 +54,8 @@ public partial struct NotifyWhenAllyBeAttackSystem : ISystem {
     [BurstCompile]
     private partial struct Job : IJobEntity {
         private static readonly CollisionFilter filterActorDetector = new() {
-            BelongsTo    = PhysicsLayerHelper.All
-          , CollidesWith = PhysicsLayerHelper.ActorDetector,
+            BelongsTo    = PhysicsLayerHelpers.All
+          , CollidesWith = PhysicsLayerHelpers.ActorDetector,
         };
 
         public CollisionWorld collisionWorld;

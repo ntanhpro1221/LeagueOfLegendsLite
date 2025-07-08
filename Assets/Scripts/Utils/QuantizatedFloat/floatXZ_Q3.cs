@@ -26,8 +26,8 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
     };
 
     public floatXZ_Q3(float x, float z) {
-        this.x = Mathf.RoundToInt(x * MULTIPLIER);
-        this.z = Mathf.RoundToInt(z * MULTIPLIER);
+        this.x = (int)math.round(x * MULTIPLIER);
+        this.z = (int)math.round(z * MULTIPLIER);
     }
 
     public floatXZ_Q3(float xz) : this(xz, xz) { }
@@ -47,7 +47,7 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
 
     public override int GetHashCode() => HashCode.Combine(x, z);
 
-#region CAST
+    #region CAST
 
     public static explicit operator floatXZ_Q3(float2 source) => new(
         source.x
@@ -65,9 +65,9 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
         source.x / MULTIPLIER
       , source.z / MULTIPLIER);
 
-#endregion
+    #endregion
 
-#region OPERATOR
+    #region OPERATOR
 
     public static floatXZ_Q3 operator +(floatXZ_Q3 a, floatXZ_Q3 b) => new() {
         x = a.x + b.x
@@ -90,21 +90,21 @@ public struct floatXZ_Q3 : IEquatable<floatXZ_Q3> {
     };
 
     public static floatXZ_Q3 operator *(floatXZ_Q3 a, float mul) => new() {
-        x = Mathf.RoundToInt(a.x * mul)
-      , z = Mathf.RoundToInt(a.z * mul)
+        x = (int)math.round(a.x * mul)
+      , z = (int)math.round(a.z * mul)
     };
 
     public static floatXZ_Q3 operator /(floatXZ_Q3 a, int div) => new() {
-        x = Mathf.RoundToInt(a.x / (float)div)
-      , z = Mathf.RoundToInt(a.z / (float)div)
+        x = (int)math.round(a.x / (float)div)
+      , z = (int)math.round(a.z / (float)div)
     };
 
     public static floatXZ_Q3 operator /(floatXZ_Q3 a, float div) => new() {
-        x = Mathf.RoundToInt(a.x / div)
-      , z = Mathf.RoundToInt(a.z / div)
+        x = (int)math.round(a.x / div)
+      , z = (int)math.round(a.z / div)
     };
 
-#endregion
+    #endregion
 
     #if UNITY_EDITOR
 

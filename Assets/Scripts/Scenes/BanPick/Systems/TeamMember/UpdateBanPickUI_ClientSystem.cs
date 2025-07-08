@@ -11,6 +11,8 @@ public partial struct UpdateBanPickUI_ClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (!BanPickMenuUI.IsAvailable) return;
+        
         foreach (var (
             buffer
           , data

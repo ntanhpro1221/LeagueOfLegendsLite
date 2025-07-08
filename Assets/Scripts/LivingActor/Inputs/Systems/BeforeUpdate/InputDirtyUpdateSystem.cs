@@ -36,6 +36,10 @@ public partial struct InputDirtyUpdateSystem : ISystem {
     }
 
     private void UpdatePlayerRequest(ref SystemState state, ref InputDirtyData inputData) {
+        inputData.requestTrigger = default;
+
+        if (!PlayerRequestHub.IsAvailable) return;
+
         var requestHub = PlayerRequestHub.Instance;
 
         foreach (var request in Strum.InputRequest.Indexes)

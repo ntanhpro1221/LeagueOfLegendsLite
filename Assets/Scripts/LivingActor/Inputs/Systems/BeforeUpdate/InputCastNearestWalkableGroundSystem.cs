@@ -1,7 +1,5 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
-using Unity.Mathematics;
-using UnityEngine;
 
 /// <summary>
 /// Not run in <see cref="InputCastUpdateSystem"/> because of burst
@@ -15,6 +13,8 @@ public partial struct InputCastNearestWalkableGroundSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (AstarPath.active == null) return;
+
         ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
 
         if (!castData.isHitGround) return;

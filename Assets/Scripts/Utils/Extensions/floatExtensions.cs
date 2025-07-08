@@ -1,5 +1,4 @@
 ﻿using Unity.Mathematics;
-using UnityEngine;
 
 public static class floatExtensions {
     /// <returns>A new vector with the modified X component.</returns>
@@ -94,11 +93,14 @@ public static class floatExtensions {
         => (float_Q3)source;
 
     public static float LengthSqr(this floatXZ_Q3 source) =>
-        math.square((float)source.x / floatXZ_Q3.MULTIPLIER)
-      + math.square((float)source.z / floatXZ_Q3.MULTIPLIER);
+        math.square(source.x / floatXZ_Q3.MULTIPLIER)
+      + math.square(source.z / floatXZ_Q3.MULTIPLIER);
+
+    public static bool IsNaN(this float source) =>
+        math.isnan(source);
 
     public static bool IsAnyNaN(this float3 source) =>
-        float.IsNaN(source.x)
-     || float.IsNaN(source.y)
-     || float.IsNaN(source.z);
+        source.x.IsNaN()
+     || source.y.IsNaN()
+     || source.z.IsNaN();
 }

@@ -12,14 +12,9 @@ public partial struct InputCastUpdateSystem : ISystem {
     /// </summary>
     private const float MAX_NULL_HIT_FRACTION = 2;
 
-    private const uint GROUND_ACTOR =
-        PhysicsLayerHelper.Ground
-      | PhysicsLayerHelper.Actor;
-
-    private static readonly CollisionFilter filterGroundActor = new() {
-        BelongsTo    = PhysicsLayerHelper.All
-      , CollidesWith = GROUND_ACTOR
-    };
+    private static readonly CollisionFilter filterGroundActor = PhysicsLayerHelpers.GetFilter(
+        PhysicsLayerHelpers.Ground
+      | PhysicsLayerHelpers.Actor);
 
     private EntityQuery                 ownChampQuery;
     private NativeList<RaycastHit>      castGroundActorResult;
@@ -75,7 +70,7 @@ public partial struct InputCastUpdateSystem : ISystem {
             switch (bodies[actorGroundHit.RigidBodyIndex].Collider.Value
                 .GetCollisionFilter(actorGroundHit.ColliderKey).BelongsTo) {
 
-                case PhysicsLayerHelper.Actor:
+                case PhysicsLayerHelpers.Actor:
                     if (!selectLookup.HasComponent(actorGroundHit.Entity) || !selectLookup.IsComponentEnabled(actorGroundHit.Entity))
                         break;
 
@@ -90,7 +85,7 @@ public partial struct InputCastUpdateSystem : ISystem {
 
                     break;
 
-                case PhysicsLayerHelper.Ground:
+                case PhysicsLayerHelpers.Ground:
                     if (groundFraction < actorGroundHit.Fraction)
                         break;
                     groundFraction = actorGroundHit.Fraction;

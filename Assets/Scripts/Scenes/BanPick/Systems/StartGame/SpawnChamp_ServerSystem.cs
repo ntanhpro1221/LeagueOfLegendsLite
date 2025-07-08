@@ -7,17 +7,17 @@ using Unity.Scenes;
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct SpawnChamp_ServerSystem : ISystem {
     private const int MAX_INIT_SLOT = 5;
-
+    
     [ReadOnly] private ComponentLookup<NetworkId> netIdLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<BattleSubSceneLoading>();
-        state.RequireForUpdate<SpawnChampClientRpc>();
         state.RequireForUpdate<TeamMemberBuffer>();
         state.RequireForUpdate<ChampionPrefabBuffer>();
         state.RequireForUpdate<PrefabIdData>();
+        state.RequireForUpdate<SpawnChampClientRpc>();
 
         netIdLookup = SystemAPI.GetComponentLookup<NetworkId>(isReadOnly: true);
     }
@@ -34,8 +34,8 @@ public partial struct SpawnChamp_ServerSystem : ISystem {
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        var memberBuffer = SystemAPI.GetSingletonBuffer<TeamMemberBuffer>(isReadOnly: true);
         var champPrefab  = SystemAPI.GetSingletonBuffer<ChampionPrefabBuffer>(isReadOnly: true);
+        var memberBuffer = SystemAPI.GetSingletonBuffer<TeamMemberBuffer>(isReadOnly: true);
         var prefabId     = SystemAPI.GetSingleton<PrefabIdData>();
 
         foreach (var (

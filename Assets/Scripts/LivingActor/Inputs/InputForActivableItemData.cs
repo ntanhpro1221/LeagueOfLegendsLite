@@ -27,9 +27,9 @@ public struct InputForActivableItemData {
     /// </summary>
     public floatXZ_Q3 direction;
 
-    public void UpdateAll(in InputCastData castData, in InputDirtyData dirtyData, LocalTransform playerTrans) {
+    public void UpdateAll(in InputCastData castData, in InputDirtyData dirtyData, in LocalTransform playerTrans) {
         walkableGround = castData.walkableGroundPos;
-
+        
         directEntity = castData.actor;
 
         var mouseVec = dirtyData.mouse_ray_end - dirtyData.mouse_ray_start;
@@ -39,6 +39,6 @@ public struct InputForActivableItemData {
         ownerPos = playerTrans.Position.Quantizate3();
 
         // Calc direction base on cur player plane (that is created from player's y pos and parallel to Oxz plane)
-        direction = (ground - ownerPos).xz;
+        direction = (ground - ownerPos).xz;  
     }
 }
