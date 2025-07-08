@@ -33,7 +33,7 @@ public class PlayerHUD : SceneSingleton<PlayerHUD> {
     protected override void Awake() {
         base.Awake();
 
-        _ShopBtn.onClick.AddListener(() => ShopUI.Instance.Holder.SetActive(true));
+        _ShopBtn.onClick.AddListener(() => ShopUI.Instance.Visible = true);
     }
 
     public void UpdateGold(int gold) {

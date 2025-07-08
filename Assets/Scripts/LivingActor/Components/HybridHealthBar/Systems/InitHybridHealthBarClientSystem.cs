@@ -16,7 +16,7 @@ public partial struct InitHybridHealthBarClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        if (BattleSceneLife.Instance == null) return;
+        if (!BattleSceneLife.IsAvailable) return;
         
         var ecb = SystemAPI
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()

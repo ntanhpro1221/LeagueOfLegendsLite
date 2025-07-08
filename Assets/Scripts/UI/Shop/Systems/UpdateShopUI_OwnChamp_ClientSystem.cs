@@ -10,8 +10,10 @@ public partial struct UpdateShopUI_OwnChamp_ClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (!ShopUI.IsAvailable) return;
+        
         var shop = ShopUI.Instance;
-        if (!shop.gameObject.activeSelf) return;
+        if (!shop.Visible) return;
 
         ref var buyable = ref SystemAPI.GetSingletonRW<OwnChampBuyable>().ValueRW;
 

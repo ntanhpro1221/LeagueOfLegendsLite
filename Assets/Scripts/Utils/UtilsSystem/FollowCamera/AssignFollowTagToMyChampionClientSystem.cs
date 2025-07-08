@@ -1,22 +1,23 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
 public partial struct AssignFollowTagToMyChampionClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate(SystemAPI.QueryBuilder()
+            // We do not need enable-able here so this is fine!
             .WithAll<ChampionTag, GhostOwnerIsLocal>()
             .WithNone<DummyTag>()
             .Build());
         state.RequireForUpdate(SystemAPI.QueryBuilder()
+            // We do not need enable-able here so this is fine!
             .WithNone<CameraFollowTag>()
             .Build());
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
     }
-        
+
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         var ecb = SystemAPI
@@ -24,7 +25,7 @@ public partial struct AssignFollowTagToMyChampionClientSystem : ISystem {
             .CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (
-            tag
+            _
           , entity) in SystemAPI
             .Query<ChampionTag>()
             .WithAll<GhostOwnerIsLocal>()

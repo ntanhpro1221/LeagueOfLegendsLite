@@ -11,7 +11,7 @@ public partial struct SyncObstacleSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        if (BattleSceneLife.Instance == null) return;
+        if (!BattleSceneLife.IsAvailable) return;
         
         int radiusBonus = SystemAPI.GetSingleton<ObstacleConfigData>().radiusBonus;
 

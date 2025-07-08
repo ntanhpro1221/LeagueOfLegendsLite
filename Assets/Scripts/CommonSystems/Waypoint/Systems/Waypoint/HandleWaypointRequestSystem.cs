@@ -29,6 +29,8 @@ public partial struct HandleWaypointRequestSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (AstarPath.active == null) return;
+        
         if (mainQuery.IsEmpty) return;
 
         var  cachedPath        = SystemAPI.ManagedAPI.GetSingleton<CachedPathData>();

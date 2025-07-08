@@ -9,6 +9,8 @@ public partial struct UpdatePlayerHUDClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (!PlayerHUD.IsAvailable) return;
+        
         var playerHUD  = PlayerHUD.Instance;
         var requireExp = SystemAPI.GetSingleton<RequireExpData>();
         var curTick    = SystemAPI.GetSingleton<NetworkTime>().ServerTick;

@@ -11,7 +11,8 @@ public partial struct UpdateBuyable_OwnChamp_ClientSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<AllItemData>();
-        state.RequireForUpdate(ownChampQuery = SystemAPI.QueryBuilder()
+        
+        ownChampQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
@@ -19,12 +20,14 @@ public partial struct UpdateBuyable_OwnChamp_ClientSystem : ISystem {
               , GoldData
             >().WithNone<
                 DummyTag
-            >().Build());
+            >().Build();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.CompleteDependency();
+
+        if (ownChampQuery.IsEmpty) return;
 
         ref var buyable = ref SystemAPI.GetSingletonRW<OwnChampBuyable>().ValueRW;
 

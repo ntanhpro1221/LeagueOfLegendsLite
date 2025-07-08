@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609a2990414021c55a42a08b13ce6d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Holder>k__BackingField: {fileID: 8068747298317177806}
+  _Holder: {fileID: 8068747298317177806}
   _ItemHolder: {fileID: 561831039724785934}
   _ItemPrefab: {fileID: 1212051300428932919, guid: 5a314c91aa677302dbe856df8fa98a59, type: 3}
   _SellHoverToggler: {fileID: 3000996675449721915}

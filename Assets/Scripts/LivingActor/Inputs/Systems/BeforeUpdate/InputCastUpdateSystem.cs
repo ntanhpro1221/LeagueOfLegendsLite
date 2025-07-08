@@ -30,14 +30,15 @@ public partial struct InputCastUpdateSystem : ISystem {
         state.RequireForUpdate<InputCastData>();
         state.RequireForUpdate<InputDirtyData>();
         state.RequireForUpdate<PhysicsWorldSingleton>();
-        state.RequireForUpdate(ownChampQuery = SystemAPI.QueryBuilder()
+        
+        ownChampQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 ChampionTag
               , GhostOwnerIsLocal
               , TeamTypeData
             >().WithNone<
                 DummyTag
-            >().Build());
+            >().Build();
 
         castGroundActorResult = new NativeList<RaycastHit>(Allocator.Persistent);
         selectLookup = SystemAPI.GetComponentLookup<Selectable>(
@@ -47,6 +48,8 @@ public partial struct InputCastUpdateSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         state.CompleteDependency();
+
+        if (ownChampQuery.IsEmpty) return;
         
         ref var castData = ref SystemAPI.GetSingletonRW<InputCastData>().ValueRW;
         castData.Reset();

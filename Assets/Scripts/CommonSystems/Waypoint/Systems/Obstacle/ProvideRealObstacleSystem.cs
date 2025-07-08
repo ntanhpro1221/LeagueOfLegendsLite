@@ -10,9 +10,9 @@ public partial struct ProvideRealObstacleSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
-        var provider = ObstacleProvider.Instance;
-        if (provider == null) return;
+        if (!ObstacleProvider.IsAvailable) return;
 
+        var provider = ObstacleProvider.Instance;
         provider.ReleaseAllCutter();
 
         // Not only simulating entity, we must update for all of them

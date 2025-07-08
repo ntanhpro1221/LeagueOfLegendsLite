@@ -20,6 +20,8 @@ namespace NGDtuanh.Singleton {
             }
         }
 
+        public static bool IsAvailable => _Instance != null;
+
         protected virtual void OnTouched() { }
 
         protected virtual void Awake() {

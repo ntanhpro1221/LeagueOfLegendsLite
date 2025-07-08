@@ -7,8 +7,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopUI : SceneSingleton<ShopUI>, IFilteredDropHandler<ItemUI> {
-    [field: SerializeField] public GameObject Holder { get; private set; }
-    
+    [SerializeField] private GameObject _Holder;
+
+    public bool Visible {
+        get => _Holder.activeSelf;
+        set => _Holder.SetActive(value);
+    }
+
     [Header("------ITEM LISTS------")]
     [SerializeField] private Transform _ItemHolder;
 
@@ -57,7 +62,7 @@ public class ShopUI : SceneSingleton<ShopUI>, IFilteredDropHandler<ItemUI> {
     #endregion
 
     private void InitToggleShopBtn() {
-        LazyInput_Battle.Input.InGame.ToggleShop.performed += _ => Holder.FlipActiveSelf();
+        LazyInput_Battle.Input.InGame.ToggleShop.performed += _ => _Holder.FlipActiveSelf();
     }
 
     protected override void Awake() {

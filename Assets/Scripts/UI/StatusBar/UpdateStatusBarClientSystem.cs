@@ -4,8 +4,8 @@ using Unity.NetCode;
 
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct UpdateStatusBarClientSystem : ISystem {
-    private EntityQuery _ownChampQuery;
-    private EntityQuery _networkAckQuery;
+    private EntityQuery ownChampQuery;
+    private EntityQuery networkAckQuery;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -13,7 +13,13 @@ public partial struct UpdateStatusBarClientSystem : ISystem {
         state.RequireForUpdate<NetworkTime>();
         state.RequireForUpdate<BattleClientData>();
         state.RequireForUpdate<GlobalKDAData>();
-        state.RequireForUpdate(_ownChampQuery = SystemAPI.QueryBuilder()
+        state.RequireForUpdate(networkAckQuery = SystemAPI.QueryBuilder()
+            .WithAll<
+                NetworkSnapshotAck
+              , NetworkStreamConnection
+            >().Build());
+        
+        ownChampQuery = SystemAPI.QueryBuilder()
             .WithAll<
                 TeamTypeData
               , ChampionTag
@@ -22,25 +28,24 @@ public partial struct UpdateStatusBarClientSystem : ISystem {
               , CreepScoreData
             >().WithNone<
                 DummyTag
-            >().Build());
-        state.RequireForUpdate(_networkAckQuery = SystemAPI.QueryBuilder()
-            .WithAll<
-                NetworkSnapshotAck
-              , NetworkStreamConnection
-            >().Build());
+            >().Build();
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (!StatusBarUI.IsAvailable) return;
+
+        if (ownChampQuery.IsEmpty) return;
+
         StatusBarUI.Instance.ManualUpdateUI(
             SystemAPI.GetSingleton<GlobalKDAData>().GenerateTextUpdater(
-                _ownChampQuery.GetSingleton<TeamTypeData>().team)
-          , _ownChampQuery.GetSingleton<KDAData>().GenerateTextUpdater()
-          , _ownChampQuery.GetSingleton<CreepScoreData>().GenerateTextUpdater()
+                ownChampQuery.GetSingleton<TeamTypeData>().team)
+          , ownChampQuery.GetSingleton<KDAData>().GenerateTextUpdater()
+          , ownChampQuery.GetSingleton<CreepScoreData>().GenerateTextUpdater()
           , new TextUpdater.Timer {
                 curTick  = SystemAPI.GetSingleton<NetworkTime>().ServerTick
               , tickRate = SystemAPI.GetSingleton<ClientServerTickRate>().SimulationTickRate
             }, new TextUpdater.Ping {
-                rtt = _networkAckQuery.GetSingleton<NetworkSnapshotAck>().EstimatedRTT
+                rtt = networkAckQuery.GetSingleton<NetworkSnapshotAck>().EstimatedRTT
             });
     }
 }

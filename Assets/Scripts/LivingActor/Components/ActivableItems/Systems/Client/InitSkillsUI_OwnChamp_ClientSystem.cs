@@ -10,6 +10,8 @@ public partial struct InitSkillsUI_OwnChamp_ClientSystem : ISystem {
     }
 
     public void OnUpdate(ref SystemState state) {
+        if (!PlayerHUD.IsAvailable) return;
+        
         var ecb = SystemAPI
             .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
