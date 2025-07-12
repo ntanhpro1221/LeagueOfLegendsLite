@@ -12,11 +12,10 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<SimulationSingleton>();
-        _UpdateCollidedJob = new();
+        _UpdateCollidedJob = new UpdateCollidedOpponentJob();
         _UpdateCollidedJob.Init(
             SystemAPI.GetComponentLookup<TeamTypeData>(true)
-          , SystemAPI.GetBufferLookup<CollidedOpponentBuffer>()
-          , SystemAPI.GetBufferLookup<IncomingDamageBuffer>(true));
+          , SystemAPI.GetBufferLookup<CollidedOpponentBuffer>());
     }
 
     [BurstCompile]
@@ -28,59 +27,48 @@ public partial struct UpdateCollidedOpponentSystem : ISystem {
     }
 
     [BurstCompile]
-    public struct UpdateCollidedOpponentJob : ITriggerEventsJob {
-        [ReadOnly] private ComponentLookup<TeamTypeData>      _TeamTypeLookup;
-        [ReadOnly] private BufferLookup<IncomingDamageBuffer> _IncomingDamageLookup;
+    private struct UpdateCollidedOpponentJob : ITriggerEventsJob {
+        [ReadOnly] private ComponentLookup<TeamTypeData> _TeamTypeLookup;
 
         private BufferLookup<CollidedOpponentBuffer> _CollidedOpponentLookup;
 
         [BurstCompile]
         public void Init(
             ComponentLookup<TeamTypeData>        teamTypeLookup
-          , BufferLookup<CollidedOpponentBuffer> collidedOpponentLookup
-          , BufferLookup<IncomingDamageBuffer>   incomingDamageLookup) {
+          , BufferLookup<CollidedOpponentBuffer> collidedOpponentLookup) {
             _TeamTypeLookup         = teamTypeLookup;
             _CollidedOpponentLookup = collidedOpponentLookup;
-            _IncomingDamageLookup   = incomingDamageLookup;
         }
 
         [BurstCompile]
         public void Update(ref SystemState state) {
             _TeamTypeLookup.Update(ref state);
             _CollidedOpponentLookup.Update(ref state);
-            _IncomingDamageLookup.Update(ref state);
         }
 
         [BurstCompile]
         public void Execute(TriggerEvent triggerEvent) {
-            Entity alice = triggerEvent.EntityA;
-            Entity bob   = triggerEvent.EntityB;
+            var alice = triggerEvent.EntityA;
+            var bob   = triggerEvent.EntityB;
 
-            if (!IsOpponent(alice, bob)) return;
+            // Filter out not opponent pair (don't have team or in the same team).
+            if (!_TeamTypeLookup.TryGetComponent(alice, out var teamAlice)
+             || !_TeamTypeLookup.TryGetComponent(bob,   out var teamBob)
+             || teamAlice.IsSameTeam(teamBob))
+                return;
 
-            TryAppendToCollidedBuffer(alice, bob);
-            TryAppendToCollidedBuffer(bob,   alice);
+            TryAppendToBuffer(alice, bob);
+            TryAppendToBuffer(bob,   alice);
         }
 
         [BurstCompile]
-        private void TryAppendToCollidedBuffer(
+        private void TryAppendToBuffer(
             in Entity alice
           , in Entity collideWith) {
-            if (!_CollidedOpponentLookup.HasBuffer(alice)) return;            // alice is not damager
-            if (!_IncomingDamageLookup.HasBuffer(collideWith)) return;        // not a damageable guy
-            if (_CollidedOpponentLookup[alice].Contains(collideWith)) return; // already collide
+            if (!_CollidedOpponentLookup.TryGetBuffer(alice, out var buffer)) return; // alice is not damager
+            if (buffer.Contains(collideWith)) return;                                 // already collided
 
-            _CollidedOpponentLookup[alice].Add(new() {
-                entity = collideWith
-            });
+            buffer.Add(new CollidedOpponentBuffer { entity = collideWith });
         }
-
-        [BurstCompile]
-        private bool IsOpponent(
-            in Entity alice
-          , in Entity bob) =>
-            _TeamTypeLookup.HasComponent(alice)
-         && _TeamTypeLookup.HasComponent(bob)
-         && _TeamTypeLookup[alice].team != _TeamTypeLookup[bob].team;
     }
 }

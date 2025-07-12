@@ -34,6 +34,9 @@ public class ChampStatisticAuthoring : MonoBehaviour {
             AddComponent<KDAData>(entity);
             AddComponent<CreepScoreData>(entity);
             AddComponent<GoldData>(entity);
+
+            // Test 4000 gold
+            SetComponent(entity, new GoldData { gold = 4000 });
         }
     }
 }

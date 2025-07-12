@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 6048811658109584428}
   - component: {fileID: 8132330160155057324}
   - component: {fileID: 1026740769547463856}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: DamageTriggerSource_ShotBlockable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,12 +177,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 20.6362, y: 17.833565, z: 118.326}
-  m_Center: {x: -0.00003862381, y: 0.00000047683716, z: 0}
+  m_Size: {x: 20.6362, y: 2000, z: 118.326}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6048811658109584428
 MonoBehaviour:
   m_ObjectHideFlags: 0

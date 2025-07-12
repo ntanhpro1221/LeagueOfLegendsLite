@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 3708236970773123515}
   - component: {fileID: 6763260808506410066}
   - component: {fileID: -141283733062969960}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Ashe_E_Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

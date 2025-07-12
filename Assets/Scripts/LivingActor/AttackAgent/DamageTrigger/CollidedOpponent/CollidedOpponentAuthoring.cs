@@ -6,13 +6,8 @@ using UnityEngine;
 public struct CollidedOpponentBuffer : IBufferElementData, IEquatable<CollidedOpponentBuffer>, IEquatable<Entity> {
     [GhostField] public Entity entity;
 
-    public bool Equals(CollidedOpponentBuffer other) {
-        return entity.Equals(other.entity);
-    }
-
-    public bool Equals(Entity other) {
-        return entity.Equals(other);
-    }
+    public bool Equals(CollidedOpponentBuffer other) => entity.Equals(other.entity);
+    public bool Equals(Entity                 other) => entity.Equals(other);
 }
 
 [RequireComponent(
