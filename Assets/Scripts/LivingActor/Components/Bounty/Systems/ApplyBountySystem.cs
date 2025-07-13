@@ -7,7 +7,6 @@ using Unity.Transforms;
 public partial struct ApplyBountySystem : ISystem {
     private EntityQuery mainQuery;
 
-    private ComponentLookup<GoldData>       goldLookup;
     private ComponentLookup<KDAData>        kdaLookup;
     private ComponentLookup<CreepScoreData> creepLookup;
     private ComponentLookup<GlobalKDAData>  globalKDALookup;
@@ -31,7 +30,6 @@ public partial struct ApplyBountySystem : ISystem {
               , BountyTrigger
             >().Build();
 
-        goldLookup      = SystemAPI.GetComponentLookup<GoldData>(isReadOnly: false);
         kdaLookup       = SystemAPI.GetComponentLookup<KDAData>(isReadOnly: false);
         creepLookup     = SystemAPI.GetComponentLookup<CreepScoreData>(isReadOnly: false);
         globalKDALookup = SystemAPI.GetComponentLookup<GlobalKDAData>(isReadOnly: false);
@@ -41,15 +39,14 @@ public partial struct ApplyBountySystem : ISystem {
         locTransLookup = SystemAPI.GetComponentLookup<LocalTransform>(isReadOnly: true);
         champLookup    = SystemAPI.GetComponentLookup<ChampionTag>(isReadOnly: true);
 
-        blueTeam = new(10, Allocator.Persistent);
-        redTeam  = new(10, Allocator.Persistent);
+        blueTeam = new NativeList<Entity>(10, Allocator.Persistent);
+        redTeam  = new NativeList<Entity>(10, Allocator.Persistent);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
         if (mainQuery.IsEmpty) return;
 
-        goldLookup.Update(ref state);
         kdaLookup.Update(ref state);
         creepLookup.Update(ref state);
         globalKDALookup.Update(ref state);
@@ -65,7 +62,6 @@ public partial struct ApplyBountySystem : ISystem {
             bountyNearSqr   = SystemAPI.GetSingleton<CommonGameRulesData>().bountyNearSqr
           , globalKDAEntity = SystemAPI.GetSingletonEntity<GlobalKDAData>()
 
-          , goldLookup      = goldLookup
           , kdaLookup       = kdaLookup
           , creepLookup     = creepLookup
           , globalKDALookup = globalKDALookup
@@ -115,7 +111,6 @@ public partial struct ApplyBountySystem : ISystem {
         public int    bountyNearSqr;
         public Entity globalKDAEntity;
 
-        public ComponentLookup<GoldData>       goldLookup;
         public ComponentLookup<KDAData>        kdaLookup;
         public ComponentLookup<CreepScoreData> creepLookup;
         public ComponentLookup<GlobalKDAData>  globalKDALookup;
@@ -128,25 +123,38 @@ public partial struct ApplyBountySystem : ISystem {
         [ReadOnly] public NativeList<Entity> blueTeam;
         [ReadOnly] public NativeList<Entity> redTeam;
 
+        private void AddGoldExp(in Entity receiver, float_Q3 gold, float_Q3 exp, in Entity sender, ref DynamicBuffer<OutgoingGoldBuffer> outgoingGolds) {
+            if (gold != 0) outgoingGolds.Add(new OutgoingGoldBuffer { gold = gold, target = receiver });
+            if (exp  != 0) expLookup[receiver].Add((int)exp);
+        }
+
         [BurstCompile]
-        public void Execute(
-            in BountyTriggerData           bountyTriggerData
-          , in BountyData                  bounties
-          , in LocalTransform              locTrans
-          , in DynamicBuffer<AssistBuffer> assists
-          , in Entity                      entity) {
+        private void Execute(
+            in  BountyTriggerData                 bountyTriggerData
+          , in  BountyData                        bounties
+          , in  LocalTransform                    locTrans
+          , in  DynamicBuffer<AssistBuffer>       assists
+          , ref DynamicBuffer<OutgoingGoldBuffer> outgoingGolds
+          , in  Entity                            entity) {
             var source     = bountyTriggerData.lastHitEntity;
             var sourceTeam = teamLookup[source].team == TeamType.Blue ? blueTeam : redTeam;
 
             // DIRECT KILL
-            goldLookup.GetRefRW(source).ValueRW.gold += bounties.data.Gold_Kill;
-            expLookup[source].Add((int)bounties.data.Exp_Kill);
+            AddGoldExp(
+                receiver: source
+              , gold: bounties.data.Gold_Kill
+              , exp: bounties.data.Exp_Kill
+              , sender: entity
+              , outgoingGolds: ref outgoingGolds);
 
             // ALL TEAM
-            foreach (var teamate in sourceTeam) {
-                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties.data.Gold_Team;
-                expLookup[teamate].Add((int)bounties.data.Exp_Team);
-            }
+            foreach (var teamate in sourceTeam)
+                AddGoldExp(
+                    receiver: teamate
+                  , gold: bounties.data.Gold_Team
+                  , exp: bounties.data.Exp_Team
+                  , sender: entity
+                  , outgoingGolds: ref outgoingGolds);
 
             // ASSIST
             foreach (var assist in assists) {
@@ -154,8 +162,12 @@ public partial struct ApplyBountySystem : ISystem {
                  || !champLookup.HasComponent(assist.entity))
                     break;
 
-                goldLookup.GetRefRW(assist.entity).ValueRW.gold += bounties.data.Gold_Assist;
-                expLookup[assist.entity].Add((int)bounties.data.Exp_Assist);
+                AddGoldExp(
+                    receiver: assist.entity
+                  , gold: bounties.data.Gold_Assist
+                  , exp: bounties.data.Exp_Assist
+                  , sender: entity
+                  , outgoingGolds: ref outgoingGolds);
 
                 kdaLookup.GetRefRW(assist.entity).ValueRW.assist += (int)bounties.data.KillScore;
             }
@@ -168,8 +180,12 @@ public partial struct ApplyBountySystem : ISystem {
                       , locTransLookup[teamate].Position))
                     continue;
 
-                goldLookup.GetRefRW(teamate).ValueRW.gold += bounties.data.Gold_Near;
-                expLookup[teamate].Add((int)bounties.data.Exp_Near);
+                AddGoldExp(
+                    receiver: teamate
+                  , gold: bounties.data.Gold_Near
+                  , exp: bounties.data.Exp_Near
+                  , sender: entity
+                  , outgoingGolds: ref outgoingGolds);
             }
 
             // CREEP SCORE

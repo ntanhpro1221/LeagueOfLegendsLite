@@ -32,7 +32,7 @@ public class BanPickMenuUI : SceneSingleton<BanPickMenuUI> {
             if (server.Flags == WorldFlags.GameServer) {
                 var em = server.EntityManager;
 
-                em.SendRpc<StartGameServerRpc>(isTag: true);
+                em.SendRpc<StartGameServerRpc>();
 
                 var battleSubSceneLoading = em.CreateEntity(typeof(BattleSubSceneLoading));
                 em.SetComponentData(battleSubSceneLoading, new BattleSubSceneLoading {

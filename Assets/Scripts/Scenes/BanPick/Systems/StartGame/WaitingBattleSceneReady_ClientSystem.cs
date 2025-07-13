@@ -28,7 +28,7 @@ public partial struct WaitingBattleSceneReady_ClientSystem : ISystem {
             BattleSceneLoaded
           , BattleSubSceneLoading
         >().Build());
-        em.SendRpc<SpawnChampClientRpc>(isTag: true);
+        em.SendRpc<SpawnChampClientRpc>();
 
         // Create battle client data for client to access their info easier
         var clientDataEntity = em.CreateEntity();

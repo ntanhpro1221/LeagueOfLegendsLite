@@ -53,7 +53,7 @@ public static partial class ChampionStateDead {
             private readonly RefRO<TeamTypeData>        _TeamType;
             private readonly RefRO<DeadStateData>       _DeadStateData;
             private readonly RefRO<StatsData>           _Stats;
-            private readonly RefRO<ChampionOrderInTeam> _OrderData;
+            private readonly RefRO<ChampOrderInTeam> _OrderData;
 
             [Optional] private readonly EnabledRefRW<MoveableTag>          _Moveable;
 

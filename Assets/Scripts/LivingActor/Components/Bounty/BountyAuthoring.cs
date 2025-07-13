@@ -18,16 +18,26 @@ public struct BountyTriggerData : IComponentData {
     [GhostField] public Entity lastHitEntity;
 }
 
+/// <summary>
+/// Send gold to someone (not by using my gold).
+/// </summary>
+[GhostComponent(PrefabType = GhostPrefabType.Server)]
+public struct OutgoingGoldBuffer : IBufferElementData {
+    public float_Q3 gold;
+    public Entity   target;
+}
+
 [RequireComponent(typeof(IRaceTag))]
 public class BountyAuthoring : MonoBehaviour {
     private class Baker : ExtendBaker<BountyAuthoring> {
         public override void Bake(BountyAuthoring authoring) {
             if (ActorAuthoringHelpers.IsBaseRace(authoring)) return;
-            
+
             GetDynamicEntity(out var entity);
 
             AddComponentDisabled<BountyTrigger>(entity);
             AddComponent<BountyTriggerData>(entity);
+            AddBuffer<OutgoingGoldBuffer>(entity);
 
             var source = ActorAuthoringHelpers.ExtractDataFromTag(authoring);
             if (source is not IHaveBountyManaged bountySource)

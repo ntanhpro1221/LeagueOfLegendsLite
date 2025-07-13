@@ -48,7 +48,7 @@ MonoBehaviour:
     - KillScore
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 9ba594e714b97a5c300b085b4dcfa7f2
+      Hash: ee01513d74a285db8581332c3c5ad424
     _KeySynced: 1
   value:
     _Keys: 000000000100000002000000
@@ -104,11 +104,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -122,7 +122,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 09c9f4dc5ca06904bfb2befac58f520b
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
@@ -172,11 +172,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -190,7 +190,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 09c9f4dc5ca06904bfb2befac58f520b
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: c547a5ed98baa7f4f90bc0c51a7939bf, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -206,7 +206,7 @@ MonoBehaviour:
           - _Value:
               value: 280000
           - _Value:
-              value: 1000000
+              value: 325000
           - _Value:
               value: 26000
           - _Value:
@@ -220,7 +220,7 @@ MonoBehaviour:
           - _Value:
               value: 0
           - _Value:
-              value: 20000
+              value: 59000
           - _Value:
               value: 0
           - _Value:
@@ -264,7 +264,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 9ba594e714b97a5c300b085b4dcfa7f2
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
@@ -332,7 +332,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 9ba594e714b97a5c300b085b4dcfa7f2
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -392,11 +392,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -410,7 +410,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 09c9f4dc5ca06904bfb2befac58f520b
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
@@ -460,11 +460,11 @@ MonoBehaviour:
           - Mana
           - MoveSpeed
           - Armor
-          - SpellBlock
+          - MagicRes
           - AttackRange
           - HealthRegen
           - ManaRegen
-          - Crit
+          - CritChance
           - PhysicDamage
           - MagicDamage
           - AttackSpeed
@@ -478,7 +478,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: 09c9f4dc5ca06904bfb2befac58f520b
+            Hash: ee01513d74a285db8581332c3c5ad424
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 6b0101816f3098f48af7a1b7386615ea, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -489,5 +489,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 9ba594e714b97a5c300b085b4dcfa7f2
+      Hash: ee01513d74a285db8581332c3c5ad424
     _KeySynced: 1

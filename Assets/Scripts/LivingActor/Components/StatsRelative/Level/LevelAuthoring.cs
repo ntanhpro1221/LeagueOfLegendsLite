@@ -8,8 +8,9 @@ public struct LevelData : IComponentData {
     [GhostField] public int availableSkillPoint;
 }
 
+[GhostComponent(PrefabType = GhostPrefabType.Server)]
 public struct IncomingExpBuffer : IBufferElementData {
-    [GhostField] public int exp;
+    public int exp;
 
     public static implicit operator IncomingExpBuffer(int source)
         => new() { exp = source };

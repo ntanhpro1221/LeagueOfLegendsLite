@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
 
-[UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
+[UpdateInGroup(typeof(HandleInOut_Damage_Exp_Gold_SystemGroup))]
 public partial struct NotifyWhenAllyBeAttackSystem : ISystem {
     [ReadOnly] private ComponentLookup<ChampionTag>        champLookup;
     [ReadOnly] private ComponentLookup<ActorDetector>      detectorLookup;
@@ -53,10 +53,7 @@ public partial struct NotifyWhenAllyBeAttackSystem : ISystem {
       , typeof(HealthData))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
-        private static readonly CollisionFilter filterActorDetector = new() {
-            BelongsTo    = PhysicsLayerHelpers.All
-          , CollidesWith = PhysicsLayerHelpers.ActorDetector,
-        };
+        private static readonly CollisionFilter filterActorDetector = LayerId.ActorDetector.ToFilter();
 
         public CollisionWorld collisionWorld;
 
@@ -67,7 +64,7 @@ public partial struct NotifyWhenAllyBeAttackSystem : ISystem {
         public NativeList<DistanceHit>             castResult;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             in DynamicBuffer<IncomingDamageBuffer> incomingDamage
           , in LocalTransform                      locTrans
           , in Entity                              entity) {

@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 4038344703783047159}
   - component: {fileID: 1139220609148030826}
   - component: {fileID: 864159312357306146}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: DamageTriggerSource_ShotNonBlockable
   m_TagString: Untagged
   m_Icon: {fileID: 0}

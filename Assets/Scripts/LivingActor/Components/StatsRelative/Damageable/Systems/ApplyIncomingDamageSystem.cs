@@ -2,7 +2,7 @@
 using Unity.Collections;
 using Unity.Entities;
 
-[UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
+[UpdateInGroup(typeof(HandleInOut_Damage_Exp_Gold_SystemGroup))]
 public partial struct ApplyIncomingDamageSystem : ISystem {
     [ReadOnly] private ComponentLookup<ChampionTag> champLookup;
 
@@ -21,16 +21,14 @@ public partial struct ApplyIncomingDamageSystem : ISystem {
         }.ScheduleParallel(state.Dependency);
     }
 
-    [WithAll(
-        typeof(Simulate)
-      , typeof(HealthData))]
+    [WithAll(typeof(Simulate))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         [ReadOnly] public ComponentLookup<ChampionTag> champLookup;
 
         [BurstCompile]
-        public void Execute(
-            ref DynamicBuffer<IncomingDamageBuffer> incomingDamage
+        private void Execute(
+            in  DynamicBuffer<IncomingDamageBuffer> incomingDamage
           , ref HealthData                          health
           , BountyAspectRW                          bounty) {
 

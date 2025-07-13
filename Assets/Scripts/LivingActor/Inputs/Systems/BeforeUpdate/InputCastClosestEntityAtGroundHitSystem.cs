@@ -11,8 +11,7 @@ using Unity.Physics;
 public partial struct InputCastClosestEntityAtGroundHitSystem : ISystem {
     public const float MAX_CAST_RADIUS = 160;
 
-    private static readonly CollisionFilter filterActor = PhysicsLayerHelpers.GetFilter(
-        PhysicsLayerHelpers.Actor);
+    private static readonly CollisionFilter filterActor = LayerId.Actor.ToFilter();
 
     private NativeList<DistanceHit> castActorResult;
 

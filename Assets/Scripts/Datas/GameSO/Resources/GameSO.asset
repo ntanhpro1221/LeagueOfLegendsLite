@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e4be010c4f14f1da54b30648b374fb, type: 3}
   m_Name: GameSO
   m_EditorClassIdentifier: 
+  _NumPopupStyle: {fileID: 11400000, guid: 612eb2ad099c0b94883ef3a84fdc2ea6, type: 2}
   _NetConfig: {fileID: 11400000, guid: 2639303ac9b6f414999e4057ccd555c6, type: 2}
   _RoomConnectionConfig: {fileID: 11400000, guid: deb7a5e995e839a098b15d28c81d53f0, type: 2}
   _Champion: {fileID: 11400000, guid: aab24384f13366c4286347355c9d698e, type: 2}

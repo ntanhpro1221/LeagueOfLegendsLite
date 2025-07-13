@@ -1,9 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
-using Unity.NetCode;
-using UnityEngine;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+[UpdateInGroup(typeof(HandleInOut_Damage_Exp_Gold_SystemGroup))]
 public partial struct ApplyIncomingExpSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -17,19 +15,17 @@ public partial struct ApplyIncomingExpSystem : ISystem {
         }.ScheduleParallel(state.Dependency);
     }
 
-    [WithAll(
-        typeof(Simulate))]
+    [WithAll(typeof(Simulate))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public RequireExpData requireExp;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             ref LevelData                        level
-          , ref DynamicBuffer<IncomingExpBuffer> expBuffer) {
+          , in  DynamicBuffer<IncomingExpBuffer> expBuffer) {
             // add exp
             foreach (var exp in expBuffer) level.curExp += exp.exp;
-            expBuffer.Clear();
 
             // level up
             while (level.curLevel < requireExp.MaxLevel) {

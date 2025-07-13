@@ -12,7 +12,7 @@ public partial struct SpawnChamp_ServerSystem : ISystem {
 
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
-        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<BattleSubSceneLoading>();
         state.RequireForUpdate<TeamMemberBuffer>();
         state.RequireForUpdate<ChampionPrefabBuffer>();
@@ -31,7 +31,7 @@ public partial struct SpawnChamp_ServerSystem : ISystem {
         netIdLookup.Update(ref state);
 
         var ecb = SystemAPI
-            .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
         var champPrefab  = SystemAPI.GetSingletonBuffer<ChampionPrefabBuffer>(isReadOnly: true);
@@ -55,16 +55,18 @@ public partial struct SpawnChamp_ServerSystem : ISystem {
                     break;
                 }
 
-            ChampionOrderInTeam orderData = default;
-            foreach (var item in memberBuffer)
-                if (item.netId.Value == netId.Value) break;
-                else if (item.team   == member.team) orderData.order = (orderData.order + 1) % MAX_INIT_SLOT;
-
             // spawn player's champ
             var champEntity = ecb.Instantiate(champPrefab[prefabId.ChampionId[member.champ]].Entity);
 
             // set champ's order in team
+            ChampOrderInTeam orderData = default;
+            foreach (var item in memberBuffer)
+                if (item.netId.Value == netId.Value) break;
+                else if (item.team   == member.team) orderData.order = (orderData.order + 1) % MAX_INIT_SLOT;
             ecb.SetComponent(champEntity, orderData);
+            
+            // set champ's connection
+            ecb.SetComponent(champEntity, new ChampConnection { entity = receiveRpc.SourceConnection });
 
             // set champ's team
             ecb.SetComponent<TeamTypeData>(champEntity, member.team);

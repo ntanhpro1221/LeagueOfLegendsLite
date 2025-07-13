@@ -2,7 +2,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 
-[UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
+[UpdateInGroup(typeof(HandleInOut_Damage_Exp_Gold_SystemGroup))]
 public partial struct UpdateAssistDataSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
@@ -29,11 +29,11 @@ public partial struct UpdateAssistDataSystem : ISystem {
     [WithPresent(
         typeof(AssistResetTrigger))]
     [BurstCompile]
-    public partial struct UpdateJob : IJobEntity {
+    private partial struct UpdateJob : IJobEntity {
         public NetworkTick newResetAtTick;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             ref AssistResetData                     data
           , EnabledRefRW<AssistResetTrigger>        trigger
           , ref DynamicBuffer<AssistBuffer>         assistBuffer
@@ -64,11 +64,11 @@ public partial struct UpdateAssistDataSystem : ISystem {
         typeof(Simulate)
       , typeof(AssistResetTrigger))]
     [BurstCompile]
-    public partial struct ResetJob : IJobEntity {
+    private partial struct ResetJob : IJobEntity {
         public NetworkTick curTick;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             in AssistResetData               data
           , EnabledRefRW<AssistResetTrigger> trigger
           , ref DynamicBuffer<AssistBuffer>  buffer) {

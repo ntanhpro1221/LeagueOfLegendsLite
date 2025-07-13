@@ -51,7 +51,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
         public BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             DamageTriggerSourceAspect         damageTrigger
           , in AimedTargetData                targetData
           , in MoveData                       moveData
@@ -79,7 +79,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
         public BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             DamageTriggerSourceAspect                damageTrigger
           , in DynamicBuffer<CollidedOpponentBuffer> collidedOpponent
           , in Entity                                entity
@@ -109,7 +109,7 @@ public partial struct HandleDamageFromTriggerSourceSystem : ISystem {
         public BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             DamageTriggerSourceAspect                 damageTrigger
           , in  DynamicBuffer<CollidedOpponentBuffer> collidedOpponent
           , ref DamagedOpponentCount                  damagedCount) {

@@ -55,7 +55,7 @@ public partial struct InitChampionSystem : ISystem {
 
             // Position
           , ref LocalTransform      locTrans
-          , in  ChampionOrderInTeam orderData
+          , in  ChampOrderInTeam orderData
           , MoveRequesterAspect     moveRequester) {
 
             // POSITION (not init for dummy)

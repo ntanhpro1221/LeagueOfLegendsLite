@@ -1,10 +1,7 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Physics;
-using Unity.Transforms;
 
-[UpdateInGroup(typeof(HandleIncomingDamageSystemGroup))]
+[UpdateInGroup(typeof(HandleInOut_Damage_Exp_Gold_SystemGroup))]
 public partial struct NotifyWhenIWasBeatenSystem : ISystem {
     [BurstCompile]
     public void OnUpdate(ref SystemState state) {
@@ -19,7 +16,7 @@ public partial struct NotifyWhenIWasBeatenSystem : ISystem {
     [BurstCompile]
     private partial struct Job : IJobEntity {
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             in  DynamicBuffer<IncomingDamageBuffer> incomingDamage
           , ref BeBeaten                            beBeatenData
           , EnabledRefRW<BeBeaten>                  beBeatenTrigger) {

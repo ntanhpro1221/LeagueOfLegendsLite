@@ -29,6 +29,7 @@ public class GameSO : ScriptableObject {
 
     #region ALL SCRIPTABLE OBJECT
 
+    [SerializeField] private NumberPopupStyleSO   _NumPopupStyle;
     [SerializeField] private NetCodeConfig        _NetConfig;
     [SerializeField] private RoomConnectionConfig _RoomConnectionConfig;
     [SerializeField] private AllChampionDataSO    _Champion;
@@ -42,6 +43,7 @@ public class GameSO : ScriptableObject {
 
     #region ALL ACCESSORS
 
+    public static EnumMap<NumberPopup.Id, NumberPopup.Style>  NumPopupStyle         => _CachedInstance._NumPopupStyle.Data;
     public static NetCodeConfig                               NetConfig             => _CachedInstance._NetConfig;
     public static RoomConnectionConfig                        RoomConnectionConfig  => _CachedInstance._RoomConnectionConfig;
     public static int                                         TickRate              => NetConfig.ClientServerTickRate.SimulationTickRate;
