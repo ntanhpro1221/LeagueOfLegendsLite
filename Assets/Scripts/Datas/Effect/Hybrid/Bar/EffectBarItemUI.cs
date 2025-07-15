@@ -14,7 +14,7 @@ public class EffectBarItemUI : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI _Stack;
     [SerializeField] private Tooltip_EffectBar  _Tooltip;
 
-    public void InitUI(EffectData.Managed data, in FixedString64Bytes sourceName) {
+    public void InitUI(EffectDataManaged data, in FixedString64Bytes sourceName) {
         var barData = data.barData;
         _Avatar.sprite = barData.avatar;
         _Outline.color = barData.outlineColor;

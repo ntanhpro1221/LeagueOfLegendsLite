@@ -53,7 +53,7 @@ public class GameSO : ScriptableObject {
     public static CovEnumMap<MonsterId, MonsterDataManaged>   Monster               => _CachedInstance._Monster.value;
     public static CovEnumMap<ItemId, ItemDataManaged>         Item                  => _CachedInstance._Item.value;
     public static CovEnumMap<TowerId, TowerDataManaged>       Tower                 => _CachedInstance._Tower.value;
-    public static CovEnumMap<EffectId, EffectData.Managed>    Effect                => _CachedInstance._Effect.value;
+    public static CovEnumMap<EffectId, EffectDataManaged>    Effect                => _CachedInstance._Effect.value;
 
     #endregion
 }

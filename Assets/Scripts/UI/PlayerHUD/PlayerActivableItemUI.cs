@@ -38,15 +38,13 @@ public class PlayerActivableItemUI : MonoBehaviour {
 
     #region DEAD
 
-    public void StartDeadAllItems() {
+    private void SetDeadAllItems(bool dead) {
         foreach (var key in Strum.SlotItem.Indexes)
-            Items[key].Core.StartDead();
+            Items[key].Core.SetDisableFactor(ItemUIDisableFactor.InDead, dead);
     }
 
-    public void DoneDeadAllItems() {
-        foreach (var key in Strum.SlotItem.Indexes)
-            Items[key].Core.DoneDead();
-    }
+    public void StartDeadAllItems() => SetDeadAllItems(true);
+    public void DoneDeadAllItems()  => SetDeadAllItems(false);
 
     #endregion
 
@@ -54,17 +52,15 @@ public class PlayerActivableItemUI : MonoBehaviour {
 
     public bool BlockedAllItems { get; private set; }
 
-    public void StartBlockAllItems() {
-        BlockedAllItems = true;
+    private void SetBlockAllItems(bool blocked) {
+        BlockedAllItems = blocked;
         foreach (var key in Strum.SlotItem.Indexes)
-            Items[key].Core.StartBlock();
+            Items[key].Core.SetDisableFactor(ItemUIDisableFactor.Blocked, blocked);
     }
 
-    public void DoneBlockAllItems() {
-        BlockedAllItems = false;
-        foreach (var key in Strum.SlotItem.Indexes)
-            Items[key].Core.DoneBlock();
-    }
+    public void StartBlockAllItems() => SetBlockAllItems(true);
+
+    public void DoneBlockAllItems() => SetBlockAllItems(false);
 
     #endregion
 }

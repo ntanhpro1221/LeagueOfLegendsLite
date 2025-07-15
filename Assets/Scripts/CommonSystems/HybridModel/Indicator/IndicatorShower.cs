@@ -31,7 +31,7 @@ public class IndicatorShower : MonoBehaviour {
 
     public void UpdateIndicatorAt(SlotItemId slot, IndicatorConcreteBase indicator) =>
         _IndicatorConcretes[slot] = indicator;
-    
+
     public void UpdateShower(in Metadata metadata) =>
         UpdateShower(metadata, ref _NullItemData);
 
@@ -73,7 +73,7 @@ public class IndicatorShower : MonoBehaviour {
         public float3_Q3 ownChampPos;
         public bool      ownChampIsTarget;
 
-        public InputForActivableItemData input;
-        public ItemActiveCondition       condition;
+        public InputForActivableItemData              input;
+        public Strum.ItemActiveCond.Fields<bool> condition;
     }
 }

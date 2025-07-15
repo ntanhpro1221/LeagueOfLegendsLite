@@ -5,10 +5,10 @@ using UnityEngine;
 public struct PlayerInputData : IInputComponentData {
     public void ResetAllEvents() => triggers.Event = default;
 
-    [GhostField] public InputForActivableItemData inputForActivableItem;
-    [GhostField] public ItemActiveCondition       curCondition;
-    [GhostField] public PlayerTrigger.Full        triggers;
-    [GhostField] public RequestData               requestData;
+    [GhostField] public InputForActivableItemData              inputForActivableItem;
+    [GhostField] public Strum.ItemActiveCond.Fields<bool> curCondition;
+    [GhostField] public PlayerTrigger.Full                     triggers;
+    [GhostField] public RequestData                            requestData;
 
     #region MOVE
 

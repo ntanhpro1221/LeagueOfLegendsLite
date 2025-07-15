@@ -12,7 +12,7 @@ public class EffectBarUI : MonoBehaviour {
     [SerializeField] private GameObject _ItemPrefab;
     [SerializeField] private Transform  _ItemRoot;
 
-    private void Spawn(in EffectFullId id, EffectData.Managed data, in FixedString64Bytes sourceName) {
+    private void Spawn(in EffectFullId id, EffectDataManaged data, in FixedString64Bytes sourceName) {
         if (!_Items.ContainsKey(id))
             _Items.Add(id, _AvailableItems.Count > 0
                 ? _AvailableItems.Pop()

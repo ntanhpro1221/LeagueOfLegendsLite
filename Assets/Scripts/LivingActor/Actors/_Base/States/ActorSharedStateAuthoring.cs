@@ -2,6 +2,7 @@
 using Unity.Entities;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class ActorSharedStateAuthoring : IAllStateAuthoring<SharedAnimKey> {
     protected static void BakeActorSharedState<TEntryState>(IBaker baker)
         where TEntryState : struct, IEnableableComponent {

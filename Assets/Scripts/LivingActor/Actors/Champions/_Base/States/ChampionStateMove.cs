@@ -57,7 +57,7 @@ public static partial class ChampionStateMove {
                     // Not have disabling activate item CC.
                     common.CC.Disable.ActiveItem == 0
                     // Have request.
-                 && commonChamp.ItemRequest.haveRequest)
+                 && commonChamp.ItemRequest.haveRequestNewState)
                     common.State.SetItemActiveAnalyzing();
 
                 // ATTACK STATE

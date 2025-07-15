@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,8 +7,8 @@ public class ItemSkillUI : IItemUIWrapper {
     [field: SerializeField] public Tooltip_Skill Tooltip { get; private set; }
 
     public void InitAll(IActivableItemSO source) {
-        if (source.haveLevel) {
-            Core.ForceOffInteractable = true;
+        if (source.HaveLevel) {
+            Core.SetDisableFactor(ItemUIDisableFactor.NotEnoughLevel, true);
 
             // Init level points
             InitLevelPoints(source.maxLevel);
@@ -19,15 +18,7 @@ public class ItemSkillUI : IItemUIWrapper {
         Core.Avatar.sprite = source.avatar;
 
         // Init tooltip window
-        var descriptionDict = new SerializedDictionary<string, List<float_Q3>>(source.GenerateConcreteData_StringKey());
-        Tooltip.Window.Init(
-            avatar: source.avatar
-          , skillName: source.itemName
-          , mainText_Dynamic: new(source.description, descriptionDict)
-          , details_Dynamic: new(source.details, descriptionDict)
-          , cooldownTime: source.cooldownTime
-          , activeCost: source.activeCost
-          , maxLevel: source.maxLevel);
+        Tooltip.Window.Init(source);
     }
 
     public void UpdateAll(int newLevelPoints, int availablePoint) {
@@ -55,10 +46,12 @@ public class ItemSkillUI : IItemUIWrapper {
     [SerializeField] private Transform  _LevelPointRoot;
 
     private int                 _CurLevel;
-    private List<IDisablableUI> _LevelPoints = new();
+
+    private readonly List<IDisablableUI> _LevelPoints = new();
 
     private void UpdateLevelPoint(int newLevelPoints) {
-        if (_CurLevel != newLevelPoints) Core.ForceOffInteractable = newLevelPoints == 0;
+        if (_CurLevel != newLevelPoints)
+            Core.SetDisableFactor(ItemUIDisableFactor.NotEnoughLevel, newLevelPoints == 0);
 
         if (_CurLevel < newLevelPoints)
             for (; _CurLevel < newLevelPoints; ++_CurLevel)

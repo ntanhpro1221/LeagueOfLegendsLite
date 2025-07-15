@@ -22,9 +22,8 @@ MonoBehaviour:
     isActivable: 1
     isRequireNewState: 1
   activeCondition:
-    pointToTarget: 0
-    pointToWalkable: 0
-  haveLevel: 1
+    PointToTarget: 0
+    PointToWalkable: 0
   maxLevel: 5
   cooldownTime:
   - value: 90000
@@ -53,13 +52,14 @@ MonoBehaviour:
       value: 0
     mana:
       value: 20000
+  specialCondCost: 
   concreteProp:
     _Keys: 
     _Values: []
     _KeyNames: []
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: fb832f43631529ed336a8a902f6a5699
+      Hash: 86dea3dc31d2b91dd0ef909b83da1966
     _KeySynced: 1
   concretePrefab:
     _Keys: 00000000
@@ -69,6 +69,6 @@ MonoBehaviour:
     - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: fb832f43631529ed336a8a902f6a5699
+      Hash: 86dea3dc31d2b91dd0ef909b83da1966
     _KeySynced: 1
   _PrevMaxLevel: 5

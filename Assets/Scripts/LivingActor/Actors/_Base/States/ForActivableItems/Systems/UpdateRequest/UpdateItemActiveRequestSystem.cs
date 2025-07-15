@@ -2,8 +2,8 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 
-[UpdateInGroup(typeof(Between_CopyCommand_PredictedFixed_SystemGroup))]
-public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
+[UpdateInGroup(typeof(UpdateItemActiveRequestSystemGroup))]
+public partial struct UpdateItemActiveRequestSystem : ISystem {
     [BurstCompile]
     public void OnCreate(ref SystemState state) {
         state.RequireForUpdate<AllItemData>();
@@ -19,19 +19,21 @@ public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
     }
 
     [WithAll(typeof(Simulate))]
+    [WithPresent(typeof(ActiveItemWithoutState_Request))]
     [BurstCompile]
     private partial struct Job : IJobEntity {
         public AllItemData allItem;
         public NetworkTick curTick;
 
         [BurstCompile]
-        public void Execute(
-            ref ItemActiveNewStateRequestData request
-          , PlayerInputAspectRO               input
-          , ItemSlotsAspectRO                 itemSlots
-          , ActiveItemCostSourceAspect        costSource) {
+        private void Execute(
+            ref ItemActiveRequestData                    request
+          , PlayerInputAspectRO                          input
+          , ItemSlotsAspectRO                            itemSlots
+          , ActiveItemCostSourceAspect                   costSource
+          , EnabledRefRW<ActiveItemWithoutState_Request> withoutStateRequest) {
             // First: reset request
-            request.Reset();
+            request.haveRequestNewState = withoutStateRequest.ValueRW = false;
 
             // Second: check all activable item that requires new state
             foreach (var slot in Strum.SlotItem.Indexes) {
@@ -43,12 +45,9 @@ public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
                 ref var itemStatic  = ref itemSlots.GetItemDataUnsafe(slot, allItem);
                 var     itemDynamic = itemSlots.Slots[slot];
 
-                // Check require new state type
-                if (!itemStatic.activeSettings.isRequireNewState) continue;
-
                 // Check min level
-                if (itemStatic.haveLevel && itemDynamic.level == 0) continue;
-                int levelIndex = itemStatic.CalcLevelIndex(itemDynamic.level);
+                if (itemStatic.HaveLevel && itemDynamic.level == 0) continue;
+                int levelIndex = itemDynamic.CalcSafeLevelIndex();
 
                 // Check cooldown
                 if (itemDynamic.common.doneAtTick.IsValid
@@ -57,12 +56,19 @@ public partial struct UpdateItemActiveNewStateRequestSystem : ISystem {
                 // Check activation cost
                 if (!itemStatic.activeCost[levelIndex].IsEnough(costSource)) continue;
 
-                // Check activation condition 
-                if (!itemStatic.activeCondition.CheckOK(input.Input.curCondition)) continue;
+                // Check special cond
+                if (itemDynamic.common.notSatisSpecialCond) continue;
 
+                // Check activation condition 
+                if (!itemStatic.activeCondition.CheckCondOf(input.Input.curCondition)) continue;
+
+                var requireNewState = itemStatic.activeSettings.isRequireNewState;
                 request.PushRequest(slot
                   , itemStatic.cooldownTick[levelIndex]
-                  , itemStatic.activeCost[levelIndex]);
+                  , itemStatic.activeCost[levelIndex]
+                  , requireNewState);
+
+                if (!requireNewState) withoutStateRequest.ValueRW = true;
 
                 break;
             }

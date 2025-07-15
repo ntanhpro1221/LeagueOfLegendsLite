@@ -8,13 +8,15 @@ public class AsheSkill_Q : ActivableItemSO_Generic<
   , AsheSkill_Q.PrefabBuffer> {
     public enum ConcreteProperty {
         attackSpeed
-      , damagePerArrow
+      , dmgRatioPerArrow
     }
 
-    public enum ConcretePrefab { }
+    public enum ConcretePrefab {
+        arrow
+    }
 
     public struct PrefabBuffer : IActivableItemPrefabBuffer {
-        public Entity        entity;
+        public Entity                     entity;
         Entity IActivableItemPrefabBuffer.entity { set => entity = value; }
     }
 }

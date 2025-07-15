@@ -1,7 +1,4 @@
-﻿using NGDtuanh.Entities.StateMachine;
-using Unity.Entities;
-using Unity.NetCode;
+﻿using Unity.Entities;
 
-[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
-[UpdateAfter(typeof(StateMachineSystemGroup))]
+[UpdateInGroup(typeof(HandleNormalAttackSystemGroup))]
 public partial class NormalAttackSystemGroup : ComponentSystemGroup { }

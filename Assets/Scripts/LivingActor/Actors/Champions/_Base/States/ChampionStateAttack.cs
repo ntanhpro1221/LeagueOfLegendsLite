@@ -48,7 +48,7 @@ public static partial class ChampionStateAttack {
                     // Not have disabling activate item CC.
                     common.CC.Disable.ActiveItem == 0
                     // Have request.
-                 && commonChamp.ItemRequest.haveRequest)
+                 && commonChamp.ItemRequest.haveRequestNewState)
                     common.State.SetItemActiveAnalyzing();
 
                 // MOVE STATE
@@ -198,18 +198,22 @@ public static partial class ChampionStateAttack {
     }
 
     public partial struct Enter {
-        private readonly partial struct StateFilterAspect : IAspect, IStateEnterAspect<ChampionTag, AttackState> {
+        public struct InheritTag : IStateInheritTag<ChampionTag, AttackState> { }
+
+        private readonly partial struct StateFilterAspect : IAspect, IStateEnterAspect<ChampionTag, AttackState>.RequireInherit<InheritTag> {
             private readonly RefRO<ChampionTag> _identity;
             private readonly RefRO<AttackState> _curState;
             private readonly RefRO<Simulate>    _simulate;
 
             private readonly EnabledRefRO<StateRequireEnter> _stateRequireEnter;
+            private readonly RefRO<InheritTag>               _inheritTag;
 
             RefRO<ChampionTag> IStateAspect<ChampionTag, AttackState>.Identity => _identity;
             RefRO<AttackState> IStateAspect<ChampionTag, AttackState>.CurState => _curState;
             RefRO<Simulate> IStateAspect<ChampionTag, AttackState>.   Simulate => _simulate;
 
             EnabledRefRO<StateRequireEnter> IStateEnterAspect<ChampionTag, AttackState>.StateRequireEnter => _stateRequireEnter;
+            RefRO<InheritTag> IStateInheritable<ChampionTag, AttackState, InheritTag>.  InheritTag        => _inheritTag;
         }
     }
 

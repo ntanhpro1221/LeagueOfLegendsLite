@@ -105,14 +105,14 @@ public static partial class AsheStateSkill_R {
                 data.StateData.performData.MarkPerformed();
 
                 if (!netTime.IsFirstTimeFullyPredictingTick) continue;
-                ref var item  = ref data.ItemSlots.GetItemDataUnsafe(SlotItemId.Skill_R, allItem);
-                var     level = data.ItemSlots.Slots.Skill_R.level;
+                ref var item       = ref data.ItemSlots.GetItemDataUnsafe(SlotItemId.Skill_R, allItem);
+                var     levelIndex = data.ItemSlots.Slots.Skill_R.CalcSafeLevelIndex();
 
                 var direction = quaternion.LookRotation(data.StateData.input.direction.Full, math.up());
                 var spawnPoint = LocalTransform.FromPositionRotation(data.Position, direction)
                     .TransformPoint(data.ProjectileSpawnPoint.position);
 
-                float_Q3 damage = item.concreteProp.Value[(int)AsheSkill_R.ConcreteProperty.magicDamage][level];
+                float_Q3 damage = item.concreteProp.Value[(int)AsheSkill_R.ConcreteProperty.magicDamage][levelIndex];
                 Entity   prefab = data.PrefabBuffer[(int)AsheSkill_R.ConcretePrefab.arrow].entity;
 
                 var arrow         = ecb.Instantiate(prefab);

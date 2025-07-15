@@ -29,22 +29,26 @@ public partial struct UpdateActivableItemsUI_OwnChamp_ClientSystem : ISystem {
             >().WithNone<
                 DummyTag
             >()) {
-            UpdateModifiedItem(itemSlots
+            ModifiedItem(itemSlots
               , allItem
               , PlayerHUD.Instance.ActivableItems.Items
               , hybrid.ValueRO.indicator);
-            UpdateAllItemCooldown(itemSlots
+            AllItemSpecialCond(itemSlots
+              , allItem
+              , SystemAPI.GetSingleton<NetworkTime>().ServerTick
+              , PlayerHUD.Instance.ActivableItems.Items);
+            AllItemCooldown(itemSlots
               , allItem
               , SystemAPI.GetSingleton<NetworkTime>().ServerTick
               , PlayerHUD.Instance.ActivableItems.Items, GameSO.TickRate);
-            UpdateSkillLevel(itemSlots
+            SkillLevel(itemSlots
               , allItem
               , level.ValueRO
               , PlayerHUD.Instance.ActivableItems.Items);
         }
     }
 
-    private void UpdateModifiedItem(
+    private void ModifiedItem(
         in ItemSlotsAspectRO                itemSlots
       , in AllItemData                      allItem
       , EnumMap<SlotItemId, IItemUIWrapper> itemsUI
@@ -73,7 +77,19 @@ public partial struct UpdateActivableItemsUI_OwnChamp_ClientSystem : ISystem {
         LazyObserver_Battle.PostEvent(LazyObserver_Battle.Events.SlotChanged);
     }
 
-    private void UpdateAllItemCooldown(
+    private void AllItemSpecialCond(
+        in ItemSlotsAspectRO                itemSlots
+      , in AllItemData                      allItem
+      , in NetworkTick                      curTick
+      , EnumMap<SlotItemId, IItemUIWrapper> itemsUI) {
+        foreach (var slot in Strum.SlotItem.Indexes)
+            if (itemSlots.IsActivable(slot, allItem))
+                itemsUI[slot].Core.SetDisableFactor(
+                    ItemUIDisableFactor.NotSatisCond
+                  , itemSlots.Slots[slot].common.notSatisSpecialCond);
+    }
+
+    private void AllItemCooldown(
         in ItemSlotsAspectRO                itemSlots
       , in AllItemData                      allItem
       , in NetworkTick                      curTick
@@ -84,14 +100,14 @@ public partial struct UpdateActivableItemsUI_OwnChamp_ClientSystem : ISystem {
                 ref var itemStatic  = ref itemSlots.GetItemDataUnsafe(slot, allItem);
                 var     itemDynamic = itemSlots.Slots[slot];
                 var     itemUICore  = itemsUI[slot].Core;
-                int     levelIndex  = itemStatic.CalcLevelIndex(itemDynamic.level);
+                int     levelIndex  = itemDynamic.CalcSafeLevelIndex();
 
                 bool curInCooldown =
                     itemDynamic.common.doneAtTick.IsValid
                  && itemDynamic.common.doneAtTick.IsNewerThan(curTick);
 
                 // Trigger on-off
-                if (curInCooldown != itemUICore.IsInCooldown) {
+                if (curInCooldown != itemUICore.DisableFactor.InCooldown) {
                     if (curInCooldown) itemUICore.StartCooldown(itemStatic.cooldownTick[levelIndex] / tickRateFloat);
                     else itemUICore.DoneCooldown();
                 }
@@ -102,7 +118,7 @@ public partial struct UpdateActivableItemsUI_OwnChamp_ClientSystem : ISystem {
             }
     }
 
-    private void UpdateSkillLevel(
+    private void SkillLevel(
         in ItemSlotsAspectRO                itemSlots
       , in AllItemData                      allItem
       , in LevelData                        levelData

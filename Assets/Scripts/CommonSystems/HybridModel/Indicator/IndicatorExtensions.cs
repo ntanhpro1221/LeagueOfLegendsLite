@@ -20,12 +20,12 @@ public static class IndicatorExtensions {
     }
 
     public static ref IndicatorShower.Metadata WithActivableItem(
-        this ref IndicatorShower.Metadata metadata
-      , SlotItemId                        itemKey
-      , int                               ownerLevel
-      , int                               selfLevel
-      , in InputForActivableItemData      input
-      , in ItemActiveCondition            condition) {
+        this ref IndicatorShower.Metadata         metadata
+      , SlotItemId                                itemKey
+      , int                                       ownerLevel
+      , int                                       selfLevel
+      , in InputForActivableItemData              input
+      , in Strum.ItemActiveCond.Fields<bool> condition) {
         metadata.itemKey    = itemKey;
         metadata.ownerLevel = ownerLevel;
         metadata.selfLevel  = selfLevel;

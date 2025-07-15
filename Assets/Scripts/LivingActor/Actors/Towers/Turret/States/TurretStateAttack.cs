@@ -3,7 +3,6 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
 public static partial class TurretStateAttack {
     [UpdateInGroup(typeof(StateExitSystemGroup))]

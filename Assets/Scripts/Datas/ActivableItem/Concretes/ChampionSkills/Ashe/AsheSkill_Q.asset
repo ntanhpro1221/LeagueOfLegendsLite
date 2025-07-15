@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea369955c66b2415fb240420d1c45264, type: 3}
   m_Name: AsheSkill_Q
   m_EditorClassIdentifier: 
-  avatar: {fileID: 21300000, guid: 92bd6c43f47e9ca428158410f566bfc8, type: 3}
+  avatar: {fileID: 21300000, guid: 4289b50e6d38343bb8637657699042c7, type: 3}
   itemName: Ranger's Focus
   description: '<b>PASSIVE</b>: While Ranger''s Focus is inactive, Ashe''s basic
     attacks on-attack generate a stack of Focus for 4 seconds, which refreshes on
@@ -25,20 +25,19 @@ MonoBehaviour:
     arrows.
 
 
-    Each arrow deals <sprite name=physic_damage> <color=#ec8d34>{{damagePerArrow}}%
+    Each arrow deals <sprite name=physic_damage> <color=#ec8d34>{{dmgRatioPerArrow}}%
     physical damage</color> that benefits from Frost Shot and  life steal. Flurries
     apply on-hit effects only once.'
   details: 'Attack speed: {{$attackSpeed}} %
 
-    Damage per arrow: {{$damagePerArrow}}
+    Damage per arrow: {{$dmgRatioPerArrow}}
     %'
   activeSettings:
-    isActivable: 0
+    isActivable: 1
     isRequireNewState: 0
   activeCondition:
-    pointToTarget: 0
-    pointToWalkable: 0
-  haveLevel: 1
+    PointToTarget: 0
+    PointToWalkable: 0
   maxLevel: 5
   cooldownTime:
   - value: 0
@@ -67,6 +66,7 @@ MonoBehaviour:
       value: 0
     mana:
       value: 30000
+  specialCondCost: 4 Focus
   concreteProp:
     _Keys: 0000000001000000
     _Values:
@@ -84,17 +84,19 @@ MonoBehaviour:
       - value: 25000
     _KeyNames:
     - attackSpeed
-    - damagePerArrow
+    - dmgRatioPerArrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 6209c30fe3d9e8d481463a645b9e73b8
+      Hash: 7d49909ab843d666f740c259c2041ddd
     _KeySynced: 1
   concretePrefab:
-    _Keys: 
-    _Values: []
-    _KeyNames: []
+    _Keys: 00000000
+    _Values:
+    - _Value: {fileID: 5118756948881874344, guid: 3e2e1144722fcb361a88b6c7602f0432, type: 3}
+    _KeyNames:
+    - arrow
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 6209c30fe3d9e8d481463a645b9e73b8
+      Hash: 7d49909ab843d666f740c259c2041ddd
     _KeySynced: 1
   _PrevMaxLevel: 5

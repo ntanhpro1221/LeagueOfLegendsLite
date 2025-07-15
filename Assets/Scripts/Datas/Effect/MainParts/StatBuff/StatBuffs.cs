@@ -5,12 +5,12 @@ using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 
-public struct StatBuffs : IBlobBuildable<StatBuffs.Managed>, IBlobBuildableSelf<StatBuffs> {
+public struct StatBuffs : IBlobBuildable<StatBuffsManaged>, IBlobBuildableSelf<StatBuffs> {
     public bool enable;
 
     public BubleArray<Element, Element.Managed> buffs;
 
-    public void BuildBlob(ref BlobBuilder builder, Managed source) {
+    public void BuildBlob(ref BlobBuilder builder, StatBuffsManaged source) {
         enable = source.enable;
         buffs.BuildBlob(ref builder, source.buffs);
     }
@@ -115,13 +115,13 @@ public struct StatBuffs : IBlobBuildable<StatBuffs.Managed>, IBlobBuildableSelf<
             source.ApplyTo(ref buffs, -1);
         }
     }
+}
 
-    [Serializable]
-    public class Managed : IEnableable {
-        [field: SerializeField] public override bool enable { get; set; }
+[Serializable]
+public class StatBuffsManaged : IEnableable {
+    [field: SerializeField] public override bool enable { get; set; }
 
-        public List<Element.Managed> buffs;
-    }
+    public List<StatBuffs.Element.Managed> buffs;
 }
 
 public static class StatBuffExtensions {

@@ -7,8 +7,8 @@ public struct ScalableFloat : IBlobBuildable<ScalableFloat.Managed>, IBlobBuilda
     public float_Q3           origin;
     public BubleArray<Scaler> scalers;
 
-    public readonly float_Q3 GetScaledValue(in Scaler.Metadata metadata) {
-        float_Q3 result = origin;
+    public float_Q3 GetScaledValue(in Scaler.Metadata metadata) {
+        var result = origin;
         for (int i = 0; i < scalers.Count; ++i)
             scalers[i].Apply(ref result, metadata);
         return result;

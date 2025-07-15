@@ -14,7 +14,7 @@ public class EffectBodyUI : MonoBehaviour {
 
     [SerializeField] private Transform _ItemRoot;
 
-    private void Spawn(in EffectFullId id, EffectData.Managed.BodyData data) {
+    private void Spawn(in EffectFullId id, EffectDataManaged.BodyData data) {
         var bodyId = data.bodyId;
 
         if (!_Items.ContainsKey(id)) _Items.Add(id, default);

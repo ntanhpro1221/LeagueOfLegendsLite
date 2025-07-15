@@ -14,4 +14,10 @@ public readonly partial struct ScalerPersonalConstructAspect : IAspect {
       , _Health.ValueRO
       , _Mana.IsValid ? _Mana.ValueRO : default
       , _Level.IsValid ? _Level.ValueRO : default);
+
+    public Scaler.Metadata.Personal ConstructWithLevel(int level) {
+        var result = Construct();
+        result.level = level;
+        return result;
+    }
 }

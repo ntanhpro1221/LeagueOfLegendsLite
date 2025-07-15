@@ -8,7 +8,7 @@ public class TooltipWindow_EffectBar : ITooltipWindow {
     [SerializeField] private TextMeshProUGUI _Name;
     [SerializeField] private TextMeshProUGUI _Source;
 
-    public void Init(EffectData.Managed data, in FixedString64Bytes sourceName) {
+    public void Init(EffectDataManaged data, in FixedString64Bytes sourceName) {
         _Avatar.sprite = data.barData.avatar;
         _Name.text     = data.name;
         _MainText.text = data.description;

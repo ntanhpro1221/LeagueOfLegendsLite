@@ -28,18 +28,20 @@ public partial struct CommonMeleeAttackSystem : ISystem {
 
     [WithAll(typeof(Simulate))]
     [BurstCompile]
-    public partial struct Job : IJobEntity {
+    private partial struct Job : IJobEntity {
         public BufferLookup<IncomingDamageBuffer> incomingDmgLookup;
         public BufferLookup<IncomingEffectBuffer> incomingEffectLookup;
 
         [BurstCompile]
-        public void Execute(
+        private void Execute(
             ScalerPersonalConstructAspect                      personalConstructor
           , in DynamicBuffer<DamageTriggerSource.EffectBuffer> onHitEffects
           , in AimedTargetData                                 target
           , in LocalTransform                                  locTrans
           , EnabledRefRW<MeleeAttackTrigger>                   attackTrigger
           , in Entity                                          entity) {
+
+            attackTrigger.ValueRW = false;
 
             // deal damage
             incomingDmgLookup[target.target].Add(
@@ -62,8 +64,6 @@ public partial struct CommonMeleeAttackSystem : ISystem {
                     incomingEffects.Add(newEffect);
                 }
             }
-
-            attackTrigger.ValueRW = false;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace NGDtuanh.BubleAsset {
                     if (Keys[i].Equals(key))
                         return ref Values[i];
 
-                throw new KeyNotFoundException();
+                throw new Exception($"NGDtuanh blob map key not found: {nameof(TKey)}, {nameof(TValue)}");
             }
         }
 

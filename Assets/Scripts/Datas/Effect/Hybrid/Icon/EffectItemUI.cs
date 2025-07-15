@@ -10,7 +10,7 @@ public class EffectIconUI : MonoBehaviour {
     [SerializeField] private GameObject _ItemPrefab;
     [SerializeField] private Transform  _ItemRoot;
 
-    private void Spawn(in EffectFullId id, EffectData.Managed.IconData data) {
+    private void Spawn(in EffectFullId id, EffectDataManaged.IconData data) {
         if (!_Items.ContainsKey(id))
             _Items.Add(id, _AvailableItems.Count > 0
                 ? _AvailableItems.Pop()

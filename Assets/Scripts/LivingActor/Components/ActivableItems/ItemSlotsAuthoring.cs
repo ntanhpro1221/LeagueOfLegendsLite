@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NGDtuanh.BubleAsset;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 using UnityEngine;
 
@@ -33,11 +34,37 @@ public struct ItemSlotsData : IComponentData {
     #endregion
 
     public struct Element {
+        #region COMMON
+
+        public struct Common {
+            public bool containItem;
+
+            /// <summary>
+            /// To implement complex conditions that  is not enough to be presented by <see cref="Strum.ItemActiveCond"/>.<br/>
+            /// To implement one, just set this value automatically in a system that updated in <see cref="UpdateItemActiveRequestSystemGroup"/>.<br/>
+            /// </summary>
+            public bool notSatisSpecialCond;
+
+            #region COOLDOWN
+
+            public NetworkTick activatedAtTick;
+            public NetworkTick doneAtTick;
+
+            public void UpdateCooldownAfterActive(in NetworkTick curTick, uint cooldownTick) {
+                activatedAtTick = curTick;
+                doneAtTick      = curTick.WithBonusTick(cooldownTick);
+            }
+
+            #endregion
+        }
+        
         public Common common;
+
+        #endregion
 
         #region FOR ITEM
 
-        [GhostField] public ItemId itemId;
+        public ItemId itemId;
 
         public void SetItem(ItemId _itemId) =>
             (common.containItem, itemId) = (true, _itemId);
@@ -49,25 +76,11 @@ public struct ItemSlotsData : IComponentData {
 
         #region FOR SKILL
 
-        [GhostField] public int level;
+        public int level;
+
+        public readonly int CalcSafeLevelIndex() => math.max(0, level - 1);
 
         #endregion
-
-        public struct Common {
-            public bool containItem;
-
-            #region COOLDOWN
-
-            [GhostField] public NetworkTick activatedAtTick;
-            [GhostField] public NetworkTick doneAtTick;
-
-            public void UpdateCooldownAfterActive(in NetworkTick curTick, uint cooldownTick) {
-                activatedAtTick = curTick;
-                doneAtTick      = curTick.WithBonusTick(cooldownTick);
-            }
-
-            #endregion
-        }
     }
 }
 
@@ -123,7 +136,12 @@ public class ItemSlotsAuthoring : MonoBehaviour {
                          ; index.key <= Strum.SlotItem.Last_Skill && index.index < skillsSource.Skills.Count
                          ; ++index.key, ++index.index) {
                         // Add prefab buffer
-                        skillsSource.Skills[index.index].AddPrefabBuffer(this, entity);
+                        try {
+                            skillsSource.Skills[index.index].AddPrefabBuffer(this, entity);
+                        } catch (Exception e) {
+                            Debug.LogException(e);
+                            Debug.LogError($"NGDtuanh add skill prefab for: {authoring.name} {index.key.ToString()}");
+                        }
 
                         // mark contain item in ItemSlotData
                         slotData.data.ValueRW(index.key).common.containItem = true;

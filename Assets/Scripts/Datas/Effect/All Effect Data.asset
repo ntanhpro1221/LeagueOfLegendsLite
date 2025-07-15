@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: All Effect Data
   m_EditorClassIdentifier: 
   value:
-    _Keys: 000000000100000002000000
+    _Keys: 0000000001000000020000000300000004000000
     _Values:
     - _Value:
         name: Frost
@@ -188,11 +188,135 @@ MonoBehaviour:
             origin:
               value: 2000
             scalers: []
+    - _Value:
+        name: Focus
+        barData:
+          <enable>k__BackingField: 1
+          avatar: {fileID: 21300000, guid: 92bd6c43f47e9ca428158410f566bfc8, type: 3}
+          outlineColor: {r: 0.6509804, g: 0.73333335, b: 1, a: 1}
+          showStack: 1
+          showTimer: 1
+        bodyData:
+          <enable>k__BackingField: 0
+          bodyId: 0
+        iconData:
+          <enable>k__BackingField: 0
+          icon: {fileID: 0}
+        description: Focus stack
+        stackingBehaviour:
+          maxStack: 4
+          createNewInstance: 0
+          resetTimer: 1
+          increaseStackCount: 1
+          stackAffectPower: 0
+          useStackForLifeTime: 1
+        damageOverTime:
+          <enable>k__BackingField: 0
+          damage:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+          periodTime: 0
+        statBuffs:
+          <enable>k__BackingField: 0
+          buffs:
+          - applyType: 0
+            value:
+              origin:
+                value: 0
+              scalers: []
+            statId: 0
+        ccDisable:
+          <enable>k__BackingField: 0
+          flags:
+            Move: 1
+            Attack: 1
+            ActiveItem: 1
+        ccControl:
+          <enable>k__BackingField: 0
+          flag: 2
+        fixedLife:
+          <enable>k__BackingField: 1
+          lifeTime:
+            origin:
+              value: 1000
+            scalers: []
+    - _Value:
+        name: Ranger's Focus Active
+        barData:
+          <enable>k__BackingField: 1
+          avatar: {fileID: 21300000, guid: 4289b50e6d38343bb8637657699042c7, type: 3}
+          outlineColor: {r: 1, g: 0.9934083, b: 0.34385365, a: 1}
+          showStack: 0
+          showTimer: 1
+        bodyData:
+          <enable>k__BackingField: 0
+          bodyId: 0
+        iconData:
+          <enable>k__BackingField: 0
+          icon: {fileID: 0}
+        description: For 6 seconds, Ashe gains bonus attack speed and empowers her
+          basic attacks to fire a flurry of five arrows.
+        stackingBehaviour:
+          maxStack: 1
+          createNewInstance: 0
+          resetTimer: 1
+          increaseStackCount: 0
+          stackAffectPower: 0
+          useStackForLifeTime: 0
+        damageOverTime:
+          <enable>k__BackingField: 0
+          damage:
+            origin:
+              value: 0
+            scalers:
+            - factor: 0
+              source: 0
+              stat: 0
+              ratio:
+                value: 0
+          periodTime: 0
+        statBuffs:
+          <enable>k__BackingField: 1
+          buffs:
+          - applyType: 1
+            value:
+              origin:
+                value: 175
+              scalers:
+              - factor: 3
+                source: 0
+                stat: 0
+                ratio:
+                  value: 75
+            statId: 11
+        ccDisable:
+          <enable>k__BackingField: 0
+          flags:
+            Move: 1
+            Attack: 1
+            ActiveItem: 1
+        ccControl:
+          <enable>k__BackingField: 0
+          flag: 2
+        fixedLife:
+          <enable>k__BackingField: 1
+          lifeTime:
+            origin:
+              value: 6000
+            scalers: []
     _KeyNames:
     - Frost
     - Stun
     - KnockUp
+    - AsheSkill_Q_Stack
+    - AsheSkill_Q_Active
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: 68a160e309e51c137537f0cd7f22bbed
+      Hash: 788fc24d88e0d3ed64ca214653747249
     _KeySynced: 1

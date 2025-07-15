@@ -60,7 +60,7 @@ public partial struct PlayerInputUpdateSystem : ISystem {
             // ACTIVE ITEM
             input.inputForActivableItem.UpdateAll(castData, dirtyData, locTrans);
 
-            input.curCondition.UpdateAll(castData);
+            input.curCondition.UpdateFrom(castData);
 
             foreach (var key in Strum.SlotItem.Indexes)
                 if (dirtyData.activableItem[key].WasReleasedThisFrame())

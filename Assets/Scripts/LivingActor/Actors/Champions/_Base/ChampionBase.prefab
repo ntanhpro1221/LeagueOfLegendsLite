@@ -110,10 +110,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       propertyPath: _OverrideState._EditorSessionCode
-      value: 52571f146ce24937759ad3c301a8122a
+      value: a682630f9db3c47750acc80b88810ac9
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -1706978723694032335, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+    - {fileID: 8683395864984180792, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -150,6 +151,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6549407687272379805}
+    - targetCorrespondingSourceObject: {fileID: 2511344896651389580, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -889298893701781429}
   m_SourcePrefab: {fileID: 100100000, guid: 6840124809b01d74dac42a6d483cede4, type: 3}
 --- !u!1 &6210338472452448258 stripped
 GameObject:
@@ -298,3 +302,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78256729af514caca2d906e1d9153be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-889298893701781429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210338472452448258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ea024ece2b4434846d9c3440ca4d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OverrideState:
+    _Keys: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
+    _Values:
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    - _Value: 0
+    _KeyNames:
+    - Attack
+    - Dead
+    - Idle
+    - Move
+    - Idle2Dead
+    - Dead2Idle
+    - Skill_Q
+    - Skill_W
+    - Skill_E
+    - Skill_R
+    _EditorSessionCode:
+      serializedVersion: 2
+      Hash: a682630f9db3c47750acc80b88810ac9
+    _KeySynced: 1

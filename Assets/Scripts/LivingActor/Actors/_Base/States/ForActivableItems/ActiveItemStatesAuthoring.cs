@@ -16,7 +16,8 @@ public class ActiveItemStatesAuthoring : MonoBehaviour {
             AddComponentDisabled<ItemCommonState>(entity);
 
             // Others
-            AddComponent<ItemActiveNewStateRequestData>(entity);
+            AddComponentDisabled<ActiveItemWithoutState_Request>(entity);
+            AddComponent<ItemActiveRequestData>(entity);
         }
     }
 }

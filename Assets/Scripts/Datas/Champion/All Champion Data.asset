@@ -48,7 +48,7 @@ MonoBehaviour:
     - KillScore
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: ee01513d74a285db8581332c3c5ad424
+      Hash: bba90e41ad8b2963cc9a8a735945a29e
     _KeySynced: 1
   value:
     _Keys: 000000000100000002000000
@@ -264,7 +264,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: ee01513d74a285db8581332c3c5ad424
+            Hash: bba90e41ad8b2963cc9a8a735945a29e
           _KeySynced: 1
         statsPerLevel:
           _Keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
@@ -332,7 +332,7 @@ MonoBehaviour:
           - HealShieldPower
           _EditorSessionCode:
             serializedVersion: 2
-            Hash: ee01513d74a285db8581332c3c5ad424
+            Hash: bba90e41ad8b2963cc9a8a735945a29e
           _KeySynced: 1
         avatar: {fileID: 21300000, guid: 493c3ba7001ab124a84b6994c222f08c, type: 3}
         passive: {fileID: 11400000, guid: 423baccc25d04a1489be827112c0a76f, type: 2}
@@ -489,5 +489,5 @@ MonoBehaviour:
     - Garen
     _EditorSessionCode:
       serializedVersion: 2
-      Hash: ee01513d74a285db8581332c3c5ad424
+      Hash: bba90e41ad8b2963cc9a8a735945a29e
     _KeySynced: 1

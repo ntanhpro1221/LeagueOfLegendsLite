@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,67 +16,45 @@ public class ItemUICore : MonoBehaviour {
         }
     }
 
+    private Strum.ItemUIDisableFactor.Fields<bool> _DisableFactor;
+
+    public ref readonly Strum.ItemUIDisableFactor.Fields<bool> DisableFactor => ref _DisableFactor;
+
     private void UpdateInteractable() {
-        if (_ForceOffInteractable
-         || _IsInCooldown
-         || _IsInDead
-         || _IsBlocked)
-            DisablableUI.DisableAll();
-        else DisablableUI.EnableAll();
+        foreach (var disable in _DisableFactor)
+            if (disable) {
+                DisablableUI.DisableAll();
+                return;
+            }
+
+        DisablableUI.EnableAll();
     }
 
-    private void UpdateCooldownVisible() {
-        _CooldownImage.gameObject.SetActive(_IsInCooldown);
-        _CooldownText.gameObject.SetActive(_IsInCooldown);
+    private void UpdateCooldownVisible(bool enable) {
+        _CooldownImage.gameObject.SetActive(enable);
+        _CooldownText.gameObject.SetActive(enable);
     }
 
-    private void UpdateBlockVisible() {
-        _BlockImage.enabled = _IsBlocked;
+    private void UpdateBlockVisible(bool enable) {
+        _BlockImage.enabled = enable;
     }
 
     private bool _ForceOffInteractable;
 
-    public bool ForceOffInteractable {
-        get => _ForceOffInteractable;
-        set {
-            _ForceOffInteractable = value;
+    public void SetDisableFactor(ItemUIDisableFactor factor, bool newValue) {
+        if (_DisableFactor[factor] == newValue) return;
 
-            UpdateInteractable();
-        }
-    }
+        _DisableFactor[factor] = newValue;
+        UpdateInteractable();
 
-    private bool _IsInCooldown;
+        switch (factor) {
+            case ItemUIDisableFactor.NotEnoughLevel: break;
+            case ItemUIDisableFactor.InCooldown:     UpdateCooldownVisible(newValue); break;
+            case ItemUIDisableFactor.InDead:         break;
+            case ItemUIDisableFactor.Blocked:        UpdateBlockVisible(newValue); break;
+            case ItemUIDisableFactor.NotSatisCond:   break;
 
-    public bool IsInCooldown {
-        get => _IsInCooldown;
-        private set {
-            _IsInCooldown = value;
-
-            UpdateCooldownVisible();
-            UpdateInteractable();
-        }
-    }
-
-    private bool _IsInDead;
-
-    public bool IsInDead {
-        get => _IsInDead;
-        private set {
-            _IsInDead = value;
-
-            UpdateInteractable();
-        }
-    }
-
-    private bool _IsBlocked;
-
-    public bool IsBlocked {
-        get => _IsBlocked;
-        private set {
-            _IsBlocked = value;
-
-            UpdateBlockVisible();
-            UpdateInteractable();
+            default: throw new ArgumentOutOfRangeException(nameof(factor), factor, null);
         }
     }
 
@@ -87,7 +66,7 @@ public class ItemUICore : MonoBehaviour {
     private float _TotalCooldown;
 
     public void StartCooldown(float totalCooldown) {
-        IsInCooldown = true;
+        SetDisableFactor(ItemUIDisableFactor.InCooldown, true);
 
         UpdateCooldownTime(_TotalCooldown = totalCooldown);
     }
@@ -97,25 +76,7 @@ public class ItemUICore : MonoBehaviour {
         _CooldownImage.fillAmount = curCooldown / _TotalCooldown;
     }
 
-    public void DoneCooldown() {
-        IsInCooldown = false;
-    }
-
-    #endregion
-
-    #region DEAD
-
-    public void StartDead() => IsInDead = true;
-
-    public void DoneDead() => IsInDead = false;
-
-    #endregion
-
-    #region BLOCK
-
-    public void StartBlock() => IsBlocked = true;
-
-    public void DoneBlock() => IsBlocked = false;
+    public void DoneCooldown() => SetDisableFactor(ItemUIDisableFactor.InCooldown, false);
 
     #endregion
 

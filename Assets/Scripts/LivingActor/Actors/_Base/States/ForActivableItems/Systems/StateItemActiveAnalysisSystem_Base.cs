@@ -3,9 +3,6 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.NetCode;
 
-/// <summary>
-/// Just analysis for skill at the moment.
-/// </summary>
 [UpdateInGroup(typeof(StateItemActiveAnalysisSystemGroup))]
 public partial struct StateItemActiveAnalysisSystem_Base : ISystem {
     [BurstCompile]
@@ -28,13 +25,13 @@ public partial struct StateItemActiveAnalysisSystem_Base : ISystem {
         public NetworkTick curTick;
 
         [BurstCompile]
-        public void Execute(
-            ref ItemCommonStateData     commonStateData
-          , ref ItemSlotsData                 slots
-          , in  ItemActiveNewStateRequestData requestData
-          , in  PlayerInputData               input
-          , ActorSharedStateAspect            stateSetter
-          , ActiveItemCostSourceAspect        costSource) {
+        private void Execute(
+            ref ItemCommonStateData    commonStateData
+          , ref ItemSlotsData          slots
+          , in  ItemActiveRequestData  requestData
+          , in  PlayerInputData        input
+          , ActorSharedStateAspect     stateSetter
+          , ActiveItemCostSourceAspect costSource) {
             // Turn off state
             stateSetter.UnsetItemActiveAnalyzing();
 
@@ -51,7 +48,7 @@ public partial struct StateItemActiveAnalysisSystem_Base : ISystem {
                 case SlotItemId.Skill_E: stateSetter.SetSkill_E(); break;
                 case SlotItemId.Skill_R: stateSetter.SetSkill_R(); break;
                 case >= Strum.SlotItem.First_Item and <= Strum.SlotItem.Last_Item:
-                    // Spell is also considered as a common item
+                // Spell is also considered as a common item
                 case >= Strum.SlotItem.First_Spell and <= Strum.SlotItem.Last_Spell:
                     stateSetter.SetItemCommon();
                     break;

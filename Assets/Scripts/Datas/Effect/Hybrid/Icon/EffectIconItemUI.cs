@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class EffectIconItemUI : MonoBehaviour {
     [SerializeField] private Image _Avatar;
 
-    public void InitUI(EffectData.Managed.IconData data) {
+    public void InitUI(EffectDataManaged.IconData data) {
         _Avatar.sprite = data.icon;
     }
 }

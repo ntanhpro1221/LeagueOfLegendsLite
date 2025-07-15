@@ -16,7 +16,7 @@ public readonly partial struct ActorSharedStateAspect : IAspect {
     [Optional] private readonly EnabledRefRW<Skill_W_State>            _Skill_W_State;
     [Optional] private readonly EnabledRefRW<Skill_E_State>            _Skill_E_State;
     [Optional] private readonly EnabledRefRW<Skill_R_State>            _Skill_R_State;
-    [Optional] private readonly EnabledRefRW<ItemCommonState>         _ItemCommon_State;
+    [Optional] private readonly EnabledRefRW<ItemCommonState>          _ItemCommon_State;
 
     public void SetIdle()   => _IdleState.ValueRW = true;
     public void SetAttack() => _AttackState.ValueRW = true;

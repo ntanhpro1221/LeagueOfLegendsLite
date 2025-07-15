@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using System.Globalization;
+using AYellowpaper.SerializedCollections;
+using NGDtuanh.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,7 @@ public class TooltipWindow_Skill : ITooltipWindow {
     private List<float_Q3>       _CooldownTime;
     private List<ItemActiveCost> _ActiveCost;
 
+    private string        _SpecialCondCostFullText;
     private int           _CachedCurrentLevel = -1;
     private int           _MaxLevel;
     private bool          _InDetails;
@@ -40,21 +42,17 @@ public class TooltipWindow_Skill : ITooltipWindow {
         }
     }
 
-    public void Init(
-        Sprite               avatar
-      , string               skillName
-      , DynamicString        mainText_Dynamic
-      , DynamicString        details_Dynamic
-      , List<float_Q3>       cooldownTime
-      , List<ItemActiveCost> activeCost
-      , int                  maxLevel) {
-        _Avatar.sprite    = avatar;
-        _Name.text        = skillName;
-        _MainText_Dynamic = mainText_Dynamic;
-        _Details_Dynamic  = details_Dynamic;
-        _CooldownTime     = cooldownTime;
-        _ActiveCost       = activeCost;
-        _MaxLevel         = maxLevel;
+    public void Init(IActivableItemSO source) {
+        var descriptionDict = new SerializedDictionary<string, List<float_Q3>>(source.GenerateConcreteData_StringKey());
+
+        _Avatar.sprite           = source.avatar;
+        _Name.text               = source.itemName;
+        _MainText_Dynamic        = new DynamicString(source.description, descriptionDict);
+        _Details_Dynamic         = new DynamicString(source.details,     descriptionDict);
+        _CooldownTime            = source.cooldownTime;
+        _ActiveCost              = source.activeCost;
+        _SpecialCondCostFullText = $"\n{source.specialCondCost}".IfOnly(!string.IsNullOrWhiteSpace(source.specialCondCost));
+        _MaxLevel                = source.maxLevel;
 
         UpdateLevel(1);
     }
@@ -74,8 +72,12 @@ public class TooltipWindow_Skill : ITooltipWindow {
         int levelIndex = Mathf.Max(0, newLevel - 1);
         _MainText.text = _MainText_Dynamic.Generate(levelIndex);
         _Details.text  = _Details_Dynamic.Generate(levelIndex);
+
+        var cooldownTime = (int)_CooldownTime[levelIndex];
+        var costMana     = (int)_ActiveCost[levelIndex].mana;
         _Costs.text =
-            $"{_CooldownTime[levelIndex]:int}s Cooldown <sprite name=cooldown>"
-          + $"\n{_ActiveCost[levelIndex].mana:int} Mana <sprite name=mana>";
+            $"{cooldownTime}s Cooldown <sprite name=cooldown>"
+          + $"\n{costMana} Mana <sprite name=mana>".IfOnly(costMana > 0)
+          + _SpecialCondCostFullText;
     }
 }

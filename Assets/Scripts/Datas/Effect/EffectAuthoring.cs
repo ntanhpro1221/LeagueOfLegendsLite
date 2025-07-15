@@ -21,7 +21,7 @@ public struct EffectFullId : IEquatable<EffectFullId> {
       , source.GetHashCode());
 }
 
-public struct EffectBuffer : IBufferElementData {
+public struct EffectBuffer : IBufferElementData, IEquatable<EffectId> {
     [GhostField] public EffectFullId id;
     [GhostField] public NetworkTick  endAtTick;
     [GhostField] public uint         stackTick;
@@ -123,8 +123,13 @@ public struct EffectBuffer : IBufferElementData {
             AddToReceivers(ref ccDisableReceiver, ref statBuffReceiver);
         }
     }
+
+    public bool Equals(EffectId other) => id.id == other;
 }
 
+/// <summary>
+/// Still need to be synced because <see cref="HandleEffectIOSystem"/> run at the begining of <see cref="PredictedSimulationSystemGroup"/>.<br/>
+/// </summary>
 public struct IncomingEffectBuffer : IBufferElementData {
     [GhostField] public EffectFullId             id;
     [GhostField] public Scaler.Metadata.Personal senderScaler;
